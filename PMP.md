@@ -38,5 +38,18 @@ We have considered the following CI/CD tools:
 
 Because our repo is hosted in Github, it makes the most sense to host our CI/CD pipelines with Github actions, and we will therefore use it for our project
   
+## Policies for Communication
+Communication and keeping all stakeholders and team members informed is a priority for this project. This will help keep a consistent understanding of expectations across the project, decrease risks associated with experience disparities, and improve team efficiency. It can also help prevent bottlenecks that occur when there are a limited number of team members with the necessary knowledge and skills, or if there are other roadblocks that could be resolved. 
 
+The key stakeholders that need to be kept informed are
+- Team members (informed across all levels of the project, including low-level things, such as bugs or specific tasks).
+- Client and client team (informed only about higher levels, like project requirements issues, overall project progress, high-level roadblocks such as issues accessing a database etc). 
+- Supervisor (informed only about big-picture and project progress)
 
+The methods for keeping all parties informed and up-to-speed with the project progress have been agreed upon as follows: 
+- Facebook: for team member communication, such as asking quick questions and organising meetings.
+- Slack: for more significant team member communication, such as announcements or discussing larger and more complex problems. 
+- Email: for communicating with clients and supervisor to ask questions and/or organise meetings.
+- Meetings (Zoom/in-person): meetings with client, supervisor or between team members. 
+
+Meetings will form an essential part of the project process, and will play a key role in the way all parties will stay in the loop. Meetings will likely be held in a mixture of online and/or in-person mode due to the client being located overseas, and some team members occasionally being unavailable for in-person meetings. It is expected that within the team meetings will be occurring more than once per week, client meetings should occur approximately once per fortnight, and meetings with the project supervisor to occur around once per month.
