@@ -50,6 +50,21 @@ The methods for keeping all parties informed and up-to-speed with the project pr
 - Facebook: for team member communication, such as asking quick questions and organising meetings.
 - Slack: for more significant team member communication, such as announcements or discussing larger and more complex problems. 
 - Email: for communicating with clients and supervisor to ask questions and/or organise meetings.
-- Meetings (Zoom/in-person): meetings with client, supervisor or between team members. 
+- Meetings (Zoom/in-person): meetings with client, supervisor or between team members. These meetings will be used for requirement gathering, sprint planning, retrospectives or to resolve larger and more complex issues that require a more in-depth discussion. 
 
-Meetings will form an essential part of the project process, and will play a key role in the way all parties will stay in the loop. Meetings will likely be held in a mixture of online and/or in-person mode due to the client being located overseas, and some team members occasionally being unavailable for in-person meetings. It is expected that within the team meetings will be occurring more than once per week, client meetings should occur approximately once per fortnight, and meetings with the project supervisor to occur around once per month.
+Meetings will form an essential part of the project process, and will play a key role in the way all parties will stay in the loop. Meetings will likely be held in a mixture of online and/or in-person mode due to the client being located overseas, and some team members occasionally being unavailable for in-person meetings. It is expected that within the team meetings will be occurring more than once per week, client meetings should occur approximately once per fortnight, and meetings with the project supervisor to occur around once per month. During more formal meetings such as sprint planning and retrospectives, minutes should be noted down and made accessible to the entire team for future reference. 
+
+## Process Information
+
+This project will follow an adapted Agile methodology, which will involve sprint planning meetings, individual and team-based work during the sprint, and conclude with a retrospective session to reflect and improve upon the last sprint before beginning the next one. 
+
+Due to being a university project and the team not always being available at the same time, this project agile method will omit daily stand-ups from the methodology. However, to compensate for this and not lose team awareness and focus, we will be using Slack to post updates on progress whenever a task is being completed or worked on, or if an issue is encountered. 
+
+### Sprint Planning
+Sprint planning meetings will be held on a fortnightly basis to prepare for the sprint. This will be used to work through and decide which backlog items to be worked on in the coming fortnight. It can also be used to allocate specific tasks or tickets to individual team members. If the client is involved, this is a good time to continue to gather and understand requirements. 
+
+### Working During Sprint 
+During the sprint, team members will work mostly independently or in small sub-teams on pre-allocated tasks. Progress or roadblocks should be posted to the Slack channel in lieu of daily stand ups to keep the entire team informed. 
+
+### Retrospective
+Retrospective sessions will be held by the team on a fortnightly basis. These meetings will identify what the team did well, what did not go well, and highlight any areas of confusion. Teams should document the outcomes and the possible improvements that can be made in the next sprint. If the client is involved, it is a good time to also perform some requirement validation to ensure the project is going in the right direction.  
