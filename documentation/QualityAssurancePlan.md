@@ -66,7 +66,7 @@ Stories should be short requirements that are part of a larger Epic. A story sho
 
 Stories should be moved from the backlog into the current sprint during sprint planning. All stories will initially be unassigned, and team members should assign stories to themselves as needed. This prevents developers being blocked and unable to pick up any new work. It also allows team members to take on work according to their current capacity. 
 
-As the developer works on the story, they should move the ticket through the 'Current Sprint', 'Doing', 'In Review' and 'Done' colums and add comments as needed. When a code review is completed, the ticket should be updated to indicate who performed the review and the outcome. 
+As the developer works on the story, they should move the ticket through the 'Current Sprint', 'Doing', 'In Review' and 'Done' colums and add comments as needed. When a code review is completed, the ticket should be updated to indicate who performed the review and the outcome. Stories should only be moved into the current sprint section during sprint planning. 
 
 ## Artifacts
 The following artifacts will be produced over the course of the year:
