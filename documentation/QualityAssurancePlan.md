@@ -5,6 +5,7 @@
 
 ## Testing
 
+## GitHub Management Policies
 
 ## Continuous Integration/Continuous Deployment
 
@@ -45,5 +46,11 @@ After the code is reviewed either:
 - Minor changes are made and the code is rereviewed
 
 ## Artifacts
+The following artifacts will be produced over the course of the year:
+* Product Backlog (available on [Trello](https://trello.com/b/q6F86G6q/tornelo-scoresheet-app))
+* Sprint Backlog (available on [Trello](https://trello.com/b/q6F86G6q/tornelo-scoresheet-app))
+* The code base (available on the [GitHub repository](https://github.com/chessworld/scoresheet-app))
+* The roadmap (available on the [GitHub repository](https://github.com/chessworld/scoresheet-app))
+* Documentation including the QAP, PMP and Risk register (available on the [GitHub repository](https://github.com/chessworld/scoresheet-app))
 
 
