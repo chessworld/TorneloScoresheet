@@ -2,13 +2,25 @@
 
 ## Approach
 
-
 ## Testing
 
 ## GitHub Management Policies
 
 ## Continuous Integration/Continuous Deployment
 
+## Code Review
+
+All Pull Requests for the project are to be reviewed before being merged.
+
+The Code Review process involves the following:
+1. The author demonstrates and describes the code to the reviewer
+2. The reviewer asks questions about the code
+3. The reviewer identifies issues
+
+After the code is reviewed either:
+- The code is merged
+- The merge is declined
+- Minor changes are made and the code is rereviewed
 
 ## Definition Of Done
 
@@ -29,21 +41,31 @@ If the Trello ticket is code based, the following additional requirements need t
 * The Trello ticket contains a link to the pull request 
 * The branch has been merged into main and deleted
 
-When all the relevant points above have been fulfilled, the Trello ticket can be closed.
+When all the relevant points above have been fulfilled, the Trello ticket can be closed
 
-## Code Review
+## Trello Management Policies 
+The following Trello management policies should be implemented to minimuse mis-communication and enable effective collaboration across the team
 
-All Pull Requests for the project are to be reviewed before being merged.
+### Epics
+All large tasks (e.g assignments) should be created as epics. The epics should contain:
+* a description of the task
+* an acceptance criteria
+* labels
+* linkes to all stories invovled in that epic
+* a due date (if applicable)
 
-The Code Review process involves the following:
-1. The author demonstrates and describes the code to the reviewer
-2. The reviewer asks questions about the code
-3. The reviewer identifies issues
+### Stories
+Stories should be short requirements that are part of a larger Epic. A story should contain:
+* A summary of the task
+* An acceptance criteria
+* Labels (indicating both the epic and the level of priority)
+* A link to the branch where the work is being commited 
+* An assignee (if work is in progress) 
+* A description of the outcome (when completed)
 
-After the code is reviewed either:
-- The code is merged
-- The merge is declined
-- Minor changes are made and the code is rereviewed
+Stories should be moved from the backlog into the current sprint during sprint planning. All stories will initially be unassigned, and team members should assign stories to themselves as needed. This prevents developers being blocked and unable to pick up any new work. It also allows team members to take on work according to their current capacity. 
+
+As the developer works on the story, they should move the ticket through the 'Current Sprint', 'Doing', 'In Review' and 'Done' colums and add comments as needed. When a code review is completed, the ticket should be updated to indicate who performed the review and the outcome. 
 
 ## Artifacts
 The following artifacts will be produced over the course of the year:
