@@ -56,6 +56,7 @@ All large tasks (e.g assignments) should be created as epics. The epics should c
 
 ### Stories
 Stories should be short requirements that are part of a larger Epic. A story should contain:
+* A name that clearly defines what the task is
 * A summary of the task
 * An acceptance criteria
 * Labels (indicating both the epic and the level of priority)
