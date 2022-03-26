@@ -9,9 +9,9 @@
 # Risk Rating Matrix 
 **Risk rating key**
 
-![risk rating key](documentation/Pictures/RiskKey.jpg)
+![risk rating key](Pictures/RiskKey.jpg)
 
-![risk_rating_matrix](documentation/Pictures/riskMatrix.jpg)
+![risk_rating_matrix](Pictures/riskMatrix.jpg)
 
 ## Team Stakeholder Management
 A problem with how you do things, a problem from within your team, a problem between sub-teams
