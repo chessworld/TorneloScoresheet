@@ -51,7 +51,7 @@ All large tasks (e.g assignments) should be created as epics. The epics should c
 * a description of the task
 * an acceptance criteria
 * labels
-* linkes to all stories invovled in that epic
+* links to all stories invovled in that epic
 * a due date (if applicable)
 
 ### Stories
@@ -74,6 +74,6 @@ The following artifacts will be produced over the course of the year:
 * Sprint Backlog (available on [Trello](https://trello.com/b/q6F86G6q/tornelo-scoresheet-app))
 * The code base (available on the [GitHub repository](https://github.com/chessworld/scoresheet-app))
 * The roadmap (available on the [GitHub repository](https://github.com/chessworld/scoresheet-app))
-* Documentation including the QAP, PMP and Risk register (available on the [GitHub repository](https://github.com/chessworld/scoresheet-app))
+* Documentation including the Quality Assurance Plan (QAP), Project Management Plan (PMP) and Risk register (available on the [GitHub repository](https://github.com/chessworld/scoresheet-app))
 
 
