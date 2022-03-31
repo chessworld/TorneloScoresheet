@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "ChessScoresheet.app"
-               BlueprintName = "ChessScoresheet"
-               ReferencedContainer = "container:ChessScoresheet.xcodeproj">
+               BuildableName = "TorneloScoresheet.app"
+               BlueprintName = "TorneloScoresheet"
+               ReferencedContainer = "container:TorneloScoresheet.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "ChessScoresheetTests.xctest"
-               BlueprintName = "ChessScoresheetTests"
-               ReferencedContainer = "container:ChessScoresheet.xcodeproj">
+               BuildableName = "TorneloScoresheetTests.xctest"
+               BlueprintName = "TorneloScoresheetTests"
+               ReferencedContainer = "container:TorneloScoresheet.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "ChessScoresheet.app"
-            BlueprintName = "ChessScoresheet"
-            ReferencedContainer = "container:ChessScoresheet.xcodeproj">
+            BuildableName = "TorneloScoresheet.app"
+            BlueprintName = "TorneloScoresheet"
+            ReferencedContainer = "container:TorneloScoresheet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "ChessScoresheet.app"
-            BlueprintName = "ChessScoresheet"
-            ReferencedContainer = "container:ChessScoresheet.xcodeproj">
+            BuildableName = "TorneloScoresheet.app"
+            BlueprintName = "TorneloScoresheet"
+            ReferencedContainer = "container:TorneloScoresheet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
