@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface ChessScoresheetTests : XCTestCase
+@interface TorneloScoresheetTests : XCTestCase
 
 @end
 
-@implementation ChessScoresheetTests
+@implementation TorneloScoresheetTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL(^)(UIView *view))test
 {
