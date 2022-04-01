@@ -1,6 +1,7 @@
 # Quality Assurance Plan
 
 ## Approach
+All code that is committed to the repo should be accompanied by unit tests. Tests are automatically run through the CI pipeline (See 'CI / CD' below). The tests should cover all reasonable inputs/states, as well as any edge cases. If the behaviour/expected output for a function changes, the unit tests should be updated to reflect this. Code should not be merged into main if it does not have accompanying unit tests. 
 
 ## Testing
 
