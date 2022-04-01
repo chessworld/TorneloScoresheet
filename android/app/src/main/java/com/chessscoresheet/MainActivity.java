@@ -1,4 +1,4 @@
-package com.chessscoresheet;
+package com.torneloscoresheet;
 
 import com.facebook.react.ReactActivity;
 
