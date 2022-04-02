@@ -1,7 +1,7 @@
 import React from 'react';
-import {Text} from 'react-native';
-import {useAppState} from '../context/AppStateContext';
-import {AppStateVariant} from '../types/AppState';
+import { Text } from 'react-native';
+import { useAppState } from '../context/AppStateContext';
+import { AppStateVariant } from '../types/AppState';
 import ArbiterSetup from './ArbiterSetup';
 
 const Main: React.FC = () => {

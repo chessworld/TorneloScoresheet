@@ -1,8 +1,8 @@
 import React from 'react';
-import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
+import { SafeAreaView, StatusBar, useColorScheme } from 'react-native';
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {AppStateProvider} from './src/context/AppStateContext';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { AppStateProvider } from './src/context/AppStateContext';
 import Main from './src/pages/Main';
 
 const App = () => {
