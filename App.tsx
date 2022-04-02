@@ -1,14 +1,9 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {AppStateProvider} from './src/context/AppStateContext';
+import Main from './src/pages/Main';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -20,20 +15,11 @@ const App = () => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <View style={styles.helloWorld}>
-        <Text>Hello Tornelo!</Text>
-      </View>
+      <AppStateProvider>
+        <Main />
+      </AppStateProvider>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  helloWorld: {
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default App;
