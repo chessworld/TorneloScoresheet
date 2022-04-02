@@ -19,14 +19,14 @@ export const useAppState = (): AppStateHookType => {
     // 1. Call live link url, and get PGN
     // 2. Parse PGN
     // 3. Set new game state
-    console.log('Going to  seStaterver: ', liveLinkUrl);
+    console.log('Going to Tornelo server: ', liveLinkUrl);
     setAppState({ mode: AppStateVariant.TablePairing, games: 0 });
   };
 
   return [appState, { enterTablePairingMode }];
 };
 
-export const AppStateProvider: React.FC = ({ children }) => {
+export const AppStateContextProvider: React.FC = ({ children }) => {
   const appState = useState({
     mode: AppStateVariant.ArbiterSetup,
   } as AppState);
