@@ -1,14 +1,14 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { useAppState } from '../context/AppStateContext';
-import { AppStateVariant } from '../types/AppState';
+import { useAppModeState } from '../context/AppModeStateContext';
+import { AppMode } from '../types/AppModeState';
 import ArbiterSetup from './ArbiterSetup';
 
 const Main: React.FC = () => {
-  const [appState] = useAppState();
+  const [{ mode: appMode }] = useAppModeState();
   return (
     <>
-      {appState.mode === AppStateVariant.ArbiterSetup ? (
+      {appMode === AppMode.ArbiterSetup ? (
         <ArbiterSetup />
       ) : (
         <Text>Unsupported app mode</Text>

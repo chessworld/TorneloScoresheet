@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
-import { useAppState } from '../context/AppStateContext';
+import { useAppModeState } from '../context/AppModeStateContext';
 
 const ArbiterSetup: React.FC = () => {
-  const [, { enterTablePairingMode }] = useAppState();
+  const [, { enterTablePairingMode }] = useAppModeState();
 
   const handleNextClick = () => {
     // FIXME: Use the URL entered into the `TextInput` below
