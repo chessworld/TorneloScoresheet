@@ -14,7 +14,7 @@
 ![risk_rating_matrix](Pictures/riskMatrix.jpg)
 
 ## Team Stakeholder Management
-A problem with how you do things, a problem from within your team, a problem between sub-teams
+A problem with how you do things, a problem from within your team
 
 ### Moving Online								Rating: 3
 In response to an outbreak of COVID-19 in Victoria, it is possible that Monash returns an online format. This means that all activities and communication will have to be done from home. This could lead to a decrease in output, and difficulties in communication, which can create a risk of not meeting deadlines, or miscommunication/lack of communication occurring.  
@@ -127,6 +127,13 @@ considered when planning sprints.This means that all team members will have a
 manageable workload. 
 
 **CONTINGENCY:** If team members are spending too much time on documentation and technical reports, responsibilities should be re-assigned so that the individual has time to work on the main  project. If it is identified as a recurring issue, it should be considered when assigning tasks and in sprint planning. 
+
+### Team Members Not Owning Apple Devices Rating: 7
+An Apple device is needed for developing IOS apps using React Native, however, Multiple team members do not own a Mac laptop. 
+
+**MITIGATION** Team members who don't own a Mac should create a  Mac virtual machine. It should be noted that these VMs are very laggy and there will be overhead associated with displaying the app on them. This should be taken into consideration when planning work.
+
+**CONTINGENCY** If team members don't have access to a Mac device, pair programming should be done with members who have one.
 
 ## Stakeholder Management
 * *A problem with how you interact with stakeholders, a problem with responding to stakeholder requests, a problem setting or meeting external expectations.
