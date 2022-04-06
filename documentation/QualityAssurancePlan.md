@@ -7,15 +7,15 @@ All code that is committed to the repo should be accompanied by unit tests. Test
 
 ## GitHub Management Policies
 ### Branching
-- Feature branches should always be made off of the most up to date version of the Main branch. 
+- Feature branches should be rebased to be up to date with "main" before being merged.
 - Branch names should clearly describe what feature is being implemented and can optionally include the name of the developer implementing it.
 - Any naming convention is acceptable as long as it is easily readable. 
 - Branches should not be merged to main until they have been approved by another developer and the CI/CD pipeline has successfully completed.
 
 ### Commit Rules
 - Commit messages should be meaningful and describe what changes have been made.
-- Local commits should be made frequently (at least 1-2 times per hour when developing code) to prevent the loss of work. 
-- Pushes to the remote feature branch should be done ideally at least once per coding session.
+- Each commit should be atomic, such that it makes a single, isolated change
+- Each Pull Request should correspond to one feature / change
 
 ## Code Review
 
