@@ -47,4 +47,31 @@
 
 ### Android (WIP):
 
-- `npm run android`
+>https://reactnative.dev/docs/running-on-device
+
+### Prerequisites:
+
+### Steps
+0. Install prerequisites:
+
+    1. `Android Debug Bridge`
+        > https://developer.android.com/studio/command-line/adb
+
+    1. Java runtime
+        > https://java.com/en/
+
+    1. Android Development Environment (Android Studio)
+        > https://developer.android.com/studio/install
+
+        > https://developer.android.com/studio#downloads
+
+        > https://guides.codepath.com/android/installing-android-sdk-tools#installing-the-android-sdk-via-homebrew
+
+    1. For mac users, add this to your `~/.bash_profile` or `~/.zprofile` or whatever environment you use:
+        > `export ANDROID_SDK_ROOT=~/Library/Android/sdk`
+
+1. Enable debugging over USB on android device
+
+1. Plug in USB and connect to device
+
+1. Run `npm run android`
