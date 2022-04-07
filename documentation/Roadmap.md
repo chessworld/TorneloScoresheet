@@ -5,9 +5,9 @@ The main goal of the MVP is to implement the required feature set to gain FIDE a
 At a high level, the goals of the MVP are:
 - Client UI in line with existing Tornelo style guide
 - Deployment to the App Store
-- An implementation of the four modes outlined under `Business Requirements`
+- An implementation of the four modes outlined under [Business Requirements](https://docs.google.com/document/d/19exWTLiAAePttibcdCTFK4IwAxvoIlBbcELAI0gqwgA/edit#heading=h.e6rj1kl21bi7)
 - Conformance with the FIDE guidelines
-- Read from PGN to configure tournament
+- Read from PGN (Potable Game Notation) to configure tournament
 - Write to PGN when a move is made / ability to serialise game as PGN
 
 
@@ -17,14 +17,14 @@ At a high level, the goals of the MVP are:
     - Able to enter url to get PGN file for this round of the tournament
     - Able to assign each ipad with a table number
   - Table Pairing mode:
-    - Display upcomning games with basic info (player names, nationalities, table number)
+    - Display upcoming games with basic info (player names, nationalities, table number)
     - Able to start the game
   - Recording mode:
-    - Players see the chess board with the tornelo pieces 
+    - Players see the chess board with the Tornelo pieces 
     - Players able to click and drag the chess pieces to record their moves
   - Results display:
     - Results are shown
-    - Players/arbiter able to generate a PGN file and send it to email addresses
+    - Players/arbiter able to generate a PGN file and send it to email addresses (arbiter, player 1, player 2)
 
 ## Proposed 2nd iteration (26/May)
   - Arbiter mode:
@@ -34,8 +34,8 @@ At a high level, the goals of the MVP are:
     - Add extra info in pairing mode (ELO, rankings)
     - Improve UI
   - Recording mode:
-    - Implemnt scrollable list of past moves 
-    - Implement skipping turn funtions
+    - Implement scrollable list of past moves 
+    - Implement skipping turn functions
     - Implement clock time functionality
 
 ## Uni holidays 30 May - 25 July
@@ -49,7 +49,7 @@ At a high level, the goals of the MVP are:
     - Move counter
   - Other
     - Battery life   
-    - Lock app if app is switched
+    - Lock app if app is switched (arbiter pin required to unlock)
 
 ## Proposed 4th iteration (15/September)
   - Arbiter mode:
@@ -59,7 +59,7 @@ At a high level, the goals of the MVP are:
   - Recording mode:
     -  Record check
     -  Record En Passant
-    -  Record Castleing
+    -  Record Castling
     -  Record Captures 
   - Owner Mode:
     - Add customisability features 
@@ -70,7 +70,7 @@ At a high level, the goals of the MVP are:
 ## Final Work
 - Check every Regulation requirement 1 by 1
 - Iron out all Bugs
-- Connect to tornello APIs ?
+- Connect to Tornelo APIs ?
 
 
 
