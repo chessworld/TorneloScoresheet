@@ -68,3 +68,32 @@ During the sprint, team members will work mostly independently or in small sub-t
 
 ### Retrospective
 Retrospective sessions will be held by the team on a fortnightly basis. These meetings will identify what the team did well, what did not go well, and highlight any areas of confusion. Teams should document the outcomes and the possible improvements that can be made in the next sprint. If the client is involved, it is a good time to also perform some requirement validation to ensure the project is going in the right direction.  
+
+## Team Management
+The team is following a modified version of the Agile methodology. As such, there are three main roles being used: product owner, scrum master, and developer. 
+
+### Product Owner
+The responsibilities of the product owner in this team include:
+- Indicating the priority of different tasks
+- Representing Tornelo's interests
+- Communicating client needs and considerations
+- Answering questions from the development team
+
+The role of product owner has been assigned to David Cordover.
+
+### Scrum Master
+The responsibilities of the scrum master include:
+- Facilitating the weekly stand-ups
+- Monitoring scope creep 
+- Running sprint planning and retrospectives each sprint
+
+The team has nominated Malo Hamon for this role.
+
+### Developer
+The responsibilities of a developer include:
+- Estimating task difficulty
+- Management and planning of tasks
+- Reporting on progress
+- Monitoring pull requests
+
+All team members will act as developers for the duration of the project.
