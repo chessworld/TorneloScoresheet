@@ -30,7 +30,6 @@ jobs:
         cache: 'npm'
         cache-dependency-path: packages/TorneloScoresheet
     
-    - run: cd ./packages/chess.ts
     - run: npm install
       working-directory: packages/chess.ts
       name: install chess engine dependancies
