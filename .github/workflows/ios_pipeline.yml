@@ -28,13 +28,29 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-      
+    
+    - run: cd ./packages/chess.ts
+    - run: npm install
+      working-directory: packages/chess.ts
+      name: install chess engine dependancies
+
+    - run: npx tsc
+      working-directory: packages/chess.ts
+      name: compile chess engine
+
+
     - run: npm ci
+      working-directory: packages/TorneloScoresheet
+      name: install dependancies
     
     - run: pod install
-      working-directory: ios
+      working-directory: packages/TorneloScoresheet/ios
       name: Install pod dependencies
       
     - run: npm run ios
+      working-directory: packages/TorneloScoresheet
+      name: Build ios app
     
     - run: npm test
+      working-directory: packages/TorneloScoresheet
+      name: Run app unit tests
