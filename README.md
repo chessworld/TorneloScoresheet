@@ -11,10 +11,12 @@ A Chess Scoresheet App for iOS.
 
 - `npm install`
 - `npx tsc`
+- `npm link`
 
 ### Build app dependancies
 
 > go to TorneloScoresheet directory
+- `npm link ..\chess.ts`
 - `npm install`
 
 ### iOS:
