@@ -28,6 +28,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: packages/TorneloScoresheet
     
     - run: cd ./packages/chess.ts
     - run: npm install
