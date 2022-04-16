@@ -6,7 +6,7 @@ import ArbiterSetup from './ArbiterSetup';
 
 const Main: React.FC = () => {
   const [{ mode: appMode }] = useAppModeState();
-  
+
   return (
     <>
       {appMode === AppMode.ArbiterSetup ? (
