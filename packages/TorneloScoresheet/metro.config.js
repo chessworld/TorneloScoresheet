@@ -4,8 +4,7 @@
  *
  * @format
  */
- const packagePath =
- '../chess.ts';
+const packagePath = '../chess.ts';
 
 module.exports = {
   resolver: {
