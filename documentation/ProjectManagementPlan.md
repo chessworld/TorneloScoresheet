@@ -14,6 +14,12 @@ During our sprint review meeting, the team and product owner will meet to review
 
 ## CI/CD Solutions
 Our project will require a CI pipeline to perform the following tasks:
+- Install our chess engine's dependancies
+- Compile our chess engine
+- Run the unit tests for our chess engine
+- Install our app's node dependancies
+- Install our app's pod dependancies
+- Build our ios app
 - Run the unit tests
 - Run integration tests
 - Deploy the app to the App Store
