@@ -13,7 +13,7 @@ export const makeEnterTablePairingMode =
     setAppMode: React.Dispatch<React.SetStateAction<AppModeState>>,
   ): ((liveLinkUrl: string) => Promise<Result>) =>
   async (liveLinkUrl: string) => {
-    const result = await axios.get(liveLinkUrl);
+    const result = await axios.get(liveLinkUrl, { validateStatus: () => true });
 
     if (result.status !== 200) {
       // TODO: Return a proper error
