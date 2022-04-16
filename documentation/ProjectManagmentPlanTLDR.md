@@ -31,6 +31,11 @@
     4. If incomplete tickets from the previous sprint are not complete
         1. If it blocks tasks from the current sprint, move it to the current sprint
         2. If the ticket priority drops for some reason (client or otherwise), return ticket to backlog.
+5. Assign owners to each of the tasks in the sprint.
+    1. Each team member will provide an estimated number of hours of availability
+    2. The scrum master will go through each ticket and assign up to two team members
+    3. Team members will check the number of story points assigned to them and ensure it lines up with their availability during the sprint
+    4. If a team member has too many/few story points from the sprint tickets are re-allocated as needed.
 
 Story points table for reference:
 | Story points | Description                                                                 | Time estimate |
@@ -50,9 +55,7 @@ NOTES:
 ### During Sprints
 
 For each individual team member:
-1. Team members assign themselves tickets from the current sprint.
-    1. ONLY assign yourself tickets that you will immediately work on.
-2. Do the ticket
+1. Work on an assigned ticket.
 3. Once the ticket is complete, put it through the review process
     1. Ticket reviews are NOT tasks. (trust me, it will get stupidly messy if you do this)
     2. Review other peoples' tasks in your own time. If you feel a writer's block, or if you just want an ego boost for the day. This happens more often than you think.
