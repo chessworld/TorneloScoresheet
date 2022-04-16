@@ -10,9 +10,11 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "axios": "^0.26.1",
     "chess.ts": "file:../chess.ts",
     "react": "17.0.2",
-    "react-native": "0.67.4"
+    "react-native": "0.67.4",
+    "react-native-url-polyfill": "^1.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
