@@ -87,7 +87,7 @@ Stories should be short requirements that are part of a larger Epic. A story sho
 * An assignee (if work is in progress) 
 * A description of the outcome (when completed)
 
-Stories should be moved from the backlog into the current sprint during sprint planning. All stories will initially be unassigned, and team members should assign stories to themselves as needed. This prevents developers being blocked and unable to pick up any new work. It also allows team members to take on work according to their current capacity. 
+Stories should be moved from the backlog into the current sprint during sprint planning. At the beginning of each sprint, stories will be assigned to team members depending on their availability. There should be no more than two people assigned to each ticket, these will be the ticket owners. The ticket owners are responsible for the delivery of the task. Other (non-assigned) team members may also work on the ticket if they have permission from the owner.
 
 As the developer works on the story, they should move the ticket through the 'Current Sprint', 'Doing', 'In Review' and 'Done' colums and add comments as needed. When a code review is completed, the ticket should be updated to indicate who performed the review and the outcome. Stories should only be moved into the current sprint section during sprint planning. 
 
