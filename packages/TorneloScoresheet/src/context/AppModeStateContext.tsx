@@ -1,5 +1,7 @@
 import React, { useContext, useState } from 'react';
+import { makeEnterTablePairingMode } from '../arbiterSetupMode';
 import { AppModeState, AppMode } from '../types/AppModeState';
+import { Result } from '../types/Result';
 
 // The global state for the app
 const AppModeStateContext = React.createContext<
@@ -8,20 +10,13 @@ const AppModeStateContext = React.createContext<
 
 type AppModeStateHookType = [
   AppModeState,
-  { enterTablePairingMode: (liveLinkUrl: string) => Promise<void> },
+  { enterTablePairingMode: (liveLinkUrl: string) => Promise<Result> },
 ];
 
 export const useAppModeState = (): AppModeStateHookType => {
   const [appModeState, setAppModeState] = useContext(AppModeStateContext);
 
-  const enterTablePairingMode = async (liveLinkUrl: string) => {
-    // TODO:
-    // 1. Call live link url, and get PGN
-    // 2. Parse PGN
-    // 3. Set new game state
-    console.log('Going to Tornelo server: ', liveLinkUrl);
-    setAppModeState({ mode: AppMode.TablePairing, games: 0 });
-  };
+  const enterTablePairingMode = makeEnterTablePairingMode(setAppModeState);
 
   return [appModeState, { enterTablePairingMode }];
 };
