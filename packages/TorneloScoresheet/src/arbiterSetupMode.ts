@@ -46,10 +46,11 @@ export const makeEnterTablePairingMode =
           }
         })
       }
-      console.log(pairings)
-      setAppMode({ mode: AppMode.TablePairing, games: 0, pairings: pairings });
+
+      setAppMode({ mode: AppMode.TablePairing, games: pairings.length, pairings: pairings });
       return '';
     };
+
 
 
 const splitRoundIntoMultiplePgn = (roundPgns: string): string[] | undefined => {
