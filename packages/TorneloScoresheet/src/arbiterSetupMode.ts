@@ -46,9 +46,7 @@ export const makeEnterTablePairingMode =
           }
         })
       }
-
-      // TODO
-      // 3. Set new game state
+      console.log(pairings)
       setAppMode({ mode: AppMode.TablePairing, games: 0, pairings: pairings });
       return '';
     };

@@ -75,7 +75,7 @@ const parsePlayerName = (name: string): [string, string] => {
         return [name, ""]
     }
     // return firstname, lastname
-    return [nameRegexResult[1], nameRegexResult[2]]
+    return [nameRegexResult[2], nameRegexResult[1]]
 
 }
 const parseRoundInfo = (round: string): [number, number] => {
