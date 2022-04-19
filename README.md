@@ -5,6 +5,8 @@ A Chess Scoresheet App for iOS.
 
 ## Development:
 
+It is strongly recommended to setup `pre-commit` when setting up a new environment: see `SETUP.md`.
+
 ### Chess engine
 
 > go to chess.ts directory
