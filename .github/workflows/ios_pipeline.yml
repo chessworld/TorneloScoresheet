@@ -1,3 +1,5 @@
+# @format
+
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
@@ -5,13 +7,12 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches: [main]
+  # pull_request:
+  #   branches: [ main ]
 
 jobs:
   build:
-
     runs-on: macOS-latest
 
     strategy:
@@ -20,48 +21,48 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: packages/TorneloScoresheet
-    
-    - run: npm install
-      working-directory: packages/chess.ts
-      name: install chess engine dependancies
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - run: npx tsc
-      working-directory: packages/chess.ts
-      name: compile chess engine
-    
-    - run: npm test
-      working-directory: packages/chess.ts
-      name: Run chess engine unit tests
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: packages/TorneloScoresheet
 
-    - run: npm ci
-      working-directory: packages/TorneloScoresheet
-      name: install dependancies
-   
-#     - name: Cache pod dependancies
-#       uses: actions/cache@v3.0.2
-#       with:  
-#         path: packages/TorneloScoresheet/ios/Pods
-#         key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-#         restore-keys: |
-#               ${{ runner.os }}-pods-
-    
-#     - run: pod install
-#       working-directory: packages/TorneloScoresheet/ios
-#       name: Install pod dependencies
-      
-#     - run: npm run ios
-#       working-directory: packages/TorneloScoresheet
-#       name: Build ios app
-    
-    - run: npm test
-      working-directory: packages/TorneloScoresheet
-      name: Run app unit tests
+      - run: npm install
+        working-directory: packages/chess.ts
+        name: install chess engine dependancies
+
+      - run: npx tsc
+        working-directory: packages/chess.ts
+        name: compile chess engine
+
+      - run: npm test
+        working-directory: packages/chess.ts
+        name: Run chess engine unit tests
+
+      - run: npm ci
+        working-directory: packages/TorneloScoresheet
+        name: install dependancies
+
+      #     - name: Cache pod dependancies
+      #       uses: actions/cache@v3.0.2
+      #       with:
+      #         path: packages/TorneloScoresheet/ios/Pods
+      #         key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+      #         restore-keys: |
+      #               ${{ runner.os }}-pods-
+
+      #     - run: pod install
+      #       working-directory: packages/TorneloScoresheet/ios
+      #       name: Install pod dependencies
+
+      #     - run: npm run ios
+      #       working-directory: packages/TorneloScoresheet
+      #       name: Build ios app
+
+      - run: npm test
+        working-directory: packages/TorneloScoresheet
+        name: Run app unit tests
