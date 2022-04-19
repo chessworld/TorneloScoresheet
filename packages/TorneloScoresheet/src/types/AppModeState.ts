@@ -1,4 +1,4 @@
-import { GameInfo } from "./chessGameInfo";
+import { GameInfo } from './chessGameInfo';
 
 export enum AppMode {
   ArbiterSetup,
@@ -14,7 +14,7 @@ export type ArbiterSetupMode = {
 export type TablePairingMode = {
   mode: AppMode.TablePairing;
   games: number;
-  pairings: GameInfo[]
+  pairings: GameInfo[];
 };
 
 export type PlayerScoresheetRecordingMode = {
