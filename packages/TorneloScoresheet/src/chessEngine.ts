@@ -72,11 +72,9 @@ const extractPlayer = (
   const [firstName, lastName] = names;
 
   // get player fide id
-  let fideId = parseInt(headers[`${playerColorName}FideId`] ?? '', 10);
-  if (isNaN(fideId)) {
-    // TODO: return proper error
-    return undefined;
-  }
+  let fideId = isNaN(parseInt(headers[`${playerColorName}FideId`] ?? ''))
+    ? undefined
+    : parseInt(headers[`${playerColorName}FideId`] ?? '');
 
   return {
     firstName: firstName,
