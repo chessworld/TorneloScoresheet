@@ -63,33 +63,7 @@ const pgnNoFIdeId = `[Event "Skywalker Challenge - A"]
 `;
 test('chessEngineParsePgnNoFideId', () => {
   let gameInfo = parseGameInfo(pgnNoFIdeId);
-  expect(gameInfo).toEqual({
-    name: 'Skywalker Challenge - A',
-    site: 'Prague, Czechia',
-    round: 6,
-    subRound: 1,
-    result: '*',
-    date: moment('2021.09.12', 'YYYY.MM.DD'),
-    pgn: pgnNoFIdeId,
-    players: [
-      {
-        color: 0,
-        firstName: ' Anakin',
-        lastName: 'Skywalker',
-        elo: 0,
-        country: '',
-        fideId: 0,
-      },
-      {
-        color: 1,
-        firstName: ' Master',
-        lastName: 'Yoda',
-        elo: 0,
-        country: '',
-        fideId: 0,
-      },
-    ],
-  });
+  expect(gameInfo).toEqual(undefined);
 });
 const pgnNoFirstName = `[Event "Skywalker Challenge - A"]
 [Site "Prague, Czechia"]
