@@ -46,21 +46,21 @@ jobs:
       working-directory: packages/TorneloScoresheet
       name: install dependancies
    
-    - name: Cache pod dependancies
-      uses: actions/cache@v3.0.2
-      with:  
-        path: packages/TorneloScoresheet/ios/Pods
-        key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-        restore-keys: |
-              ${{ runner.os }}-pods-
+#     - name: Cache pod dependancies
+#       uses: actions/cache@v3.0.2
+#       with:  
+#         path: packages/TorneloScoresheet/ios/Pods
+#         key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+#         restore-keys: |
+#               ${{ runner.os }}-pods-
     
-    - run: pod install
-      working-directory: packages/TorneloScoresheet/ios
-      name: Install pod dependencies
+#     - run: pod install
+#       working-directory: packages/TorneloScoresheet/ios
+#       name: Install pod dependencies
       
-    - run: npm run ios
-      working-directory: packages/TorneloScoresheet
-      name: Build ios app
+#     - run: npm run ios
+#       working-directory: packages/TorneloScoresheet
+#       name: Build ios app
     
     - run: npm test
       working-directory: packages/TorneloScoresheet
