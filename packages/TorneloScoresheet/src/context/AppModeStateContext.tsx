@@ -10,7 +10,9 @@ const AppModeStateContext = React.createContext<
 
 type AppModeStateHookType = [
   AppModeState,
-  { enterTablePairingMode: (liveLinkUrl: string) => Promise<Result> },
+  {
+    enterTablePairingMode: (liveLinkUrl: string) => Promise<Result<undefined>>;
+  },
 ];
 
 export const useAppModeState = (): AppModeStateHookType => {

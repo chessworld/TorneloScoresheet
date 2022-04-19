@@ -2,7 +2,7 @@ import axios from 'axios';
 import { parseGameInfo } from './chessEngine';
 import { AppMode, AppModeState } from './types/AppModeState';
 import { GameInfo } from './types/chessGameInfo';
-import { Result } from './types/Result';
+import { isError, Result, succ, Success } from './types/Result';
 import { validUrl } from './util/url';
 
 /**
@@ -14,45 +14,59 @@ import { validUrl } from './util/url';
 export const makeEnterTablePairingMode =
   (
     setAppMode: React.Dispatch<React.SetStateAction<AppModeState>>,
-  ): ((liveLinkUrl: string) => Promise<Result>) =>
+  ): ((liveLinkUrl: string) => Promise<Result<undefined>>) =>
   async (liveLinkUrl: string) => {
     if (!validUrl(liveLinkUrl)) {
-      // TODO: Return a proper error
-      return '';
+      return fail(
+        'Invalid URL, please provide a valid Live Broadcast PGN link from the Tornelo website',
+      );
     }
     // fetch pgn from api
     const result = await axios.get(liveLinkUrl, { validateStatus: () => true });
 
-    if (result.status !== 200) {
-      // TODO: Return a proper error
-      return '';
-    }
-    if (typeof result.data !== 'string') {
-      // TODO: Return a proper error
-      return '';
+    if (result.status !== 200 || typeof result.data !== 'string') {
+      return fail('Error downloading PGN. Please double check the link');
     }
 
     // split into multiple pgn per pairing
     const pairingPgns = splitRoundIntoMultiplePgn(result.data);
 
-    // TODO: handle undefined gameinfo returned from parseGameInfo instead of filtering them out
-    const pairings = pairingPgns
-      .map(parseGameInfo)
-      .filter((pgn): pgn is GameInfo => !!pgn);
+    if (!pairingPgns.length) {
+      return fail(
+        'Invalid PGN returned from website. Please double check the link',
+      );
+    }
+
+    const pairingOrFailures = pairingPgns.map(parseGameInfo);
+
+    const firstError = pairingOrFailures.find(isError);
+
+    if (firstError) {
+      return firstError;
+    }
+
+    const pairings = pairingOrFailures
+      .filter((p: Result<GameInfo>): p is Success<GameInfo> => !isError(p))
+      .map(({ data }) => data);
+
+    console.log(pairings);
 
     setAppMode({
       mode: AppMode.TablePairing,
       games: pairings.length,
-      pairings: pairings,
+      pairings,
     });
 
-    return '';
+    return succ(undefined);
   };
 
 const splitRoundIntoMultiplePgn = (roundPgns: string): string[] => {
   let rounds = roundPgns.split(/\n{3}/g);
 
   // check if last element is not empty string
+  if (!rounds.length) {
+    return [];
+  }
   if (rounds[rounds.length - 1] === '') {
     rounds.splice(rounds.length - 1);
   }
