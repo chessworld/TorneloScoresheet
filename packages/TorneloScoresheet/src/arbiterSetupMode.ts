@@ -14,59 +14,43 @@ export const makeEnterTablePairingMode =
   (
     setAppMode: React.Dispatch<React.SetStateAction<AppModeState>>,
   ): ((liveLinkUrl: string) => Promise<Result>) =>
-    async (liveLinkUrl: string) => {
-      // fetch pgn from api
-      const result = await axios.get(liveLinkUrl, { validateStatus: () => true });
+  async (liveLinkUrl: string) => {
+    // fetch pgn from api
+    const result = await axios.get(liveLinkUrl, { validateStatus: () => true });
 
-      if (result.status !== 200) {
-        // TODO: Return a proper error
-        return '';
-      }
-      if (typeof result.data !== 'string') {
-        // TODO: Return a proper error
-        return '';
-      }
-      const roundPgn = result.data;
-
-      // split into multiple pgn per pairing
-      const paringPgns = splitRoundIntoMultiplePgn(roundPgn)
-
-      let pairings: GameInfo[] = []
-
-      // extract gameinfo from each pgn 
-      if (paringPgns != undefined) {
-
-        paringPgns.forEach(pgn => {
-          // parse pgn as gameinfo
-          let gameInfo = parseGameInfo(pgn)
-
-          // add to array if no error
-          if (gameInfo != undefined) {
-            pairings.push(gameInfo)
-          }
-        })
-      }
-
-      setAppMode({ mode: AppMode.TablePairing, games: pairings.length, pairings: pairings });
+    if (result.status !== 200) {
+      // TODO: Return a proper error
       return '';
-    };
-
-
-
-const splitRoundIntoMultiplePgn = (roundPgns: string): string[] | undefined => {
-  try {
-
-    let rounds = roundPgns.split(/\n{3}/g)
-
-    // if more than 1 pairing, last element will be empty string -> remove
-    if (rounds.length > 2) {
-      rounds.splice(rounds.length - 2)
     }
-    return rounds
+    if (typeof result.data !== 'string') {
+      // TODO: Return a proper error
+      return '';
+    }
 
+    // split into multiple pgn per pairing
+    const pairingPgns = splitRoundIntoMultiplePgn(result.data);
 
-  } catch {
-    // error occured -> return undefined
-    return undefined
+    // TODO: handle undefined gameinfo returned from parseGameInfo instead of filtering them out
+    const pairings = pairingPgns
+      .map(parseGameInfo)
+      .filter((pgn): pgn is GameInfo => !!pgn);
+
+    setAppMode({
+      mode: AppMode.TablePairing,
+      games: pairings.length,
+      pairings: pairings,
+    });
+
+    return '';
+  };
+
+const splitRoundIntoMultiplePgn = (roundPgns: string): string[] => {
+  let rounds = roundPgns.split(/\n{3}/g);
+
+  // check if last element is not empty string
+  if (rounds[rounds.length - 1] === '') {
+    rounds.splice(rounds.length - 1);
   }
-}
+
+  return rounds;
+};
