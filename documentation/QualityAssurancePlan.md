@@ -6,6 +6,21 @@ All code that is committed to the repo should be accompanied by unit tests. Test
 
 ## Testing
 
+### Unit Testing
+
+For testing, the "Jest" library, along with "@testing-library/react-hooks" will be used for unit testing
+functionality. This will ensure that functionality is implemented according to spec and that corner cases
+are considered.
+
+### Snapshot Testing
+
+The "Jest" library will also be used for snapshot testing. This will allow the team to iterate on the code
+without fear of unintentionally changing the UI.
+
+All tests will be required to be passing in order for Pull Requests to be accepted into "main".
+
+Each feature introduced should also include appropriate unit tests to test the feature.
+
 ## GitHub Management Policies
 
 ### Branching
