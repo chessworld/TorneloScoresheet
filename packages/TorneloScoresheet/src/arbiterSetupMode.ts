@@ -3,6 +3,7 @@ import { parseGameInfo } from './chessEngine';
 import { AppMode, AppModeState } from './types/AppModeState';
 import { GameInfo } from './types/chessGameInfo';
 import { Result } from './types/Result';
+import { validUrl } from './util/url';
 
 /**
  * Given a state setter, return a function for transitioning from
@@ -15,6 +16,10 @@ export const makeEnterTablePairingMode =
     setAppMode: React.Dispatch<React.SetStateAction<AppModeState>>,
   ): ((liveLinkUrl: string) => Promise<Result>) =>
   async (liveLinkUrl: string) => {
+    if (!validUrl(liveLinkUrl)) {
+      // TODO: Return a proper error
+      return '';
+    }
     // fetch pgn from api
     const result = await axios.get(liveLinkUrl, { validateStatus: () => true });
 
