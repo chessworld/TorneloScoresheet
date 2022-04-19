@@ -1,5 +1,12 @@
 # Setup
 
+## Pre-Commit
+
+1. Install `pre-commit` via either:
+   - `pip install pre-commit` (requires pip and python to be installed), or
+   - `brew install pre-commit`.
+2. Install the hooks: `pre-commit install`
+
 ## iOS:
 
 ### System prerequisites
@@ -12,7 +19,7 @@
 
 ### Setup steps
 0. Install prerequisites - Skip if already installed
-    
+
     1. Install XCode via app store (This can take between 10 minutes to 3 hours).
 
     1. Install CocoaPods. This should be part of XCode command line tools.
@@ -43,7 +50,7 @@
         cd <project_directory>
         npm run ios
         ```
-    
+
 
 ### Android (WIP):
 
