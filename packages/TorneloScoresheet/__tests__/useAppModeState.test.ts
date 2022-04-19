@@ -21,7 +21,7 @@ test('useAppModeState', () => {
       expect(result.current[0]).toStrictEqual({
         mode: AppMode.TablePairing,
         games: 0,
-        pairings: []
+        pairings: [],
       });
     });
   });
