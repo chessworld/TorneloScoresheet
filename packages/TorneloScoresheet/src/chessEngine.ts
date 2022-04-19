@@ -24,7 +24,7 @@ export const parseGameInfo = (pgn: string): GameInfo | undefined => {
     }
 
     // extract rounds
-    const rounds = parseRoundInfo(game.header()['Round']);
+    const rounds = parseRoundInfo(game.header().Round);
     if (rounds === undefined) {
       // TODO: return proper error
       return undefined;
@@ -40,12 +40,12 @@ export const parseGameInfo = (pgn: string): GameInfo | undefined => {
     }
 
     return {
-      name: game.header()['Event'] ?? '',
-      date: moment(game.header()['Date'] ?? '', 'YYYY.MM.DD'),
-      site: game.header()['Site'] ?? '',
+      name: game.header().Event ?? '',
+      date: moment(game.header().Date ?? '', 'YYYY.MM.DD'),
+      site: game.header().Site ?? '',
       round: mainRound,
       subRound: subRound,
-      result: game.header()['Result'] ?? '',
+      result: game.header().Result ?? '',
       players: [whitePlayer, blackPlayer],
       pgn: pgn,
     };
@@ -72,7 +72,7 @@ const extractPlayer = (
   const [firstName, lastName] = names;
 
   // get player fide id
-  let fideId = parseInt(headers[`${playerColorName}FideId`] ?? '');
+  let fideId = parseInt(headers[`${playerColorName}FideId`] ?? '', 10);
   if (isNaN(fideId)) {
     // TODO: return proper error
     return undefined;
@@ -96,7 +96,7 @@ const parsePlayerName = (name: string): [string, string] | undefined => {
     // TODO: return proper error format incorrect
     return undefined;
   }
-  if (nameRegexResult.length != 3) {
+  if (nameRegexResult.length !== 3) {
     // TODO: return proper error format incorrect
     return undefined;
   }
@@ -113,14 +113,14 @@ const parseRoundInfo = (round: string): [number, number] | undefined => {
     // TODO: return proper error (round doesnt mathc expected format)
     return undefined;
   }
-  if (regexResults.length != 3) {
+  if (regexResults.length !== 3) {
     // TODO: return proper error (round matches format but main round and subround were not found)
     return undefined;
   }
 
   // return main round and sub round tuple
-  let mainRound = parseInt(regexResults[1]);
-  let subRound = parseInt(regexResults[2]);
+  let mainRound = parseInt(regexResults[1], 10);
+  let subRound = parseInt(regexResults[2], 10);
 
   if (isNaN(mainRound) || isNaN(subRound)) {
     // TODO: return proper error (round and subround are not numbers)
