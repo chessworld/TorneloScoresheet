@@ -6,40 +6,48 @@ import {
   PlayerColour,
   PLAYER_COLOUR_NAME,
 } from './types/chessGameInfo';
+import { Result, succ, fail, isError } from './types/Result';
+
+const PARSING_FAILURE = fail(
+  'Invalid PGN returned from website. Please double check the link',
+);
 
 /**
  * Extracts game info from a pgn string (using headers) will return undefined if error occurs when parsing.
  * @param pgn pgn string of the game to be parsed
  * @returns All info of game from headers
  */
-export const parseGameInfo = (pgn: string): GameInfo | undefined => {
+export const parseGameInfo = (pgn: string): Result<GameInfo> => {
   // create game object to parse pgn
   let game = new Chess();
 
   try {
     // parse pgn
     if (!game.loadPgn(pgn)) {
-      // TODO: return proper error, game failed to parse pgn
-      return undefined;
+      return PARSING_FAILURE;
     }
 
     // extract rounds
     const rounds = parseRoundInfo(game.header().Round);
-    if (rounds === undefined) {
-      // TODO: return proper error
-      return undefined;
+    if (isError(rounds)) {
+      return rounds;
     }
-    const [mainRound, subRound] = rounds;
+    const [mainRound, subRound] = rounds.data;
 
-    // extract player
-    const whitePlayer = extractPlayer(PlayerColour.White, game.header());
-    const blackPlayer = extractPlayer(PlayerColour.Black, game.header());
-    if (whitePlayer === undefined || blackPlayer === undefined) {
-      // TODO: return proper error
-      return undefined;
+    // extract players
+    const whitePlayerOrError = extractPlayer(PlayerColour.White, game.header());
+    if (isError(whitePlayerOrError)) {
+      return whitePlayerOrError;
     }
+    const whitePlayer = whitePlayerOrError.data;
 
-    return {
+    const blackPlayerOrError = extractPlayer(PlayerColour.Black, game.header());
+    if (isError(blackPlayerOrError)) {
+      return blackPlayerOrError;
+    }
+    const blackPlayer = blackPlayerOrError.data;
+
+    return succ({
       name: game.header().Event ?? '',
       date: moment(game.header().Date ?? '', 'YYYY.MM.DD'),
       site: game.header().Site ?? '',
@@ -48,10 +56,9 @@ export const parseGameInfo = (pgn: string): GameInfo | undefined => {
       result: game.header().Result ?? '',
       players: [whitePlayer, blackPlayer],
       pgn: pgn,
-    };
+    });
   } catch (error) {
-    // TODO: return proper error, message from error object
-    return undefined;
+    return PARSING_FAILURE;
   }
 };
 
@@ -60,61 +67,56 @@ export const parseGameInfo = (pgn: string): GameInfo | undefined => {
 const extractPlayer = (
   color: PlayerColour,
   headers: Record<string, string>,
-): Player | undefined => {
+): Result<Player> => {
   let playerColorName = PLAYER_COLOUR_NAME[color];
 
   // get player names
   const names = parsePlayerName(headers[playerColorName] ?? '');
-  if (names === undefined) {
-    // TODO: return proper error
-    return undefined;
+  if (isError(names)) {
+    return names;
   }
-  const [firstName, lastName] = names;
+  const [firstName, lastName] = names.data;
 
   // get player fide id
   const parsedFideId = parseInt(headers[`${playerColorName}FideId`] ?? '', 10);
-  const fideId = isNaN(parsedFideId)
-    ? undefined
-    : parsedFideId;
+  const fideId = isNaN(parsedFideId) ? undefined : parsedFideId;
 
-  return {
-    firstName: firstName,
-    lastName: lastName,
-    color: color,
-    fideId: fideId,
+  return succ({
+    firstName,
+    lastName,
+    color,
+    fideId,
     elo: 0,
+    // TODO: When the tornelo server starts returning the country, return it
     country: '',
-  };
+  });
 };
 
-const parsePlayerName = (name: string): [string, string] | undefined => {
+const parsePlayerName = (name: string): Result<[string, string]> => {
   // parse first and last names
   let nameRegexResult = name.match(/(.+)[,]{1}(.+)/);
 
   if (nameRegexResult === null) {
-    // TODO: return proper error format incorrect
-    return undefined;
+    return fail("PGN game didn't have any names");
   }
   if (nameRegexResult.length !== 3) {
-    // TODO: return proper error format incorrect
-    return undefined;
+    return fail("PGN game didn't have any names");
   }
 
   // return firstname, lastname
-  return [nameRegexResult[2], nameRegexResult[1]];
+  return succ([nameRegexResult[2], nameRegexResult[1]]);
 };
 
-const parseRoundInfo = (round: string): [number, number] | undefined => {
+const parseRoundInfo = (round: string): Result<[number, number]> => {
+  const ROUND_FAILURE = fail("PGN Didn't have any round");
   // parse round and subround
   let regexResults = round.match(/([0-9]+)[.]?([0-9]*)/);
 
   if (regexResults === null) {
-    // TODO: return proper error (round doesnt mathc expected format)
-    return undefined;
+    return ROUND_FAILURE;
   }
   if (regexResults.length !== 3) {
-    // TODO: return proper error (round matches format but main round and subround were not found)
-    return undefined;
+    return ROUND_FAILURE;
   }
 
   // return main round and sub round tuple
@@ -122,9 +124,8 @@ const parseRoundInfo = (round: string): [number, number] | undefined => {
   let subRound = parseInt(regexResults[2], 10);
 
   if (isNaN(mainRound) || isNaN(subRound)) {
-    // TODO: return proper error (round and subround are not numbers)
-    return undefined;
+    return ROUND_FAILURE;
   }
 
-  return [mainRound, subRound];
+  return succ([mainRound, subRound]);
 };
