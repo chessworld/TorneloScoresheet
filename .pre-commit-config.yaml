@@ -10,7 +10,11 @@ repos:
     rev: v8.13.0
     hooks:
       - id: eslint
+        files: 'packages/TorneloScoresheet'
+        exclude: 'packages/TorneloScoresheet/node_modules'
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v2.6.2
     hooks:
       - id: prettier
+        files: 'packages/TorneloScoresheet'
+        exclude: 'packages/TorneloScoresheet/node_modules'
