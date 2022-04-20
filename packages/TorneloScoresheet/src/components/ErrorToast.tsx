@@ -1,5 +1,5 @@
-import React from 'react';
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Animated, Dimensions, StyleSheet, Text, View } from 'react-native';
 import { useError } from '../context/ErrorContext';
 import { negative } from '../style/colour';
 
@@ -7,18 +7,55 @@ import { negative } from '../style/colour';
 const ErrorToast: React.FC = () => {
   const [error] = useError();
 
-  // TODO Animate in
+  // We 'cache' the error so we can keep rendering it until after
+  // the popOut animation finishes
+  const [internalError, setInternalError] = useState('');
+  const clearError = () => setInternalError('');
 
-  return error ? (
-    <Animated.View style={styles.flexBox}>
+  // Initial location for the toast should be above the screen
+  const windowHeight = Dimensions.get('window').height;
+  const popAnim = useRef(new Animated.Value(windowHeight * -1)).current;
+
+  const popOut = useCallback(() => {
+    Animated.timing(popAnim, {
+      toValue: windowHeight * -1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(clearError);
+  }, [popAnim, windowHeight]);
+
+  const popIn = useCallback(() => {
+    Animated.timing(popAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }, [popAnim]);
+
+  // Each time the error changes, render the appropriate animation
+  useEffect(() => {
+    if (error) {
+      setInternalError(error);
+      popIn();
+    } else {
+      popOut();
+    }
+  }, [popIn, popOut, error]);
+
+  return (
+    <Animated.View
+      style={[
+        styles.flexBox,
+        {
+          transform: [{ translateY: popAnim }],
+        },
+      ]}>
       <View style={styles.container}>
         {/* TODO: Add an icon */}
         <Text style={styles.errorTitle}>Error</Text>
-        <Text style={styles.text}>{error}</Text>
+        <Text style={styles.text}>{internalError}</Text>
       </View>
     </Animated.View>
-  ) : (
-    <></>
   );
 };
 
