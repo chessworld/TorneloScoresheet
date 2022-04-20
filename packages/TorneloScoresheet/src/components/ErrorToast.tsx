@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, StyleSheet, Text, View } from 'react-native';
 import { useError } from '../context/ErrorContext';
 import { negative } from '../style/colour';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 // A toast that renders the current state of the "ErrorContext"
 const ErrorToast: React.FC = () => {
@@ -51,8 +52,10 @@ const ErrorToast: React.FC = () => {
         },
       ]}>
       <View style={styles.container}>
-        {/* TODO: Add an icon */}
-        <Text style={styles.errorTitle}>Error</Text>
+        <View style={styles.titleRow}>
+          <Icon name="warning" style={styles.icon} size={30} color="white" />
+          <Text style={styles.errorTitle}>Error</Text>
+        </View>
         <Text style={styles.text}>{internalError}</Text>
       </View>
     </Animated.View>
@@ -73,6 +76,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     minWidth: 120,
     maxWidth: '80%',
+  },
+  titleRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  icon: {
+    marginRight: 8,
+    marginBottom: 2,
   },
   text: {
     color: 'white',
