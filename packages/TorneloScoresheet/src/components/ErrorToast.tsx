@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Animated, Dimensions, StyleSheet, Text, View } from 'react-native';
 import { useError } from '../context/ErrorContext';
-import { negative } from '../style/colour';
+import { colours } from '../style/colour';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 // A toast that renders the current state of the "ErrorContext"
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    backgroundColor: negative,
+    backgroundColor: colours.negative,
     left: 10,
     top: 40,
     padding: 20,
