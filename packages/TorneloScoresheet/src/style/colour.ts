@@ -2,4 +2,6 @@
  * The colors we use in the app
  */
 
-export const negative = '#fa3e2d';
+export const colours = {
+  negative: '#fa3e2d' as const,
+};
