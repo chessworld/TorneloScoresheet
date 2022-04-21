@@ -1,8 +1,9 @@
 import React from 'react';
-import { SafeAreaView, StatusBar, useColorScheme } from 'react-native';
+import { SafeAreaView, useColorScheme } from 'react-native';
 
 import ErrorToast from './src/components/ErrorToast';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import Toolbar from './src/components/Toolbar';
 import { AppModeStateContextProvider } from './src/context/AppModeStateContext';
 import { ErrorContextProvider } from './src/context/ErrorContext';
 import Main from './src/pages/Main';
@@ -15,15 +16,15 @@ const App = () => {
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ErrorContextProvider>
-        <AppModeStateContextProvider>
-          <ErrorToast />
+    <ErrorContextProvider>
+      <AppModeStateContextProvider>
+        <Toolbar />
+        <SafeAreaView style={backgroundStyle}>
           <Main />
-        </AppModeStateContextProvider>
-      </ErrorContextProvider>
-    </SafeAreaView>
+        </SafeAreaView>
+        <ErrorToast />
+      </AppModeStateContextProvider>
+    </ErrorContextProvider>
   );
 };
 
