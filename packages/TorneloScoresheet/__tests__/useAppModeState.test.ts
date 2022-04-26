@@ -20,7 +20,7 @@ describe('useAppModeState', () => {
     // We give an invalid URL, so the mode shouldn't change
     await act(async () => {
       const enterPairingModeResult =
-        await result.current[1].enterTablePairingMode('');
+        await result.current[1].goToTablePairingSelection('');
       // FIXME: this should equal a Result of some sort
       expect(enterPairingModeResult).toStrictEqual('');
     });
