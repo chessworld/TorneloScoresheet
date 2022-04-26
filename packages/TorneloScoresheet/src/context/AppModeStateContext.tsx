@@ -12,6 +12,7 @@ type AppModeStateHookType = [
   AppModeState,
   {
     enterTablePairingMode: (liveLinkUrl: string) => Promise<Result<undefined>>;
+    returnToPgnLinkPage: () => void;
   },
 ];
 
@@ -19,8 +20,12 @@ export const useAppModeState = (): AppModeStateHookType => {
   const [appModeState, setAppModeState] = useContext(AppModeStateContext);
 
   const enterTablePairingMode = makeEnterTablePairingMode(setAppModeState);
-
-  return [appModeState, { enterTablePairingMode }];
+  const returnToPgnLinkPage = () => {
+    setAppModeState({
+      mode: AppMode.ArbiterSetup
+    });
+  }
+  return [appModeState, { enterTablePairingMode, returnToPgnLinkPage }];
 };
 
 export const AppModeStateContextProvider: React.FC = ({ children }) => {

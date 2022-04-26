@@ -22,6 +22,7 @@ export const statusBarStyleForColor = (colour: ColourType): StatusBarStyle => {
       return 'light-content';
     case colours.tertiary:
       return 'dark-content';
+    
   }
 };
 
