@@ -7,14 +7,20 @@ export enum AppMode {
   ResultDisplay,
 }
 
+export enum ArbiterModeViews {
+  EnterPgnLink,
+  TablePairingSelection
+}
 export type ArbiterSetupMode = {
   mode: AppMode.ArbiterSetup;
+  view: ArbiterModeViews
+  games?: number;
+  pairings?: GameInfo[];
 };
 
 export type TablePairingMode = {
   mode: AppMode.TablePairing;
-  games: number;
-  pairings: GameInfo[];
+ 
 };
 
 export type PlayerScoresheetRecordingMode = {

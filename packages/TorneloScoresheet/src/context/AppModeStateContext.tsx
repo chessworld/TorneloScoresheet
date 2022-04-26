@@ -1,36 +1,42 @@
 import React, { useContext, useState } from 'react';
-import { makeEnterTablePairingMode } from '../arbiterSetupMode';
-import { AppModeState, AppMode } from '../types/AppModeState';
+import { makegoToTablePairingSelection } from '../goToTablePairingSelection';
+import { AppModeState, AppMode, ArbiterModeViews } from '../types/AppModeState';
+import { GameInfo } from '../types/chessGameInfo';
 import { Result } from '../types/Result';
 
 // The global state for the app
 const AppModeStateContext = React.createContext<
   [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
->([{ mode: AppMode.ArbiterSetup }, () => undefined]);
+>([{ mode: AppMode.ArbiterSetup, view: ArbiterModeViews.EnterPgnLink}, () => undefined]);
 
 type AppModeStateHookType = [
   AppModeState,
   {
-    enterTablePairingMode: (liveLinkUrl: string) => Promise<Result<undefined>>;
-    returnToPgnLinkPage: () => void;
+    goToTablePairingSelection: (liveLinkUrl: string) => Promise<Result<undefined>>;
+    goToTablePairingMode: (pairing:GameInfo) => void;
+    goToEnterPgnLink: () => void;
   },
 ];
 
 export const useAppModeState = (): AppModeStateHookType => {
   const [appModeState, setAppModeState] = useContext(AppModeStateContext);
 
-  const enterTablePairingMode = makeEnterTablePairingMode(setAppModeState);
-  const returnToPgnLinkPage = () => {
+  const goToTablePairingSelection = makegoToTablePairingSelection(setAppModeState);
+  const goToEnterPgnLink = () => {
     setAppModeState({
-      mode: AppMode.ArbiterSetup
+      mode: AppMode.ArbiterSetup,
+      view: ArbiterModeViews.EnterPgnLink
     });
   }
-  return [appModeState, { enterTablePairingMode, returnToPgnLinkPage }];
+  const goToTablePairingMode = (pairing: GameInfo) => {
+  }
+  return [appModeState, { goToTablePairingSelection: goToTablePairingSelection, goToEnterPgnLink: goToEnterPgnLink, goToTablePairingMode:goToTablePairingMode }];
 };
 
 export const AppModeStateContextProvider: React.FC = ({ children }) => {
   const appModeState = useState({
     mode: AppMode.ArbiterSetup,
+    view: ArbiterModeViews.EnterPgnLink
   } as AppModeState);
 
   return (

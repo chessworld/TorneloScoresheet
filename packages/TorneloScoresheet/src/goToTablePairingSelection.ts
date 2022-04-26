@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { parseGameInfo } from './chessEngine';
-import { AppMode, AppModeState } from './types/AppModeState';
+import { AppMode, AppModeState, ArbiterModeViews } from './types/AppModeState';
 import { GameInfo } from './types/chessGameInfo';
 import { isError, Result, succ, Success } from './types/Result';
 import { validUrl } from './util/url';
@@ -11,7 +11,7 @@ import { validUrl } from './util/url';
  *
  * This transition involves fetching a PGN from a Tornello URL
  */
-export const makeEnterTablePairingMode =
+export const makegoToTablePairingSelection =
   (
     setAppMode: React.Dispatch<React.SetStateAction<AppModeState>>,
   ): ((liveLinkUrl: string) => Promise<Result<undefined>>) =>
@@ -52,7 +52,8 @@ export const makeEnterTablePairingMode =
     console.log(pairings);
 
     setAppMode({
-      mode: AppMode.TablePairing,
+      mode: AppMode.ArbiterSetup,
+      view: ArbiterModeViews.TablePairingSelection,
       games: pairings.length,
       pairings,
     });
