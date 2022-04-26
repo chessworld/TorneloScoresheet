@@ -1,20 +1,29 @@
 import React from 'react';
-import { Button, FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Button, TouchableOpacity, Modal, FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useAppModeState } from '../context/AppModeStateContext';
 import { AppMode } from '../types/AppModeState';
 import { GameInfo } from '../types/chessGameInfo';
 import { colours } from '../style/colour';
+import Sheet from '../components/Sheet';
 
 const TablePairingSelection: React.FC = () => {
   const [appModeState, {returnToPgnLinkPage}] = useAppModeState();
-  
   if (appModeState.mode !== AppMode.TablePairing) {
     return <></>;
   }
+  const [modalVisibility, setIsModalVisible] = React.useState(false);
+  const [boardSelection, setBoardSelection] = React.useState("none");
+  
+  const updateBoardSelection = (newSelection: string) => {
+    setBoardSelection(boardSelection => newSelection)
+  }
 
+  const openConfirmationModal = () => setIsModalVisible(() => true);
+  const closeModal = () => setIsModalVisible(() => false);
 
   const renderPairing = ({ item }: { item: GameInfo }) => (
-    <View style={styles.pairingCard}>
+    <TouchableOpacity onPress={() => { updateBoardSelection("Board "+item.round+"."+item.subRound+" (Players: "+item.players[0].firstName + " "+item.players[0].lastName  + " vs " +item.players[1].firstName + " "+item.players[1].lastName  +")"); openConfirmationModal(); }}>
+    <View style={styles.pairingCard} >
         <View style={styles.roundTextSection}>
             <Text style={styles.roundText}>{item.round}.{item.subRound}</Text>
         </View>
@@ -22,10 +31,17 @@ const TablePairingSelection: React.FC = () => {
             <Text style={styles.nameText}>{item.players[0].firstName} {item.players[0].lastName}</Text>
             <Text style={styles.nameText}>{item.players[1].firstName} {item.players[1].lastName}</Text>
         </View>
-    </View>)
+    </View>
+    </TouchableOpacity>)
 
   return (
   <View>
+        <Sheet
+        title="Confirm Selection"
+        dismiss={() => closeModal()}
+        visible={modalVisibility}
+        content={"You have selected "+boardSelection +". Would you like to proceed to Table Pairing Mode?"}
+      />
       <Text onPress={returnToPgnLinkPage} style={styles.backBtn}>{'<'} Back</Text>
       <Text style={styles.instructionTitle}>Boards</Text>
       <Text style={styles.instructionContents}>Select the board that this iPad is assigned to. This can be changed later.</Text>
@@ -99,8 +115,6 @@ const styles = StyleSheet.create({
       fontSize: 40,
       margin: 10,
       marginRight: 20,
-    }
-
-
+    },
   });
 export default TablePairingSelection;
