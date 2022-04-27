@@ -17,6 +17,7 @@ import {
   ascii,
   getBoard,
   validateMove,
+  processMove,
 } from './state'
 import {
   Color,
@@ -30,18 +31,8 @@ import {
   Validation,
   PartialMove,
 } from './types'
-import {
-  file,
-  isSquare,
-  rank,
-  swapColor,
-  validateFen,
-} from './utils'
-import {
-  DEFAULT_POSITION,
-  SQUARES,
-  BITS,
-} from './constants'
+import { file, isSquare, rank, swapColor, validateFen } from './utils'
+import { DEFAULT_POSITION, SQUARES, BITS } from './constants'
 
 /** @public */
 export class Chess {
@@ -90,7 +81,10 @@ export class Chess {
 
   /** @internal **/
   public get states(): State[] {
-    return [...this._history.map((gameHistory) => gameHistory.state.clone()), this.state]
+    return [
+      ...this._history.map((gameHistory) => gameHistory.state.clone()),
+      this.state,
+    ]
   }
 
   /**
@@ -196,7 +190,10 @@ export class Chess {
    * @param square - e.g. `'e4'`
    * @returns True if placed successfully, otherwise false
    */
-  public put(piece: { type?: string, color?: string }, square?: string): boolean {
+  public put(
+    piece: { type?: string; color?: string },
+    square?: string
+  ): boolean {
     const newState = putPiece(this._state, piece, square)
     if (newState) {
       this._state = newState
@@ -259,7 +256,7 @@ export class Chess {
    * // -> []
    * ```
    */
-  public moves(options?: { square?: string, verbose?: false }): string[]
+  public moves(options?: { square?: string; verbose?: false }): string[]
 
   /**
    * Returns a list of legal moves from the current position. The function
@@ -280,9 +277,11 @@ export class Chess {
    * ```
    * {@link Move}
    */
-  public moves(options: { square?: string, verbose: true }): Move[]
+  public moves(options: { square?: string; verbose: true }): Move[]
 
-  public moves(options: { square?: string, verbose?: boolean} = {}): string[] | Move[] {
+  public moves(
+    options: { square?: string; verbose?: boolean } = {}
+  ): string[] | Move[] {
     // The internal representation of a chess move is in 0x88 format, and
     // not meant to be human-readable.  The code below converts the 0x88
     // square coordinates to algebraic coordinates.  It also prunes an
@@ -434,9 +433,9 @@ export class Chess {
   public inDraw(): boolean {
     return (
       this._state.half_moves >= 100 ||
-        this.inStalemate() ||
-        this.insufficientMaterial() ||
-        this.inThreefoldRepetition()
+      this.inStalemate() ||
+      this.insufficientMaterial() ||
+      this.inThreefoldRepetition()
     )
   }
 
@@ -516,8 +515,16 @@ export class Chess {
    * // -> '[White "Plunky"]<br />[Black "Plinkie"]<br /><br />1. e4 e5<br />2. Nc3 Nc6'
    * ```
    */
-  public pgn(options: { newline_char?: string, max_width?: number } = {}): string {
-    return getPgn(this._state, this._header, this._comments, this._history, options)
+  public pgn(
+    options: { newline_char?: string; max_width?: number } = {}
+  ): string {
+    return getPgn(
+      this._state,
+      this._header,
+      this._comments,
+      this._history,
+      options
+    )
   }
 
   /**
@@ -619,14 +626,14 @@ export class Chess {
    */
   public loadPgn(
     pgn: string,
-    options: { newline_char?: string, sloppy?: boolean } = {}
+    options: { newline_char?: string; sloppy?: boolean } = {}
   ): boolean {
     const res = loadPgn(pgn, options)
     if (!res) {
       return false
     }
 
-    const [ state, header, comments, history ] = res
+    const [state, header, comments, history] = res
     this._state = state
     this._header = header
     this._comments = comments
@@ -810,7 +817,7 @@ export class Chess {
    */
   public move(
     move: string | PartialMove,
-    options: { sloppy?: boolean, dry_run?: boolean } = {}
+    options: { sloppy?: boolean; dry_run?: boolean } = {}
   ): Move | null {
     const validMove = validateMove(this._state, move, options)
 
@@ -823,6 +830,28 @@ export class Chess {
     if (!options.dry_run) {
       this.makeMove(validMove)
     }
+    return prettyMove
+  }
+
+  public force_move(
+    move: PartialMove,
+    options: { flag?: number; promotion?: string } = {}
+  ): Move | null {
+    const hexMove = processMove(
+      this._state,
+      move,
+      options.flag,
+      options.promotion
+    )
+
+    if (!hexMove) {
+      return null
+    }
+
+    // Create pretty move before updating the state
+    const prettyMove = makePretty(this._state, hexMove)
+    this.makeMove(hexMove)
+
     return prettyMove
   }
 
@@ -888,7 +917,10 @@ export class Chess {
     move: string | PartialMove,
     options: { sloppy?: boolean } = {}
   ): boolean {
-    const validMove = validateMove(this._state, move, { ...options, checkPromotion: false })
+    const validMove = validateMove(this._state, move, {
+      ...options,
+      checkPromotion: false,
+    })
 
     if (!validMove) {
       return false
@@ -1050,7 +1082,7 @@ export class Chess {
   public getComments(): FenComment[] {
     this.pruneComments()
     return Object.keys(this._comments).map((fen) => {
-      return {fen: fen, comment: this._comments[fen]}
+      return { fen: fen, comment: this._comments[fen] }
     }) as FenComment[]
   }
 
@@ -1134,7 +1166,7 @@ export class Chess {
     return Object.keys(this._comments).map((fen) => {
       const comment = this._comments[fen]
       delete this._comments[fen]
-      return {fen: fen, comment: comment}
+      return { fen: fen, comment: comment }
     }) as FenComment[]
   }
 
@@ -1161,8 +1193,8 @@ export class Chess {
     const clone = new Chess()
     clone._state = this._state
     clone._history = [...this._history]
-    clone._header = {...this._header}
-    clone._comments = {...this._comments}
+    clone._header = { ...this._header }
+    clone._comments = { ...this._comments }
     return clone
   }
 

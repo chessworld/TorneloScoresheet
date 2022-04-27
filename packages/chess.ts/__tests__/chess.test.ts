@@ -10,6 +10,8 @@ import {
   WHITE,
   BLACK,
   DEFAULT_POSITION,
+  FLAGS,
+  BITS,
 } from '../src/constants'
 import { algebraic, validateFen } from '../src/utils'
 import { PieceSymbol, Move, Piece, Color } from '../src/types'
@@ -26,8 +28,7 @@ for (let i = SQUARES.a8; i <= SQUARES.h1; i++) {
 describe('Perft', function () {
   const perfts = [
     {
-      fen:
-        'r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1',
+      fen: 'r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1',
       depth: 3,
       nodes: 97862,
     },
@@ -91,16 +92,14 @@ describe('Single Square Move Generation', function () {
       },
       // castling
       {
-        fen:
-          'r1bq1rk1/1pp2ppp/p1np1n2/2b1p3/2B1P3/2NP1N2/PPPBQPPP/R3K2R w KQ - 0 8',
+        fen: 'r1bq1rk1/1pp2ppp/p1np1n2/2b1p3/2B1P3/2NP1N2/PPPBQPPP/R3K2R w KQ - 0 8',
         square: 'e1',
         verbose: false,
         moves: ['Kf1', 'Kd1', 'O-O', 'O-O-O'],
       },
       // no castling
       {
-        fen:
-          'r1bq1rk1/1pp2ppp/p1np1n2/2b1p3/2B1P3/2NP1N2/PPPBQPPP/R3K2R w - - 0 8',
+        fen: 'r1bq1rk1/1pp2ppp/p1np1n2/2b1p3/2B1P3/2NP1N2/PPPBQPPP/R3K2R w - - 0 8',
         square: 'e1',
         verbose: false,
         moves: ['Kf1', 'Kd1'],
@@ -174,8 +173,7 @@ describe('Single Square Move Generation', function () {
       },
       // issue #30
       {
-        fen:
-          'rnbqk2r/ppp1pp1p/5n1b/3p2pQ/1P2P3/B1N5/P1PP1PPP/R3KBNR b KQkq - 3 5',
+        fen: 'rnbqk2r/ppp1pp1p/5n1b/3p2pQ/1P2P3/B1N5/P1PP1PPP/R3KBNR b KQkq - 3 5',
         square: 'f1',
         verbose: true,
         moves: [],
@@ -597,8 +595,7 @@ describe('Algebraic Notation', function () {
       ],
     },
     {
-      fen:
-        'r3k2r/p2pqpb1/1n2pnp1/2pPN3/1p2P3/2N2Q1p/PPPB1PPP/R3K2R w KQkq c6 0 2',
+      fen: 'r3k2r/p2pqpb1/1n2pnp1/2pPN3/1p2P3/2N2Q1p/PPPB1PPP/R3K2R w KQkq c6 0 2',
       moves: [
         'gxh3',
         'Qxf6',
@@ -719,7 +716,7 @@ describe('Get/Put/Remove', function () {
           square: 'a7',
           piece: {
             type: 'z' as PieceSymbol,
-            color: (null as unknown) as Color,
+            color: null as unknown as Color,
           },
         },
       ],
@@ -730,7 +727,7 @@ describe('Get/Put/Remove', function () {
       pieces: [
         {
           square: 'j4',
-          piece: { type: PAWN, color: (null as unknown) as Color },
+          piece: { type: PAWN, color: null as unknown as Color },
         },
       ],
       should_pass: false,
@@ -971,8 +968,7 @@ describe('PGN', function () {
       },
       max_width: 19,
       newline_char: '<br />',
-      pgn:
-        '[White "Jeff Hlywa"]<br />[Black "Steve Bragg"]<br />[GreatestGameEverPlayed? "True"]<br /><br />1. d4 d5 2. Nf3 Nc6<br />3. e3 e6 4. Bb5 g5<br />5. O-O Qf6<br />6. Nc3 Bd7<br />7. Bxc6 Bxc6<br />8. Re1 O-O-O<br />9. a4 Bb4 10. a5 b5<br />11. axb6 axb6<br />12. Ra8+ Kd7<br />13. Ne5+ Kd6<br />14. Rxd8+ Qxd8<br />15. Nxf7+ Ke7<br />16. Nxd5+ Qxd5<br />17. c3 Kxf7<br />18. Qf3+ Qxf3<br />19. gxf3 Bxf3<br />20. cxb4 e5<br />21. dxe5 Ke6<br />22. b3 Kxe5<br />23. Bb2+ Ke4<br />24. Bxh8 Nf6<br />25. Bxf6 h5<br />26. Bxg5 Bg2<br />27. Kxg2 Kf5<br />28. Bh4 Kg4<br />29. Bg3 Kf5<br />30. e4+ Kg4<br />31. e5 h4<br />32. Bxh4 Kxh4<br />33. e6 c5<br />34. bxc5 bxc5<br />35. e7 c4<br />36. bxc4 Kg4<br />37. e8=Q Kf5<br />38. Qe5+ Kg4<br />39. Re4#',
+      pgn: '[White "Jeff Hlywa"]<br />[Black "Steve Bragg"]<br />[GreatestGameEverPlayed? "True"]<br /><br />1. d4 d5 2. Nf3 Nc6<br />3. e3 e6 4. Bb5 g5<br />5. O-O Qf6<br />6. Nc3 Bd7<br />7. Bxc6 Bxc6<br />8. Re1 O-O-O<br />9. a4 Bb4 10. a5 b5<br />11. axb6 axb6<br />12. Ra8+ Kd7<br />13. Ne5+ Kd6<br />14. Rxd8+ Qxd8<br />15. Nxf7+ Ke7<br />16. Nxd5+ Qxd5<br />17. c3 Kxf7<br />18. Qf3+ Qxf3<br />19. gxf3 Bxf3<br />20. cxb4 e5<br />21. dxe5 Ke6<br />22. b3 Kxe5<br />23. Bb2+ Ke4<br />24. Bxh8 Nf6<br />25. Bxf6 h5<br />26. Bxg5 Bg2<br />27. Kxg2 Kf5<br />28. Bh4 Kg4<br />29. Bg3 Kf5<br />30. e4+ Kg4<br />31. e5 h4<br />32. Bxh4 Kxh4<br />33. e6 c5<br />34. bxc5 bxc5<br />35. e7 c4<br />36. bxc4 Kg4<br />37. e8=Q Kf5<br />38. Qe5+ Kg4<br />39. Re4#',
       fen: '8/8/8/4Q3/2P1R1k1/8/5PKP/8 b - - 4 39',
     },
     {
@@ -1074,8 +1070,7 @@ describe('PGN', function () {
         PlyCount: '81',
       },
       max_width: 65,
-      pgn:
-        '[Event "Reykjavik WCh"]\n[Site "Reykjavik WCh"]\n[Date "1972.01.07"]\n[EventDate "?"]\n[Round "6"]\n[Result "1-0"]\n[White "Robert James Fischer"]\n[Black "Boris Spassky"]\n[ECO "D59"]\n[WhiteElo "?"]\n[BlackElo "?"]\n[PlyCount "81"]\n\n1. c4 e6 2. Nf3 d5 3. d4 Nf6 4. Nc3 Be7 5. Bg5 O-O 6. e3 h6\n7. Bh4 b6 8. cxd5 Nxd5 9. Bxe7 Qxe7 10. Nxd5 exd5 11. Rc1 Be6\n12. Qa4 c5 13. Qa3 Rc8 14. Bb5 a6 15. dxc5 bxc5 16. O-O Ra7\n17. Be2 Nd7 18. Nd4 Qf8 19. Nxe6 fxe6 20. e4 d4 21. f4 Qe7\n22. e5 Rb8 23. Bc4 Kh8 24. Qh3 Nf8 25. b3 a5 26. f5 exf5\n27. Rxf5 Nh7 28. Rcf1 Qd8 29. Qg3 Re7 30. h4 Rbb7 31. e6 Rbc7\n32. Qe5 Qe8 33. a4 Qd8 34. R1f2 Qe8 35. R2f3 Qd8 36. Bd3 Qe8\n37. Qe4 Nf6 38. Rxf6 gxf6 39. Rxf6 Kg8 40. Bc4 Kh8 41. Qf4 1-0',
+      pgn: '[Event "Reykjavik WCh"]\n[Site "Reykjavik WCh"]\n[Date "1972.01.07"]\n[EventDate "?"]\n[Round "6"]\n[Result "1-0"]\n[White "Robert James Fischer"]\n[Black "Boris Spassky"]\n[ECO "D59"]\n[WhiteElo "?"]\n[BlackElo "?"]\n[PlyCount "81"]\n\n1. c4 e6 2. Nf3 d5 3. d4 Nf6 4. Nc3 Be7 5. Bg5 O-O 6. e3 h6\n7. Bh4 b6 8. cxd5 Nxd5 9. Bxe7 Qxe7 10. Nxd5 exd5 11. Rc1 Be6\n12. Qa4 c5 13. Qa3 Rc8 14. Bb5 a6 15. dxc5 bxc5 16. O-O Ra7\n17. Be2 Nd7 18. Nd4 Qf8 19. Nxe6 fxe6 20. e4 d4 21. f4 Qe7\n22. e5 Rb8 23. Bc4 Kh8 24. Qh3 Nf8 25. b3 a5 26. f5 exf5\n27. Rxf5 Nh7 28. Rcf1 Qd8 29. Qg3 Re7 30. h4 Rbb7 31. e6 Rbc7\n32. Qe5 Qe8 33. a4 Qd8 34. R1f2 Qe8 35. R2f3 Qd8 36. Bd3 Qe8\n37. Qe4 Nf6 38. Rxf6 gxf6 39. Rxf6 Kg8 40. Bc4 Kh8 41. Qf4 1-0',
       fen: '4q2k/2r1r3/4PR1p/p1p5/P1Bp1Q1P/1P6/6P1/6K1 b - - 4 41',
     },
     {
@@ -1087,8 +1082,7 @@ describe('PGN', function () {
     {
       moves: ['Ba5', 'O-O', 'd6', 'd4'], // testing a non-starting position
       max_width: 20,
-      pgn:
-        '[SetUp "1"]\n[FEN "r1bqk1nr/pppp1ppp/2n5/4p3/1bB1P3/2P2N2/P2P1PPP/RNBQK2R b KQkq - 0 1"]\n\n1. ... Ba5 2. O-O d6\n3. d4',
+      pgn: '[SetUp "1"]\n[FEN "r1bqk1nr/pppp1ppp/2n5/4p3/1bB1P3/2P2N2/P2P1PPP/RNBQK2R b KQkq - 0 1"]\n\n1. ... Ba5 2. O-O d6\n3. d4',
       starting_position:
         'r1bqk1nr/pppp1ppp/2n5/4p3/1bB1P3/2P2N2/P2P1PPP/RNBQK2R b KQkq - 0 1',
       fen: 'r1bqk1nr/ppp2ppp/2np4/b3p3/2BPP3/2P2N2/P4PPP/RNBQ1RK1 b kq d3 0 3',
@@ -1856,6 +1850,141 @@ describe('Make Move', function () {
   })
 })
 
+describe('Force Move', function () {
+  const positions = [
+    {
+      fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+      move: {
+        from: 'e2',
+        to: 'e4',
+      },
+      legal: true,
+      next: 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1',
+    },
+    {
+      fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+      move: {
+        from: 'e2',
+        to: 'e5',
+      },
+      legal: false,
+      next: 'rnbqkbnr/pppppppp/8/4P3/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
+    },
+    {
+      fen: 'rnbqkbnr/pp3ppp/2pp4/4pP2/4P3/8/PPPP2PP/RNBQKBNR w KQkq e6 0 1',
+      legal: true,
+      move: {
+        from: 'f5',
+        to: 'e6',
+      },
+      next: 'rnbqkbnr/pp3ppp/2ppP3/8/4P3/8/PPPP2PP/RNBQKBNR b KQkq - 0 1',
+      captured: 'p',
+    },
+    {
+      fen: '7k/3R4/3p2Q1/6Q1/2N1N3/8/8/3R3K w - - 0 1',
+      legal: true,
+      move: {
+        from: 'd7',
+        to: 'd8',
+      },
+      next: '3R3k/8/3p2Q1/6Q1/2N1N3/8/8/3R3K b - - 1 1',
+    },
+    {
+      fen: 'rnbqkbnr/pppp2pp/8/4p3/4Pp2/2PP4/PP3PPP/RNBQKBNR b KQkq e3 0 1',
+      legal: true,
+      move: {
+        from: 'f4',
+        to: 'e3',
+      },
+      next: 'rnbqkbnr/pppp2pp/8/4p3/8/2PPp3/PP3PPP/RNBQKBNR w KQkq - 0 2',
+      captured: 'p',
+    },
+
+    // // strict move parser
+    {
+      fen: 'r2qkbnr/ppp2ppp/2n5/1B2pQ2/4P3/8/PPP2PPP/RNB1K2R b KQkq - 3 7',
+      legal: true,
+      next: 'r2qkb1r/ppp1nppp/2n5/1B2pQ2/4P3/8/PPP2PPP/RNB1K2R w KQkq - 4 8',
+      move: {
+        from: 'g8',
+        to: 'e7',
+      },
+    },
+    {
+      fen: 'rnb1kbnr/ppppqp1p/8/4p1p1/2P1N3/8/PP1PPPPP/R1BQKBNR w KQkq - 0 1',
+      legal: true,
+      next: 'rnb1kbnr/ppppqp1p/8/4p1N1/2P5/8/PP1PPPPP/R1BQKBNR b KQkq - 0 1',
+      move: {
+        from: 'e4',
+        to: 'g5',
+      },
+      captured: 'p',
+    },
+    {
+      fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+      legal: false,
+      next: 'rnbqkbnr/pNpppppp/8/8/8/8/PPPPPPPP/R1BQKBNR b KQkq - 0 1',
+      move: {
+        from: 'b1',
+        to: 'b7',
+      },
+      captured: 'p',
+    },
+    // castling
+    {
+      fen: 'rnbqkbnr/pppppp2/7p/6p1/8/4P2N/PPPPBPPP/RNBQK2R w KQkq - 0 1',
+      legal: true,
+      next: 'rnbqkbnr/pppppp2/7p/6p1/8/4P2N/PPPPBPPP/RNBQ1RK1 b kq - 1 1',
+      move: {
+        from: 'e1',
+        to: 'g1',
+      },
+      flags: BITS['KSIDE_CASTLE'],
+    },
+    {
+      fen: 'r3kbnr/pppbqppp/n2pp3/8/P7/1PPPPP2/6PP/RNBQKBNR b KQkq - 0 1',
+      legal: true,
+      next: '2kr1bnr/pppbqppp/n2pp3/8/P7/1PPPPP2/6PP/RNBQKBNR w KQ - 1 2',
+      move: {
+        from: 'e8',
+        to: 'c8',
+      },
+      flags: BITS['QSIDE_CASTLE'],
+    },
+    // promotion
+    {
+      fen: 'rnbqk3/ppppp2P/8/8/8/8/PP1PPPP1/RN1QK3 w Qq - 0 1',
+      legal: true,
+      next: 'rnbqk2Q/ppppp3/8/8/8/8/PP1PPPP1/RN1QK3 b Qq - 0 1',
+      move: {
+        from: 'h7',
+        to: 'h8',
+      },
+      flags: BITS['PROMOTION'],
+      promotion: 'q',
+    },
+  ]
+
+  positions.forEach(function (position) {
+    const chess = new Chess()
+    chess.load(position.fen)
+    it(
+      position.fen + ' (' + position.move + ' ' + position.legal + ')',
+      function () {
+        const result = chess.force_move(position.move, {
+          flag: position.flags,
+          promotion: position.promotion,
+        })
+        expect(
+          result &&
+            chess.fen() == position.next &&
+            result.captured == position.captured
+        ).toBe(true)
+      }
+    )
+  })
+})
+
 describe('Validate FEN', function () {
   const positions = [
     {
@@ -1972,23 +2101,19 @@ describe('Validate FEN', function () {
       error_number: 0,
     },
     {
-      fen:
-        'r1bqkb1r/1ppp1ppp/p1n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 2 5',
+      fen: 'r1bqkb1r/1ppp1ppp/p1n2n2/4p3/B3P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 2 5',
       error_number: 0,
     },
     {
-      fen:
-        'r1b2rk1/4bppp/p1np4/q3p1P1/1p2P2P/4BP2/PPP1N1Q1/1K1R1B1R w - - 0 17',
+      fen: 'r1b2rk1/4bppp/p1np4/q3p1P1/1p2P2P/4BP2/PPP1N1Q1/1K1R1B1R w - - 0 17',
       error_number: 0,
     },
     {
-      fen:
-        'r2q1rk1/ppp1bppp/2np1nb1/4p3/P1B1P1P1/3P1N1P/1PP2P2/RNBQR1K1 w - - 1 10',
+      fen: 'r2q1rk1/ppp1bppp/2np1nb1/4p3/P1B1P1P1/3P1N1P/1PP2P2/RNBQR1K1 w - - 1 10',
       error_number: 0,
     },
     {
-      fen:
-        'r2qkb1r/pb1n1p2/4pP2/1ppP2B1/2p5/2N3P1/PP3P1P/R2QKB1R b KQkq - 0 13',
+      fen: 'r2qkb1r/pb1n1p2/4pP2/1ppP2B1/2p5/2N3P1/PP3P1P/R2QKB1R b KQkq - 0 13',
       error_number: 0,
     },
     {
@@ -1996,13 +2121,11 @@ describe('Validate FEN', function () {
       error_number: 0,
     },
     {
-      fen:
-        'rnbq1rk1/1pp1ppbp/p2p1np1/8/2PPP3/2N1BP2/PP2N1PP/R2QKB1R b KQ - 1 7',
+      fen: 'rnbq1rk1/1pp1ppbp/p2p1np1/8/2PPP3/2N1BP2/PP2N1PP/R2QKB1R b KQ - 1 7',
       error_number: 0,
     },
     {
-      fen:
-        'rn1qkb1r/pb1p1ppp/1p2pn2/4P3/2Pp4/5NP1/PP1N1PBP/R1BQK2R b KQkq - 0 8',
+      fen: 'rn1qkb1r/pb1p1ppp/1p2pn2/4P3/2Pp4/5NP1/PP1N1PBP/R1BQK2R b KQkq - 0 8',
       error_number: 0,
     },
     {
@@ -2022,8 +2145,7 @@ describe('Validate FEN', function () {
       error_number: 0,
     },
     {
-      fen:
-        'r1bqkb1r/pppp1ppp/2n2n2/4p3/2PP4/2N2N2/PP2PPPP/R1BQKB1R b KQkq d3 0 4',
+      fen: 'r1bqkb1r/pppp1ppp/2n2n2/4p3/2PP4/2N2N2/PP2PPPP/R1BQKB1R b KQkq d3 0 4',
       error_number: 0,
     },
     {
@@ -2083,8 +2205,7 @@ describe('Validate FEN', function () {
       error_number: 0,
     },
     {
-      fen:
-        'r2qkb1r/1p1bpppp/p1np4/6B1/B3P1n1/2PQ1N2/PP3PPP/RN2R1K1 b kq - 0 10',
+      fen: 'r2qkb1r/1p1bpppp/p1np4/6B1/B3P1n1/2PQ1N2/PP3PPP/RN2R1K1 b kq - 0 10',
       error_number: 0,
     },
     {
@@ -2092,8 +2213,7 @@ describe('Validate FEN', function () {
       error_number: 0,
     },
     {
-      fen:
-        'r3r1k1/pbq1bppp/4pnn1/2p1B1N1/2P2P2/1P1B2N1/P3Q1PP/4RRK1 b - - 4 17',
+      fen: 'r3r1k1/pbq1bppp/4pnn1/2p1B1N1/2P2P2/1P1B2N1/P3Q1PP/4RRK1 b - - 4 17',
       error_number: 0,
     },
     {
@@ -2113,8 +2233,7 @@ describe('Validate FEN', function () {
       error_number: 0,
     },
     {
-      fen:
-        'rn2kb1r/2qp1ppp/b3pn2/2pP2B1/1pN1P3/5P2/PP4PP/R2QKBNR w KQkq - 4 11',
+      fen: 'rn2kb1r/2qp1ppp/b3pn2/2pP2B1/1pN1P3/5P2/PP4PP/R2QKBNR w KQkq - 4 11',
       error_number: 0,
     },
     {
@@ -2126,8 +2245,7 @@ describe('Validate FEN', function () {
       error_number: 0,
     },
     {
-      fen:
-        'r1bqk2r/pp1nbppp/2p2n2/3p2B1/3P4/2N1PN2/PP3PPP/R2QKB1R w KQkq - 1 8',
+      fen: 'r1bqk2r/pp1nbppp/2p2n2/3p2B1/3P4/2N1PN2/PP3PPP/R2QKB1R w KQkq - 1 8',
       error_number: 0,
     },
     {
@@ -2139,8 +2257,7 @@ describe('Validate FEN', function () {
       error_number: 0,
     },
     {
-      fen:
-        'r1b1kb1r/p2p1ppp/1qp1p3/3nP3/2P1NP2/8/PP4PP/R1BQKB1R b KQkq c3 0 10',
+      fen: 'r1b1kb1r/p2p1ppp/1qp1p3/3nP3/2P1NP2/8/PP4PP/R1BQKB1R b KQkq c3 0 10',
       error_number: 0,
     },
     { fen: '8/R7/2b5/3k2K1/P1p1r3/2B5/1P6/8 b - - 8 74', error_number: 0 },
@@ -2165,8 +2282,7 @@ describe('Validate FEN', function () {
       error_number: 0,
     },
     {
-      fen:
-        'rnbqk2r/ppp1bppp/4pn2/3p2B1/2PP4/2N2N2/PP2PPPP/R2QKB1R b KQkq - 3 5',
+      fen: 'rnbqk2r/ppp1bppp/4pn2/3p2B1/2PP4/2N2N2/PP2PPPP/R2QKB1R b KQkq - 3 5',
       error_number: 0,
     },
     {
@@ -2241,8 +2357,7 @@ describe('Validate FEN', function () {
       error_number: 0,
     },
     {
-      fen:
-        'r1bq1rk1/pp2n1bp/2pp1np1/3PppN1/1PP1P3/2N2B2/P4PPP/R1BQR1K1 w - - 0 13',
+      fen: 'r1bq1rk1/pp2n1bp/2pp1np1/3PppN1/1PP1P3/2N2B2/P4PPP/R1BQR1K1 w - - 0 13',
       error_number: 0,
     },
     {
@@ -2254,8 +2369,7 @@ describe('Validate FEN', function () {
       error_number: 0,
     },
     {
-      fen:
-        'R2qk2r/2p2ppp/1bnp1n2/1p2p3/3PP1b1/1BP2N2/1P3PPP/1NBQ1RK1 b k - 0 11',
+      fen: 'R2qk2r/2p2ppp/1bnp1n2/1p2p3/3PP1b1/1BP2N2/1P3PPP/1NBQ1RK1 b k - 0 11',
       error_number: 0,
     },
     {
@@ -2272,8 +2386,7 @@ describe('Validate FEN', function () {
       error_number: 0,
     },
     {
-      fen:
-        '1rbqk2r/2pp1ppp/2n2n2/1pb1p3/4P3/1BP2N2/1P1P1PPP/RNBQ1RK1 b k - 0 9',
+      fen: '1rbqk2r/2pp1ppp/2n2n2/1pb1p3/4P3/1BP2N2/1P1P1PPP/RNBQ1RK1 b k - 0 9',
       error_number: 0,
     },
     {
@@ -2293,8 +2406,7 @@ describe('Validate FEN', function () {
       error_number: 0,
     },
     {
-      fen:
-        'r2q1rk1/pb1p2pp/1p1bpnn1/5p2/2PP4/PPN1BP1P/2B1N1P1/1R1Q1R1K b - - 2 16',
+      fen: 'r2q1rk1/pb1p2pp/1p1bpnn1/5p2/2PP4/PPN1BP1P/2B1N1P1/1R1Q1R1K b - - 2 16',
       error_number: 0,
     },
     {
