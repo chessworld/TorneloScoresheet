@@ -147,10 +147,10 @@ const styles = StyleSheet.create({
   },
   pairingList: {
     marginTop: 10,
-    height: 800,
+    height: 500,
   },
   pairingCard: {
-    height: 170,
+    height: 150,
     marginLeft: 20,
     marginRight: 20,
     marginTop: 10,
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   },
   roundText: {
     color: '#e9e9e9',
-    fontSize: 100,
+    fontSize: 80,
     fontWeight: 'bold',
   },
   nameTextInnerSection: {
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   },
   nameText: {
     color: '#e9e9e9',
-    fontSize: 40,
+    fontSize: 30,
     margin: 10,
     marginRight: 20,
   },
