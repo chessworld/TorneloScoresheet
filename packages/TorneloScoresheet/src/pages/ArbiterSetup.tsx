@@ -12,6 +12,7 @@ const ArbiterSetup: React.FC = () => {
   switch (appModeState.view) {
     case ArbiterModeViews.EnterPgnLink:
       return <EnterPgnLink />;
+    //test
     case ArbiterModeViews.TablePairingSelection:
       return <TablePairingSelection />;
   }
