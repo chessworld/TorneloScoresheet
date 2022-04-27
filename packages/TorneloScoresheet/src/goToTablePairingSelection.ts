@@ -2,7 +2,7 @@ import axios from 'axios';
 import { parseGameInfo } from './chessEngine';
 import { AppMode, AppModeState, ArbiterModeViews } from './types/AppModeState';
 import { GameInfo } from './types/chessGameInfo';
-import { isError, Result, succ, Success } from './types/Result';
+import { isError, Result, succ, Success, fail } from './types/Result';
 import { validUrl } from './util/url';
 
 /**

@@ -4,6 +4,7 @@ import {
 } from '../src/context/AppModeStateContext';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { AppMode } from '../src/types/AppModeState';
+import { isError } from '../src/types/Result';
 
 describe('useAppModeState', () => {
   test('initial state', () => {
@@ -21,8 +22,7 @@ describe('useAppModeState', () => {
     await act(async () => {
       const enterPairingModeResult =
         await result.current[1].goToTablePairingSelection('');
-      // FIXME: this should equal a Result of some sort
-      expect(enterPairingModeResult).toStrictEqual('');
+      expect(isError(enterPairingModeResult)).toEqual(true);
     });
     expect(result.current[0]).toStrictEqual({
       mode: AppMode.ArbiterSetup,
