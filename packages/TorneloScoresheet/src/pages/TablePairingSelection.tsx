@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   },
   pairingList: {
     marginTop: 10,
-    height: 900,
+    height: 800,
   },
   pairingCard: {
     height: 170,

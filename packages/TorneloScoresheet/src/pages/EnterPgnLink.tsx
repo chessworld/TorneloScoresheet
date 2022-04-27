@@ -41,7 +41,7 @@ const EnterPgnLink: React.FC = () => {
           placeholder="Game Link"
         />
         <Text style={styles.submitBtn} onPress={handleNextClick}>
-          Start
+          Start {'>'}
         </Text>
       </View>
     </View>
@@ -91,9 +91,13 @@ const styles = StyleSheet.create({
     width: 700,
   },
   submitBtn: {
-    fontSize: 30,
+    fontSize: 40,
     color: colours.secondary,
-    marginTop: 70,
+    marginTop: 100,
+    fontWeight: 'bold',
+    paddingLeft: 50,
+
+    alignSelf: 'flex-start',
   },
 });
 
