@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, Image, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useAppModeState } from '../context/AppModeStateContext';
 import { useError } from '../context/ErrorContext';
-import { AppMode, ArbiterModeViews } from '../types/AppModeState';
+import { colours } from '../style/colour';
+import { AppMode } from '../types/AppModeState';
 import { isError } from '../types/Result';
+
+const BLACK_LOGO_IMAGE = require('../../assets/images/icon-logo-black-500.png');
 
 const EnterPgnLink: React.FC = () => {
   const [appModeState, { goToTablePairingSelection }] = useAppModeState();
@@ -21,14 +24,26 @@ const EnterPgnLink: React.FC = () => {
       showError(result.error);
     }
   };
-  
+
   return (
     <View style={styles.arbiterSetup}>
-      <View>
-        <Text>Enter Game Link:</Text>
-        <TextInput onChangeText={setUrl} value={url} placeholder="Game Link" />
+      <View style={styles.instructionBox}>
+        <Image style={styles.image} source={BLACK_LOGO_IMAGE} />
+        <Text style={styles.title}>Arbiter Mode</Text>
+        <Text style={styles.instructions}>
+          Go to tornelo.com to find the Live Broadcast PGN link. Then paste it
+          below
+        </Text>
+        <TextInput
+          style={styles.inputBox}
+          onChangeText={setUrl}
+          value={url}
+          placeholder="Game Link"
+        />
+        <Text style={styles.submitBtn} onPress={handleNextClick}>
+          Start
+        </Text>
       </View>
-      <Button title="Next" onPress={handleNextClick} />
     </View>
   );
 };
@@ -40,6 +55,45 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
+  },
+  instructionBox: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingLeft: 40,
+    paddingRight: 40,
+  },
+  image: {
+    width: 150,
+    height: 155,
+  },
+  title: {
+    fontSize: 50,
+    fontWeight: 'bold',
+    color: colours.secondary,
+    paddingTop: 70,
+  },
+  instructions: {
+    fontSize: 30,
+    color: colours.secondary,
+    paddingTop: 70,
+    paddingLeft: 50,
+    paddingRight: 50,
+  },
+  inputBox: {
+    fontSize: 30,
+    color: colours.secondary,
+    marginTop: 70,
+    paddingLeft: 50,
+    paddingRight: 50,
+    borderColor: colours.secondary,
+    borderWidth: 1,
+    width: 700,
+  },
+  submitBtn: {
+    fontSize: 30,
+    color: colours.secondary,
+    marginTop: 70,
   },
 });
 

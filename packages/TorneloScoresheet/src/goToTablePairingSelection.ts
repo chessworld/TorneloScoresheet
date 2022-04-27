@@ -7,7 +7,7 @@ import { validUrl } from './util/url';
 
 /**
  * Given a state setter, return a function for transitioning from
- * arbiter setup mode to table pairing mode.
+ * Pgn enter view to parining selection view of arbiter setup mode
  *
  * This transition involves fetching a PGN from a Tornello URL
  */
@@ -49,7 +49,6 @@ export const makegoToTablePairingSelection =
       .filter((p: Result<GameInfo>): p is Success<GameInfo> => !isError(p))
       .map(({ data }) => data);
 
-    console.log(pairings);
 
     setAppMode({
       mode: AppMode.ArbiterSetup,

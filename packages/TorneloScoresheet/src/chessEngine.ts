@@ -108,7 +108,7 @@ const parsePlayerName = (name: string): Result<[string, string]> => {
 };
 
 const parseRoundInfo = (round: string): Result<[number, number]> => {
-  const ROUND_FAILURE = fail("PGN Didn't have any round");
+  const ROUND_FAILURE = fail("PGN Didn't have any round (please ensure the broadcast url is split by round)");
   // parse round and subround
   let regexResults = round.match(/([0-9]+)[.]?([0-9]*)/);
 

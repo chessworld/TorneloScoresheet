@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Button,
   FlatList,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -14,41 +12,46 @@ import { GameInfo } from '../types/chessGameInfo';
 import { colours } from '../style/colour';
 
 const TablePairingSelection: React.FC = () => {
-  const [appModeState, { goToEnterPgnLink, goToTablePairingMode }] = useAppModeState();
+  const [appModeState, { goToEnterPgnLink, goToTablePairingMode }] =
+    useAppModeState();
   const [showConfirmButton, setShowConfirm] = useState(true);
-  const [selectedPairing, setSelected] = useState<GameInfo|null>(null);
+  const [selectedPairing, setSelected] = useState<GameInfo | null>(null);
+
   if (appModeState.mode !== AppMode.ArbiterSetup) {
     return <></>;
   }
   if (!appModeState.pairings) {
     return <></>;
   }
-  const onSelectPairing = (pairing: GameInfo) =>{
-    if (selectedPairing === pairing){
-      setSelected(null)
-      setShowConfirm(false)
 
-    }else{
-      setSelected(pairing)
-      setShowConfirm(true)
+  const onSelectPairing = (pairing: GameInfo) => {
+    if (selectedPairing === pairing) {
+      setSelected(null);
+      setShowConfirm(false);
+    } else {
+      setSelected(pairing);
+      setShowConfirm(true);
     }
-  }
+  };
+
   const paringCardStyle = (pairing: GameInfo) => {
-    if (selectedPairing === pairing){
-      return ({
-        backgroundColor: colours.primary
-      })
-    }else{
-      return ({
+    if (selectedPairing === pairing) {
+      return {
+        backgroundColor: colours.primary,
+      };
+    } else {
+      return {
         backgroundColor: colours.secondary,
-
-      })
+      };
     }
-  }
-  
+  };
 
   const renderPairing = ({ item }: { item: GameInfo }) => (
-    <TouchableOpacity style={[styles.pairingCard, paringCardStyle(item)]} onPress={() => {onSelectPairing(item)}}>
+    <TouchableOpacity
+      style={[styles.pairingCard, paringCardStyle(item)]}
+      onPress={() => {
+        onSelectPairing(item);
+      }}>
       <View style={styles.roundTextSection}>
         <Text style={styles.roundText}>
           {item.round}.{item.subRound}
@@ -64,14 +67,21 @@ const TablePairingSelection: React.FC = () => {
       </View>
     </TouchableOpacity>
   );
+
   const renderConfirm = () => {
-    if(showConfirmButton && selectedPairing !== null){
-    return(<Text  onPress={() => goToTablePairingMode(selectedPairing)} style={styles.forwardBtn}>
-      Confirm {'>'}
-    </Text>)
+    if (showConfirmButton && selectedPairing !== null) {
+      return (
+        <Text
+          onPress={() => goToTablePairingMode(selectedPairing)}
+          style={styles.forwardBtn}>
+          Confirm {'>'}
+        </Text>
+      );
+    } else {
+      return <></>;
     }
-  }
-  
+  };
+
   return (
     <View>
       <View style={styles.buttonContainer}>
@@ -94,12 +104,12 @@ const TablePairingSelection: React.FC = () => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   buttonContainer: {
     display: 'flex',
     flexDirection: 'row',
     flexGrow: 1,
-    
   },
   instructionSection: {
     marginLeft: 30,
@@ -127,13 +137,13 @@ const styles = StyleSheet.create({
     padding: 30,
     fontWeight: 'bold',
   },
-  forwardBtn:{
+  forwardBtn: {
     fontSize: 40,
     color: colours.secondary,
     padding: 30,
     fontWeight: 'bold',
-    flexGrow:1,
-    textAlign: 'right'
+    flexGrow: 1,
+    textAlign: 'right',
   },
   pairingList: {
     marginTop: 10,
@@ -171,4 +181,5 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
 });
+
 export default TablePairingSelection;

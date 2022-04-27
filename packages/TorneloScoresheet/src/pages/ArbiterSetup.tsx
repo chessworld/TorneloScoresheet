@@ -1,10 +1,6 @@
-import React, { useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import React from 'react';
 import { useAppModeState } from '../context/AppModeStateContext';
-import { useError } from '../context/ErrorContext';
 import { AppMode, ArbiterModeViews } from '../types/AppModeState';
-import { isError } from '../types/Result';
-import { validUrl } from '../util/url';
 import EnterPgnLink from './EnterPgnLink';
 import TablePairingSelection from './TablePairingSelection';
 
