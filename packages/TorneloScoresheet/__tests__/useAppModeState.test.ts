@@ -3,7 +3,7 @@ import {
   useAppModeState,
 } from '../src/context/AppModeStateContext';
 import { act, renderHook } from '@testing-library/react-hooks';
-import { AppMode } from '../src/types/AppModeState';
+import { AppMode, ArbiterModeViews } from '../src/types/AppModeState';
 import { isError } from '../src/types/Result';
 
 describe('useAppModeState', () => {
@@ -11,10 +11,13 @@ describe('useAppModeState', () => {
     const { result } = renderHook(() => useAppModeState(), {
       wrapper: AppModeStateContextProvider,
     });
-    expect(result.current[0]).toStrictEqual({ mode: AppMode.ArbiterSetup });
+    expect(result.current[0]).toStrictEqual({
+      mode: AppMode.ArbiterSetup,
+      view: ArbiterModeViews.EnterPgnLink,
+    });
   });
 
-  test('enterTablePairingMode', async () => {
+  test('enterTablePairingSelectionViewWrongUrl', async () => {
     const { result } = renderHook(() => useAppModeState(), {
       wrapper: AppModeStateContextProvider,
     });
@@ -26,6 +29,7 @@ describe('useAppModeState', () => {
     });
     expect(result.current[0]).toStrictEqual({
       mode: AppMode.ArbiterSetup,
+      view: ArbiterModeViews.EnterPgnLink,
     });
   });
 });
