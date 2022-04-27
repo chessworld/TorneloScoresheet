@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { parseGameInfo } from './chessEngine';
-import { AppMode, AppModeState, ArbiterModeViews } from './types/AppModeState';
+import { AppMode, AppModeState } from './types/AppModeState';
 import { GameInfo } from './types/chessGameInfo';
 import { isError, Result, succ, Success, fail } from './types/Result';
 import { validUrl } from './util/url';
@@ -49,10 +49,8 @@ export const makegoToTablePairingSelection =
       .filter((p: Result<GameInfo>): p is Success<GameInfo> => !isError(p))
       .map(({ data }) => data);
 
-
     setAppMode({
-      mode: AppMode.ArbiterSetup,
-      view: ArbiterModeViews.TablePairingSelection,
+      mode: AppMode.PariringSelection,
       games: pairings.length,
       pairings,
     });

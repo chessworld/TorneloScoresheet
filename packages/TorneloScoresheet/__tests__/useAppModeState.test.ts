@@ -3,8 +3,9 @@ import {
   useAppModeState,
 } from '../src/context/AppModeStateContext';
 import { act, renderHook } from '@testing-library/react-hooks';
-import { AppMode, ArbiterModeViews } from '../src/types/AppModeState';
+import { AppMode } from '../src/types/AppModeState';
 import { isError } from '../src/types/Result';
+import App from '../App';
 
 describe('useAppModeState', () => {
   test('initial state', () => {
@@ -12,8 +13,7 @@ describe('useAppModeState', () => {
       wrapper: AppModeStateContextProvider,
     });
     expect(result.current[0]).toStrictEqual({
-      mode: AppMode.ArbiterSetup,
-      view: ArbiterModeViews.EnterPgnLink,
+      mode: AppMode.EnterPgn,
     });
   });
 
@@ -24,12 +24,11 @@ describe('useAppModeState', () => {
     // We give an invalid URL, so the mode shouldn't change
     await act(async () => {
       const enterPairingModeResult =
-        await result.current[1].goToTablePairingSelection('');
+        await result.current[1].enterPgnToPairingSelection('');
       expect(isError(enterPairingModeResult)).toEqual(true);
     });
     expect(result.current[0]).toStrictEqual({
-      mode: AppMode.ArbiterSetup,
-      view: ArbiterModeViews.EnterPgnLink,
+      mode: AppMode.EnterPgn,
     });
   });
 
@@ -42,20 +41,16 @@ describe('useAppModeState', () => {
     // Valid url, should go to tableparing selection
     await act(async () => {
       const enterPairingModeResult =
-        await result.current[1].goToTablePairingSelection(pgnUrl);
+        await result.current[1].enterPgnToPairingSelection(pgnUrl);
       expect(isError(enterPairingModeResult)).toEqual(false);
     });
 
     // ensure correct mode
-    expect(result.current[0].mode).toEqual(AppMode.ArbiterSetup);
-    if (result.current[0].mode === AppMode.ArbiterSetup) {
-      // ensure correct view
-      expect(result.current[0].view).toEqual(
-        ArbiterModeViews.TablePairingSelection,
-      );
+    expect(result.current[0].mode).toEqual(AppMode.PariringSelection);
+    if (result.current[0].mode === AppMode.PariringSelection) {
+      expect(result.current[0].pairings).toBeDefined();
 
       // ensure all pairings parsed
-      expect(result.current[0].pairings).toBeDefined();
       if (result.current[0].pairings) {
         expect(result.current[0].pairings.length).toEqual(7);
       }
@@ -69,16 +64,15 @@ describe('useAppModeState', () => {
 
     // go into table pairing selection view
     await act(async () => {
-      await result.current[1].goToTablePairingSelection(pgnUrl);
+      await result.current[1].enterPgnToPairingSelection(pgnUrl);
     });
 
     // go back to pgn enter view
-    result.current[1].goToEnterPgnLink();
+    act(() => result.current[1].pairingSelectionToEnterPgn());
 
     // check we are in the current view
     expect(result.current[0]).toStrictEqual({
-      mode: AppMode.ArbiterSetup,
-      view: ArbiterModeViews.EnterPgnLink,
+      mode: AppMode.EnterPgn,
     });
   });
 });

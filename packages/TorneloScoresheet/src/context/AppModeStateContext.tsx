@@ -1,54 +1,53 @@
 import React, { useContext, useState } from 'react';
-import { makegoToTablePairingSelection as makeGoToTablePairingSelection } from '../goToTablePairingSelection';
-import { AppModeState, AppMode, ArbiterModeViews } from '../types/AppModeState';
+import { makegoToTablePairingSelection as makeEnterPgnToPairingSelection } from '../goToTablePairingSelection';
+import { AppModeState, AppMode } from '../types/AppModeState';
 import { GameInfo } from '../types/chessGameInfo';
 import { Result } from '../types/Result';
 
 // The global state for the app
 const AppModeStateContext = React.createContext<
   [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
->([
-  { mode: AppMode.ArbiterSetup, view: ArbiterModeViews.EnterPgnLink },
-  () => undefined,
-]);
+>([{ mode: AppMode.EnterPgn }, () => undefined]);
 
 type AppModeStateHookType = [
   AppModeState,
   {
-    goToTablePairingSelection: (
+    enterPgnToPairingSelection: (
       liveLinkUrl: string,
     ) => Promise<Result<undefined>>;
-    goToTablePairingMode: (pairing: GameInfo) => void;
-    goToEnterPgnLink: () => void;
+    pairingSelectionToTablePairing: (pairing: GameInfo) => void;
+    pairingSelectionToEnterPgn: () => void;
   },
 ];
 
 export const useAppModeState = (): AppModeStateHookType => {
   const [appModeState, setAppModeState] = useContext(AppModeStateContext);
 
-  const goToTablePairingSelection =
-    makeGoToTablePairingSelection(setAppModeState);
-  const goToEnterPgnLink = () => {
+  // state transition functions
+  const pairingSelectionToTablePairingFunc = (pairing: GameInfo) => {};
+
+  const pairingSelectionToEnterPgnFunc = () => {
     setAppModeState({
-      mode: AppMode.ArbiterSetup,
-      view: ArbiterModeViews.EnterPgnLink,
+      mode: AppMode.EnterPgn,
     });
   };
-  const goToTablePairingMode = (pairing: GameInfo) => {};
+
+  const enterPgnToPairingSelectionFunc =
+    makeEnterPgnToPairingSelection(setAppModeState);
+
   return [
     appModeState,
     {
-      goToTablePairingSelection: goToTablePairingSelection,
-      goToEnterPgnLink: goToEnterPgnLink,
-      goToTablePairingMode: goToTablePairingMode,
+      enterPgnToPairingSelection: enterPgnToPairingSelectionFunc,
+      pairingSelectionToEnterPgn: pairingSelectionToEnterPgnFunc,
+      pairingSelectionToTablePairing: pairingSelectionToTablePairingFunc,
     },
   ];
 };
 
 export const AppModeStateContextProvider: React.FC = ({ children }) => {
   const appModeState = useState({
-    mode: AppMode.ArbiterSetup,
-    view: ArbiterModeViews.EnterPgnLink,
+    mode: AppMode.EnterPgn,
   } as AppModeState);
 
   return (

@@ -11,13 +11,15 @@ import { AppMode } from '../types/AppModeState';
 import { GameInfo } from '../types/chessGameInfo';
 import { colours } from '../style/colour';
 
-const TablePairingSelection: React.FC = () => {
-  const [appModeState, { goToEnterPgnLink, goToTablePairingMode }] =
-    useAppModeState();
+const PairingSelection: React.FC = () => {
+  const [
+    appModeState,
+    { pairingSelectionToEnterPgn, pairingSelectionToTablePairing },
+  ] = useAppModeState();
   const [showConfirmButton, setShowConfirm] = useState(true);
   const [selectedPairing, setSelected] = useState<GameInfo | null>(null);
 
-  if (appModeState.mode !== AppMode.ArbiterSetup) {
+  if (appModeState.mode !== AppMode.PariringSelection) {
     return <></>;
   }
   if (!appModeState.pairings) {
@@ -68,27 +70,19 @@ const TablePairingSelection: React.FC = () => {
     </TouchableOpacity>
   );
 
-  const renderConfirm = () => {
-    if (showConfirmButton && selectedPairing !== null) {
-      return (
-        <Text
-          onPress={() => goToTablePairingMode(selectedPairing)}
-          style={styles.forwardBtn}>
-          Confirm {'>'}
-        </Text>
-      );
-    } else {
-      return <></>;
-    }
-  };
-
   return (
     <View>
       <View style={styles.buttonContainer}>
-        <Text onPress={goToEnterPgnLink} style={styles.backBtn}>
+        <Text onPress={pairingSelectionToEnterPgn} style={styles.backBtn}>
           {'<'} Back
         </Text>
-        {renderConfirm()}
+        {showConfirmButton && selectedPairing !== null && (
+          <Text
+            onPress={() => pairingSelectionToTablePairing(selectedPairing)}
+            style={styles.forwardBtn}>
+            Confirm {'>'}
+          </Text>
+        )}
       </View>
 
       <Text style={styles.instructionTitle}>Boards</Text>
@@ -183,4 +177,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TablePairingSelection;
+export default PairingSelection;

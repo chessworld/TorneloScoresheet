@@ -8,12 +8,15 @@ import { isError } from '../types/Result';
 
 const BLACK_LOGO_IMAGE = require('../../assets/images/icon-logo-black-500.png');
 
-const EnterPgnLink: React.FC = () => {
-  const [appModeState, { goToTablePairingSelection }] = useAppModeState();
+const EnterPgn: React.FC = () => {
+  const [
+    appModeState,
+    { enterPgnToPairingSelection: goToTablePairingSelection },
+  ] = useAppModeState();
   const [url, setUrl] = useState('');
   const [, showError] = useError();
 
-  if (appModeState.mode != AppMode.ArbiterSetup) {
+  if (appModeState.mode !== AppMode.EnterPgn) {
     return <></>;
   }
 
@@ -97,4 +100,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EnterPgnLink;
+export default EnterPgn;
