@@ -9,15 +9,15 @@
     - Rapid development
   - Disadvantages
     - Requires compilation in mac environment
-    - Team is unfamiliar
+    - Team is unfamiliar with swift
     - Poor tooling in windows
 - Since not all members of the team are working on macs, swift programming was determined to not be the best solution.
 
 #### React Native
-- React native is a popular framework for developping cross plarform apps, it is compatible with windows and has a wide support base.
+- React native is a popular framework for developping cross platform apps, it is compatible with windows and has a wide support base.
   - Advantages
     - Team is familiar with react
-    - Ability to use Typescript 
+    - Ability to use Typescript, which the team has used extensively in the past
     - Live reloading
   - Disadvantages 
     - Difficult to debug
