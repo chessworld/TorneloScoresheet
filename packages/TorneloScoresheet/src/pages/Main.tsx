@@ -8,14 +8,13 @@ import TablePairingSelection from './TablePairingSelection';
 const Main: React.FC = () => {
   const [{ mode: appMode }] = useAppModeState();
 
-  switch(appMode){
+  switch (appMode) {
     case AppMode.ArbiterSetup:
-      return <ArbiterSetup />
+      return <ArbiterSetup />;
     case AppMode.TablePairing:
-      return <TablePairingSelection />
+      return <TablePairingSelection />;
     default:
-      return <Text>Unsupported app mode</Text>
-
+      return <Text>Unsupported app mode</Text>;
   }
 };
 

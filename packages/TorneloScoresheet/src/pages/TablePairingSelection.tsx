@@ -100,7 +100,8 @@ const TablePairingSelection: React.FC = () => {
         scrollEnabled={true}
         style={styles.pairingList}
         data={appModeState.pairings}
-        renderItem={renderPairing}></FlatList>
+        renderItem={renderPairing}
+      />
     </View>
   );
 };
