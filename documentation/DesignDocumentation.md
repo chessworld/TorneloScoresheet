@@ -1,6 +1,8 @@
 # System Design Documentation
 
-FIT4002 Team 1Tornelo Chess Scoresheet App
+FIT4002 Team 1
+
+Tornelo Chess Scoresheet App
 
 ## Overview of Design Considerations
 The two main forms of design that are most relevant to the Tornelo Scoresheet app project are the System Architecture and the User Interface Design.
@@ -17,6 +19,7 @@ Key areas of this aspect of the system design and rationale behind relevant desi
 
 ## 1 System Architecture
 TODO
+
 ### 1.1 Class Diagram and Model
 TODO
 
@@ -135,14 +138,14 @@ The arbiter is an adult that is the organiser of the tournament, responsible for
 - Ensuring that the players aren’t using the iPads for cheating 
 
 #### User Persona: The Player
-**Who are they? **
+**Who are they?**
 The player is a person participating in the chess tournament. They could be any age, ranging from a young kid to a much older person who is less familiar with technology. The player might be stressed or anxious due to being involved in a competition with real stakes, and want to be able to focus on the chess game to ensure they perform as well as they can. 
 
-**What are their main goals? **
+**What are their main goals?**
 - To be able to easily record their moves while remaining focused on the game. 
 - Be confident that the opponent isn’t cheating. 
 
-**What are their main concerns? **
+**What are their main concerns?**
 - That entering the chess moves via iPad is unfamiliar, difficult and as a result time consuming and distracting. 
 
 #### Usability Requirements 
@@ -182,7 +185,7 @@ Since the Tornelo Scoresheet app is intended for use in official chess competiti
 
 In addition to these requirements, the following requirements are also agreed upon with the Product Owner which will impact the User Interface Design. 
 
-**Additional Product Owner requirements **
+**Additional Product Owner requirements**
 - The device used will be an iOS iPad Mini (height of 195.4 mm, width of 134.8 mm).
 - The app should not be used in landscape mode (due to space limitations at chess tournament venus). 
 - Users should have the option to enter moves in two ways. It should be easy to switch between these two move entry methods. The methods are:
@@ -209,5 +212,20 @@ According to the features and functional requirements, the application is broken
 
 The current UI design and rationale for key design decisions for each page are as follows. 
 
-TODO - images of UI and justification 
+| Current Design | Design Rationale |
+| ----- | ----- | 
+| **Landing Page** 
+![landing_page](Pictures/landing_page_v1.PNG)| 
+- Arbiter mode is clearly signified with the blue banner, and Tornelo branding is visible. 
+- A scrollable list is available (scroll bar necessary for easy navigation as there can be hundreds of boards listed). 
+- The text is large and accessible for the Arbiter to quickly read.
+- The board cells are large and easily selectable, with a large surface area to tap on for increased usability. 
+- The names for players with long names will be truncated to fit onto the cell. |
+
+| Arbiter Mode: PGN Entry  | a |
+| Arbiter Mode: Board Selection  | a |
+| Table Pairing Mode  | a |
+| Game Mode: Graphic Recording  | a |
+| Game Mode: Textual Recording  | a |
+| Results Screen | a |
 
