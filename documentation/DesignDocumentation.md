@@ -1,8 +1,8 @@
 # System Design Documentation
 
-FIT4002 Team 1
+##### FIT4002 Team 1
 
-Tornelo Chess Scoresheet App
+###### Tornelo Chess Scoresheet App
 
 ## Overview of Design Considerations
 The two main forms of design that are most relevant to the Tornelo Scoresheet app project are the System Architecture and the User Interface Design.
@@ -49,7 +49,6 @@ TODO
     - Difficult to debug
 - Due to the team's familiarity with React, React native is an obvious choice for our app
 
-
 #### Flutter
 - Flutter is a cross platform app development framework by Google written in Dart.
   - Advantages
@@ -60,7 +59,6 @@ TODO
     - Limited tools and libraries
     - Large file sizes and slow build times
 - Given the team is unfamiliar with the Dart language, Flutter is not the best solution however it remains as a strong candidate 
-
 
 #### Xamarin
 - Xanarin is a Microsoft framework for developping cross plarform apps, it is compatible with windows and is written in C#.
@@ -219,5 +217,5 @@ The current UI design and rationale for key design decisions for each page are a
 | ![board_select_page](Pictures/Arbiter_Mode_Board_Selection_v1.PNG)  | <center><strong>Arbiter Mode: Board Selection</strong></center><br><ul><li>Arbiter mode is clearly signified with the blue banner, and Tornelo branding is visible.</li><li>A scrollable list is available (scroll bar necessary for easy navigation as there can be hundreds of boards listed). </li><li>The text is large and accessible for the Arbiter to quickly read. </li><li>The board cells are large and easily selectable, with a large surface area to tap on for increased usability. </li><li>The names for players with long names will be truncated to fit onto the cell.</li></ul> |
 | ![table_pairing_page](Pictures/Table_Pairing_Mode_v1.PNG)  | <center><strong>Table Pairing Mode</strong></center><br><ul><li>Tornello branding, icons and colours are used</li><li>The text is large and easy to read for someone walking past the table. </li><li>Facts about the users are displayed such as their country, raking etc. for the audience. </li><li>It is very clear to the user which player is black and which player is white so that when they locate their table, they can easily understand where to sit.</li></ul> |
 | ![graphic_rec_page](Pictures/Game_Mode_Graphic_Recording_v1.PNG)  | <center><strong>Game Mode: Graphic Recording</strong></center><br><ul><li>The game mode is clearly displayed.</li><li>The users playing are clearly displayed.</li><li>All of the functional buttons are displayed as per the functionality requirements. They are also labelled with text to ensure their functions are clear to the players.</li><li>The scrollable move list at the bottom meets the requirement to display a minimum of 7 moves at a time. </li><li>The option to switch into Arbiter Mode is presented, and also the option to switch to Scoresheet Entry mode. </li></ul> |
-| ![text_rec_page](Pictures/Game_Mode_Textual_Recording_v1.PNG)  | <center><strong>Game Mode: Textual Recording</strong></center><br><ul><li>The game mode is clearly displayed.</li><li>The screen is designed to mimic the familiar paper scoresheet that players are accustomed to.</li><li></li><li>The move list meets the requirement to display a minimum of 7 moves at a time.</li><li>A large font size is used for usability, and the longest chess move in long algebraic notation can fit onto the screen. </li><li>All of the functional buttons are displayed as per the functionality requirements. They are also labelled with text to ensure their functions are clear to the players.</li></ul> |
+| ![text_rec_page](Pictures/Game_Mode_Textual_Recording_v1.PNG)  | <center><strong>Game Mode: Textual Recording</strong></center><br><ul><li>The game mode is clearly displayed.</li><li>The screen is designed to mimic the familiar paper scoresheet that players are accustomed to.</li><li>The move list meets the requirement to display a minimum of 7 moves at a time.</li><li>A large font size is used for usability, and the longest chess move in long algebraic notation can fit onto the screen. </li><li>All of the functional buttons are displayed as per the functionality requirements. They are also labelled with text to ensure their functions are clear to the players.</li></ul> |
 | ![results_page](Pictures/Results_Screen_v1.PNG) | <center><strong>Results Screen</strong></center><br><ul><li>The score is very large and clearly visible to audience members or anyone walking by. </li><li>The Tornelo colours and branding is clearly visible. </li></ul> |
