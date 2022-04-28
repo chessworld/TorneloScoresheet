@@ -1,18 +1,17 @@
 # System Design Documentation
-
-##### FIT4002 Team 1
-
 ###### Tornelo Chess Scoresheet App
 
 ## Overview of Design Considerations
 The two main forms of design that are most relevant to the Tornelo Scoresheet app project are the System Architecture and the User Interface Design.
 
 **System Architecture**
+
 The System Architecture includes the way the model, the way the program is structured and the programming languages and tools used. 
 
 Key areas of this aspect of the system design and rationale behind relevant design choices are documented in Section 1 of this document. 
 
 **User Interface (UI) Design**
+
 The User Interface Design is a holistic approach to deciding how the applications functional elements are displayed on the screen. This includes considering the users and their experiences, as well as the necessary features and functional requirements. 
 
 Key areas of this aspect of the system design and rationale behind relevant design choices are documented in Section 1 of this document. 
@@ -75,6 +74,7 @@ TODO
 The use of libraries is recommended for this project, and approved by the Product Owner. 
 
 **Justification**
+
 The main benefit of using existing code libraries is to save time on the project. A big priority is to get the application approved by the International Chess Federation (FIDA) as soon as possible, so saving time is a priority. 
 
 Furthermore, existing solutions in many cases might be more optimised than we could make from scratch with current resources. For example, there is no need to reinvent the wheel and code a chess engine when hundreds of such libraries are freely available, and are likely more optimised 
@@ -82,6 +82,7 @@ Furthermore, existing solutions in many cases might be more optimised than we co
 Therefore, the use and adaptation of libraries is strongly encouraged where possible. 
 
 **Libraries Used**
+
 Currently, the following libraries have been investigated and are being used as part of the system architecture: 
 
 - chess.ts 
@@ -125,6 +126,7 @@ There are two key users for the Tornelo Scoresheet app - a tournament Arbiter an
 
 #### User Persona: The Arbiter
 **Who are they?**
+
 The arbiter is an adult that is the organiser of the tournament, responsible for managing and scoring the chess games. They are likely very busy due to keeping a lot of moving parts in the competition under control, with lots of people and games to take care of at a time.
  
 **What are their main goals?**
@@ -137,6 +139,7 @@ The arbiter is an adult that is the organiser of the tournament, responsible for
 
 #### User Persona: The Player
 **Who are they?**
+
 The player is a person participating in the chess tournament. They could be any age, ranging from a young kid to a much older person who is less familiar with technology. The player might be stressed or anxious due to being involved in a competition with real stakes, and want to be able to focus on the chess game to ensure they perform as well as they can. 
 
 **What are their main goals?**
