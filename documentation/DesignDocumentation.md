@@ -214,13 +214,13 @@ The current UI design and rationale for key design decisions for each page are a
 
 | Current Design | Design Rationale |
 | ----- | ----- | 
-| **Landing Page** 
-![landing_page](Pictures/landing_page_v1.PNG)| 
-- Arbiter mode is clearly signified with the blue banner, and Tornelo branding is visible. 
-- A scrollable list is available (scroll bar necessary for easy navigation as there can be hundreds of boards listed). 
-- The text is large and accessible for the Arbiter to quickly read.
-- The board cells are large and easily selectable, with a large surface area to tap on for increased usability. 
-- The names for players with long names will be truncated to fit onto the cell. |
+| **Landing Page** ![landing_page](Pictures/landing_page_v1.PNG)| <ul>
+  <li>Arbiter mode is clearly signified with the blue banner, and Tornelo branding is visible. </li>
+  <li>A scrollable list is available (scroll bar necessary for easy navigation as there can be hundreds of boards listed). </li>
+  <li>The text is large and accessible for the Arbiter to quickly read. </li>
+  <li>The board cells are large and easily selectable, with a large surface area to tap on for increased usability. </li>
+  <li>The names for players with long names will be truncated to fit onto the cell. </li>
+</ul> |
 
 | Arbiter Mode: PGN Entry  | a |
 | Arbiter Mode: Board Selection  | a |
