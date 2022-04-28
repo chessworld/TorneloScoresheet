@@ -23,7 +23,8 @@ const BLACK_LOGO_IMAGE = require('../../assets/images/icon-logo-black-500.png');
 const WHITE_LOGO_IMAGE = require('../../assets/images/icon-logo-white-500.png');
 
 const colourForMode: Record<AppMode, ColourType> = {
-  [AppMode.ArbiterSetup]: colours.secondary,
+  [AppMode.EnterPgn]: colours.secondary,
+  [AppMode.PariringSelection]: colours.secondary,
   [AppMode.PlayerScoresheetRecording]: colours.primary,
   [AppMode.ResultDisplay]: colours.primary,
   [AppMode.TablePairing]: colours.tertiary,

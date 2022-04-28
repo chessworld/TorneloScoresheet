@@ -1,20 +1,24 @@
 import { GameInfo } from './chessGameInfo';
 
 export enum AppMode {
-  ArbiterSetup,
+  EnterPgn,
+  PariringSelection,
   TablePairing,
   PlayerScoresheetRecording,
   ResultDisplay,
 }
 
-export type ArbiterSetupMode = {
-  mode: AppMode.ArbiterSetup;
+export type EnterPgnMode = {
+  mode: AppMode.EnterPgn;
+};
+export type PairingSelectionMode = {
+  mode: AppMode.PariringSelection;
+  games?: number;
+  pairings?: GameInfo[];
 };
 
 export type TablePairingMode = {
   mode: AppMode.TablePairing;
-  games: number;
-  pairings: GameInfo[];
 };
 
 export type PlayerScoresheetRecordingMode = {
@@ -24,6 +28,7 @@ export type PlayerScoresheetRecordingMode = {
 };
 
 export type AppModeState =
-  | ArbiterSetupMode
+  | EnterPgnMode
+  | PairingSelectionMode
   | TablePairingMode
   | PlayerScoresheetRecordingMode;
