@@ -1,3 +1,6 @@
+## Vision
+The aim of this project is to create an iOS application that can be used to record the moves made in chess tournaments.
+
 ## Stakeholders
 - Main Client
   - Tornelo team
@@ -65,3 +68,8 @@ For each individual team member:
 
 Sprint retros are to be done immediately before the **next sprint planning** session. This helps in keeping the `what needs to be improved` ideas fresh. If anything needs to be improved, we create tickets accordingly. (See Sprint planning 1.1)
 
+## Team Management
+The team is following a modified version of the Agile methodology. As such, there are three main roles being used: product owner, scrum master, and developer.
+- Product Owner: David Cordover
+- Scrum Master: Malo Hamon
+- Developer: All members in the team
