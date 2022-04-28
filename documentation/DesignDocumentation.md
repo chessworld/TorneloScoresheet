@@ -214,10 +214,10 @@ The current UI design and rationale for key design decisions for each page are a
 
 | Current Design | Design Rationale |
 | ----- | ----- | 
-| **Landing Page**<br> ![landing_page](Pictures/landing_page_v1.PNG)| <ul><li>Arbiter mode is clearly signified with the blue banner, and Tornelo branding is visible. </li><li>A scrollable list is available (scroll bar necessary for easy navigation as there can be hundreds of boards listed). </li><li>The text is large and accessible for the Arbiter to quickly read. </li><li>The board cells are large and easily selectable, with a large surface area to tap on for increased usability. </li><li>The names for players with long names will be truncated to fit onto the cell. </li></ul> |
-| Arbiter Mode: PGN Entry  | a |
-| Arbiter Mode: Board Selection  | a |
-| Table Pairing Mode  | a |
-| Game Mode: Graphic Recording  | a |
-| Game Mode: Textual Recording  | a |
-| Results Screen | a |
+| ![landing_page](Pictures/landing_page_v1.PNG)| <center><strong>Landing Page</strong></center><br><ul><li>Arbiter mode is clearly signified with the blue banner, and Tornelo branding is visible. </li><li>A scrollable list is available (scroll bar necessary for easy navigation as there can be hundreds of boards listed). </li><li>The text is large and accessible for the Arbiter to quickly read. </li><li>The board cells are large and easily selectable, with a large surface area to tap on for increased usability. </li><li>The names for players with long names will be truncated to fit onto the cell. </li></ul> |
+| ![pgn_entry_page](Pictures/Arbiter_Mode_PGN_Entry_v1.PNG)  | <center><strong>Arbiter Mode: PGN Entry</strong></center><br> |
+| ![board_select_page](Pictures/Arbiter_Mode_Board_Selection_v1.PNG)  | <center><strong>Arbiter Mode: Board Selection</strong></center><br> |
+| ![table_pairing_page](Pictures/Table_Pairing_Mode_v1.PNG)  | <center><strong>Table Pairing Mode</strong></center><br> |
+| ![graphic_rec_page](Pictures/Game_Mode_Graphic_Recording_v1.PNG)  | <center><strong>Game Mode: Graphic Recording</strong></center><br> |
+| ![text_rec_page](Pictures/Game_Mode_Textual_Recording_v1.PNG)  | <center><strong>Game Mode: Textual Recording</strong></center><br> |
+| ![results_page](Pictures/Results_Screen_v1.PNG) | <center><strong>Results Screen</strong></center><br> |
