@@ -85,8 +85,7 @@ Therefore, the use and adaptation of libraries is strongly encouraged where poss
 
 Currently, the following libraries have been investigated and are being used as part of the system architecture: 
 
-- chess.ts 
-A chess library and rewrite of chess.js in Typescript that is used for chess move generation/validation, piece placement/movement, and check/checkmate/stalemate detection.
+- **chess.ts**: A chess library and rewrite of chess.js in Typescript that is used for chess move generation/validation, piece placement/movement, and check/checkmate/stalemate detection.
 
 ## 2 User Interface (UI) Design 
 The Tornelo Scoresheet iOS app is primarily a front-end solution for recording chess game data. Due to this, the User Interface (UI) and the User Experience (UX) for this app is extremely important. 
@@ -125,28 +124,28 @@ In order to develop a good UI design with a positive User Experience, it’s ess
 There are two key users for the Tornelo Scoresheet app - a tournament Arbiter and a Player. 
 
 #### User Persona: The Arbiter
-**Who are they?**
+###### Who are they?
 
 The arbiter is an adult that is the organiser of the tournament, responsible for managing and scoring the chess games. They are likely very busy due to keeping a lot of moving parts in the competition under control, with lots of people and games to take care of at a time.
  
-**What are their main goals?**
+######  What are their main goals?
 - Ensure tables & boards are set up and ready at each stage of a tournament.
 - Make sure tournament pairings are completed & correct
 - Serve the needs/wants of players
 
-**What are their main concerns?**
+######  What are their main concerns?
 - Ensuring that the players aren’t using the iPads for cheating 
 
 #### User Persona: The Player
-**Who are they?**
+######  Who are they?
 
 The player is a person participating in the chess tournament. They could be any age, ranging from a young kid to a much older person who is less familiar with technology. The player might be stressed or anxious due to being involved in a competition with real stakes, and want to be able to focus on the chess game to ensure they perform as well as they can. 
 
-**What are their main goals?**
+###### What are their main goals?
 - To be able to easily record their moves while remaining focused on the game. 
 - Be confident that the opponent isn’t cheating. 
 
-**What are their main concerns?**
+###### What are their main concerns?
 - That entering the chess moves via iPad is unfamiliar, difficult and as a result time consuming and distracting. 
 
 #### Usability Requirements 
