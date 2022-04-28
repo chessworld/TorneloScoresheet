@@ -202,22 +202,22 @@ The wireframes are designed using the tool Figma (www.figma.com) as recommended 
 The full design can be located at: https://www.figma.com/file/MSItAKHLGvKxveIIRSh1tp/Tornelo-Scoresheet?node-id=0%3A1 
 
 According to the features and functional requirements, the application is broken down into the following 7 pages:
-- Landing Page
-- Arbiter Mode: PGN Entry
-- Arbiter Mode: Board Selection 
-- Table Pairing Mode 
-- Game Mode: Graphic Recording 
-- Game Mode: Textual Recording 
-- Results Screen
+- **Landing Page**: The landing page is the first page the user sees when they open the application.
+- **Arbiter Mode: PGN Entry**: On this page, the Arbiter enters the PGN Broadcast link to fetch the relevant game matching data from the Tornelo server. 
+- **Arbiter Mode: Board Selection**: In this page, the Arbiter selects the match that will be recorded on this device. 
+- **Table Pairing Mode**: This page is displayed after the device is assigned to the table. It displays the players who will be playing at this board, and is used by players to locate their table, and potentially also for the audience to familiarise themselves with who is playing. 
+- **Game Mode: Graphic Recording**: In this mode, the user will enter moves and times using the graphical chess interface. 
+- **Game Mode: Textual Recording**: In this mode, the user will enter moves and times using the textual interface. 
+- **Results Screen**: This is the screen that displays the results after a game is completed. 
 
 The current UI design and rationale for key design decisions for each page are as follows. 
 
 | Current Design | Design Rationale |
 | ----- | ----- | 
-| ![landing_page](Pictures/landing_page_v1.PNG)| <center><strong>Landing Page</strong></center><br><ul><li>Arbiter mode is clearly signified with the blue banner, and Tornelo branding is visible. </li><li>A scrollable list is available (scroll bar necessary for easy navigation as there can be hundreds of boards listed). </li><li>The text is large and accessible for the Arbiter to quickly read. </li><li>The board cells are large and easily selectable, with a large surface area to tap on for increased usability. </li><li>The names for players with long names will be truncated to fit onto the cell. </li></ul> |
-| ![pgn_entry_page](Pictures/Arbiter_Mode_PGN_Entry_v1.PNG)  | <center><strong>Arbiter Mode: PGN Entry</strong></center><br> |
-| ![board_select_page](Pictures/Arbiter_Mode_Board_Selection_v1.PNG)  | <center><strong>Arbiter Mode: Board Selection</strong></center><br> |
-| ![table_pairing_page](Pictures/Table_Pairing_Mode_v1.PNG)  | <center><strong>Table Pairing Mode</strong></center><br> |
-| ![graphic_rec_page](Pictures/Game_Mode_Graphic_Recording_v1.PNG)  | <center><strong>Game Mode: Graphic Recording</strong></center><br> |
-| ![text_rec_page](Pictures/Game_Mode_Textual_Recording_v1.PNG)  | <center><strong>Game Mode: Textual Recording</strong></center><br> |
-| ![results_page](Pictures/Results_Screen_v1.PNG) | <center><strong>Results Screen</strong></center><br> |
+| ![landing_page](Pictures/landing_page_v1.PNG)| <center><strong>Landing Page</strong></center><br><ul><li>Arbiter mode is clearly signified with the blue banner, and Tornelo branding is visible. </li><li>A scrollable list is available (scroll bar necessary for easy navigation as there can be hundreds of boards listed). </li><li>The text is large and accessible for the Arbiter to quickly read.</li><li>The board cells are large and easily selectable, with a large surface area to tap on for increased usability. </li><li>The names for players with long names will be truncated to fit onto the cell. </li></ul> |
+| ![pgn_entry_page](Pictures/Arbiter_Mode_PGN_Entry_v1.PNG)  | <center><strong>Arbiter Mode: PGN Entry</strong></center><br><ul><li>The Blue banner at the top of the screen signifies Arbiter Mode (as required by the functional requirements - the app mode should be easily visible). </li><li>The Arbiter will use this mode, so the design is simple, minimalistic and has clear instructions to accommodate a busy arbiter with lots of devices to set up.</li><li>Tornello branding and colours are used.</li></ul> |
+| ![board_select_page](Pictures/Arbiter_Mode_Board_Selection_v1.PNG)  | <center><strong>Arbiter Mode: Board Selection</strong></center><br><ul><li>Arbiter mode is clearly signified with the blue banner, and Tornelo branding is visible.</li><li>A scrollable list is available (scroll bar necessary for easy navigation as there can be hundreds of boards listed). </li><li>The text is large and accessible for the Arbiter to quickly read. </li><li>The board cells are large and easily selectable, with a large surface area to tap on for increased usability. </li><li>The names for players with long names will be truncated to fit onto the cell.</li></ul> |
+| ![table_pairing_page](Pictures/Table_Pairing_Mode_v1.PNG)  | <center><strong>Table Pairing Mode</strong></center><br><ul><li>Tornello branding, icons and colours are used</li><li>The text is large and easy to read for someone walking past the table. </li><li>Facts about the users are displayed such as their country, raking etc. for the audience. </li><li>It is very clear to the user which player is black and which player is white so that when they locate their table, they can easily understand where to sit.</li></ul> |
+| ![graphic_rec_page](Pictures/Game_Mode_Graphic_Recording_v1.PNG)  | <center><strong>Game Mode: Graphic Recording</strong></center><br><ul><li>The game mode is clearly displayed.</li><li>The users playing are clearly displayed.</li><li>All of the functional buttons are displayed as per the functionality requirements. They are also labelled with text to ensure their functions are clear to the players.</li><li>The scrollable move list at the bottom meets the requirement to display a minimum of 7 moves at a time. </li><li>The option to switch into Arbiter Mode is presented, and also the option to switch to Scoresheet Entry mode. </li></ul> |
+| ![text_rec_page](Pictures/Game_Mode_Textual_Recording_v1.PNG)  | <center><strong>Game Mode: Textual Recording</strong></center><br><ul><li>The game mode is clearly displayed.</li><li>The screen is designed to mimic the familiar paper scoresheet that players are accustomed to.</li><li></li><li>The move list meets the requirement to display a minimum of 7 moves at a time.</li><li>A large font size is used for usability, and the longest chess move in long algebraic notation can fit onto the screen. </li><li>All of the functional buttons are displayed as per the functionality requirements. They are also labelled with text to ensure their functions are clear to the players.</li></ul> |
+| ![results_page](Pictures/Results_Screen_v1.PNG) | <center><strong>Results Screen</strong></center><br><ul><li>The score is very large and clearly visible to audience members or anyone walking by. </li><li>The Tornelo colours and branding is clearly visible. </li></ul> |
