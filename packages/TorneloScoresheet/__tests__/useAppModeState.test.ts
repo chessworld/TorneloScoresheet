@@ -12,7 +12,7 @@ describe('useAppModeState', () => {
     const { result } = renderHook(() => useAppModeState(), {
       wrapper: AppModeStateContextProvider,
     });
-    expect(result.current[0]).toStrictEqual({
+    expect(result.current).toStrictEqual({
       mode: AppMode.EnterPgn,
     });
   });
