@@ -1,24 +1,27 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
-import { useEnterPgnState } from '../context/EnterPgnState';
+import { Button, Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useAppModeState } from '../context/AppModeStateContext';
 import { useError } from '../context/ErrorContext';
 import { colours } from '../style/colour';
+import { AppMode } from '../types/AppModeState';
 import { isError } from '../types/Result';
 
 const BLACK_LOGO_IMAGE = require('../../assets/images/icon-logo-black-500.png');
 
 const EnterPgn: React.FC = () => {
-  const pgnState = useEnterPgnState();
-  if (pgnState === null) {
-    return <></>;
-  }
-  const [, { goToPairingSelection }] = pgnState;
-
+  const [
+    appModeState,
+    { enterPgnToPairingSelection: goToTablePairingSelection },
+  ] = useAppModeState();
   const [url, setUrl] = useState('');
   const [, showError] = useError();
 
+  if (appModeState.mode !== AppMode.EnterPgn) {
+    return <></>;
+  }
+
   const handleNextClick = async () => {
-    const result = await goToPairingSelection(url);
+    const result = await goToTablePairingSelection(url);
 
     if (isError(result)) {
       showError(result.error);
