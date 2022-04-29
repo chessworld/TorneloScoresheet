@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
-import { useEnterPgnState } from '../context/EnterPgnState';
+import { useEnterPgnState } from '../context/AppModeStateContext';
 import { useError } from '../context/ErrorContext';
 import { colours } from '../style/colour';
 import { isError } from '../types/Result';

@@ -1,11 +1,10 @@
 import axios from 'axios';
 import React, { useContext } from 'react';
-import { parseGameInfo } from '../chessEngine';
-import { AppModeState, AppMode, EnterPgnMode } from '../types/AppModeState';
-import { GameInfo } from '../types/chessGameInfo';
-import { isError, Result, succ, Success, fail } from '../types/Result';
-import { validUrl } from '../util/url';
-import { AppModeStateContext } from './AppModeStateContext';
+import { parseGameInfo } from '../../chessEngine';
+import { AppModeState, AppMode, EnterPgnMode } from '../../types/AppModeState';
+import { GameInfo } from '../../types/chessGameInfo';
+import { isError, Result, succ, Success, fail } from '../../types/Result';
+import { validUrl } from '../../util/url';
 
 /**
  * Generates a State Transition Function
@@ -74,7 +73,7 @@ const splitRoundIntoMultiplePgn = (roundPgns: string): string[] => {
 };
 
 /**
- * Enter Pgn state
+ * Enter Pgn state hook
  */
 type EnterPgnStateHookType = [
   EnterPgnMode,
@@ -82,16 +81,20 @@ type EnterPgnStateHookType = [
     goToPairingSelection: (liveLinkUrl: string) => Promise<Result<undefined>>;
   },
 ];
+export const makeUseEnterPgnState =
+  (
+    context: React.Context<
+      [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
+    >,
+  ): (() => EnterPgnStateHookType | null) =>
+  () => {
+    const [appModeState, setAppModeState] = useContext(context);
+    if (appModeState.mode !== AppMode.EnterPgn) {
+      return null;
+    }
 
-export const useEnterPgnState = (): EnterPgnStateHookType | null => {
-  const [appModeState, setAppModeState] = useContext(AppModeStateContext);
+    const goToPairingSelectionFunc =
+      makegoToTablePairingSelection(setAppModeState);
 
-  if (appModeState.mode !== AppMode.EnterPgn) {
-    return null;
-  }
-
-  const goToPairingSelectionFunc =
-    makegoToTablePairingSelection(setAppModeState);
-
-  return [appModeState, { goToPairingSelection: goToPairingSelectionFunc }];
-};
+    return [appModeState, { goToPairingSelection: goToPairingSelectionFunc }];
+  };

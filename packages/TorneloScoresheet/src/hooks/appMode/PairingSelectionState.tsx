@@ -1,7 +1,10 @@
 import { useContext } from 'react';
-import { AppMode, PairingSelectionMode } from '../types/AppModeState';
-import { GameInfo } from '../types/chessGameInfo';
-import { AppModeStateContext } from './AppModeStateContext';
+import {
+  AppMode,
+  AppModeState,
+  PairingSelectionMode,
+} from '../../types/AppModeState';
+import { GameInfo } from '../../types/chessGameInfo';
 
 type PairingSelectionStateHookType = [
   PairingSelectionMode,
@@ -11,9 +14,14 @@ type PairingSelectionStateHookType = [
   },
 ];
 
-export const usePairingSelectionState =
+export const makeUsePairingSelectionState =
+  (
+    context: React.Context<
+      [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
+    >,
+  ): (() => PairingSelectionStateHookType | null) =>
   (): PairingSelectionStateHookType | null => {
-    const [appModeState, setAppModeState] = useContext(AppModeStateContext);
+    const [appModeState, setAppModeState] = useContext(context);
 
     if (appModeState.mode !== AppMode.PariringSelection) {
       return null;
