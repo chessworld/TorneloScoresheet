@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { GameInfo } from '../types/chessGameInfo';
 import { colours } from '../style/colour';
-import { usePairingSelectionState } from '../context/PairingSelectionState';
+import { usePairingSelectionState } from '../context/AppModeStateContext';
 
 const PairingSelection: React.FC = () => {
   const pairingSelectionState = usePairingSelectionState();

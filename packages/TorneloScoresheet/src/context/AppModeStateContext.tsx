@@ -1,8 +1,11 @@
 import React, { useContext, useState } from 'react';
+import { makeUseEnterPgnState } from '../hooks/appMode/EnterPgnState';
+import { makeUsePairingSelectionState } from '../hooks/appMode/PairingSelectionState';
 import { AppModeState, AppMode } from '../types/AppModeState';
 
 // The global state for the app
-export const AppModeStateContext = React.createContext<
+// This is not exported so the setAppModeState is never leaked
+const AppModeStateContext = React.createContext<
   [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
 >([{ mode: AppMode.EnterPgn }, () => undefined]);
 
@@ -25,3 +28,8 @@ export const AppModeStateContextProvider: React.FC = ({ children }) => {
     </AppModeStateContext.Provider>
   );
 };
+
+// state creations
+export const useEnterPgnState = makeUseEnterPgnState(AppModeStateContext);
+export const usePairingSelectionState =
+  makeUsePairingSelectionState(AppModeStateContext);

@@ -1,11 +1,11 @@
 import {
   AppModeStateContextProvider,
   useAppModeState,
+  useEnterPgnState,
 } from '../src/context/AppModeStateContext';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { AppMode } from '../src/types/AppModeState';
 import { isError } from '../src/types/Result';
-import { useEnterPgnState } from '../src/context/EnterPgnState';
 
 describe('useAppModeState', () => {
   test('initial state', () => {
