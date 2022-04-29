@@ -5,7 +5,7 @@ import {
 import { act, renderHook } from '@testing-library/react-hooks';
 import { AppMode } from '../src/types/AppModeState';
 import { isError } from '../src/types/Result';
-import App from '../App';
+import { useEnterPgnState } from '../src/context/EnterPgnState';
 
 describe('useAppModeState', () => {
   test('initial state', () => {
@@ -17,62 +17,51 @@ describe('useAppModeState', () => {
     });
   });
 
-  test('enterTablePairingSelectionViewWrongUrl', async () => {
-    const { result } = renderHook(() => useAppModeState(), {
+  test('enterPgnToPairingSelectionWrongUrl', async () => {
+    const { result } = renderHook(() => useEnterPgnState(), {
       wrapper: AppModeStateContextProvider,
     });
-    // We give an invalid URL, so the mode shouldn't change
+
     await act(async () => {
-      const enterPairingModeResult =
-        await result.current[1].enterPgnToPairingSelection('');
-      expect(isError(enterPairingModeResult)).toEqual(true);
-    });
-    expect(result.current[0]).toStrictEqual({
-      mode: AppMode.EnterPgn,
+      if (result.current === null) {
+        return;
+      }
+
+      // try to go to pairing selection with wrong url
+      const actionResult = await result.current[1].goToPairingSelection('');
+
+      // should return an error
+      expect(isError(actionResult)).toEqual(true);
+
+      // should still be in enter pgn state
+      expect(result.current[0]).toStrictEqual({
+        mode: AppMode.EnterPgn,
+      });
     });
   });
 
   const pgnUrl =
     'https://staging-api.tornelo.com/divisions/a1aaede1-fba1-4d63-a92b-acb789b9dcce/broadcast-pgn?convertMatchNumbers=false&includeDivisionName=true&round=6&token=46260fc4ed6887bbb45e8f793a70b950&withClocks=true';
   test('enterTablePairingSelectionViewValidUrl', async () => {
-    const { result } = renderHook(() => useAppModeState(), {
+    const { result: enterPgnState } = renderHook(() => useEnterPgnState(), {
       wrapper: AppModeStateContextProvider,
     });
-    // Valid url, should go to tableparing selection
+
     await act(async () => {
-      const enterPairingModeResult =
-        await result.current[1].enterPgnToPairingSelection(pgnUrl);
-      expect(isError(enterPairingModeResult)).toEqual(false);
-    });
-
-    // ensure correct mode
-    expect(result.current[0].mode).toEqual(AppMode.PariringSelection);
-    if (result.current[0].mode === AppMode.PariringSelection) {
-      expect(result.current[0].pairings).toBeDefined();
-
-      // ensure all pairings parsed
-      if (result.current[0].pairings) {
-        expect(result.current[0].pairings.length).toEqual(7);
+      if (enterPgnState.current === null) {
+        return;
       }
-    }
-  });
 
-  test('goBackToPgnEnterView', async () => {
-    const { result } = renderHook(() => useAppModeState(), {
-      wrapper: AppModeStateContextProvider,
-    });
+      // try to go to pairing selection with valid url
+      const actionResult = await enterPgnState.current[1].goToPairingSelection(
+        pgnUrl,
+      );
 
-    // go into table pairing selection view
-    await act(async () => {
-      await result.current[1].enterPgnToPairingSelection(pgnUrl);
-    });
+      // should not return an error
+      expect(isError(actionResult)).toEqual(false);
 
-    // go back to pgn enter view
-    act(() => result.current[1].pairingSelectionToEnterPgn());
-
-    // check we are in the current view
-    expect(result.current[0]).toStrictEqual({
-      mode: AppMode.EnterPgn,
+      // should no longer be in pgn state
+      expect(enterPgnState.current).toBeNull();
     });
   });
 });

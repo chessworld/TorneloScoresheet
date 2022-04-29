@@ -1,17 +1,18 @@
 import axios from 'axios';
-import { parseGameInfo } from './chessEngine';
-import { AppMode, AppModeState } from './types/AppModeState';
-import { GameInfo } from './types/chessGameInfo';
-import { isError, Result, succ, Success, fail } from './types/Result';
-import { validUrl } from './util/url';
+import React, { useContext } from 'react';
+import { parseGameInfo } from '../chessEngine';
+import { AppModeState, AppMode, EnterPgnMode } from '../types/AppModeState';
+import { GameInfo } from '../types/chessGameInfo';
+import { isError, Result, succ, Success, fail } from '../types/Result';
+import { validUrl } from '../util/url';
+import { AppModeStateContext } from './AppModeStateContext';
 
 /**
- * Given a state setter, return a function for transitioning from
- * Pgn enter view to parining selection view of arbiter setup mode
- *
+ * Generates a State Transition Function
+ * From EnterPgn -> PairingSelection
  * This transition involves fetching a PGN from a Tornello URL
  */
-export const makegoToTablePairingSelection =
+const makegoToTablePairingSelection =
   (
     setAppMode: React.Dispatch<React.SetStateAction<AppModeState>>,
   ): ((liveLinkUrl: string) => Promise<Result<undefined>>) =>
@@ -70,4 +71,27 @@ const splitRoundIntoMultiplePgn = (roundPgns: string): string[] => {
   }
 
   return rounds;
+};
+
+/**
+ * Enter Pgn state
+ */
+type EnterPgnStateHookType = [
+  EnterPgnMode,
+  {
+    goToPairingSelection: (liveLinkUrl: string) => Promise<Result<undefined>>;
+  },
+];
+
+export const useEnterPgnState = (): EnterPgnStateHookType | null => {
+  const [appModeState, setAppModeState] = useContext(AppModeStateContext);
+
+  if (appModeState.mode !== AppMode.EnterPgn) {
+    return null;
+  }
+
+  const goToPairingSelectionFunc =
+    makegoToTablePairingSelection(setAppModeState);
+
+  return [appModeState, { goToPairingSelection: goToPairingSelectionFunc }];
 };

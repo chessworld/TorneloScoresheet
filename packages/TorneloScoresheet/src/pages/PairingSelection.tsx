@@ -6,25 +6,21 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useAppModeState } from '../context/AppModeStateContext';
-import { AppMode } from '../types/AppModeState';
 import { GameInfo } from '../types/chessGameInfo';
 import { colours } from '../style/colour';
+import { usePairingSelectionState } from '../context/PairingSelectionState';
 
 const PairingSelection: React.FC = () => {
-  const [
-    appModeState,
-    { pairingSelectionToEnterPgn, pairingSelectionToTablePairing },
-  ] = useAppModeState();
+  const pairingSelectionState = usePairingSelectionState();
+  if (pairingSelectionState === null) {
+    return <></>;
+  }
+  const [state, { goToEnterPgn, goToTablePairing }] = pairingSelectionState;
+  if (!state.pairings) {
+    return <></>;
+  }
   const [showConfirmButton, setShowConfirm] = useState(true);
   const [selectedPairing, setSelected] = useState<GameInfo | null>(null);
-
-  if (appModeState.mode !== AppMode.PariringSelection) {
-    return <></>;
-  }
-  if (!appModeState.pairings) {
-    return <></>;
-  }
 
   const onSelectPairing = (pairing: GameInfo) => {
     if (selectedPairing === pairing) {
@@ -73,12 +69,12 @@ const PairingSelection: React.FC = () => {
   return (
     <View>
       <View style={styles.buttonContainer}>
-        <Text onPress={pairingSelectionToEnterPgn} style={styles.backBtn}>
+        <Text onPress={goToEnterPgn} style={styles.backBtn}>
           {'<'} Back
         </Text>
         {showConfirmButton && selectedPairing !== null && (
           <Text
-            onPress={() => pairingSelectionToTablePairing(selectedPairing)}
+            onPress={() => goToTablePairing(selectedPairing)}
             style={styles.forwardBtn}>
             Confirm {'>'}
           </Text>
@@ -93,7 +89,7 @@ const PairingSelection: React.FC = () => {
       <FlatList
         scrollEnabled={true}
         style={styles.pairingList}
-        data={appModeState.pairings}
+        data={state.pairings}
         renderItem={renderPairing}
       />
     </View>
