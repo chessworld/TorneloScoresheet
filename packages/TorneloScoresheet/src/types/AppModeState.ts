@@ -19,6 +19,7 @@ export type PairingSelectionMode = {
 
 export type TablePairingMode = {
   mode: AppMode.TablePairing;
+  pairing: GameInfo;
 };
 
 export type PlayerScoresheetRecordingMode = {
