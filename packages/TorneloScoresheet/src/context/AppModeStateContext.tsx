@@ -9,12 +9,10 @@ const AppModeStateContext = React.createContext<
   [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
 >([{ mode: AppMode.EnterPgn }, () => undefined]);
 
-type AppModeStateHookType = [AppModeState];
-
-export const useAppModeState = (): AppModeStateHookType => {
+export const useAppModeState = (): AppModeState => {
   const [appModeState] = useContext(AppModeStateContext);
 
-  return [appModeState];
+  return appModeState;
 };
 
 export const AppModeStateContextProvider: React.FC = ({ children }) => {

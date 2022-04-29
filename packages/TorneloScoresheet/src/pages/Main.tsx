@@ -6,9 +6,9 @@ import EnterPgn from './EnterPgn';
 import PairingSelection from './PairingSelection';
 
 const Main: React.FC = () => {
-  const [{ mode: appMode }] = useAppModeState();
+  const appMode = useAppModeState();
 
-  switch (appMode) {
+  switch (appMode.mode) {
     case AppMode.EnterPgn:
       return <EnterPgn />;
     case AppMode.PariringSelection:

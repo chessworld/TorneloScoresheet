@@ -35,7 +35,7 @@ const backgroundColorStyle = (backgroundColor: string) => ({
 });
 
 const Toolbar: React.FC = () => {
-  const [appModeState] = useAppModeState();
+  const appModeState = useAppModeState();
   const [showSheet, setShowSheet] = useState(false);
   const handleHelpPress = () => {
     setShowSheet(a => !a);
