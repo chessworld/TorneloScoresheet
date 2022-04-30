@@ -47,6 +47,7 @@ const makegoToTablePairingSelection =
 
     const pairings = pairingOrFailures
       .filter((p: Result<GameInfo>): p is Success<GameInfo> => !isError(p))
+      .filter((p: Success<GameInfo>) => p.data.result === '*')
       .map(({ data }) => data);
 
     setAppMode({
