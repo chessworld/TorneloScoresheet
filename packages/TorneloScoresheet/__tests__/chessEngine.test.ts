@@ -11,6 +11,7 @@ const pgnSuccess = `[Event "Skywalker Challenge - A"]
 [Result "*"]
 [BlackFideId "1000000"]
 [WhiteFideId "600000"]
+
 *
 `;
 test('chessEngineParsePgnSuccess', () => {
@@ -59,9 +60,8 @@ const pgnNoFIdeId = `[Event "Skywalker Challenge - A"]
 [White "Skywalker, Anakin"]
 [Black "Yoda, Master"]
 [Result "*"]
+
 *
-
-
 `;
 test('chessEngineParsePgnNoFideId', () => {
   let gameInfo = parseGameInfo(pgnNoFIdeId);
@@ -104,9 +104,8 @@ const pgnNoFirstName = `[Event "Skywalker Challenge - A"]
 [Result "*"]
 [BlackFideId "1000000"]
 [WhiteFideId "600000"]
+
 *
-
-
 `;
 
 test('chessEngineParsePgnNoFirstName', () => {
@@ -167,9 +166,8 @@ const pgnOnlyBoard = `[Event "Skywalker Challenge - A"]
 [Result "*"]
 [BlackFideId "1000000"]
 [WhiteFideId "600000"]
+
 *
-
-
 `;
 
 test('testParseRoundOnlyBoard', () => {
@@ -214,9 +212,8 @@ const pgnBoardRoundGame = `[Event "Skywalker Challenge - A"]
 [Result "*"]
 [BlackFideId "1000000"]
 [WhiteFideId "600000"]
+
 *
-
-
 `;
 
 test('testParseRoundBoardGameAndRound', () => {
