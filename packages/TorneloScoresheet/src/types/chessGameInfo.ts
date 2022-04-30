@@ -4,8 +4,9 @@ export type GameInfo = {
   name: string;
   site: string;
   date: Moment;
-  round: number;
-  subRound: number;
+  round?: number;
+  game?: number;
+  board: number;
   result: string;
   players: Player[];
   pgn: string;

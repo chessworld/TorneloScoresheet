@@ -32,7 +32,7 @@ export const parseGameInfo = (pgn: string): Result<GameInfo> => {
     if (isError(rounds)) {
       return rounds;
     }
-    const [mainRound, subRound] = rounds.data;
+    const [board, round, gameNo] = rounds.data;
 
     // extract players
     const whitePlayerOrError = extractPlayer(PlayerColour.White, game.header());
@@ -51,8 +51,9 @@ export const parseGameInfo = (pgn: string): Result<GameInfo> => {
       name: game.header().Event ?? '',
       date: moment(game.header().Date ?? '', 'YYYY.MM.DD'),
       site: game.header().Site ?? '',
-      round: mainRound,
-      subRound: subRound,
+      round: round,
+      board: board,
+      game: gameNo,
       result: game.header().Result ?? '',
       players: [whitePlayer, blackPlayer],
       pgn: pgn,
@@ -107,25 +108,41 @@ const parsePlayerName = (name: string): Result<[string, string]> => {
   return succ([nameRegexResult[2], nameRegexResult[1]]);
 };
 
-const parseRoundInfo = (round: string): Result<[number, number]> => {
-  const ROUND_FAILURE = fail("PGN Didn't have any round (please ensure the broadcast url is split by round)");
+/**
+ * @param round round text
+ * @returns <board, round, game>
+ */
+export const parseRoundInfo = (
+  round: string,
+): Result<[number, number?, number?]> => {
+  const ROUND_FAILURE = fail('Error parsing PGN round');
   // parse round and subround
-  let regexResults = round.match(/([0-9]+)[.]?([0-9]*)/);
-
-  if (regexResults === null) {
-    return ROUND_FAILURE;
-  }
-  if (regexResults.length !== 3) {
+  const roundRegex = /(?<one>[0-9]+)[.]?(?<two>[0-9]*)[.]?(?<three>[0-9]*)/;
+  let regexResults = roundRegex.exec(round);
+  if (regexResults === null || !regexResults.groups) {
     return ROUND_FAILURE;
   }
 
-  // return main round and sub round tuple
-  let mainRound = parseInt(regexResults[1], 10);
-  let subRound = parseInt(regexResults[2], 10);
+  // get
+  let one = parseInt(regexResults.groups.one, 10);
+  let two = parseInt(regexResults.groups.two, 10);
+  let three = parseInt(regexResults.groups.three, 10);
 
-  if (isNaN(mainRound) || isNaN(subRound)) {
+  // format: ''.0.1 -> failure
+  if (isNaN(one)) {
     return ROUND_FAILURE;
   }
 
-  return succ([mainRound, subRound]);
+  // format: 1 -> board: 1, round: undef, game: undef
+  if (isNaN(two) && isNaN(three)) {
+    return succ([one]);
+  }
+
+  // format: 1.2 -> board: 2, round: 1, game: undef
+  if (isNaN(three)) {
+    return succ([two, one]);
+  }
+
+  // format: 1.2.3 -> board: 3, round: 1, game: 2
+  return succ([three, one, two]);
 };

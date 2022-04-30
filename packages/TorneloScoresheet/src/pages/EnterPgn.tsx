@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useEnterPgnState } from '../context/AppModeStateContext';
 import { useError } from '../context/ErrorContext';
 import { colours } from '../style/colour';
 import { isError } from '../types/Result';
+import { getStoredPgnUrl, storePgnUrl } from '../util/storage';
 
 const BLACK_LOGO_IMAGE = require('../../assets/images/icon-logo-black-500.png');
 
@@ -16,8 +17,19 @@ const EnterPgn: React.FC = () => {
 
   const [url, setUrl] = useState('');
   const [, showError] = useError();
+  useEffect(() => {
+    const getPgnUrl = async () => {
+      return await getStoredPgnUrl();
+    };
+    getPgnUrl().then(result => {
+      if (result !== null) {
+        setUrl(result);
+      }
+    });
+  }, []);
 
   const handleNextClick = async () => {
+    await storePgnUrl(url);
     const result = await goToPairingSelection(url);
 
     if (isError(result)) {
