@@ -51,7 +51,9 @@ const PairingSelection: React.FC = () => {
       }}>
       <View style={styles.roundTextSection}>
         <Text style={styles.roundText}>
-          {item.round}.{item.subRound}
+          {item.round ? item.round.toString() + '.' : ''}
+          {item.game ? item.game.toString() + '.' : ''}
+          {item.board}
         </Text>
       </View>
       <View style={styles.nameTextInnerSection}>
