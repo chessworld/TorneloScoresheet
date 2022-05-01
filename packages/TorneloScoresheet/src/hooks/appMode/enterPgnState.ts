@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useContext } from 'react';
 import { parseGameInfo } from '../../chessEngine';
 import { AppModeState, AppMode, EnterPgnMode } from '../../types/AppModeState';
-import { GameInfo } from '../../types/chessGameInfo';
+import { ChessGameInfo } from '../../types/ChessGameInfo';
 import { isError, Result, succ, Success, fail } from '../../types/Result';
 import { validUrl } from '../../util/url';
 
@@ -45,9 +45,12 @@ const makegoToTablePairingSelection =
       return firstError;
     }
 
+    //Filter out errors and finished games
     const pairings = pairingOrFailures
-      .filter((p: Result<GameInfo>): p is Success<GameInfo> => !isError(p))
-      .filter((p: Success<GameInfo>) => p.data.result === '*')
+      .filter(
+        (p: Result<ChessGameInfo>): p is Success<ChessGameInfo> => !isError(p),
+      )
+      .filter((p: Success<ChessGameInfo>) => p.data.result === '*')
       .map(({ data }) => data);
 
     setAppMode({

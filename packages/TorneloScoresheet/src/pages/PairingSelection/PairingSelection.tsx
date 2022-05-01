@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
-import { GameInfo } from '../../types/chessGameInfo';
+import { ChessGameInfo } from '../../types/ChessGameInfo';
 import { colours } from '../../style/colour';
 import { styles } from './style';
 import { usePairingSelectionState } from '../../context/AppModeStateContext';
 
 const PairingSelection: React.FC = () => {
   const [showConfirmButton, setShowConfirm] = useState(true);
-  const [selectedPairing, setSelected] = useState<GameInfo | null>(null);
+  const [selectedPairing, setSelected] = useState<ChessGameInfo | null>(null);
 
   const pairingSelectionState = usePairingSelectionState();
   const pairingSelectionMode = pairingSelectionState?.[0];
   const goToEnterPgn = pairingSelectionState?.[1]?.goToEnterPgn;
   const goToTablePairing = pairingSelectionState?.[1]?.goToTablePairing;
 
-  const onSelectPairing = (pairing: GameInfo) => {
+  const onSelectPairing = (pairing: ChessGameInfo) => {
     if (selectedPairing === pairing) {
       setSelected(null);
       setShowConfirm(false);
@@ -24,7 +24,7 @@ const PairingSelection: React.FC = () => {
     }
   };
 
-  const paringCardStyle = (pairing: GameInfo) => {
+  const paringCardStyle = (pairing: ChessGameInfo) => {
     if (selectedPairing === pairing) {
       return {
         backgroundColor: colours.primary,
@@ -43,7 +43,7 @@ const PairingSelection: React.FC = () => {
     goToTablePairing(selectedPairing);
   };
 
-  const renderPairing = ({ item }: { item: GameInfo }) => (
+  const renderPairing = ({ item }: { item: ChessGameInfo }) => (
     <TouchableOpacity
       style={[styles.pairingCard, paringCardStyle(item)]}
       onPress={() => {

@@ -1,6 +1,6 @@
 import { Moment } from 'moment';
 
-export type GameInfo = {
+export type ChessGameInfo = {
   name: string;
   site: string;
   date: Moment;

@@ -1,11 +1,11 @@
 import { Chess } from 'chess.ts';
 import moment from 'moment';
 import {
-  GameInfo,
+  ChessGameInfo,
   Player,
   PlayerColour,
   PLAYER_COLOUR_NAME,
-} from './types/chessGameInfo';
+} from './types/ChessGameInfo';
 import { Result, succ, fail, isError } from './types/Result';
 
 const PARSING_FAILURE = fail(
@@ -17,7 +17,7 @@ const PARSING_FAILURE = fail(
  * @param pgn pgn string of the game to be parsed
  * @returns All info of game from headers
  */
-export const parseGameInfo = (pgn: string): Result<GameInfo> => {
+export const parseGameInfo = (pgn: string): Result<ChessGameInfo> => {
   // create game object to parse pgn
   let game = new Chess();
 
