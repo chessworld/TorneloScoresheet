@@ -1,4 +1,4 @@
-import { GameInfo } from './chessGameInfo';
+import { ChessGameInfo } from './ChessGameInfo';
 
 export enum AppMode {
   EnterPgn,
@@ -14,12 +14,12 @@ export type EnterPgnMode = {
 export type PairingSelectionMode = {
   mode: AppMode.PariringSelection;
   games?: number;
-  pairings?: GameInfo[];
+  pairings?: ChessGameInfo[];
 };
 
 export type TablePairingMode = {
   mode: AppMode.TablePairing;
-  pairing: GameInfo;
+  pairing: ChessGameInfo;
 };
 
 export type PlayerScoresheetRecordingMode = {

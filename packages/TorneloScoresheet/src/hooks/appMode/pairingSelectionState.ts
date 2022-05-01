@@ -4,13 +4,13 @@ import {
   AppModeState,
   PairingSelectionMode,
 } from '../../types/AppModeState';
-import { GameInfo } from '../../types/chessGameInfo';
+import { ChessGameInfo } from '../../types/ChessGameInfo';
 
 type PairingSelectionStateHookType = [
   PairingSelectionMode,
   {
     goToEnterPgn: () => void;
-    goToTablePairing: (pairing: GameInfo) => void;
+    goToTablePairing: (pairing: ChessGameInfo) => void;
   },
 ];
 
@@ -33,7 +33,7 @@ export const makeUsePairingSelectionState =
       });
     };
 
-    const goToTablePairingFunc = (pairing: GameInfo): void => {
+    const goToTablePairingFunc = (pairing: ChessGameInfo): void => {
       setAppModeState({
         mode: AppMode.TablePairing,
         pairing: pairing,
