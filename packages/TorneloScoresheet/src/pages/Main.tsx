@@ -2,8 +2,8 @@ import React from 'react';
 import { Text } from 'react-native';
 import { useAppModeState } from '../context/AppModeStateContext';
 import { AppMode } from '../types/AppModeState';
-import EnterPgn from './EnterPgn';
-import PairingSelection from './PairingSelection';
+import EnterPgn from './EnterPgn/EnterPgn';
+import PairingSelection from './PairingSelection/PairingSelection';
 
 const Main: React.FC = () => {
   const appMode = useAppModeState();

@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, Dimensions, StyleSheet, Text, View } from 'react-native';
-import { useError } from '../context/ErrorContext';
-import { colours } from '../style/colour';
+import { Animated, Dimensions, Text, View } from 'react-native';
+import { useError } from '../../context/ErrorContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { styles } from './style';
 
 // A toast that renders the current state of the "ErrorContext"
 const ErrorToast: React.FC = () => {
@@ -61,42 +61,5 @@ const ErrorToast: React.FC = () => {
     </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  flexBox: {
-    position: 'absolute',
-    width: '100%',
-    alignItems: 'center',
-  },
-  container: {
-    backgroundColor: colours.negative,
-    left: 10,
-    top: 40,
-    padding: 20,
-    borderRadius: 10,
-    minWidth: 120,
-    maxWidth: '80%',
-  },
-  titleRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 5,
-  },
-  icon: {
-    marginRight: 8,
-    marginBottom: 2,
-  },
-  text: {
-    color: 'white',
-    fontWeight: '600',
-  },
-  errorTitle: {
-    fontSize: 20,
-    color: 'white',
-    fontWeight: '700',
-    marginBottom: 4,
-  },
-});
 
 export default ErrorToast;
