@@ -6,10 +6,14 @@ import { StatusBarStyle } from 'react-native';
 
 export const colours = {
   negative: '#fa3e2d' as const,
-  // Branc colours
+  white: '#ffffff' as const,
+  // Brand Colours
   primary: '#00aeef' as const,
   secondary: '#1a2136' as const,
+  secondary40: 'rgba(26, 33, 54, 0.4)' as const,
   tertiary: '#ffbf00' as const,
+  // Elements Colours
+  darkenedElements: '#141414' as const,
 };
 
 export type ColourType = typeof colours[keyof typeof colours];
@@ -19,20 +23,32 @@ export const statusBarStyleForColor = (colour: ColourType): StatusBarStyle => {
     case colours.primary:
     case colours.secondary:
     case colours.negative:
+    case colours.darkenedElements:
       return 'light-content';
+    case colours.secondary40:
     case colours.tertiary:
+    case colours.white:
       return 'dark-content';
-    
   }
 };
 
+/**
+ * Given a background colour, return an appropriate colour to render
+ * text on top of that background
+ *
+ * @param colour The background colour
+ * @returns a colour string
+ */
 export const textColour = (colour: ColourType): string => {
   switch (colour) {
     case colours.primary:
     case colours.secondary:
     case colours.negative:
+    case colours.darkenedElements:
       return 'white';
+    case colours.secondary40:
     case colours.tertiary:
+    case colours.white:
       return 'black';
   }
 };
