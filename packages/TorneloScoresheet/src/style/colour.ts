@@ -7,6 +7,7 @@ import { StatusBarStyle } from 'react-native';
 export const colours = {
   negative: '#fa3e2d' as const,
   white: '#ffffff' as const,
+  black: '#000000' as const,
   // Brand Colours
   primary: '#00aeef' as const,
   secondary: '#1a2136' as const,
@@ -24,6 +25,7 @@ export const statusBarStyleForColor = (colour: ColourType): StatusBarStyle => {
     case colours.secondary:
     case colours.negative:
     case colours.darkenedElements:
+    case colours.black:
       return 'light-content';
     case colours.secondary40:
     case colours.tertiary:
@@ -45,6 +47,7 @@ export const textColour = (colour: ColourType): string => {
     case colours.secondary:
     case colours.negative:
     case colours.darkenedElements:
+    case colours.black:
       return 'white';
     case colours.secondary40:
     case colours.tertiary:
