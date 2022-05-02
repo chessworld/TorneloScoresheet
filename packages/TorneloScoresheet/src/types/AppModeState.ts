@@ -1,10 +1,12 @@
+import { ChessBoardPositions } from './ChessBoardPositions';
 import { ChessGameInfo } from './ChessGameInfo';
+import { ChessMove } from './ChessMove';
 
 export enum AppMode {
   EnterPgn,
   PariringSelection,
   TablePairing,
-  PlayerScoresheetRecording,
+  GraphicalRecording,
   ResultDisplay,
 }
 
@@ -22,14 +24,15 @@ export type TablePairingMode = {
   pairing: ChessGameInfo;
 };
 
-export type PlayerScoresheetRecordingMode = {
-  mode: AppMode.PlayerScoresheetRecording;
-  table: number;
-  scores: number[];
+export type GraphicalRecordingMode = {
+  mode: AppMode.GraphicalRecording;
+  pairing: ChessGameInfo;
+  moveHistory: ChessMove[];
+  board: ChessBoardPositions;
 };
 
 export type AppModeState =
   | EnterPgnMode
   | PairingSelectionMode
   | TablePairingMode
-  | PlayerScoresheetRecordingMode;
+  | GraphicalRecordingMode;
