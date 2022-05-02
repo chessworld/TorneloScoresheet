@@ -1,5 +1,7 @@
 import moment from 'moment';
-import { parseGameInfo } from '../src/chessEngine';
+import { parseGameInfo, startGame } from '../src/chessEngine';
+import { PlayerColour } from '../src/types/ChessGameInfo';
+import { BoardPosition, Piece } from '../src/types/ChessMove';
 import { isError, succ } from '../src/types/Result';
 
 const pgnSuccess = `[Event "Skywalker Challenge - A"]
@@ -248,4 +250,28 @@ test('testParseRoundBoardGameAndRound', () => {
       ],
     }),
   );
+});
+
+test('testStartGame', () => {
+  const [board, startingFen] = startGame();
+  expect(startingFen).toStrictEqual(
+    'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+  );
+  expect(board.length).toStrictEqual(8);
+  const countPeices = (
+    board: BoardPosition[][],
+    color: PlayerColour,
+  ): number => {
+    let count = 0;
+    board.forEach(row => {
+      row.forEach(square => {
+        if (square.piece?.player === color) {
+          count += 1;
+        }
+      });
+    });
+    return count;
+  };
+  expect(countPeices(board, PlayerColour.White)).toStrictEqual(16);
+  expect(countPeices(board, PlayerColour.Black)).toStrictEqual(16);
 });
