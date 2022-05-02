@@ -16,13 +16,13 @@ export type Piece = {
 };
 
 export type MovePlie = {
-  from: Position;
-  to: Position;
-  fen: string;
+  from?: Position;
+  to?: Position;
+  startingFen: string;
 };
 
 export type ChessMove = {
   whiteMove: MovePlie;
-  blackMove: MovePlie;
+  blackMove?: MovePlie;
   moveNo: number;
 };
