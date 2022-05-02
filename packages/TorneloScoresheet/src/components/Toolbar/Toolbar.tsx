@@ -25,7 +25,7 @@ const colourForMode: Record<AppMode, ColourType> = {
   [AppMode.EnterPgn]: colours.tertiary,
   [AppMode.PariringSelection]: colours.tertiary,
   [AppMode.TablePairing]: colours.primary,
-  [AppMode.PlayerScoresheetRecording]: colours.primary,
+  [AppMode.GraphicalRecording]: colours.primary,
   [AppMode.ResultDisplay]: colours.primary,
 };
 
