@@ -25,7 +25,7 @@ const colourForMode: Record<AppMode, ColourType> = {
   [AppMode.PariringSelection]: colours.secondary,
   [AppMode.PlayerScoresheetRecording]: colours.primary,
   [AppMode.ResultDisplay]: colours.primary,
-  [AppMode.TablePairing]: colours.tertiary,
+  [AppMode.TablePairing]: colours.primary,
 };
 
 const backgroundColorStyle = (backgroundColor: string) => ({
