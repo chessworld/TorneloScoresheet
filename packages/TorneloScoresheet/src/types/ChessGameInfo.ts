@@ -29,4 +29,5 @@ export type Player = {
   elo: number;
   country: string;
   fideId: number | undefined;
+  team?: string;
 };

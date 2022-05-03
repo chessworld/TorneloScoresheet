@@ -7,39 +7,43 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 30,
     marginRight: 30,
-    marginBottom: 30,
-    fontSize: 40,
+    marginBottom: 10,
+    fontSize: 70,
     color: colours.darkenedElements,
-    
   },
 
   pairing: {
-    height: 150,
+    height: 310,
     marginLeft: 20,
     marginRight: 20,
     marginTop: 10,
     marginBottom: 10,
-    borderRadius: 20,  
+    borderRadius: 20,   
+    backgroundColor: colours.primary20, 
   },
 
   roundTextSection: {
-    padding: 20,    
+    padding: 20,
   },
-  roundText: {   
-    textAlign: 'center', 
+  roundText: {
+    textAlign: 'center',
     fontSize: 50,
     fontWeight: 'bold',
-    color: colours.darkenedElements,    
+    color: colours.darkenedElements,
   },
 
   horizSeparator: {
     borderBottomColor: 'black',
     borderBottomWidth: 1,
-    
+
     marginTop: 40,
     marginBottom: 40,
     marginLeft: 70,
     marginRight: 70,
-  }
+  },
 
+  image: {
+    width: 150,
+    height: 155,
+  },
 });
