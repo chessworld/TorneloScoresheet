@@ -3,7 +3,7 @@ import { useTablePairingState } from '../../context/AppModeStateContext';
 import { ChessGameInfo } from '../../types/ChessGameInfo';
 import { colours } from '../../style/colour';
 import { styles } from './style';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ImageSourcePropType, Text, TouchableOpacity, View } from 'react-native';
 import Sheet from '../../components/Sheet/Sheet';
 import { BLACK_LOGO_IMAGE, WHITE_LOGO_IMAGE } from '../../style/images';
 
@@ -20,7 +20,7 @@ const TablePairing: React.FC = () => {
 
   const displayPlayer = (
     { pairing }: { pairing: ChessGameInfo },
-    playerNumber: number, iconSource: Image
+    playerNumber: number, iconSource: ImageSourcePropType
   ) => (
     <TouchableOpacity
       style={styles.pairing}      
