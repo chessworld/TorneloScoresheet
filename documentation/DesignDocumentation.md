@@ -80,15 +80,25 @@ Currently, the following libraries have been investigated and are being used as 
 
 - **chess.ts**: A chess library and rewrite of chess.js in Typescript that is used for chess move generation/validation, piece placement/movement, and check/checkmate/stalemate detection.
 
-### 1.3 Paradigm and Architecture
-#### Paradigm - Functional
-Our team has decided that a `Functional` paradigm most suited for the project. A functional paradigm means that code artefacts use functions extensively and prioritise composition over inheritence. The advantages of using functional are as follows:
-- Allows the use of React's powerful features such as `Hooks` an `Functional Components`.
-- Easier to debug, because functional programming focuses on **what** code components do instead of **how** they do it.
+### 1.3 Methods and Paradigms
+Our team has decided that a `Functional` paradigm is most suited for this project, given its effectiveness at reducing complexity. The
+advantages of using functional are as follows:
+- Allows the use of React's powerful features such as `Hooks` an `Functional Components` - which helps with designing abstractions.
+- Easier to debug, because functional programming focuses on **what** code components do instead of **how** they do it - mention immutability.
 - Allows for cleaner global state management (see below)
 
-#### Architecture
-Glossary:
+For our general development philosophy, we use DRY (Don't Repeat Yourself). If a piece of code is repeated (or will be reused), then write a separate component. For example, if there will be 3 different kinds of buttons, write a generic button base. Note that this method encourages small scale refactoring where possible, as it is more traceable to change small often than to change big once.
+
+### 1.4  Architecture
+
+This Project's structure focuses on composition and follows an MVVM (Model-View-ViewModel) architecture. MVVM was chosen for its focus on abstracting business logic away from presentation logic, which helps when requirements change. The following figure briefly describes how this project's codebase follows MVVM:
+
+![mvvm](Pictures/system_design-generic.png)
+
+By abstracting business logic away from the view, we can structure components based on composition. Props passed down from component to component are purely presentation logic, therefore, we can nest components as needed. The following diagram shows the current (as of 4 May 2022) dependency graph of this project.
+
+![structure](Pictures/system_design-structure_split.png)
+#### Glossary
 | Name | Description |
 | ---- | ----------- |
 | Component | Independent and reusable bits of code, predominantly the view |
@@ -96,21 +106,7 @@ Glossary:
 | Context | A global "store" for data to be shared between components |
 | Hook | Allows function components to access/modify state |
 | View | Part of code that is responsible for displaying things on screen, or interfacing with other parts of code (like APIs) |
-| Type | Metadata or a description of how the compiler sees the value |
-
-
-
-- Global state management
-  - Context Providers and Hooks
-  - What is a hook
-  - what is a context
-  - Advantages over components and props
-- Components, Pages, and Hooks
-  - Explain app has distinct functionalities, distinct pages with limited sharing of business logic.
-  - Explain component reusability
-  - View: Components & Pages
-  - ViewModel: Hooks
-
+| Type | Metadata/description of how the compiler sees a value |
 ## 2 User Interface (UI) Design
 The Tornelo Scoresheet iOS app is primarily a front-end solution for recording chess game data. Due to this, the User Interface (UI) and the User Experience (UX) for this app is extremely important.
 
