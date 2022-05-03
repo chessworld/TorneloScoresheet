@@ -18,38 +18,7 @@ Key areas of this aspect of the system design and rationale behind relevant desi
 
 ## 1 System Architecture
 
-### 1.1 Architecture/Model Diagram
-![architecture_diagram](Pictures/system_design-dependency_structure.png)
-
-The project's architecture is broken down to 6 parts:
-1. Pages
-    * Serves a distinct user function, as described in section 2 - Wireframes
-    * Contains components
-2. Components
-    * Parts of a page
-    * Can contain other components
-3. Context
-    * Allows information to be transferred from one page to another without dependency pollution.
-    * e.g. if a component dependency chain looks like this: `A->B->C->D->E`, `A` and `E` can share data without going through `B,C,D`
-4. Types
-    * Local Typescript types, interfaces, templates and the like.
-    * Avoids cluttering other packages.
-5. Utils
-    * General utilities such as parsing, string formatters, etc.
-6. Styles
-    * Stylesheet files
-7. External packages
-    * Any external packages are imported in each file as-is.
-
-#### Folder Structure
-![folder_structure](Pictures/system_design-folder_structure.png)
-
-
-#### Example
-
-![example_architecture](Pictures/system_design-example_dependency.png)
-
-### 1.3 Choice of Software
+### 1.1 Choice of Software
 
 #### Swift
 - Because the client is only intrested in creating an iOS application, an obvious candidate framework would be swift.
@@ -94,7 +63,7 @@ The project's architecture is broken down to 6 parts:
     - Proprietary
 - Due to some of the team's unfamiliarity with C# and the poor tooling available on macs, we will not opt for a Xamarin solution
 
-### 1.4 Library Usage
+### 1.2 Library Usage
 The use of libraries is recommended for this project, and approved by the Product Owner.
 
 **Justification**
@@ -110,6 +79,37 @@ Therefore, the use and adaptation of libraries is strongly encouraged where poss
 Currently, the following libraries have been investigated and are being used as part of the system architecture:
 
 - **chess.ts**: A chess library and rewrite of chess.js in Typescript that is used for chess move generation/validation, piece placement/movement, and check/checkmate/stalemate detection.
+
+### 1.3 Paradigm and Architecture
+#### Paradigm - Functional
+Our team has decided that a `Functional` paradigm most suited for the project. A functional paradigm means that code artefacts use functions extensively and prioritise composition over inheritence. The advantages of using functional are as follows:
+- Allows the use of React's powerful features such as `Hooks` an `Functional Components`.
+- Easier to debug, because functional programming focuses on **what** code components do instead of **how** they do it.
+- Allows for cleaner global state management (see below)
+
+#### Architecture
+Glossary:
+| Name | Description |
+| ---- | ----------- |
+| Component | Independent and reusable bits of code, predominantly the view |
+| Prop | Arguments or parameters used in the creation of a component |
+| Context | A global "store" for data to be shared between components |
+| Hook | Allows function components to access/modify state |
+| View | Part of code that is responsible for displaying things on screen, or interfacing with other parts of code (like APIs) |
+| Type | Metadata or a description of how the compiler sees the value |
+
+
+
+- Global state management
+  - Context Providers and Hooks
+  - What is a hook
+  - what is a context
+  - Advantages over components and props
+- Components, Pages, and Hooks
+  - Explain app has distinct functionalities, distinct pages with limited sharing of business logic.
+  - Explain component reusability
+  - View: Components & Pages
+  - ViewModel: Hooks
 
 ## 2 User Interface (UI) Design
 The Tornelo Scoresheet iOS app is primarily a front-end solution for recording chess game data. Due to this, the User Interface (UI) and the User Experience (UX) for this app is extremely important.
