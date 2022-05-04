@@ -1,4 +1,3 @@
-import { primary as primaryFont } from '../../style/font';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -20,10 +19,5 @@ export const styles = StyleSheet.create({
     width: 40,
     height: 44,
     marginRight: 24,
-  },
-  logoText: {
-    fontSize: 34,
-    fontFamily: primaryFont,
-    fontWeight: '700',
   },
 });
