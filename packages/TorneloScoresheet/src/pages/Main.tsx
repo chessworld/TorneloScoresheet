@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import PrimaryText from '../components/PrimaryText/PrimaryText';
 import { useAppModeState } from '../context/AppModeStateContext';
 import { AppMode } from '../types/AppModeState';
 import EnterPgn from './EnterPgn/EnterPgn';
@@ -14,7 +14,7 @@ const Main: React.FC = () => {
     case AppMode.PariringSelection:
       return <PairingSelection />;
     default:
-      return <Text>Unsupported app mode</Text>;
+      return <PrimaryText label="Unsupported app mode" />;
   }
 };
 
