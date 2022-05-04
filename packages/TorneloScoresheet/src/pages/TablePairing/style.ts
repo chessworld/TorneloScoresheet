@@ -18,8 +18,8 @@ export const styles = StyleSheet.create({
     marginRight: 20,
     marginTop: 10,
     marginBottom: 10,
-    borderRadius: 20,   
-    backgroundColor: colours.primary20, 
+    borderRadius: 20,
+    backgroundColor: colours.primary20,
   },
 
   roundTextSection: {
@@ -45,5 +45,33 @@ export const styles = StyleSheet.create({
   image: {
     width: 150,
     height: 155,
+  },
+
+  confirmText: {
+    textAlign: 'center',
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginBottom: 40,
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    height: 70,
+    width: 200,
+    backgroundColor: colours.primary,
+  },
+  buttonText: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: colours.white,
+  },
+  buttonArea: {
+    alignItems: 'center',
   },
 });

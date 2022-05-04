@@ -46,9 +46,9 @@ const Toolbar: React.FC = () => {
       <Sheet
         title="Help"
         dismiss={() => setShowSheet(false)}
-        visible={showSheet}
-        content="Put help here..."
-      />
+        visible={showSheet}>
+        <Text>Put Help Here!</Text>
+      </Sheet>
       <View style={[styles.container, backgroundColorStyle(currentColour)]}>
         <View style={styles.logo}>
           <Image

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Modal, Text, View } from 'react-native';
 import IconButton from '../IconButton/IconButton';
 import { styles } from './style';
@@ -10,11 +10,10 @@ import { styles } from './style';
 export type SheetProps = {
   visible: boolean;
   title: string;
-  content: string;
   dismiss: () => void;
 };
 
-const Sheet: React.FC<SheetProps> = ({ visible, content, dismiss, title }) => {
+const Sheet: React.FC<SheetProps> = ({ visible, children, dismiss, title }) => {
   return (
     <Modal transparent={true} animationType="fade" visible={visible}>
       <View style={styles.backdrop}>
@@ -28,7 +27,7 @@ const Sheet: React.FC<SheetProps> = ({ visible, content, dismiss, title }) => {
               onPress={dismiss}
             />
           </View>
-          <Text style={styles.content}>{content}</Text>
+          <View style={styles.content}>{children}</View>
         </View>
       </View>
     </Modal>

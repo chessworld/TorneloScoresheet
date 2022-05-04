@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import { useTablePairingState } from '../../context/AppModeStateContext';
 import { ChessGameInfo } from '../../types/ChessGameInfo';
-import { colours } from '../../style/colour';
 import { styles } from './style';
-import { Image, ImageSourcePropType, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Pressable,
+  Image,
+  ImageSourcePropType,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Sheet from '../../components/Sheet/Sheet';
 import { BLACK_LOGO_IMAGE, WHITE_LOGO_IMAGE } from '../../style/images';
 
@@ -12,7 +18,7 @@ const TablePairing: React.FC = () => {
   const tablePairingMode = tablePairingState?.[0];
   const [showSheet, setShowSheet] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState(0);
-  
+
   //TO DO: LIMIT LENGTH OF INPUT NAME
   const setPlayer = (playerNumber: number) => {
     setSelectedPlayer(playerNumber);
@@ -20,10 +26,11 @@ const TablePairing: React.FC = () => {
 
   const displayPlayer = (
     { pairing }: { pairing: ChessGameInfo },
-    playerNumber: number, iconSource: ImageSourcePropType
+    playerNumber: number,
+    iconSource: ImageSourcePropType,
   ) => (
     <TouchableOpacity
-      style={styles.pairing}      
+      style={styles.pairing}
       onPress={() => {
         setPlayer(playerNumber);
         setShowSheet(true);
@@ -46,20 +53,24 @@ const TablePairing: React.FC = () => {
     <>
       {tablePairingMode && (
         <View>
-          <Sheet
-            title="Confirm Start As "
-            dismiss={() => setShowSheet(false)}
-            visible={showSheet}
-            content={
-              tablePairingMode.pairing.players[
-                selectedPlayer
-              ].firstName.toString() +
-              ' ' +
-              tablePairingMode.pairing.players[
-                selectedPlayer
-              ].lastName.toString()
-            }
-          />
+          <Sheet dismiss={() => setShowSheet(false)} visible={showSheet}>
+            <View>
+              <Text style={styles.confirmText}>
+                Confirm start as {'\n'}
+                {tablePairingMode.pairing.players[
+                  selectedPlayer
+                ].firstName.toString()}{' '}
+                {tablePairingMode.pairing.players[
+                  selectedPlayer
+                ].lastName.toString()}
+              </Text>
+              <View style={styles.buttonArea}>
+                <Pressable style={styles.button}>
+                  <Text style={styles.buttonText}>CONFIRM</Text>
+                </Pressable>
+              </View>
+            </View>
+          </Sheet>
           <Text style={styles.title}>
             {' '}
             Board{' '}
