@@ -9,7 +9,7 @@ import { styles } from './style';
 
 export type SheetProps = {
   visible: boolean;
-  title: string;
+  title?: string;
   dismiss: () => void;
 };
 

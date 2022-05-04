@@ -18,10 +18,18 @@ const TablePairing: React.FC = () => {
   const tablePairingMode = tablePairingState?.[0];
   const [showSheet, setShowSheet] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState(0);
+  const goToRecording = tablePairingState?.[1].goToRecording;
 
   //TO DO: LIMIT LENGTH OF INPUT NAME
   const setPlayer = (playerNumber: number) => {
     setSelectedPlayer(playerNumber);
+  };
+
+  const handleConfirm = () => {
+    if (!tablePairingMode || !goToRecording) {
+      return;
+    }
+    goToRecording(tablePairingMode.pairing, selectedPlayer);
   };
 
   const displayPlayer = (
@@ -65,7 +73,7 @@ const TablePairing: React.FC = () => {
                 ].lastName.toString()}
               </Text>
               <View style={styles.buttonArea}>
-                <Pressable style={styles.button}>
+                <Pressable style={styles.button} onPress={handleConfirm}>
                   <Text style={styles.buttonText}>CONFIRM</Text>
                 </Pressable>
               </View>

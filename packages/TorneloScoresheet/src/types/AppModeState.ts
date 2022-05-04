@@ -24,8 +24,9 @@ export type TablePairingMode = {
 
 export type PlayerScoresheetRecordingMode = {
   mode: AppMode.PlayerScoresheetRecording;
-  table: number;
-  scores: number[];
+  scores?: number[]; //what's this?
+  pairing: ChessGameInfo;
+  playerNumber: number;
 };
 
 export type AppModeState =
