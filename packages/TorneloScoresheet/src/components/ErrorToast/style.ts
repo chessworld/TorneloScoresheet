@@ -26,14 +26,7 @@ export const styles = StyleSheet.create({
     marginRight: 8,
     marginBottom: 2,
   },
-  text: {
-    color: 'white',
-    fontWeight: '600',
-  },
   errorTitle: {
-    fontSize: 20,
-    color: 'white',
-    fontWeight: '700',
     marginBottom: 4,
   },
 });
