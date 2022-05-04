@@ -20,7 +20,6 @@ export const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     marginBottom: 40,
-    color: 'black',
   },
   header: {
     display: 'flex',
@@ -31,8 +30,6 @@ export const styles = StyleSheet.create({
   },
   title: {
     paddingLeft: 20,
-    fontSize: 30,
-    fontWeight: '700',
   },
   exitButton: {
     padding: 20,
