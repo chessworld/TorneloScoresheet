@@ -10,6 +10,7 @@ export const colours = {
   black: '#000000' as const,
   // Brand Colours
   primary: '#00aeef' as const,
+  primary20: 'rgba(0, 174, 239, 0.2)' as const,
   secondary: '#1a2136' as const,
   secondary40: 'rgba(26, 33, 54, 0.4)' as const,
   tertiary: '#ffbf00' as const,
@@ -27,6 +28,7 @@ export const statusBarStyleForColor = (colour: ColourType): StatusBarStyle => {
     case colours.darkenedElements:
     case colours.black:
       return 'light-content';
+    case colours.primary20:
     case colours.secondary40:
     case colours.tertiary:
     case colours.white:
@@ -49,6 +51,7 @@ export const textColour = (colour: ColourType): string => {
     case colours.darkenedElements:
     case colours.black:
       return 'white';
+    case colours.primary20:
     case colours.secondary40:
     case colours.tertiary:
     case colours.white:

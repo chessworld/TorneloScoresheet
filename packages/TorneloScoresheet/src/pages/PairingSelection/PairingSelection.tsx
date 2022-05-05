@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { ChessGameInfo } from '../../types/ChessGameInfo';
-import { colours } from '../../style/colour';
 import { styles } from './style';
 import { usePairingSelectionState } from '../../context/AppModeStateContext';
+import BoardPairing from './BoardPairing';
+import PrimaryButton from '../../components/PrimaryButton/PrimaryButton';
+import PrimaryText, {
+  FontWeight,
+} from '../../components/PrimaryText/PrimaryText';
 
 const PairingSelection: React.FC = () => {
-  const [showConfirmButton, setShowConfirm] = useState(true);
+  const [showConfirm, setShowConfirm] = useState(true);
   const [selectedPairing, setSelected] = useState<ChessGameInfo | null>(null);
 
   const pairingSelectionState = usePairingSelectionState();
@@ -24,18 +28,6 @@ const PairingSelection: React.FC = () => {
     }
   };
 
-  const paringCardStyle = (pairing: ChessGameInfo) => {
-    if (selectedPairing === pairing) {
-      return {
-        backgroundColor: colours.primary,
-      };
-    } else {
-      return {
-        backgroundColor: colours.secondary,
-      };
-    }
-  };
-
   const handleConfirm = () => {
     if (!goToTablePairing || !selectedPairing) {
       return;
@@ -43,55 +35,52 @@ const PairingSelection: React.FC = () => {
     goToTablePairing(selectedPairing);
   };
 
-  const renderPairing = ({ item }: { item: ChessGameInfo }) => (
-    <TouchableOpacity
-      style={[styles.pairingCard, paringCardStyle(item)]}
-      onPress={() => {
-        onSelectPairing(item);
-      }}>
-      <View style={styles.roundTextSection}>
-        <Text style={styles.roundText}>
-          {item.round ? item.round.toString() + '.' : ''}
-          {item.game ? item.game.toString() + '.' : ''}
-          {item.board}
-        </Text>
-      </View>
-      <View style={styles.nameTextInnerSection}>
-        <Text style={styles.nameText}>
-          {item.players[0].firstName} {item.players[0].lastName}
-        </Text>
-        <Text style={styles.nameText}>
-          {item.players[1].firstName} {item.players[1].lastName}
-        </Text>
-      </View>
-    </TouchableOpacity>
-  );
-
   return (
     <>
       {pairingSelectionMode?.pairings && (
-        <View>
-          <View style={styles.buttonContainer}>
-            <Text onPress={goToEnterPgn} style={styles.backBtn}>
-              {'<'} Back
-            </Text>
-            {showConfirmButton && selectedPairing !== null && (
-              <Text onPress={handleConfirm} style={styles.forwardBtn}>
-                Confirm {'>'}
-              </Text>
+        <View style={styles.pairingSelection}>
+          <View style={styles.headerRow}>
+            <PrimaryButton
+              style={styles.actionButton}
+              onPress={goToEnterPgn}
+              label="Back"
+            />
+            <PrimaryText
+              size={50}
+              weight={FontWeight.SemiBold}
+              label="Boards"
+            />
+            {showConfirm && selectedPairing !== null ? (
+              <PrimaryButton
+                style={styles.actionButton}
+                onPress={handleConfirm}
+                label="Confirm"
+              />
+            ) : (
+              <View style={styles.noConfirmButton} />
             )}
           </View>
 
-          <Text style={styles.instructionTitle}>Boards</Text>
-          <Text style={styles.instructionContents}>
-            Select the board that this iPad is assigned to. This can be changed
-            later.
-          </Text>
+          <PrimaryText
+            style={styles.explanationText}
+            size={24}
+            label="Select the board that this iPad is assigned to. This can be changed later."
+          />
           <FlatList
             scrollEnabled={true}
-            style={styles.pairingList}
             data={pairingSelectionMode.pairings}
-            renderItem={renderPairing}
+            renderItem={({ item }) => (
+              <BoardPairing
+                onPress={() => onSelectPairing(item)}
+                style={styles.boardPairingContainer}
+                board={item}
+                selected={
+                  item.round === selectedPairing?.round &&
+                  item.board === selectedPairing?.board &&
+                  item.game === selectedPairing?.game
+                }
+              />
+            )}
           />
         </View>
       )}
