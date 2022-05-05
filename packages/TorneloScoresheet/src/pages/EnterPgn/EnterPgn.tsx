@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { Image, Text, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, View } from 'react-native';
 import { useEnterPgnState } from '../../context/AppModeStateContext';
 import { useError } from '../../context/ErrorContext';
 import { isError } from '../../types/Result';
 import { styles } from './style';
 import { getStoredPgnUrl, storePgnUrl } from '../../util/storage';
 
-import { BLACK_LOGO_IMAGE } from '../../style/images';
+import PieceAsset from '../../components/PieceAsset/PieceAsset';
+import { PieceType } from '../../types/ChessMove';
+import { PlayerColour } from '../../types/ChessGameInfo';
+import { colours } from '../../style/colour';
+import Link from '../../components/Link/Link';
+import { torneloUrl } from '../../util/env';
+import PrimaryButton from '../../components/PrimaryButton/PrimaryButton';
+import InputBox from '../../components/InputBox/InputBox';
+import PrimaryText, {
+  FontWeight,
+} from '../../components/PrimaryText/PrimaryText';
 
 const EnterPgn: React.FC = () => {
   const state = useEnterPgnState();
@@ -43,25 +53,46 @@ const EnterPgn: React.FC = () => {
   return (
     <>
       {appMode && (
-        <View style={styles.arbiterSetup}>
-          <View style={styles.instructionBox}>
-            <Image style={styles.image} source={BLACK_LOGO_IMAGE} />
-            <Text style={styles.title}>Arbiter Mode</Text>
-            <Text style={styles.instructions}>
-              Go to tornelo.com to find the Live Broadcast PGN link. Then paste
-              it below
-            </Text>
-            <TextInput
-              style={styles.inputBox}
-              onChangeText={setUrl}
-              value={url}
-              placeholder="Game Link"
+        <KeyboardAvoidingView behavior="position">
+          <View style={styles.container}>
+            <PieceAsset
+              piece={{ type: PieceType.King, player: PlayerColour.Black }}
+              size={150}
+              colour={colours.secondary}
+              style={styles.piece}
             />
-            <Text style={styles.submitBtn} onPress={handleNextClick}>
-              Start {'>'}
-            </Text>
+            <PrimaryText
+              style={styles.title}
+              size={38}
+              weight={FontWeight.SemiBold}
+              label="Arbiter Mode"
+            />
+            <PrimaryText
+              size={26}
+              weight={FontWeight.Medium}
+              style={styles.instructions}>
+              Go to{' '}
+              <Link
+                style={styles.instructionsLink}
+                label="tornelo.com"
+                link={torneloUrl}
+              />{' '}
+              to find the Live Broadcast PGN link. Then paste it below
+            </PrimaryText>
+            <InputBox
+              onChangeText={setUrl}
+              onSubmitEditing={handleNextClick}
+              value={url}
+              placeholder="Tournament Link"
+            />
+            <PrimaryButton
+              style={styles.startButton}
+              labelStyle={styles.startButtonLabel}
+              onPress={handleNextClick}
+              label="Start"
+            />
           </View>
-        </View>
+        </KeyboardAvoidingView>
       )}
     </>
   );
