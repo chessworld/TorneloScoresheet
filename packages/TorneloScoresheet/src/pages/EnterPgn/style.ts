@@ -1,51 +1,38 @@
 import { StyleSheet } from 'react-native';
 import { colours } from '../../style/colour';
+import { primary } from '../../style/font';
 
 export const styles = StyleSheet.create({
-  arbiterSetup: {
-    height: '100%',
+  container: {
     display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-around',
     alignItems: 'center',
+    backgroundColor: colours.white,
+    paddingLeft: 58,
+    paddingRight: 58,
   },
-  instructionBox: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginLeft: 100,
-    marginRight: 100,
-  },
-  image: {
-    width: 150,
-    height: 155,
+  piece: {
+    marginTop: 220,
   },
   title: {
-    fontSize: 50,
-    fontWeight: 'bold',
-    color: colours.secondary,
-    paddingTop: 70,
+    marginTop: 40,
   },
   instructions: {
-    fontSize: 25,
-    color: colours.secondary,
-    paddingTop: 70,
-    alignSelf: 'flex-start',
-  },
-  inputBox: {
-    fontSize: 25,
-    color: colours.secondary,
-    marginTop: 70,
-    borderColor: colours.secondary,
-    borderWidth: 1,
-    width: 600,
-  },
-  submitBtn: {
-    fontSize: 25,
-    color: colours.secondary,
     marginTop: 50,
-    fontWeight: 'bold',
-
-    alignSelf: 'flex-start',
+    alignItems: 'baseline',
+  },
+  instructionsLink: {
+    fontFamily: primary,
+    fontWeight: '500',
+    fontSize: 26,
+    color: colours.secondary,
+    marginBottom: -2,
+  },
+  startButton: {
+    marginTop: 180,
+    paddingLeft: 60,
+    paddingRight: 60,
+  },
+  startButtonLabel: {
+    fontSize: 40,
   },
 });
