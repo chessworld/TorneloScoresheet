@@ -22,11 +22,11 @@ import { styles } from './style';
  */
 
 const colourForMode: Record<AppMode, ColourType> = {
-  [AppMode.EnterPgn]: colours.secondary,
-  [AppMode.PariringSelection]: colours.secondary,
+  [AppMode.EnterPgn]: colours.tertiary,
+  [AppMode.PariringSelection]: colours.tertiary,
+  [AppMode.TablePairing]: colours.primary,
   [AppMode.PlayerScoresheetRecording]: colours.primary,
   [AppMode.ResultDisplay]: colours.primary,
-  [AppMode.TablePairing]: colours.tertiary,
 };
 
 const backgroundColorStyle = (backgroundColor: string) => ({
