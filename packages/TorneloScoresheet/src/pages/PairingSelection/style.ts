@@ -1,79 +1,61 @@
-import { colours } from '../../style/colour';
+import { colours, textColour } from '../../style/colour';
 import { StyleSheet } from 'react-native';
 
+const ACTION_BUTTON_WIDTH = 200;
+const ACTION_BUTTON_HORIZONTAL_PADDING = 20;
+
 export const styles = StyleSheet.create({
-  buttonContainer: {
+  pairingSelection: {
+    margin: 18,
+    height: 1000,
+  },
+  headerRow: {
     display: 'flex',
     flexDirection: 'row',
-    flexGrow: 1,
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    width: '100%',
   },
-  instructionSection: {
-    marginLeft: 30,
-    marginRight: 30,
+  boardPairingContainer: {
     marginBottom: 20,
   },
-  instructionTitle: {
-    fontWeight: 'bold',
-    marginLeft: 30,
-    marginRight: 30,
-    marginBottom: 30,
-    fontSize: 40,
-    color: colours.darkenedElements,
+  boardPairing: {
+    backgroundColor: colours.primary20,
+    color: textColour(colours.primary20),
   },
-  instructionContents: {
-    color: colours.darkenedElements,
-    fontSize: 30,
-    marginLeft: 30,
-    marginRight: 30,
-    marginBottom: 20,
-  },
-  backBtn: {
-    fontSize: 40,
-    color: colours.secondary,
-    padding: 30,
-    fontWeight: 'bold',
-  },
-  forwardBtn: {
-    fontSize: 40,
-    color: colours.secondary,
-    padding: 30,
-    fontWeight: 'bold',
-    flexGrow: 1,
-    textAlign: 'right',
-  },
-  pairingList: {
-    marginTop: 10,
-    height: 500,
-  },
-  pairingCard: {
-    height: 150,
-    marginLeft: 20,
-    marginRight: 20,
-    marginTop: 10,
-    marginBottom: 10,
-    borderRadius: 20,
+  boardPairingRow: {
     display: 'flex',
     flexDirection: 'row',
-  },
-  roundTextSection: {
+    justifyContent: 'space-between',
     padding: 20,
   },
-  roundText: {
-    color: '#e9e9e9',
-    fontSize: 80,
-    fontWeight: 'bold',
+  selectedBoardPairingBoardTitle: {
+    color: textColour(colours.secondary),
   },
-  nameTextInnerSection: {
+  selectedBoardPairing: {
+    backgroundColor: colours.secondary,
+  },
+  actionButton: {
+    width: ACTION_BUTTON_WIDTH,
+    paddingLeft: ACTION_BUTTON_HORIZONTAL_PADDING,
+    paddingRight: ACTION_BUTTON_HORIZONTAL_PADDING,
+  },
+  noConfirmButton: {
+    width: ACTION_BUTTON_WIDTH,
+    paddingLeft: ACTION_BUTTON_HORIZONTAL_PADDING,
+    paddingRight: ACTION_BUTTON_HORIZONTAL_PADDING,
+  },
+  explanationText: {
+    textAlign: 'center',
+    marginTop: 45,
+    marginBottom: 45,
+    width: '100%',
+  },
+  nameColumn: {
     display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-    flexGrow: 1,
-    marginTop: 10,
+    justifyContent: 'space-between',
   },
-  nameText: {
-    color: colours.white,
-    fontSize: 30,
-    margin: 10,
-    marginRight: 20,
+  playerName: {
+    textAlign: 'right',
   },
 });
