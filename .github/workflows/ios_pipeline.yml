@@ -8,6 +8,8 @@ name: Node.js CI
 on:
   pull_request_review:
     types: [submitted]
+  workflow_dispatch:
+  
 
 jobs:
   build:
