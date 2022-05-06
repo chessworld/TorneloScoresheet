@@ -1,60 +1,32 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-import { colours } from '../../style/colour';
-import { Piece } from '../../types/ChessMove';
-import ChessPiece from '../ChessPiece/ChessPiece';
+import { View } from 'react-native';
+import { ChessBoardPositions } from '../../types/ChessBoardPositions';
+import ChessSquare from '../ChessSquare/ChessSquare';
+import RoundedView from '../RoundedView/RoundedView';
 import { styles } from './style';
 
 export type ChessBoardProps = {
-  board: (Piece | null)[][];
+  boardPositions: ChessBoardPositions;
   flipBoard: boolean;
 };
 
-const ChessBoard: React.FC<ChessBoardProps> = ({ board, flipBoard }) => {
-  if (flipBoard) {
-    board = board.reverse();
-  }
-  const squareColor = (row: number, col: number) => {
-    if (row % 2 === 0) {
-      if (col % 2 == 0) {
-        // even, even
-        return {
-          backgroundColor: colours.primary,
-        };
-      }
-
-      //even, odd
-      return {
-        backgroundColor: colours.secondary,
-      };
-    } else {
-      if (col % 2 == 0) {
-        // odd, even
-        return {
-          backgroundColor: colours.secondary,
-        };
-      }
-
-      // odd, odd
-      return {
-        backgroundColor: colours.primary,
-      };
-    }
-  };
-
+const ChessBoard: React.FC<ChessBoardProps> = ({
+  boardPositions,
+  flipBoard,
+}) => {
   return (
-    <View style={styles.board}>
-      {board.map((row, rowIdx) => (
-        <View style={styles.boardRow} key={'row-' + rowIdx.toString()}>
-          {row.map((peice, colIdx) => (
-            <View
-              style={[styles.boardSquare, squareColor(rowIdx, colIdx)]}
-              key={'square-' + rowIdx.toString() + colIdx.toString()}>
-              {peice && <ChessPiece piece={peice} />}
+    <View>
+      <RoundedView style={styles.board}>
+        {(flipBoard ? [...boardPositions].reverse() : boardPositions).map(
+          (row, rowIdx) => (
+            <View style={styles.boardRow} key={'row-' + rowIdx.toString()}>
+              {row.map(square => (
+                <ChessSquare square={square} key={square.position} />
+              ))}
             </View>
-          ))}
-        </View>
-      ))}
+          ),
+        )}
+      </RoundedView>
     </View>
   );
 };
