@@ -1,11 +1,17 @@
 import { StyleSheet } from 'react-native';
 
+const TOP_PADDING = 34;
+const BOTTOM_PADDING = 20;
+const LOGO_HEIGHT = 44;
+
+export const TOOLBAR_HEIGHT = TOP_PADDING + BOTTOM_PADDING + LOGO_HEIGHT;
+
 export const styles = StyleSheet.create({
   container: {
     paddingLeft: 20,
-    paddingBottom: 20,
+    paddingBottom: BOTTOM_PADDING,
     paddingRight: 20,
-    paddingTop: 34,
+    paddingTop: TOP_PADDING,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -17,7 +23,7 @@ export const styles = StyleSheet.create({
   },
   logoImage: {
     width: 40,
-    height: 44,
+    height: LOGO_HEIGHT,
     marginRight: 24,
   },
 });

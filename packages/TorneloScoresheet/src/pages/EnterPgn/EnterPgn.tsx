@@ -55,36 +55,39 @@ const EnterPgn: React.FC = () => {
       {appMode && (
         <KeyboardAvoidingView behavior="position">
           <View style={styles.container}>
-            <PieceAsset
-              piece={{ type: PieceType.King, player: PlayerColour.Black }}
-              size={150}
-              colour={colours.secondary}
-              style={styles.piece}
-            />
-            <PrimaryText
-              style={styles.title}
-              size={38}
-              weight={FontWeight.SemiBold}
-              label="Arbiter Mode"
-            />
-            <PrimaryText
-              size={26}
-              weight={FontWeight.Medium}
-              style={styles.instructions}>
-              Go to{' '}
-              <Link
-                style={styles.instructionsLink}
-                label="tornelo.com"
-                link={torneloUrl}
-              />{' '}
-              to find the Live Broadcast PGN link. Then paste it below
-            </PrimaryText>
-            <InputBox
-              onChangeText={setUrl}
-              onSubmitEditing={handleNextClick}
-              value={url}
-              placeholder="Tournament Link"
-            />
+            <View style={styles.informationAndInputBoxContainer}>
+              <PieceAsset
+                piece={{ type: PieceType.King, player: PlayerColour.Black }}
+                size={150}
+                colour={colours.secondary}
+                style={styles.piece}
+              />
+              <PrimaryText
+                style={styles.title}
+                size={38}
+                weight={FontWeight.SemiBold}
+                label="Arbiter Mode"
+              />
+              <PrimaryText
+                size={26}
+                weight={FontWeight.Medium}
+                style={styles.instructions}>
+                Go to{' '}
+                <Link
+                  style={styles.instructionsLink}
+                  label="tornelo.com"
+                  link={torneloUrl}
+                />{' '}
+                to find the Live Broadcast PGN link. Then paste it below
+              </PrimaryText>
+              <InputBox
+                style={styles.inputBox}
+                onChangeText={setUrl}
+                onSubmitEditing={handleNextClick}
+                value={url}
+                placeholder="Tournament Link"
+              />
+            </View>
             <PrimaryButton
               style={styles.startButton}
               labelStyle={styles.startButtonLabel}
