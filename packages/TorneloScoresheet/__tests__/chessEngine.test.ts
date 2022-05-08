@@ -1,10 +1,11 @@
 import moment from 'moment';
-import { parseGameInfo, startGame } from '../src/chessEngine';
+import { chessEngine } from '../src/chessEngine/chessEngineInterface';
+import { ChessBoardPositions } from '../src/types/ChessBoardPositions';
 import { PlayerColour } from '../src/types/ChessGameInfo';
-import { BoardPosition, Piece } from '../src/types/ChessMove';
 import { isError, succ } from '../src/types/Result';
 
-const pgnSuccess = `[Event "Skywalker Challenge - A"]
+// ---- chessEngine.parseGameInfo() ----
+const pgnSucess = `[Event "Skywalker Challenge - A"]
 [Site "Prague, Czechia"]
 [Date "2021.09.12"]
 [Round "6.1"]
@@ -16,45 +17,6 @@ const pgnSuccess = `[Event "Skywalker Challenge - A"]
 
 *
 `;
-test('chessEngineParsePgnSuccess', () => {
-  let gameInfo = parseGameInfo(pgnSuccess);
-  expect(gameInfo).toEqual(
-    succ({
-      name: 'Skywalker Challenge - A',
-      site: 'Prague, Czechia',
-      round: 6,
-      board: 1,
-      result: '*',
-      date: moment('2021.09.12', 'YYYY.MM.DD'),
-      pgn: pgnSuccess,
-      players: [
-        {
-          color: 0,
-          firstName: ' Anakin',
-          lastName: 'Skywalker',
-          elo: 0,
-          country: '',
-          fideId: 600000,
-        },
-        {
-          color: 1,
-          firstName: ' Master',
-          lastName: 'Yoda',
-          elo: 0,
-          country: '',
-          fideId: 1000000,
-        },
-      ],
-    }),
-  );
-});
-
-const pgnFailure = '';
-test('chessEngineParsePgnFailure', () => {
-  let gameInfo = parseGameInfo(pgnFailure);
-  expect(isError(gameInfo)).toEqual(true);
-});
-
 const pgnNoFIdeId = `[Event "Skywalker Challenge - A"]
 [Site "Prague, Czechia"]
 [Date "2021.09.12"]
@@ -65,38 +27,6 @@ const pgnNoFIdeId = `[Event "Skywalker Challenge - A"]
 
 *
 `;
-test('chessEngineParsePgnNoFideId', () => {
-  let gameInfo = parseGameInfo(pgnNoFIdeId);
-  expect(gameInfo).toEqual(
-    succ({
-      name: 'Skywalker Challenge - A',
-      site: 'Prague, Czechia',
-      round: 6,
-      board: 1,
-      result: '*',
-      date: moment('2021.09.12', 'YYYY.MM.DD'),
-      pgn: pgnNoFIdeId,
-      players: [
-        {
-          color: 0,
-          firstName: ' Anakin',
-          lastName: 'Skywalker',
-          elo: 0,
-          country: '',
-          fideId: undefined,
-        },
-        {
-          color: 1,
-          firstName: ' Master',
-          lastName: 'Yoda',
-          elo: 0,
-          country: '',
-          fideId: undefined,
-        },
-      ],
-    }),
-  );
-});
 const pgnNoFirstName = `[Event "Skywalker Challenge - A"]
 [Site "Prague, Czechia"]
 [Date "2021.09.12"]
@@ -109,55 +39,6 @@ const pgnNoFirstName = `[Event "Skywalker Challenge - A"]
 
 *
 `;
-
-test('chessEngineParsePgnNoFirstName', () => {
-  let gameInfo = parseGameInfo(pgnNoFirstName);
-  expect(gameInfo).toEqual(
-    succ({
-      name: 'Skywalker Challenge - A',
-      site: 'Prague, Czechia',
-      round: 6,
-      board: 1,
-      result: '*',
-      date: moment('2021.09.12', 'YYYY.MM.DD'),
-      pgn: pgnNoFirstName,
-      players: [
-        {
-          color: 0,
-          firstName: ' ?',
-          lastName: 'Skywalker',
-          elo: 0,
-          country: '',
-          fideId: 600000,
-        },
-        {
-          color: 1,
-          firstName: ' ?',
-          lastName: 'Yoda',
-          elo: 0,
-          country: '',
-          fideId: 1000000,
-        },
-      ],
-    }),
-  );
-});
-
-const htmlString = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-</head>
-<body>
-</body>
-<footer>
-</footer>
-</html>`;
-
-test('chessEngineParseHtml', () => {
-  let gameInfo = parseGameInfo(htmlString);
-  expect(isError(gameInfo)).toEqual(true);
-});
 
 const pgnOnlyBoard = `[Event "Skywalker Challenge - A"]
 [Site "Prague, Czechia"]
@@ -172,39 +53,6 @@ const pgnOnlyBoard = `[Event "Skywalker Challenge - A"]
 *
 `;
 
-test('testParseRoundOnlyBoard', () => {
-  let gameInfo = parseGameInfo(pgnOnlyBoard);
-  expect(gameInfo).toEqual(
-    succ({
-      name: 'Skywalker Challenge - A',
-      site: 'Prague, Czechia',
-      board: 6,
-      round: undefined,
-      result: '*',
-      date: moment('2021.09.12', 'YYYY.MM.DD'),
-      pgn: pgnOnlyBoard,
-      players: [
-        {
-          color: 0,
-          firstName: ' Anakin',
-          lastName: 'Skywalker',
-          elo: 0,
-          country: '',
-          fideId: 600000,
-        },
-        {
-          color: 1,
-          firstName: ' Master',
-          lastName: 'Yoda',
-          elo: 0,
-          country: '',
-          fideId: 1000000,
-        },
-      ],
-    }),
-  );
-});
-
 const pgnBoardRoundGame = `[Event "Skywalker Challenge - A"]
 [Site "Prague, Czechia"]
 [Date "2021.09.12"]
@@ -218,48 +66,211 @@ const pgnBoardRoundGame = `[Event "Skywalker Challenge - A"]
 *
 `;
 
-test('testParseRoundBoardGameAndRound', () => {
-  let gameInfo = parseGameInfo(pgnBoardRoundGame);
-  expect(gameInfo).toEqual(
-    succ({
-      name: 'Skywalker Challenge - A',
-      site: 'Prague, Czechia',
-      board: 3,
-      game: 1,
-      round: 6,
-      result: '*',
-      date: moment('2021.09.12', 'YYYY.MM.DD'),
+describe('parseGameInfo', () => {
+  const testCases = [
+    {
+      name: 'ParsePgnSuccess',
+      pgn: pgnSucess,
+      shouldFail: false,
+      expectedResult: {
+        name: 'Skywalker Challenge - A',
+        site: 'Prague, Czechia',
+        round: 6,
+        board: 1,
+        result: '*',
+        date: moment('2021.09.12', 'YYYY.MM.DD'),
+        pgn: pgnSucess,
+        players: [
+          {
+            color: 0,
+            firstName: ' Anakin',
+            lastName: 'Skywalker',
+            elo: 0,
+            country: '',
+            fideId: 600000,
+          },
+          {
+            color: 1,
+            firstName: ' Master',
+            lastName: 'Yoda',
+            elo: 0,
+            country: '',
+            fideId: 1000000,
+          },
+        ],
+      },
+    },
+    {
+      name: 'empty pgn',
+      pgn: '',
+      shouldFail: true,
+    },
+    {
+      name: 'html instead of pgn',
+      pgn: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+      </head>
+      <body>
+      </body>
+      <footer>
+      </footer>
+      </html>`,
+      shouldFail: true,
+    },
+    {
+      name: 'Pgn with no fideId',
+      shouldFail: false,
+      pgn: pgnNoFIdeId,
+      expectedResult: {
+        name: 'Skywalker Challenge - A',
+        site: 'Prague, Czechia',
+        round: 6,
+        board: 1,
+        result: '*',
+        date: moment('2021.09.12', 'YYYY.MM.DD'),
+        pgn: pgnNoFIdeId,
+        players: [
+          {
+            color: 0,
+            firstName: ' Anakin',
+            lastName: 'Skywalker',
+            elo: 0,
+            country: '',
+            fideId: undefined,
+          },
+          {
+            color: 1,
+            firstName: ' Master',
+            lastName: 'Yoda',
+            elo: 0,
+            country: '',
+            fideId: undefined,
+          },
+        ],
+      },
+    },
+    {
+      name: 'Pgn no first name',
+      shouldFail: false,
+      pgn: pgnNoFirstName,
+      expectedResult: {
+        name: 'Skywalker Challenge - A',
+        site: 'Prague, Czechia',
+        round: 6,
+        board: 1,
+        result: '*',
+        date: moment('2021.09.12', 'YYYY.MM.DD'),
+        pgn: pgnNoFirstName,
+        players: [
+          {
+            color: 0,
+            firstName: ' ?',
+            lastName: 'Skywalker',
+            elo: 0,
+            country: '',
+            fideId: 600000,
+          },
+          {
+            color: 1,
+            firstName: ' ?',
+            lastName: 'Yoda',
+            elo: 0,
+            country: '',
+            fideId: 1000000,
+          },
+        ],
+      },
+    },
+    {
+      name: 'pgn only board',
+      shouldFail: false,
+      pgn: pgnOnlyBoard,
+      expectedResult: {
+        name: 'Skywalker Challenge - A',
+        site: 'Prague, Czechia',
+        board: 6,
+        round: undefined,
+        result: '*',
+        date: moment('2021.09.12', 'YYYY.MM.DD'),
+        pgn: pgnOnlyBoard,
+        players: [
+          {
+            color: 0,
+            firstName: ' Anakin',
+            lastName: 'Skywalker',
+            elo: 0,
+            country: '',
+            fideId: 600000,
+          },
+          {
+            color: 1,
+            firstName: ' Master',
+            lastName: 'Yoda',
+            elo: 0,
+            country: '',
+            fideId: 1000000,
+          },
+        ],
+      },
+    },
+    {
+      name: 'Pgn board, round and game',
+      shouldFail: false,
       pgn: pgnBoardRoundGame,
-      players: [
-        {
-          color: 0,
-          firstName: ' Anakin',
-          lastName: 'Skywalker',
-          elo: 0,
-          country: '',
-          fideId: 600000,
-        },
-        {
-          color: 1,
-          firstName: ' Master',
-          lastName: 'Yoda',
-          elo: 0,
-          country: '',
-          fideId: 1000000,
-        },
-      ],
-    }),
-  );
+      expectedResult: {
+        name: 'Skywalker Challenge - A',
+        site: 'Prague, Czechia',
+        board: 3,
+        game: 1,
+        round: 6,
+        result: '*',
+        date: moment('2021.09.12', 'YYYY.MM.DD'),
+        pgn: pgnBoardRoundGame,
+        players: [
+          {
+            color: 0,
+            firstName: ' Anakin',
+            lastName: 'Skywalker',
+            elo: 0,
+            country: '',
+            fideId: 600000,
+          },
+          {
+            color: 1,
+            firstName: ' Master',
+            lastName: 'Yoda',
+            elo: 0,
+            country: '',
+            fideId: 1000000,
+          },
+        ],
+      },
+    },
+  ];
+
+  testCases.forEach(test => {
+    it(test.name, () => {
+      const result = chessEngine.parseGameInfo(test.pgn);
+      if (test.shouldFail) {
+        expect(isError(result)).toEqual(true);
+      } else {
+        expect(result).toEqual(succ(test.expectedResult));
+      }
+    });
+  });
 });
 
+// ---- chessEngine.startGame() ----
 test('testStartGame', () => {
-  const [board, startingFen] = startGame();
+  const [board, startingFen] = chessEngine.startGame();
   expect(startingFen).toStrictEqual(
     'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
   );
   expect(board.length).toStrictEqual(8);
   const countPeices = (
-    board: BoardPosition[][],
+    board: ChessBoardPositions,
     color: PlayerColour,
   ): number => {
     let count = 0;
