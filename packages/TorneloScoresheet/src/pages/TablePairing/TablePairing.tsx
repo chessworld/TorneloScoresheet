@@ -11,8 +11,8 @@ import {
   View,
 } from 'react-native';
 import Sheet from '../../components/Sheet/Sheet';
-import PrimaryButton from '../../components/PrimaryButton/PrimaryButton';
-import { BLACK_LOGO_IMAGE, WHITE_LOGO_IMAGE } from '../../style/images';
+import { BLACK_LOGO_IMAGE, PAWN, WHITE_LOGO_IMAGE } from '../../style/images';
+import { startGame } from '../../chessEngine';
 
 const TablePairing: React.FC = () => {
   const tablePairingState = useTablePairingState();
@@ -30,7 +30,13 @@ const TablePairing: React.FC = () => {
     if (!tablePairingMode || !goToRecording) {
       return;
     }
-    goToRecording(tablePairingMode.pairing);
+
+    const [board, fen] = startGame();
+    goToRecording(
+      tablePairingMode.pairing,
+      [{ moveNo: 1, whiteMove: { startingFen: fen } }],
+      board,
+    );
   };
 
   const displayPlayer = (
