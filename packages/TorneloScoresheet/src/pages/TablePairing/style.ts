@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
 import { colours } from '../../style/colour';
-import { rowIdxToRow } from '../../types/ChessBoardPositions';
 
 export const styles = StyleSheet.create({
   title: {
@@ -58,6 +57,12 @@ export const styles = StyleSheet.create({
   image: {
     marginTop: 100,
     marginLeft: 100,
+  },
+
+  playerInfoAlign: {
+    flexDirection: 'row',
+    alignContent: 'center',
+    marginLeft: 150,
   },
 
   confirmText: {

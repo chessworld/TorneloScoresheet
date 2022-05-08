@@ -44,7 +44,7 @@ const TablePairing: React.FC = () => {
     playerColour: PlayerColour,
   ) => (
     <TouchableOpacity
-      style={styles.player}
+      style={[styles.player]}
       onPress={() => {
         setPlayer(playerNumber);
         setShowSheet(true);
@@ -60,12 +60,22 @@ const TablePairing: React.FC = () => {
             {pairing.players[playerNumber].firstName.toString() + ' '}
             {pairing.players[playerNumber].lastName.toString()}
           </Text>
+          <View style={styles.playerInfoAlign}>
+            <PrimaryText
+              size={40}
+              weight={FontWeight.Medium}
+              style={styles.secondaryText}>
+              {pairing.players[playerNumber].elo + ' '}
+            </PrimaryText>
+            <PieceAsset
+              piece={{ type: PieceType.King, player: playerColour }}
+              size={50}
+            />
+          </View>
           <PrimaryText
             size={40}
             weight={FontWeight.Medium}
             style={styles.secondaryText}>
-            {pairing.players[playerNumber].elo + ' '}
-            {'\n'}
             TO DO TEAM
           </PrimaryText>
         </View>
