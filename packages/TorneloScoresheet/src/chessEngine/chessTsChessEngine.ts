@@ -4,26 +4,28 @@ import {
   boardIndexToPosition,
   BoardPosition,
   ChessBoardPositions,
-} from './types/ChessBoardPositions';
+} from '../types/ChessBoardPositions';
 import {
   ChessGameInfo,
   Player,
   PlayerColour,
   PLAYER_COLOUR_NAME,
-} from './types/ChessGameInfo';
-import { Piece, PieceType } from './types/ChessMove';
-import { Result, succ, fail, isError } from './types/Result';
+} from '../types/ChessGameInfo';
+import { Piece, PieceType } from '../types/ChessMove';
+import { Result, succ, fail, isError } from '../types/Result';
+import { ChessEngineInterface } from './chessEngineInterface';
 
 const PARSING_FAILURE = fail(
   'Invalid PGN returned from website. Please double check the link',
 );
 
+// ------- Public interface
 /**
  * Extracts game info from a pgn string (using headers) will return undefined if error occurs when parsing.
  * @param pgn pgn string of the game to be parsed
  * @returns All info of game from headers
  */
-export const parseGameInfo = (pgn: string): Result<ChessGameInfo> => {
+const parseGameInfo = (pgn: string): Result<ChessGameInfo> => {
   // create game object to parse pgn
   let game = new Chess();
 
@@ -73,9 +75,17 @@ export const parseGameInfo = (pgn: string): Result<ChessGameInfo> => {
  * Starts a new game and returns starting fen and board positions
  * @returns [Board positions, starting fen]
  */
-export const startGame = (): [ChessBoardPositions, string] => {
+const startGame = (): [ChessBoardPositions, string] => {
   const game = new Chess();
   return [gameToPeiceArray(game), game.fen()];
+};
+
+/**
+ * The exported chess engine object which implements all the public methods
+ */
+export const chessTsChessEngine: ChessEngineInterface = {
+  parseGameInfo,
+  startGame,
 };
 
 // ------- Privates
