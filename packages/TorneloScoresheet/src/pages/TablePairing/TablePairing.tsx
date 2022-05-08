@@ -2,17 +2,16 @@ import React, { useState } from 'react';
 import { useTablePairingState } from '../../context/AppModeStateContext';
 import { ChessGameInfo } from '../../types/ChessGameInfo';
 import { styles } from './style';
-import {
-  Pressable,
-  Image,
-  ImageSourcePropType,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import Sheet from '../../components/Sheet/Sheet';
-import { BLACK_LOGO_IMAGE, PAWN, WHITE_LOGO_IMAGE } from '../../style/images';
 import { startGame } from '../../chessEngine';
+import PrimaryButton from '../../components/PrimaryButton/PrimaryButton';
+import { PieceType } from '../../types/ChessMove';
+import { PlayerColour } from '../../types/ChessGameInfo';
+import PieceAsset from '../../components/PieceAsset/PieceAsset';
+import PrimaryText, {
+  FontWeight,
+} from '../../components/PrimaryText/PrimaryText';
 
 const TablePairing: React.FC = () => {
   const tablePairingState = useTablePairingState();
@@ -42,7 +41,7 @@ const TablePairing: React.FC = () => {
   const displayPlayer = (
     { pairing }: { pairing: ChessGameInfo },
     playerNumber: number,
-    iconSource: ImageSourcePropType,
+    playerColour: PlayerColour,
   ) => (
     <TouchableOpacity
       style={styles.player}
@@ -50,42 +49,55 @@ const TablePairing: React.FC = () => {
         setPlayer(playerNumber);
         setShowSheet(true);
       }}>
-      <View style={styles.roundTextSection}>
-        <Image style={styles.image} source={iconSource} />
-        <Text style={styles.roundText}>
-          {pairing.players[playerNumber].firstName.toString() + ' '}
-          {pairing.players[playerNumber].lastName.toString()}
-          {'\n'}
-          {pairing.players[playerNumber].elo}
-          {'\n'}
-          {pairing.players[playerNumber].team}
-        </Text>
+      <View style={styles.textSection}>
+        <PieceAsset
+          piece={{ type: PieceType.King, player: playerColour }}
+          size={100}
+          style={styles.image}
+        />
+        <View style={styles.textAlign}>
+          <Text style={styles.primaryText}>
+            {pairing.players[playerNumber].firstName.toString() + ' '}
+            {pairing.players[playerNumber].lastName.toString()}
+          </Text>
+          <PrimaryText
+            size={40}
+            weight={FontWeight.Medium}
+            style={styles.secondaryText}>
+            {pairing.players[playerNumber].elo + ' '}
+            {'\n'}
+            TO DO TEAM
+          </PrimaryText>
+        </View>
       </View>
     </TouchableOpacity>
+  );
+
+  const displaySheet = ({ pairing }: { pairing: ChessGameInfo }) => (
+    <Sheet dismiss={() => setShowSheet(false)} visible={showSheet}>
+      <View>
+        <Text style={styles.confirmText}>
+          Confirm Start As {'\n'}
+          {pairing.players[selectedPlayer].firstName.toString()}{' '}
+          {pairing.players[selectedPlayer].lastName.toString()}
+        </Text>
+        <View style={styles.buttonArea}>
+          <PrimaryButton
+            style={styles.button}
+            labelStyle={styles.buttonText}
+            onPress={handleConfirm}
+            label="CONFIRM"
+          />
+        </View>
+      </View>
+    </Sheet>
   );
 
   return (
     <>
       {tablePairingMode && (
         <View>
-          <Sheet dismiss={() => setShowSheet(false)} visible={showSheet}>
-            <View>
-              <Text style={styles.confirmText}>
-                Confirm start as {'\n'}
-                {tablePairingMode.pairing.players[
-                  selectedPlayer
-                ].firstName.toString()}{' '}
-                {tablePairingMode.pairing.players[
-                  selectedPlayer
-                ].lastName.toString()}
-              </Text>
-              <View style={styles.buttonArea}>
-                <Pressable style={styles.button} onPress={handleConfirm}>
-                  <Text style={styles.buttonText}>CONFIRM</Text>
-                </Pressable>
-              </View>
-            </View>
-          </Sheet>
+          {displaySheet(tablePairingMode)}
           <Text style={styles.title}>
             {' '}
             Board{' '}
@@ -98,9 +110,9 @@ const TablePairing: React.FC = () => {
             {tablePairingMode.pairing.board}
           </Text>
           <View>
-            {displayPlayer(tablePairingMode, 0, WHITE_LOGO_IMAGE)}
-            <View style={styles.horizSeparator}></View>
-            {displayPlayer(tablePairingMode, 1, BLACK_LOGO_IMAGE)}
+            {displayPlayer(tablePairingMode, 0, PlayerColour.White)}
+            <View style={styles.horizontalSeparator}></View>
+            {displayPlayer(tablePairingMode, 1, PlayerColour.Black)}
           </View>
         </View>
       )}

@@ -14,8 +14,7 @@ export const styles = StyleSheet.create({
   },
 
   player: {
-    flexDirection: 'column',
-    alignItems: 'stretch',
+    flexDirection: 'row',
     height: 310,
     marginLeft: 20,
     marginRight: 20,
@@ -25,12 +24,17 @@ export const styles = StyleSheet.create({
     backgroundColor: colours.primary20,
   },
 
-  roundTextSection: {
+  textSection: {
     padding: 20,
     flexDirection: 'row',
-    alignItems: 'stretch',
+    alignContent: 'center',
   },
-  roundText: {
+
+  textAlign: {
+    flexDirection: 'column',
+  },
+
+  primaryText: {
     textAlign: 'center',
     fontSize: 60,
     marginTop: 80,
@@ -38,7 +42,11 @@ export const styles = StyleSheet.create({
     color: colours.darkenedElements,
   },
 
-  horizSeparator: {
+  secondaryText: {
+    textAlign: 'center',
+  },
+
+  horizontalSeparator: {
     borderBottomColor: 'black',
     borderBottomWidth: 1,
     marginTop: 40,
@@ -48,8 +56,6 @@ export const styles = StyleSheet.create({
   },
 
   image: {
-    maxWidth: 70,
-    maxHeight: 75,
     marginTop: 100,
     marginLeft: 100,
   },
