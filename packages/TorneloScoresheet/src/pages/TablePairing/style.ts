@@ -71,16 +71,29 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 40,
   },
-  button: {
+  confirmButton: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    height: 70,
-    width: 200,
+    height: 60,
+    width: 170,
+    marginRight: 50,
     backgroundColor: colours.primary,
+  },
+
+  cancelButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    height: 60,
+    width: 170,
+    backgroundColor: colours.secondary,
   },
   buttonText: {
     fontSize: 16,
@@ -91,5 +104,6 @@ export const styles = StyleSheet.create({
   },
   buttonArea: {
     alignItems: 'center',
+    flexDirection: 'row',
   },
 });

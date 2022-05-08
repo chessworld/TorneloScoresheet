@@ -38,6 +38,10 @@ const TablePairing: React.FC = () => {
     );
   };
 
+  const handleCancel = () => {
+    setShowSheet(false);
+  };
+
   const displayPlayer = (
     { pairing }: { pairing: ChessGameInfo },
     playerNumber: number,
@@ -93,10 +97,16 @@ const TablePairing: React.FC = () => {
         </Text>
         <View style={styles.buttonArea}>
           <PrimaryButton
-            style={styles.button}
+            style={styles.confirmButton}
             labelStyle={styles.buttonText}
             onPress={handleConfirm}
             label="CONFIRM"
+          />
+          <PrimaryButton
+            style={styles.cancelButton}
+            labelStyle={styles.buttonText}
+            onPress={handleCancel}
+            label="BACK"
           />
         </View>
       </View>
