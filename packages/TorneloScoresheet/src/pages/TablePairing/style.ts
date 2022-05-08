@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { colours } from '../../style/colour';
+import { rowIdxToRow } from '../../types/ChessBoardPositions';
 
 export const styles = StyleSheet.create({
   title: {
@@ -12,7 +13,9 @@ export const styles = StyleSheet.create({
     color: colours.darkenedElements,
   },
 
-  pairing: {
+  player: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
     height: 310,
     marginLeft: 20,
     marginRight: 20,
@@ -24,10 +27,13 @@ export const styles = StyleSheet.create({
 
   roundTextSection: {
     padding: 20,
+    flexDirection: 'row',
+    alignItems: 'stretch',
   },
   roundText: {
     textAlign: 'center',
-    fontSize: 50,
+    fontSize: 60,
+    marginTop: 80,
     fontWeight: 'bold',
     color: colours.darkenedElements,
   },
@@ -35,7 +41,6 @@ export const styles = StyleSheet.create({
   horizSeparator: {
     borderBottomColor: 'black',
     borderBottomWidth: 1,
-
     marginTop: 40,
     marginBottom: 40,
     marginLeft: 70,
@@ -43,8 +48,10 @@ export const styles = StyleSheet.create({
   },
 
   image: {
-    width: 150,
-    height: 155,
+    maxWidth: 70,
+    maxHeight: 75,
+    marginTop: 100,
+    marginLeft: 100,
   },
 
   confirmText: {

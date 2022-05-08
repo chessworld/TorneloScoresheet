@@ -1,3 +1,4 @@
+import { FenComment } from 'chess.ts';
 import { useContext } from 'react';
 import {
   AppMode,
@@ -5,10 +6,18 @@ import {
   TablePairingMode,
 } from '../../types/AppModeState';
 import { ChessGameInfo } from '../../types/ChessGameInfo';
+import { ChessMove } from '../../types/ChessMove';
+import { ChessBoardPositions } from '../../types/ChessBoardPositions';
 
 type TablePairingStateHookType = [
   TablePairingMode,
-  { goToRecording: (pairing: ChessGameInfo, playerNumber: number) => void },
+  {
+    goToRecording: (
+      pairing: ChessGameInfo,
+      moveHistory: ChessMove[],
+      board: ChessBoardPositions,
+    ) => void;
+  },
 ];
 
 export const makeUseEnterTablePairingState =
@@ -25,12 +34,14 @@ export const makeUseEnterTablePairingState =
 
     const goToRecordingFunc = (
       pairing: ChessGameInfo,
-      playerNumber: number,
+      moveHistory: ChessMove[],
+      board: ChessBoardPositions,
     ): void => {
       setAppModeState({
-        mode: AppMode.PlayerScoresheetRecording,
+        mode: AppMode.GraphicalRecording,
         pairing: pairing,
-        playerNumber: playerNumber,
+        moveHistory: moveHistory,
+        board: board,
       });
     };
 

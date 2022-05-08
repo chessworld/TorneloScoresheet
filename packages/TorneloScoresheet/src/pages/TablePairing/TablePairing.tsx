@@ -11,6 +11,7 @@ import {
   View,
 } from 'react-native';
 import Sheet from '../../components/Sheet/Sheet';
+import PrimaryButton from '../../components/PrimaryButton/PrimaryButton';
 import { BLACK_LOGO_IMAGE, WHITE_LOGO_IMAGE } from '../../style/images';
 
 const TablePairing: React.FC = () => {
@@ -29,7 +30,7 @@ const TablePairing: React.FC = () => {
     if (!tablePairingMode || !goToRecording) {
       return;
     }
-    goToRecording(tablePairingMode.pairing, selectedPlayer);
+    goToRecording(tablePairingMode.pairing);
   };
 
   const displayPlayer = (
@@ -38,7 +39,7 @@ const TablePairing: React.FC = () => {
     iconSource: ImageSourcePropType,
   ) => (
     <TouchableOpacity
-      style={styles.pairing}
+      style={styles.player}
       onPress={() => {
         setPlayer(playerNumber);
         setShowSheet(true);
