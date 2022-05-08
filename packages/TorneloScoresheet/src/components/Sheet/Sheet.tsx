@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
-import { Modal, Text, View } from 'react-native';
+import React from 'react';
+import { Modal, View } from 'react-native';
 import IconButton from '../IconButton/IconButton';
+import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import { styles } from './style';
 
 /**
@@ -19,7 +20,12 @@ const Sheet: React.FC<SheetProps> = ({ visible, children, dismiss, title }) => {
       <View style={styles.backdrop}>
         <View style={styles.contentContainer}>
           <View style={styles.header}>
-            <Text style={styles.title}>{title}</Text>
+            <PrimaryText
+              size={30}
+              weight={FontWeight.Bold}
+              style={styles.title}
+              label={title}
+            />
             <IconButton
               style={styles.exitButton}
               icon="cancel"

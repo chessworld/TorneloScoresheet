@@ -1,11 +1,17 @@
-import { Chess } from 'chess.ts';
+import { Chess, Color, Piece as EnginePiece, PieceSymbol } from 'chess.ts';
 import moment from 'moment';
+import {
+  boardIndexToPosition,
+  BoardPosition,
+  ChessBoardPositions,
+} from './types/ChessBoardPositions';
 import {
   ChessGameInfo,
   Player,
   PlayerColour,
   PLAYER_COLOUR_NAME,
 } from './types/ChessGameInfo';
+import { Piece, PieceType } from './types/ChessMove';
 import { Result, succ, fail, isError } from './types/Result';
 
 const PARSING_FAILURE = fail(
@@ -63,7 +69,79 @@ export const parseGameInfo = (pgn: string): Result<ChessGameInfo> => {
   }
 };
 
+/**
+ * Starts a new game and returns starting fen and board positions
+ * @returns [Board positions, starting fen]
+ */
+export const startGame = (): [ChessBoardPositions, string] => {
+  const game = new Chess();
+  return [gameToPeiceArray(game), game.fen()];
+};
+
 // ------- Privates
+
+/**
+ * Returns the board state in a nested array
+ * @param game The game Object
+ * @returns a nested array of board postitions
+ */
+const gameToPeiceArray = (game: Chess): ChessBoardPositions => {
+  const board: BoardPosition[][] = [];
+
+  // for each row
+  game.board().map((gameRow, rowIdx) => {
+    const row: BoardPosition[] = [];
+
+    // for each col in row
+    gameRow.map((peice, colIdx) => {
+      // no piece
+      if (peice === null) {
+        row.push({
+          piece: null,
+          position: boardIndexToPosition(rowIdx, colIdx),
+        });
+      }
+
+      // existing piece
+      else {
+        row.push({
+          piece: mapEnginePeice(peice),
+          position: boardIndexToPosition(rowIdx, colIdx),
+        });
+      }
+    });
+
+    board.push(row);
+  });
+
+  // cast is safe beause chess.ts is well tested, board at this point will always be an 8 X 8 array
+  return board as ChessBoardPositions;
+};
+
+/**
+ * Maps chess.js Peice to tornelo peice
+ * @param peice the chess.js peice object
+ * @returns tornelo peice
+ */
+const mapEnginePeice = (peice: EnginePiece): Piece => {
+  return {
+    player: colorMap[peice.color],
+    type: pieceMap[peice.type],
+  };
+};
+
+const pieceMap: Record<PieceSymbol, PieceType> = {
+  p: PieceType.Pawn,
+  r: PieceType.Rook,
+  b: PieceType.Bishop,
+  k: PieceType.King,
+  q: PieceType.Queen,
+  n: PieceType.Knight,
+};
+const colorMap: Record<Color, PlayerColour> = {
+  w: PlayerColour.White,
+  b: PlayerColour.Black,
+};
 
 const extractPlayer = (
   color: PlayerColour,

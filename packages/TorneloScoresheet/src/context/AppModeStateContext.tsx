@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { makeUseEnterPgnState } from '../hooks/appMode/enterPgnState';
 import { makeUsePairingSelectionState } from '../hooks/appMode/pairingSelectionState';
 import { makeUseEnterTablePairingState } from '../hooks/appMode/tablePairingState';
+import { makeUseGraphicalRecordingState } from '../hooks/appMode/graphicalRecordingState';
 import { AppModeState, AppMode } from '../types/AppModeState';
 
 // The global state for the app
@@ -32,4 +33,7 @@ export const AppModeStateContextProvider: React.FC = ({ children }) => {
 export const useEnterPgnState = makeUseEnterPgnState(AppModeStateContext);
 export const usePairingSelectionState =
   makeUsePairingSelectionState(AppModeStateContext);
-export const useTablePairingState = makeUseEnterTablePairingState(AppModeStateContext)
+export const useTablePairingState =
+  makeUseEnterTablePairingState(AppModeStateContext);
+export const useGraphicalRecordingState =
+  makeUseGraphicalRecordingState(AppModeStateContext);

@@ -16,6 +16,9 @@ export const colours = {
   tertiary: '#ffbf00' as const,
   // Elements Colours
   darkenedElements: '#141414' as const,
+  // Chess Board Colours
+  darkBlue: '#A2CEE3' as const,
+  lightBlue: '#E3ECF3' as const,
 };
 
 export type ColourType = typeof colours[keyof typeof colours];
@@ -29,11 +32,13 @@ export const statusBarStyleForColor = (colour: ColourType): StatusBarStyle => {
     case colours.darkenedElements:
     case colours.black:
       return 'light-content';
+    case colours.primary20:
     case colours.secondary40:
     case colours.tertiary:
     case colours.white:
-      return 'dark-content';  
-     
+    case colours.lightBlue:
+    case colours.darkBlue:
+      return 'dark-content';
   }
 };
 
@@ -51,7 +56,10 @@ export const textColour = (colour: ColourType): string => {
     case colours.negative:
     case colours.darkenedElements:
     case colours.black:
+    case colours.lightBlue:
+    case colours.darkBlue:
       return 'white';
+    case colours.primary20:
     case colours.secondary40:
     case colours.tertiary:
     case colours.white:

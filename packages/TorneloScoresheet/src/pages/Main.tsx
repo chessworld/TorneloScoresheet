@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text } from 'react-native';
+import PrimaryText from '../components/PrimaryText/PrimaryText';
 import { useAppModeState } from '../context/AppModeStateContext';
 import { AppMode } from '../types/AppModeState';
 import EnterPgn from './EnterPgn/EnterPgn';
+import GraphicalRecording from './GraphicalRecording/GraphicalRecording';
 import PairingSelection from './PairingSelection/PairingSelection';
 import TablePairing from './TablePairing/TablePairing';
 
@@ -15,9 +16,11 @@ const Main: React.FC = () => {
     case AppMode.PariringSelection:
       return <PairingSelection />;
     case AppMode.TablePairing:
-      return <TablePairing/>;
+      return <TablePairing />;
+    case AppMode.GraphicalRecording:
+      return <GraphicalRecording />;
     default:
-      return <Text>Unsupported app mode</Text>;
+      return <PrimaryText label="Unsupported app mode" />;
   }
 };
 

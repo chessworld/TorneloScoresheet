@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, StatusBar, Text, View } from 'react-native';
+import { Image, StatusBar, View } from 'react-native';
 import { useAppModeState } from '../../context/AppModeStateContext';
 import {
   colours,
@@ -10,6 +10,7 @@ import {
 import { BLACK_LOGO_IMAGE, WHITE_LOGO_IMAGE } from '../../style/images';
 import { AppMode } from '../../types/AppModeState';
 import IconButton from '../IconButton/IconButton';
+import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import Sheet from '../Sheet/Sheet';
 import { styles } from './style';
 
@@ -21,9 +22,10 @@ import { styles } from './style';
  */
 
 const colourForMode: Record<AppMode, ColourType> = {
-  [AppMode.EnterPgn]: colours.secondary,
-  [AppMode.PariringSelection]: colours.secondary,
-  [AppMode.PlayerScoresheetRecording]: colours.primary,
+  [AppMode.EnterPgn]: colours.tertiary,
+  [AppMode.PariringSelection]: colours.tertiary,
+  [AppMode.TablePairing]: colours.primary,
+  [AppMode.GraphicalRecording]: colours.primary,
   [AppMode.ResultDisplay]: colours.primary,
   [AppMode.TablePairing]: colours.primary,
 };
@@ -59,9 +61,12 @@ const Toolbar: React.FC = () => {
                 : WHITE_LOGO_IMAGE
             }
           />
-          <Text style={[styles.logoText, { color: currentTextColour }]}>
-            Tornelo
-          </Text>
+          <PrimaryText
+            colour={currentTextColour}
+            size={34}
+            weight={FontWeight.Bold}
+            label="Tornelo"
+          />
         </View>
         <IconButton
           icon="help"
