@@ -7,6 +7,7 @@ import Toolbar from './src/components/Toolbar/Toolbar';
 import { AppModeStateContextProvider } from './src/context/AppModeStateContext';
 import { ErrorContextProvider } from './src/context/ErrorContext';
 import Main from './src/pages/Main';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -16,15 +17,17 @@ const App = () => {
   };
 
   return (
-    <ErrorContextProvider>
-      <AppModeStateContextProvider>
-        <Toolbar />
-        <SafeAreaView style={backgroundStyle}>
-          <Main />
-        </SafeAreaView>
-        <ErrorToast />
-      </AppModeStateContextProvider>
-    </ErrorContextProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ErrorContextProvider>
+        <AppModeStateContextProvider>
+          <Toolbar />
+          <SafeAreaView style={backgroundStyle}>
+            <Main />
+          </SafeAreaView>
+          <ErrorToast />
+        </AppModeStateContextProvider>
+      </ErrorContextProvider>
+    </GestureHandlerRootView>
   );
 };
 
