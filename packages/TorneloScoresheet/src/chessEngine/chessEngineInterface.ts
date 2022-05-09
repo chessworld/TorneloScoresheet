@@ -1,5 +1,6 @@
 import { ChessBoardPositions } from '../types/ChessBoardPositions';
 import { ChessGameInfo } from '../types/ChessGameInfo';
+import { PlySquares } from '../types/ChessMove';
 import { Result } from '../types/Result';
 import { chessTsChessEngine } from './chessTsChessEngine';
 
@@ -20,6 +21,21 @@ export type ChessEngineInterface = {
    * @returns [Board positions, starting fen]
    */
   startGame: () => [ChessBoardPositions, string];
+
+  /**
+   * Processes a move given the starting fen and to and from positions
+   * @param startingFen the fen of the game state before the move
+   * @param plySquares the to and from positions of the move
+   * @returns the next fen if move is possible else null
+   */
+  makeMove: (startingFen: string, plySquares: PlySquares) => string | null;
+
+  /**
+   * Returns the board postion state given a fen
+   * @param fen the current state of the board
+   * @returns the board postions of the chess board
+   */
+  fenToBoardPositions: (fen: string) => ChessBoardPositions;
 };
 
 // change the chess engine implementation here

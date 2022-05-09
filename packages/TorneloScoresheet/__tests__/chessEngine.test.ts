@@ -1,7 +1,13 @@
 import moment from 'moment';
 import { chessEngine } from '../src/chessEngine/chessEngineInterface';
-import { ChessBoardPositions } from '../src/types/ChessBoardPositions';
+import {
+  BoardPosition,
+  boardPositionToIdex,
+  ChessBoardPositions,
+  Position,
+} from '../src/types/ChessBoardPositions';
 import { PlayerColour } from '../src/types/ChessGameInfo';
+import { Piece, PieceType, PlySquares } from '../src/types/ChessMove';
 import { isError, succ } from '../src/types/Result';
 
 // ---- chessEngine.parseGameInfo() ----
@@ -285,4 +291,681 @@ test('testStartGame', () => {
   };
   expect(countPeices(board, PlayerColour.White)).toStrictEqual(16);
   expect(countPeices(board, PlayerColour.Black)).toStrictEqual(16);
+});
+
+// ---- chessEngine.fenToBoardPositions() ----
+describe('fenToBoardPositions', () => {
+  const testCases = [
+    {
+      fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+      expectedPositions: [
+        {
+          piece: {
+            player: 0,
+            type: 3,
+          },
+          position: 'a1',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 1,
+          },
+          position: 'a2',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 2,
+          },
+          position: 'a3',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 4,
+          },
+          position: 'a4',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 5,
+          },
+          position: 'a5',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 2,
+          },
+          position: 'a6',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 1,
+          },
+          position: 'a7',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 3,
+          },
+          position: 'a8',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 0,
+          },
+          position: 'b1',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 0,
+          },
+          position: 'b2',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 0,
+          },
+          position: 'b3',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 0,
+          },
+          position: 'b4',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 0,
+          },
+          position: 'b5',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 0,
+          },
+          position: 'b6',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 0,
+          },
+          position: 'b7',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 0,
+          },
+          position: 'b8',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'g1',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'g2',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'g3',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'g4',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'g5',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'g6',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'g7',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'g8',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 3,
+          },
+          position: 'h1',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 1,
+          },
+          position: 'h2',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 2,
+          },
+          position: 'h3',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 4,
+          },
+          position: 'h4',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 5,
+          },
+          position: 'h5',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 2,
+          },
+          position: 'h6',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 1,
+          },
+          position: 'h7',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 3,
+          },
+          position: 'h8',
+        },
+      ],
+    },
+    {
+      fen: 'r3k2r/ppp2p1p/2n1p1p1/8/2B2P1q/2NPb1n1/PP4PP/R2Q3K w kq - 0 8',
+      expectedPositions: [
+        {
+          piece: {
+            player: 0,
+            type: 3,
+          },
+          position: 'a1',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 4,
+          },
+          position: 'a4',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 5,
+          },
+          position: 'a8',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 0,
+          },
+          position: 'b1',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 0,
+          },
+          position: 'b2',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 0,
+          },
+          position: 'b7',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 0,
+          },
+          position: 'b8',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 1,
+          },
+          position: 'c3',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 0,
+          },
+          position: 'c4',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 2,
+          },
+          position: 'c5',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 1,
+          },
+          position: 'c7',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 2,
+          },
+          position: 'd3',
+        },
+        {
+          piece: {
+            player: 0,
+            type: 0,
+          },
+          position: 'd6',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 4,
+          },
+          position: 'd8',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 1,
+          },
+          position: 'f3',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'f5',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'f7',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'g1',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'g2',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'g3',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'g6',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'g8',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 3,
+          },
+          position: 'h1',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 5,
+          },
+          position: 'h5',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 3,
+          },
+          position: 'h8',
+        },
+      ],
+    },
+  ];
+
+  const boardPositionsCorrect = (
+    expectedPeices: BoardPosition[],
+    board: ChessBoardPositions,
+  ): boolean => {
+    let correct = true;
+    board.forEach(row => {
+      row.forEach(square => {
+        const expectedPeice = expectedPeices.filter(
+          value => value.position === square.position,
+        );
+
+        if (expectedPeice.length === 0) {
+          // should be no piece here
+          if (square.piece !== null) {
+            correct = false;
+          }
+        } else {
+          // should be a piece here
+          if (
+            square.piece?.player !== expectedPeice[0].piece?.player ||
+            square.piece?.type !== expectedPeice[0].piece?.type
+          ) {
+            correct = false;
+          }
+        }
+      });
+    });
+    return correct;
+  };
+
+  testCases.forEach(test => {
+    it(test.fen, () => {
+      const boardPositions = chessEngine.fenToBoardPositions(test.fen);
+      const correct = boardPositionsCorrect(
+        test.expectedPositions as BoardPosition[],
+        boardPositions,
+      );
+      expect(correct).toStrictEqual(true);
+    });
+  });
+});
+
+// ---- chessEngine.makeMove() ----
+describe('makeMove', () => {
+  const positions = [
+    {
+      name: 'en passant possiblility recorded',
+      fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+      move: {
+        from: 'e2',
+        to: 'e4',
+      },
+      next: 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1',
+      possible: true,
+      piece: {
+        type: PieceType.Pawn,
+        player: PlayerColour.White,
+      },
+    },
+    {
+      name: 'normal illegal move',
+      fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+      move: {
+        from: 'e2',
+        to: 'e5',
+      },
+      next: 'rnbqkbnr/pppppppp/8/4P3/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
+      possible: true,
+      piece: {
+        type: PieceType.Pawn,
+        player: PlayerColour.White,
+      },
+    },
+    {
+      name: 'en passant capture',
+      fen: 'rnbqkbnr/pp3ppp/2pp4/4pP2/4P3/8/PPPP2PP/RNBQKBNR w KQkq e6 0 1',
+      move: {
+        from: 'f5',
+        to: 'e6',
+      },
+      next: 'rnbqkbnr/pp3ppp/2ppP3/8/4P3/8/PPPP2PP/RNBQKBNR b KQkq - 0 1',
+      possible: true,
+      piece: {
+        type: PieceType.Pawn,
+        player: PlayerColour.White,
+      },
+      captured: 'p',
+    },
+    {
+      name: 'checkmate',
+      fen: '7k/3R4/3p2Q1/6Q1/2N1N3/8/8/3R3K w - - 0 1',
+      move: {
+        from: 'd7',
+        to: 'd8',
+      },
+      next: '3R3k/8/3p2Q1/6Q1/2N1N3/8/8/3R3K b - - 1 1',
+      possible: true,
+      piece: {
+        type: PieceType.Rook,
+        player: PlayerColour.White,
+      },
+    },
+    {
+      name: 'en passant capture',
+      fen: 'rnbqkbnr/pppp2pp/8/4p3/4Pp2/2PP4/PP3PPP/RNBQKBNR b KQkq e3 0 1',
+      move: {
+        from: 'f4',
+        to: 'e3',
+      },
+      next: 'rnbqkbnr/pppp2pp/8/4p3/8/2PPp3/PP3PPP/RNBQKBNR w KQkq - 0 2',
+      possible: true,
+      captured: 'p',
+      piece: {
+        type: PieceType.Pawn,
+        player: PlayerColour.Black,
+      },
+    },
+    {
+      name: 'regular move',
+      fen: 'r2qkbnr/ppp2ppp/2n5/1B2pQ2/4P3/8/PPP2PPP/RNB1K2R b KQkq - 3 7',
+      next: 'r2qkb1r/ppp1nppp/2n5/1B2pQ2/4P3/8/PPP2PPP/RNB1K2R w KQkq - 4 8',
+      possible: true,
+      move: {
+        from: 'g8',
+        to: 'e7',
+      },
+      piece: {
+        type: PieceType.Knight,
+        player: PlayerColour.Black,
+      },
+    },
+    {
+      name: 'capture',
+      fen: 'rnb1kbnr/ppppqp1p/8/4p1p1/2P1N3/8/PP1PPPPP/R1BQKBNR w KQkq - 0 1',
+      next: 'rnb1kbnr/ppppqp1p/8/4p1N1/2P5/8/PP1PPPPP/R1BQKBNR b KQkq - 0 1',
+      possible: true,
+      move: {
+        from: 'e4',
+        to: 'g5',
+      },
+      captured: 'p',
+      piece: {
+        type: PieceType.Knight,
+        player: PlayerColour.White,
+      },
+    },
+    {
+      name: 'illegal move',
+      fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+      next: 'rnbqkbnr/pNpppppp/8/8/8/8/PPPPPPPP/R1BQKBNR b KQkq - 0 1',
+      possible: true,
+      move: {
+        from: 'b1',
+        to: 'b7',
+      },
+      captured: 'p',
+      piece: {
+        type: PieceType.Knight,
+        player: PlayerColour.White,
+      },
+    },
+    {
+      name: 'impossible move -> from is not our piece',
+      fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+      next: '',
+      possible: false,
+      move: {
+        from: 'b5',
+        to: 'b7',
+      },
+      piece: {
+        type: PieceType.Knight,
+        player: PlayerColour.White,
+      },
+    },
+    {
+      name: 'impossible move -> to is our piece',
+      fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+      next: '',
+      possible: false,
+      move: {
+        from: 'b1',
+        to: 'c1',
+      },
+      piece: {
+        type: PieceType.Knight,
+        player: PlayerColour.White,
+      },
+    },
+    {
+      name: ' impossible move -> from is not on board',
+      fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+      next: '',
+      possible: false,
+      move: {
+        from: 'k1',
+        to: 'c1',
+      },
+      piece: {
+        type: PieceType.Knight,
+        player: PlayerColour.White,
+      },
+    },
+    {
+      name: 'impossible move -> to is not on board',
+      fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+      next: '',
+      possible: false,
+      move: {
+        from: 'b1',
+        to: 'p1',
+      },
+      piece: {
+        type: PieceType.Knight,
+        player: PlayerColour.White,
+      },
+    },
+  ];
+  const boardCorrect = (
+    board: BoardPosition[][],
+    pliePosition: PlySquares,
+    piece: Piece,
+  ): boolean => {
+    const [fromRow, fromCol] = boardPositionToIdex(pliePosition.from);
+    const fromSquare = board[fromCol][fromRow];
+    const [toRow, toCol] = boardPositionToIdex(pliePosition.to);
+    const toSquare = board[toCol][toRow];
+    return (
+      fromSquare.piece === null &&
+      toSquare.piece !== null &&
+      toSquare.piece.player === piece.player &&
+      toSquare.piece?.type === piece.type
+    );
+  };
+  positions.forEach(function (position) {
+    it(position.name, function () {
+      const result = chessEngine.makeMove(position.fen, {
+        from: position.move.from as Position,
+        to: position.move.to as Position,
+      });
+      if (position.possible) {
+        if (result !== null) {
+          const board = chessEngine.fenToBoardPositions(result);
+          expect(
+            result &&
+              result == position.next &&
+              boardCorrect(
+                board,
+                {
+                  from: position.move.from as Position,
+                  to: position.move.to as Position,
+                },
+                position.piece,
+              ),
+          ).toBe(true);
+        }
+      } else {
+        expect(result).toBeNull();
+      }
+    });
+  });
 });

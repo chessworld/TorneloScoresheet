@@ -17,7 +17,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
   return (
     <View>
       <RoundedView style={styles.board}>
-        {(flipBoard ? [...boardPositions].reverse() : boardPositions).map(
+        {(!flipBoard ? [...boardPositions].reverse() : boardPositions).map(
           (row, rowIdx) => (
             <View style={styles.boardRow} key={'row-' + rowIdx.toString()}>
               {row.map(square => (
