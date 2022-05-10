@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, StatusBar, View } from 'react-native';
+import { Image, StatusBar, Text, View } from 'react-native';
 import { useAppModeState } from '../../context/AppModeStateContext';
 import {
   colours,
