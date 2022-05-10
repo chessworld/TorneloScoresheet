@@ -2,10 +2,16 @@ import {
   AppModeStateContextProvider,
   useAppModeState,
   useEnterPgnState,
+  useTablePairingState,
 } from '../src/context/AppModeStateContext';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { AppMode } from '../src/types/AppModeState';
 import { isError } from '../src/types/Result';
+import { ChessGameInfo } from '../src/types/ChessGameInfo';
+import { ChessMove } from '../src/types/ChessMove';
+import { ChessBoardPositions } from '../src/types/ChessBoardPositions';
+import moment from 'moment';
+import { chessEngine } from '../src/chessEngine/chessEngineInterface';
 
 describe('useAppModeState', () => {
   test('initial state', () => {
@@ -62,6 +68,41 @@ describe('useAppModeState', () => {
 
       // should no longer be in pgn state
       expect(enterPgnState.current).toBeNull();
+    });
+
+    var pairings: ChessGameInfo = {
+      name: 'name',
+      site: 'site',
+      date: moment('10/05/2022', 'DD/MM/YYYY'),
+      board: 0,
+      result: '01',
+      players: [],
+      pgn: '',
+    };
+    const [board, fen] = chessEngine.startGame();
+
+    test('checkEnterTablePairingMode', async () => {
+      const { result: enterTablePairingState } = renderHook(
+        () => useTablePairingState(),
+        {
+          wrapper: AppModeStateContextProvider,
+        },
+      );
+
+      await act(async () => {
+        if (enterTablePairingState.current === null) {
+          return;
+        }
+
+        await enterTablePairingState.current[1].goToRecording(
+          pairings,
+          [{ moveNo: 1, whitePly: { startingFen: fen } }],
+          board,
+        );
+
+        // should no longer be in pgn state
+        expect(enterTablePairingState.current).toBeNull();
+      });
     });
   });
 });
