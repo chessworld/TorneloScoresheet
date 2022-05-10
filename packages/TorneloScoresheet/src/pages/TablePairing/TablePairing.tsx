@@ -48,27 +48,26 @@ const TablePairing: React.FC = () => {
     playerColour: PlayerColour,
   ) => (
     <TouchableOpacity
-      style={[styles.player]}
+      style={styles.player}
       onPress={() => {
         setPlayer(playerNumber);
         setShowSheet(true);
       }}>
       <View style={styles.textSection}>
-        <PieceAsset
-          piece={{ type: PieceType.King, player: playerColour }}
-          size={100}
-          style={styles.image}
-        />
-        <View style={styles.textAlign}>
+        <View style={styles.cardColumns}>
+          <PieceAsset
+            piece={{ type: PieceType.King, player: playerColour }}
+            size={100}
+            style={styles.piece}
+          />
+        </View>
+        <View style={styles.cardCentre}>
           <Text style={styles.primaryText}>
             {pairing.players[playerNumber].firstName.toString() + ' '}
             {pairing.players[playerNumber].lastName.toString()}
           </Text>
           <View style={styles.playerInfoAlign}>
-            <PrimaryText
-              size={40}
-              weight={FontWeight.Medium}
-              style={styles.secondaryText}>
+            <PrimaryText size={40} weight={FontWeight.Medium}>
               {pairing.players[playerNumber].elo + ' '}
             </PrimaryText>
             <PieceAsset
@@ -76,13 +75,11 @@ const TablePairing: React.FC = () => {
               size={50}
             />
           </View>
-          <PrimaryText
-            size={40}
-            weight={FontWeight.Medium}
-            style={styles.secondaryText}>
+          <PrimaryText size={40} weight={FontWeight.Medium}>
             TO DO TEAM
           </PrimaryText>
         </View>
+        <View style={styles.cardColumns}></View>
       </View>
     </TouchableOpacity>
   );
