@@ -4,7 +4,7 @@ import { ChessGameInfo } from '../../types/ChessGameInfo';
 import { styles } from './style';
 import { Text, TouchableOpacity, View } from 'react-native';
 import Sheet from '../../components/Sheet/Sheet';
-import { startGame } from '../../chessEngine';
+import { chessEngine } from '../../chessEngine/chessEngineInterface';
 import PrimaryButton from '../../components/PrimaryButton/PrimaryButton';
 import { PieceType } from '../../types/ChessMove';
 import { PlayerColour } from '../../types/ChessGameInfo';
@@ -30,10 +30,10 @@ const TablePairing: React.FC = () => {
       return;
     }
 
-    const [board, fen] = startGame();
+    const [board, fen] = chessEngine.startGame();
     goToRecording(
       tablePairingMode.pairing,
-      [{ moveNo: 1, whiteMove: { startingFen: fen } }],
+      [{ moveNo: 1, whitePly: { startingFen: fen } }],
       board,
     );
   };
