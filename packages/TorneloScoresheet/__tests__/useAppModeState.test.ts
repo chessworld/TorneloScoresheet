@@ -8,8 +8,6 @@ import { act, renderHook } from '@testing-library/react-hooks';
 import { AppMode } from '../src/types/AppModeState';
 import { isError } from '../src/types/Result';
 import { ChessGameInfo } from '../src/types/ChessGameInfo';
-import { ChessMove } from '../src/types/ChessMove';
-import { ChessBoardPositions } from '../src/types/ChessBoardPositions';
 import moment from 'moment';
 import { chessEngine } from '../src/chessEngine/chessEngineInterface';
 
