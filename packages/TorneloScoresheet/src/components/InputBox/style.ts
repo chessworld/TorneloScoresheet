@@ -6,7 +6,6 @@ export const styles = StyleSheet.create({
   input: {
     fontSize: 30,
     color: colours.secondary,
-    marginTop: 58,
     borderColor: colours.secondary,
     fontFamily: primary,
     borderWidth: 1,

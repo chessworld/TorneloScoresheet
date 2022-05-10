@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useContext } from 'react';
-import { parseGameInfo } from '../../chessEngine';
+import { chessEngine } from '../../chessEngine/chessEngineInterface';
 import { AppModeState, AppMode, EnterPgnMode } from '../../types/AppModeState';
 import { ChessGameInfo } from '../../types/ChessGameInfo';
 import { isError, Result, succ, Success, fail } from '../../types/Result';
@@ -37,7 +37,7 @@ const makegoToTablePairingSelection =
       );
     }
 
-    const pairingOrFailures = pairingPgns.map(parseGameInfo);
+    const pairingOrFailures = pairingPgns.map(chessEngine.parseGameInfo);
 
     const firstError = pairingOrFailures.find(isError);
 

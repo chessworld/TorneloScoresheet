@@ -4,26 +4,28 @@ import {
   boardIndexToPosition,
   BoardPosition,
   ChessBoardPositions,
-} from './types/ChessBoardPositions';
+} from '../types/ChessBoardPositions';
 import {
   ChessGameInfo,
   Player,
   PlayerColour,
   PLAYER_COLOUR_NAME,
-} from './types/ChessGameInfo';
-import { Piece, PieceType } from './types/ChessMove';
-import { Result, succ, fail, isError } from './types/Result';
+} from '../types/ChessGameInfo';
+import { Piece, PieceType, PlySquares } from '../types/ChessMove';
+import { Result, succ, fail, isError } from '../types/Result';
+import { ChessEngineInterface } from './chessEngineInterface';
 
 const PARSING_FAILURE = fail(
   'Invalid PGN returned from website. Please double check the link',
 );
 
+// ------- Public interface
 /**
  * Extracts game info from a pgn string (using headers) will return undefined if error occurs when parsing.
  * @param pgn pgn string of the game to be parsed
  * @returns All info of game from headers
  */
-export const parseGameInfo = (pgn: string): Result<ChessGameInfo> => {
+const parseGameInfo = (pgn: string): Result<ChessGameInfo> => {
   // create game object to parse pgn
   let game = new Chess();
 
@@ -73,9 +75,48 @@ export const parseGameInfo = (pgn: string): Result<ChessGameInfo> => {
  * Starts a new game and returns starting fen and board positions
  * @returns [Board positions, starting fen]
  */
-export const startGame = (): [ChessBoardPositions, string] => {
+const startGame = (): [ChessBoardPositions, string] => {
   const game = new Chess();
   return [gameToPeiceArray(game), game.fen()];
+};
+
+/**
+ * Returns the board postion state given a fen
+ * @param fen the current state of the board
+ * @returns the board postions of the chess board
+ */
+const fenToBoardPositions = (fen: string): ChessBoardPositions => {
+  const game = new Chess(fen);
+  return gameToPeiceArray(game);
+};
+
+/**
+ * Processes a move given the starting fen and to and from positions
+ * @param startingFen the fen of the game state before the move
+ * @param plie the to and from positions of the move
+ * @returns the next fen if move is possible else null
+ */
+const makeMove = (
+  startingFen: string,
+  plySquares: PlySquares,
+): string | null => {
+  const game = new Chess(startingFen);
+  const result = game.force_move({ from: plySquares.from, to: plySquares.to });
+  if (result === null) {
+    return null;
+  }
+
+  return game.fen();
+};
+
+/**
+ * The exported chess engine object which implements all the public methods
+ */
+export const chessTsChessEngine: ChessEngineInterface = {
+  parseGameInfo,
+  startGame,
+  makeMove,
+  fenToBoardPositions,
 };
 
 // ------- Privates
@@ -86,36 +127,32 @@ export const startGame = (): [ChessBoardPositions, string] => {
  * @returns a nested array of board postitions
  */
 const gameToPeiceArray = (game: Chess): ChessBoardPositions => {
-  const board: BoardPosition[][] = [];
-
-  // for each row
-  game.board().map((gameRow, rowIdx) => {
-    const row: BoardPosition[] = [];
-
-    // for each col in row
-    gameRow.map((peice, colIdx) => {
-      // no piece
-      if (peice === null) {
-        row.push({
-          piece: null,
-          position: boardIndexToPosition(rowIdx, colIdx),
-        });
-      }
-
-      // existing piece
-      else {
-        row.push({
-          piece: mapEnginePeice(peice),
-          position: boardIndexToPosition(rowIdx, colIdx),
-        });
-      }
-    });
-
-    board.push(row);
-  });
+  const board = [...game.board()]
+    .reverse()
+    .map((gameRow, colIdx) =>
+      gameRow.map((peice, rowIdx) => getBoardPosition(peice, colIdx, rowIdx)),
+    );
 
   // cast is safe beause chess.ts is well tested, board at this point will always be an 8 X 8 array
   return board as ChessBoardPositions;
+};
+
+/**
+ * Maps a peice and position index to a BoardPosition
+ * @param piece the chess.ts piece at this postion
+ * @param colIdx the column of this position
+ * @param rowIdx the row of this position
+ * @returns BoardPosition object
+ */
+const getBoardPosition = (
+  piece: EnginePiece | null,
+  colIdx: number,
+  rowIdx: number,
+): BoardPosition => {
+  return {
+    piece: piece === null ? null : mapEnginePeice(piece),
+    position: boardIndexToPosition(rowIdx, colIdx),
+  };
 };
 
 /**
