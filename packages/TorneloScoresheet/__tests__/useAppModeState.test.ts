@@ -64,25 +64,5 @@ describe('useAppModeState', () => {
       // should no longer be in pgn state
       expect(enterPgnState.current).toBeNull();
     });
-
-    test('checkEnterTablePairingMode', async () => {
-      const { result: enterTablePairingState } = renderHook(
-        () => useTablePairingState(),
-        {
-          wrapper: AppModeStateContextProvider,
-        },
-      );
-
-      await act(async () => {
-        if (enterTablePairingState.current === null) {
-          return;
-        }
-
-        await enterTablePairingState.current[1].goToRecording();
-
-        // should no longer be in pgn state
-        expect(enterTablePairingState.current).toBeNull();
-      });
-    });
   });
 });
