@@ -2,10 +2,18 @@ import {
   AppModeStateContextProvider,
   useAppModeState,
   useEnterPgnState,
+  useGraphicalRecordingState,
 } from '../src/context/AppModeStateContext';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { AppMode } from '../src/types/AppModeState';
 import { isError } from '../src/types/Result';
+import {
+  generateGraphicalRecordingState,
+  mockAppModeContext,
+  renderCustomHook,
+} from '../src/testUtils';
+import { PlySquares } from '../src/types/ChessMove';
+import { chessEngine } from '../src/chessEngine/chessEngineInterface';
 
 describe('useAppModeState', () => {
   test('initial state', () => {
@@ -62,6 +70,94 @@ describe('useAppModeState', () => {
 
       // should no longer be in pgn state
       expect(enterPgnState.current).toBeNull();
+    });
+  });
+});
+
+describe('graphical recording moving', () => {
+  test('test white move in graphical recording mode', () => {
+    const originFen =
+      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+    const resultingFen =
+      'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1';
+    const move = { from: 'e2', to: 'e4' };
+    const moveHistory = [
+      {
+        moveNo: 1,
+        whitePly: {
+          startingFen: originFen,
+        },
+      },
+    ];
+
+    const graphicalState = generateGraphicalRecordingState(moveHistory);
+    const setContextMock = mockAppModeContext(graphicalState);
+    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+
+    act(() => {
+      graphicalStateHook.current?.[1].move(move as PlySquares);
+
+      expect(setContextMock).toHaveBeenCalledTimes(1);
+      expect(setContextMock).toHaveBeenCalledWith({
+        ...graphicalState,
+        board: chessEngine.fenToBoardPositions(resultingFen),
+        moveHistory: [
+          {
+            moveNo: 1,
+            whitePly: {
+              startingFen: originFen,
+              squares: move,
+            },
+            blackPly: { startingFen: resultingFen },
+          },
+        ],
+      });
+    });
+  });
+  test('test black move in graphical recording mode', () => {
+    const originFen =
+      'rnbqkbnr/pppp2pp/8/4p3/4Pp2/2PP4/PP3PPP/RNBQKBNR b KQkq e3 0 1';
+    const resultingFen =
+      'rnbqkbnr/pppp2pp/8/4p3/8/2PPp3/PP3PPP/RNBQKBNR w KQkq - 0 2';
+    const move = { from: 'f4', to: 'e3' };
+    const moveHistory = [
+      {
+        moveNo: 1,
+        whitePly: {
+          startingFen: '',
+          squares: { from: 'a1', to: 'a5' } as PlySquares,
+        },
+        blackPly: {
+          startingFen: originFen,
+        },
+      },
+    ];
+
+    const graphicalState = generateGraphicalRecordingState(moveHistory);
+    const setContextMock = mockAppModeContext(graphicalState);
+    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+
+    act(() => {
+      graphicalStateHook.current?.[1].move(move as PlySquares);
+
+      expect(setContextMock).toHaveBeenCalledTimes(1);
+      expect(setContextMock).toHaveBeenCalledWith({
+        ...graphicalState,
+        board: chessEngine.fenToBoardPositions(resultingFen),
+        moveHistory: [
+          {
+            ...moveHistory[0],
+            blackPly: {
+              startingFen: originFen,
+              squares: move,
+            },
+          },
+          {
+            moveNo: 2,
+            whitePly: { startingFen: resultingFen },
+          },
+        ],
+      });
     });
   });
 });
