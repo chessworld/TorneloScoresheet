@@ -25,17 +25,11 @@ const TablePairing: React.FC = () => {
     setSelectedPlayer(playerNumber);
   };
 
-  const handleConfirm = () => {
+  const useConfirm = () => {
     if (!tablePairingMode || !goToRecording) {
       return;
     }
-
-    const [board, fen] = chessEngine.startGame();
-    goToRecording(
-      tablePairingMode.pairing,
-      [{ moveNo: 1, whitePly: { startingFen: fen } }],
-      board,
-    );
+    goToRecording();
   };
 
   const handleCancel = () => {
@@ -96,7 +90,7 @@ const TablePairing: React.FC = () => {
           <PrimaryButton
             style={styles.confirmButton}
             labelStyle={styles.buttonText}
-            onPress={handleConfirm}
+            onPress={useConfirm}
             label="CONFIRM"
           />
           <PrimaryButton

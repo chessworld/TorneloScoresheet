@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { makeUseEnterPgnState } from '../hooks/appMode/enterPgnState';
 import { makeUsePairingSelectionState } from '../hooks/appMode/pairingSelectionState';
-import { makeUseEnterTablePairingState } from '../hooks/appMode/tablePairingState';
+import { makeUseTablePairingState } from '../hooks/appMode/tablePairingState';
 import { makeUseGraphicalRecordingState } from '../hooks/appMode/graphicalRecordingState';
 import { AppModeState, AppMode } from '../types/AppModeState';
 
@@ -34,6 +34,6 @@ export const useEnterPgnState = makeUseEnterPgnState(AppModeStateContext);
 export const usePairingSelectionState =
   makeUsePairingSelectionState(AppModeStateContext);
 export const useTablePairingState =
-  makeUseEnterTablePairingState(AppModeStateContext);
+  makeUseTablePairingState(AppModeStateContext);
 export const useGraphicalRecordingState =
   makeUseGraphicalRecordingState(AppModeStateContext);

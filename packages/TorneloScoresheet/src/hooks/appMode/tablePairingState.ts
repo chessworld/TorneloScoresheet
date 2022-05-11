@@ -1,26 +1,20 @@
-import { FenComment } from 'chess.ts';
 import { useContext } from 'react';
 import {
   AppMode,
   AppModeState,
   TablePairingMode,
 } from '../../types/AppModeState';
-import { ChessGameInfo } from '../../types/ChessGameInfo';
-import { ChessMove } from '../../types/ChessMove';
-import { ChessBoardPositions } from '../../types/ChessBoardPositions';
+import { chessEngine } from '../../chessEngine/chessEngineInterface';
+import { useTablePairingState } from '../../context/AppModeStateContext';
 
 type TablePairingStateHookType = [
   TablePairingMode,
   {
-    goToRecording: (
-      pairing: ChessGameInfo,
-      moveHistory: ChessMove[],
-      board: ChessBoardPositions,
-    ) => void;
+    goToRecording: () => void;
   },
 ];
 
-export const makeUseEnterTablePairingState =
+export const makeUseTablePairingState =
   (
     context: React.Context<
       [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
@@ -32,15 +26,12 @@ export const makeUseEnterTablePairingState =
       return null;
     }
 
-    const goToRecordingFunc = (
-      pairing: ChessGameInfo,
-      moveHistory: ChessMove[],
-      board: ChessBoardPositions,
-    ): void => {
+    const goToRecordingFunc = (): void => {
+      var [board, fen] = chessEngine.startGame();
       setAppModeState({
         mode: AppMode.GraphicalRecording,
-        pairing: pairing,
-        moveHistory: moveHistory,
+        pairing: appModeState.pairing,
+        moveHistory: [{ moveNo: 1, whitePly: { startingFen: fen } }],
         board: board,
       });
     };
