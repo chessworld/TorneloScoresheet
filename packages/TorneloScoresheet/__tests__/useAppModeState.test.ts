@@ -2,7 +2,6 @@ import {
   AppModeStateContextProvider,
   useAppModeState,
   useEnterPgnState,
-  useTablePairingState,
 } from '../src/context/AppModeStateContext';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { AppMode } from '../src/types/AppModeState';
