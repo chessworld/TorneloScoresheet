@@ -5,6 +5,7 @@ import { AppMode } from '../types/AppModeState';
 import EnterPgn from './EnterPgn/EnterPgn';
 import GraphicalRecording from './GraphicalRecording/GraphicalRecording';
 import PairingSelection from './PairingSelection/PairingSelection';
+import TablePairing from './TablePairing/TablePairing';
 
 const Main: React.FC = () => {
   const appMode = useAppModeState();
@@ -14,6 +15,8 @@ const Main: React.FC = () => {
       return <EnterPgn />;
     case AppMode.PariringSelection:
       return <PairingSelection />;
+    case AppMode.TablePairing:
+      return <TablePairing />;
     case AppMode.GraphicalRecording:
       return <GraphicalRecording />;
     default:
