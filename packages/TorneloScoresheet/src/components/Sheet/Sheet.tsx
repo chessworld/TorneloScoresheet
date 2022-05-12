@@ -1,6 +1,5 @@
 import React from 'react';
 import { Modal, View } from 'react-native';
-import { colours } from '../../style/colour';
 import IconButton from '../IconButton/IconButton';
 import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import { styles } from './style';
@@ -11,12 +10,11 @@ import { styles } from './style';
 
 export type SheetProps = {
   visible: boolean;
-  title: string;
-  content: string;
+  title?: string;
   dismiss: () => void;
 };
 
-const Sheet: React.FC<SheetProps> = ({ visible, content, dismiss, title }) => {
+const Sheet: React.FC<SheetProps> = ({ visible, children, dismiss, title }) => {
   return (
     <Modal transparent={true} animationType="fade" visible={visible}>
       <View style={styles.backdrop}>
@@ -35,11 +33,7 @@ const Sheet: React.FC<SheetProps> = ({ visible, content, dismiss, title }) => {
               onPress={dismiss}
             />
           </View>
-          <PrimaryText
-            colour={colours.black}
-            style={styles.content}
-            label={content}
-          />
+          <View style={styles.content}>{children}</View>
         </View>
       </View>
     </Modal>
