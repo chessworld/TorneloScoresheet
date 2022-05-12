@@ -6,6 +6,7 @@ import PrimaryText, {
 import RoundedView from '../../components/RoundedView/RoundedView';
 import { colours } from '../../style/colour';
 import { ChessGameInfo } from '../../types/ChessGameInfo';
+import { chessGameIdentifier } from '../../util/chessGameInfo';
 import { styles } from './style';
 
 type BoardPairingProps = {
@@ -28,7 +29,7 @@ const BoardPairing: React.FC<BoardPairingProps> = ({
             weight={FontWeight.SemiBold}
             size={80}
             colour={textColour}>
-            {board.round}.{board.board}
+            {chessGameIdentifier(board)}
           </PrimaryText>
           <View style={styles.nameColumn}>
             <PrimaryText
