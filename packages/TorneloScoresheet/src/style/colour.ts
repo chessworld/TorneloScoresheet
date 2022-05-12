@@ -26,6 +26,7 @@ export type ColourType = typeof colours[keyof typeof colours];
 export const statusBarStyleForColor = (colour: ColourType): StatusBarStyle => {
   switch (colour) {
     case colours.primary:
+    case colours.primary20:
     case colours.secondary:
     case colours.negative:
     case colours.darkenedElements:
@@ -62,6 +63,7 @@ export const textColour = (colour: ColourType): string => {
     case colours.secondary40:
     case colours.tertiary:
     case colours.white:
+    case colours.primary20:
       return 'black';
   }
 };
