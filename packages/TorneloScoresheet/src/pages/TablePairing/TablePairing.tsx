@@ -65,7 +65,7 @@ const TablePairing: React.FC = () => {
             />
           )}
           <PrimaryText
-            weight={FontWeight.Bold}
+            weight={FontWeight.Regular}
             size={70}
             style={styles.title}
             label={infoString}
