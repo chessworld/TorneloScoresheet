@@ -27,6 +27,7 @@ const colourForMode: Record<AppMode, ColourType> = {
   [AppMode.TablePairing]: colours.primary,
   [AppMode.GraphicalRecording]: colours.primary,
   [AppMode.ResultDisplay]: colours.primary,
+  [AppMode.TablePairing]: colours.primary,
 };
 
 const backgroundColorStyle = (backgroundColor: string) => ({
