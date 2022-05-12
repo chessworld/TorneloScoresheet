@@ -31,14 +31,14 @@ const PlayerCard: React.FC<playerCardProps> = ({
         </View>
         <View style={styles.cardCentre}>
           <PrimaryText
-            size={60}
+            size={40}
             weight={FontWeight.Bold}
             style={styles.primaryText}
             colour={colours.darkenedElements}
             label={fullName(player)}
           />
           <View style={styles.playerInfoAlign}>
-            <PrimaryText size={40} weight={FontWeight.Medium}>
+            <PrimaryText size={35} weight={FontWeight.Light}>
               {player.elo + ' '}
             </PrimaryText>
             {/* TODO - parse and render the country (and it's flag) */}
@@ -49,8 +49,9 @@ const PlayerCard: React.FC<playerCardProps> = ({
           </View>
           {/* TODO - parse and render the team */}
           <PrimaryText
-            size={40}
-            weight={FontWeight.Medium}
+            size={30}
+            weight={FontWeight.SemiBold}
+            colour={colours.darkenedElements}
             label="render team here"
           />
         </View>

@@ -6,18 +6,19 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     marginLeft: 30,
     marginRight: 30,
+    marginBottom: 30,
+    marginTop: 30,
   },
 
   player: {
-    height: 310,
-    marginLeft: 20,
-    marginRight: 20,
+    height: 270,
+    marginLeft: 30,
+    marginRight: 30,
     marginTop: 10,
     marginBottom: 0,
     borderRadius: 20,
     backgroundColor: colours.primary20,
   },
-
   textSection: {
     marginTop: 50,
     display: 'flex',
@@ -27,6 +28,7 @@ export const styles = StyleSheet.create({
 
   piece: {
     marginTop: 40,
+    alignContent: 'flex-end',
   },
 
   primaryText: {
@@ -36,8 +38,8 @@ export const styles = StyleSheet.create({
   horizontalSeparator: {
     borderBottomColor: 'black',
     borderBottomWidth: 1,
-    marginTop: 40,
-    marginBottom: 30,
+    marginTop: 45,
+    marginBottom: 35,
     marginLeft: 70,
     marginRight: 70,
   },
@@ -50,7 +52,7 @@ export const styles = StyleSheet.create({
 
   cardCentre: {
     alignItems: 'center',
-    flex: 4,
+    flex: 2,
   },
 
   playerInfoAlign: {
@@ -63,6 +65,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 40,
   },
+
   confirmButton: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -71,31 +74,20 @@ export const styles = StyleSheet.create({
     borderRadius: 4,
     elevation: 3,
     height: 60,
-    width: 170,
-    marginRight: 50,
+    width: 300,
     backgroundColor: colours.primary,
   },
 
-  cancelButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    elevation: 3,
-    height: 60,
-    width: 170,
-    backgroundColor: colours.secondary,
-  },
   buttonText: {
-    fontSize: 16,
+    fontSize: 23,
     lineHeight: 21,
     fontWeight: 'bold',
     letterSpacing: 0.25,
     color: colours.white,
   },
+
   buttonArea: {
-    alignItems: 'center',
+    justifyContent: 'center',
     flexDirection: 'row',
   },
 });
