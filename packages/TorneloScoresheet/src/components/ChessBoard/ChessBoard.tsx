@@ -1,11 +1,11 @@
 import React from 'react';
 import { colours } from '../../style/colour';
 import {
+  BoardPosition,
   boardPositionToIdex,
-  BOARD_SQUARES,
   Position,
 } from '../../types/ChessBoardPositions';
-import { Piece } from '../../types/ChessMove';
+import { Piece, PlySquares } from '../../types/ChessMove';
 import { CHESS_SQUARE_SIZE } from '../ChessSquare/ChessSquare';
 import DragAndDropContextProvider from '../DragAndDrop/DragAndDropContext/DragAndDropContext';
 import Draggable from '../DragAndDrop/Draggable/Draggable';
@@ -14,20 +14,16 @@ import PieceAsset from '../PieceAsset/PieceAsset';
 import RoundedView from '../RoundedView/RoundedView';
 import { styles } from './style';
 
-type PieceAtSquare = { piece: Piece; position: Position };
-
 export type ChessBoardProps = {
-  position: PieceAtSquare[];
+  positions: BoardPosition[];
   flipBoard?: boolean;
+  onMove: (plySquares: PlySquares) => void;
 };
 
-// Given a square index (val from 0 to 63), return the appropriate colour
-// for that square
-const squareColour = (squareIndex: number) =>
-  // Row index + Column index
-  (squareIndex + Math.floor(squareIndex / 8)) % 2
-    ? colours.lightBlue
-    : colours.darkBlue;
+const squareColour = (position: Position) => {
+  const [col, row] = boardPositionToIdex(position);
+  return (col + row) % 2 === 0 ? colours.darkBlue : colours.lightBlue;
+};
 
 const positionStyle = (position: Position, flipBoard: boolean) => {
   const [col, row] = boardPositionToIdex(position);
@@ -35,42 +31,77 @@ const positionStyle = (position: Position, flipBoard: boolean) => {
   return {
     position: 'absolute' as const,
     zIndex: 2,
-    left: (flipBoard ? row : 7 - row) * CHESS_SQUARE_SIZE,
-    top: (flipBoard ? col : 7 - col) * CHESS_SQUARE_SIZE,
+    left: (flipBoard ? col : col) * CHESS_SQUARE_SIZE,
+    top: (flipBoard ? row : 7 - row) * CHESS_SQUARE_SIZE,
   };
 };
 
-const handlePieceMove = (square: Position, data: unknown): void => {
-  console.log('square: ', square);
-  console.log('Piece was moved, got data: ', data);
+/**
+ * Will reverse the row order
+ * @param board The board postions
+ * @returns the board positions in reversed order
+ */
+const reverseRowOrder = (board: BoardPosition[]) => {
+  return (
+    board
+      // turn the array of length 64 into and 8x8
+      .reduce<BoardPosition[][]>((resultArray, item, index) => {
+        const rowIndex = Math.floor(index / 8);
+
+        // new row
+        if (!resultArray[rowIndex]) {
+          resultArray[rowIndex] = [];
+        }
+
+        // same row
+        resultArray[rowIndex].push(item);
+
+        return resultArray;
+      }, [])
+      // reverse the rows
+      .reverse()
+      // transform back to flat array of length 64
+      .flatMap(row => row)
+  );
 };
 
-const ChessBoard: React.FC<ChessBoardProps> = ({ position, flipBoard }) => {
-  const board = flipBoard ? [...BOARD_SQUARES].reverse() : BOARD_SQUARES;
-
+const ChessBoard: React.FC<ChessBoardProps> = ({
+  positions,
+  flipBoard,
+  onMove,
+}) => {
   return (
     <DragAndDropContextProvider>
       <RoundedView style={styles.board}>
         {/* Pieces */}
-        {position.map((pieceAtSquare, rowIdx) => (
-          <Draggable
-            data={pieceAtSquare}
-            key={rowIdx}
-            style={positionStyle(pieceAtSquare.position, flipBoard ?? false)}>
-            <PieceAsset piece={pieceAtSquare.piece} size={CHESS_SQUARE_SIZE} />
-          </Draggable>
-        ))}
+        {positions.map((position, rowIdx) => {
+          return (
+            position.piece !== null && (
+              <Draggable
+                data={position.position}
+                key={rowIdx}
+                style={positionStyle(position.position, flipBoard ?? false)}>
+                <PieceAsset piece={position.piece} size={CHESS_SQUARE_SIZE} />
+              </Draggable>
+            )
+          );
+        })}
         {/* Board Squares */}
-        {board.map((square, rowIndex) => (
-          <DropTarget
-            onDrop={(data: unknown) => handlePieceMove(square, data)}
-            key={rowIndex}
-            style={[
-              styles.boardSquare,
-              { backgroundColor: squareColour(rowIndex) },
-            ]}
-          />
-        ))}
+        {(!flipBoard ? reverseRowOrder(positions) : positions).map(
+          (square, rowIndex) => {
+            return (
+              <DropTarget
+                onDrop={(data: unknown) =>
+                  onMove({ from: data as Position, to: square.position })
+                }
+                key={rowIndex}
+                style={[
+                  styles.boardSquare,
+                  { backgroundColor: squareColour(square.position) },
+                ]}></DropTarget>
+            );
+          },
+        )}
       </RoundedView>
     </DragAndDropContextProvider>
   );
