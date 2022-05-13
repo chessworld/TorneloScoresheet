@@ -5,7 +5,7 @@ import {
   AppModeState,
   GraphicalRecordingMode,
 } from '../../types/AppModeState';
-import { ChessBoardPositions } from '../../types/ChessBoardPositions';
+import { BoardPosition } from '../../types/ChessBoardPositions';
 import { ChessMove, ChessPly, PlySquares } from '../../types/ChessMove';
 
 type GraphicalRecordingStateHookType = [
@@ -92,7 +92,7 @@ const addNextPlyToMoveHistory = (
 const processPlayerMove = (
   plySquares: PlySquares,
   moveHistory: ChessMove[],
-): [ChessBoardPositions, ChessMove[]] | null => {
+): [BoardPosition[], ChessMove[]] | null => {
   const currentMove = moveHistory[moveHistory.length - 1];
   const currentPly = {
     ...(currentMove.blackPly === undefined

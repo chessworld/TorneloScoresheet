@@ -1,4 +1,4 @@
-import { ChessBoardPositions } from './ChessBoardPositions';
+import { BoardPosition } from './ChessBoardPositions';
 import { ChessGameInfo } from './ChessGameInfo';
 import { ChessMove } from './ChessMove';
 
@@ -28,7 +28,7 @@ export type GraphicalRecordingMode = {
   mode: AppMode.GraphicalRecording;
   pairing: ChessGameInfo;
   moveHistory: ChessMove[];
-  board: ChessBoardPositions;
+  board: BoardPosition[];
 };
 
 export type AppModeState =
