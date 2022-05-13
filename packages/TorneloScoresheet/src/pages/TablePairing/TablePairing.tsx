@@ -26,10 +26,10 @@ const TablePairing: React.FC = () => {
   >(undefined);
 
   const confirm = () => {
-    if (!tablePairingMode || !goToRecording) {
+    if (!tablePairingMode || !goToRecording || selectedPlayer === undefined) {
       return;
     }
-    goToRecording();
+    goToRecording(selectedPlayer);
   };
 
   const cancelSelection = () => {

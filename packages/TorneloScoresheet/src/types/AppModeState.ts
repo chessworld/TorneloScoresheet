@@ -1,5 +1,5 @@
 import { BoardPosition } from './ChessBoardPositions';
-import { ChessGameInfo } from './ChessGameInfo';
+import { ChessGameInfo, PlayerColour } from './ChessGameInfo';
 import { ChessMove } from './ChessMove';
 
 export enum AppMode {
@@ -29,6 +29,7 @@ export type GraphicalRecordingMode = {
   pairing: ChessGameInfo;
   moveHistory: ChessMove[];
   board: BoardPosition[];
+  currentPlayer: PlayerColour;
 };
 
 export type AppModeState =
