@@ -83,6 +83,7 @@ export const useHitTest = (
     }
 
     targetDroppedOn.callback(data);
+    onMiss();
   };
 };
 
