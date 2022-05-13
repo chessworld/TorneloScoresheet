@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import ChessBoard from '../../components/ChessBoard/ChessBoard';
 import { useGraphicalRecordingState } from '../../context/AppModeStateContext';
+import { PlayerColour } from '../../types/ChessGameInfo';
 import { PlySquares } from '../../types/ChessMove';
 
 const GraphicalRecording: React.FC = () => {
@@ -47,6 +48,9 @@ const GraphicalRecording: React.FC = () => {
           <ChessBoard
             positions={graphicalRecordingMode.board}
             onMove={onMove}
+            flipBoard={
+              graphicalRecordingMode.currentPlayer === PlayerColour.Black
+            }
           />
         </View>
       )}

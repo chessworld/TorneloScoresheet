@@ -5,11 +5,12 @@ import {
   TablePairingMode,
 } from '../../types/AppModeState';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
+import { PlayerColour } from '../../types/ChessGameInfo';
 
 type TablePairingStateHookType = [
   TablePairingMode,
   {
-    goToRecording: () => void;
+    goToRecording: (currentPlayer: PlayerColour) => void;
   },
 ];
 
@@ -25,13 +26,14 @@ export const makeUseTablePairingState =
       return null;
     }
 
-    const goToRecording = (): void => {
+    const goToRecording = (currentPlayer: PlayerColour): void => {
       var [board, fen] = chessEngine.startGame();
       setAppModeState({
         mode: AppMode.GraphicalRecording,
         pairing: appModeState.pairing,
         moveHistory: [{ moveNo: 1, whitePly: { startingFen: fen } }],
         board,
+        currentPlayer,
       });
     };
 
