@@ -3,7 +3,6 @@ import moment from 'moment';
 import {
   boardIndexToPosition,
   BoardPosition,
-  ChessBoardPositions,
 } from '../types/ChessBoardPositions';
 import {
   ChessGameInfo,
@@ -75,7 +74,7 @@ const parseGameInfo = (pgn: string): Result<ChessGameInfo> => {
  * Starts a new game and returns starting fen and board positions
  * @returns [Board positions, starting fen]
  */
-const startGame = (): [ChessBoardPositions, string] => {
+const startGame = (): [BoardPosition[], string] => {
   const game = new Chess();
   return [gameToPeiceArray(game), game.fen()];
 };
@@ -85,7 +84,7 @@ const startGame = (): [ChessBoardPositions, string] => {
  * @param fen the current state of the board
  * @returns the board postions of the chess board
  */
-const fenToBoardPositions = (fen: string): ChessBoardPositions => {
+const fenToBoardPositions = (fen: string): BoardPosition[] => {
   const game = new Chess(fen);
   return gameToPeiceArray(game);
 };
@@ -126,15 +125,12 @@ export const chessTsChessEngine: ChessEngineInterface = {
  * @param game The game Object
  * @returns a nested array of board postitions
  */
-const gameToPeiceArray = (game: Chess): ChessBoardPositions => {
-  const board = [...game.board()]
+const gameToPeiceArray = (game: Chess): BoardPosition[] => {
+  return [...game.board()]
     .reverse()
-    .map((gameRow, colIdx) =>
-      gameRow.map((peice, rowIdx) => getBoardPosition(peice, colIdx, rowIdx)),
+    .flatMap((gameRow, rowIdx) =>
+      gameRow.map((peice, colIdx) => getBoardPosition(peice, colIdx, rowIdx)),
     );
-
-  // cast is safe beause chess.ts is well tested, board at this point will always be an 8 X 8 array
-  return board as ChessBoardPositions;
 };
 
 /**

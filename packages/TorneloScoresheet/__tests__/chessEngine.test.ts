@@ -3,7 +3,6 @@ import { chessEngine } from '../src/chessEngine/chessEngineInterface';
 import {
   BoardPosition,
   boardPositionToIdex,
-  ChessBoardPositions,
   Position,
 } from '../src/types/ChessBoardPositions';
 import { PlayerColour } from '../src/types/ChessGameInfo';
@@ -274,20 +273,11 @@ test('testStartGame', () => {
   expect(startingFen).toStrictEqual(
     'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
   );
-  expect(board.length).toStrictEqual(8);
-  const countPeices = (
-    board: ChessBoardPositions,
-    color: PlayerColour,
-  ): number => {
-    let count = 0;
-    board.forEach(row => {
-      row.forEach(square => {
-        if (square.piece?.player === color) {
-          count += 1;
-        }
-      });
-    });
-    return count;
+  expect(board.length).toStrictEqual(8 * 8);
+  const countPeices = (board: BoardPosition[], color: PlayerColour): number => {
+    return board.filter(
+      position => position.piece !== null && position.piece.player === color,
+    ).length;
   };
   expect(countPeices(board, PlayerColour.White)).toStrictEqual(16);
   expect(countPeices(board, PlayerColour.Black)).toStrictEqual(16);
@@ -311,56 +301,56 @@ describe('fenToBoardPositions', () => {
             player: 0,
             type: 1,
           },
-          position: 'a2',
+          position: 'b1',
         },
         {
           piece: {
             player: 0,
             type: 2,
           },
-          position: 'a3',
+          position: 'c1',
         },
         {
           piece: {
             player: 0,
             type: 4,
           },
-          position: 'a4',
+          position: 'd1',
         },
         {
           piece: {
             player: 0,
             type: 5,
           },
-          position: 'a5',
+          position: 'e1',
         },
         {
           piece: {
             player: 0,
             type: 2,
           },
-          position: 'a6',
+          position: 'f1',
         },
         {
           piece: {
             player: 0,
             type: 1,
           },
-          position: 'a7',
+          position: 'g1',
         },
         {
           piece: {
             player: 0,
             type: 3,
           },
-          position: 'a8',
+          position: 'h1',
         },
         {
           piece: {
             player: 0,
             type: 0,
           },
-          position: 'b1',
+          position: 'a2',
         },
         {
           piece: {
@@ -374,84 +364,84 @@ describe('fenToBoardPositions', () => {
             player: 0,
             type: 0,
           },
-          position: 'b3',
+          position: 'c2',
         },
         {
           piece: {
             player: 0,
             type: 0,
           },
-          position: 'b4',
+          position: 'd2',
         },
         {
           piece: {
             player: 0,
             type: 0,
           },
-          position: 'b5',
+          position: 'e2',
         },
         {
           piece: {
             player: 0,
             type: 0,
           },
-          position: 'b6',
+          position: 'f2',
         },
         {
           piece: {
             player: 0,
-            type: 0,
-          },
-          position: 'b7',
-        },
-        {
-          piece: {
-            player: 0,
-            type: 0,
-          },
-          position: 'b8',
-        },
-        {
-          piece: {
-            player: 1,
-            type: 0,
-          },
-          position: 'g1',
-        },
-        {
-          piece: {
-            player: 1,
             type: 0,
           },
           position: 'g2',
         },
         {
           piece: {
-            player: 1,
+            player: 0,
             type: 0,
           },
-          position: 'g3',
+          position: 'h2',
         },
         {
           piece: {
             player: 1,
             type: 0,
           },
-          position: 'g4',
+          position: 'a7',
         },
         {
           piece: {
             player: 1,
             type: 0,
           },
-          position: 'g5',
+          position: 'b7',
         },
         {
           piece: {
             player: 1,
             type: 0,
           },
-          position: 'g6',
+          position: 'c7',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'd7',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'e7',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'f7',
         },
         {
           piece: {
@@ -465,56 +455,56 @@ describe('fenToBoardPositions', () => {
             player: 1,
             type: 0,
           },
-          position: 'g8',
+          position: 'h7',
         },
         {
           piece: {
             player: 1,
             type: 3,
           },
-          position: 'h1',
+          position: 'a8',
         },
         {
           piece: {
             player: 1,
             type: 1,
           },
-          position: 'h2',
+          position: 'b8',
         },
         {
           piece: {
             player: 1,
             type: 2,
           },
-          position: 'h3',
+          position: 'c8',
         },
         {
           piece: {
             player: 1,
             type: 4,
           },
-          position: 'h4',
+          position: 'd8',
         },
         {
           piece: {
             player: 1,
             type: 5,
           },
-          position: 'h5',
+          position: 'e8',
         },
         {
           piece: {
             player: 1,
             type: 2,
           },
-          position: 'h6',
+          position: 'f8',
         },
         {
           piece: {
             player: 1,
             type: 1,
           },
-          position: 'h7',
+          position: 'g8',
         },
         {
           piece: {
@@ -540,21 +530,21 @@ describe('fenToBoardPositions', () => {
             player: 0,
             type: 4,
           },
-          position: 'a4',
+          position: 'd1',
         },
         {
           piece: {
             player: 0,
             type: 5,
           },
-          position: 'a8',
+          position: 'h1',
         },
         {
           piece: {
             player: 0,
             type: 0,
           },
-          position: 'b1',
+          position: 'a2',
         },
         {
           piece: {
@@ -568,14 +558,14 @@ describe('fenToBoardPositions', () => {
             player: 0,
             type: 0,
           },
-          position: 'b7',
+          position: 'g2',
         },
         {
           piece: {
             player: 0,
             type: 0,
           },
-          position: 'b8',
+          position: 'h2',
         },
         {
           piece: {
@@ -589,84 +579,56 @@ describe('fenToBoardPositions', () => {
             player: 0,
             type: 0,
           },
-          position: 'c4',
+          position: 'd3',
         },
         {
           piece: {
             player: 1,
             type: 2,
           },
-          position: 'c5',
+          position: 'e3',
         },
         {
           piece: {
             player: 1,
             type: 1,
           },
-          position: 'c7',
+          position: 'g3',
         },
         {
           piece: {
             player: 0,
             type: 2,
           },
-          position: 'd3',
+          position: 'c4',
         },
         {
           piece: {
             player: 0,
             type: 0,
           },
-          position: 'd6',
+          position: 'f4',
         },
         {
           piece: {
             player: 1,
             type: 4,
           },
-          position: 'd8',
+          position: 'h4',
         },
         {
           piece: {
             player: 1,
             type: 1,
           },
-          position: 'f3',
+          position: 'c6',
         },
         {
           piece: {
             player: 1,
             type: 0,
           },
-          position: 'f5',
-        },
-        {
-          piece: {
-            player: 1,
-            type: 0,
-          },
-          position: 'f7',
-        },
-        {
-          piece: {
-            player: 1,
-            type: 0,
-          },
-          position: 'g1',
-        },
-        {
-          piece: {
-            player: 1,
-            type: 0,
-          },
-          position: 'g2',
-        },
-        {
-          piece: {
-            player: 1,
-            type: 0,
-          },
-          position: 'g3',
+          position: 'e6',
         },
         {
           piece: {
@@ -680,21 +642,49 @@ describe('fenToBoardPositions', () => {
             player: 1,
             type: 0,
           },
-          position: 'g8',
+          position: 'a7',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'b7',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'c7',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'f7',
+        },
+        {
+          piece: {
+            player: 1,
+            type: 0,
+          },
+          position: 'h7',
         },
         {
           piece: {
             player: 1,
             type: 3,
           },
-          position: 'h1',
+          position: 'a8',
         },
         {
           piece: {
             player: 1,
             type: 5,
           },
-          position: 'h5',
+          position: 'e8',
         },
         {
           piece: {
@@ -709,30 +699,28 @@ describe('fenToBoardPositions', () => {
 
   const boardPositionsCorrect = (
     expectedPeices: BoardPosition[],
-    board: ChessBoardPositions,
+    board: BoardPosition[],
   ): boolean => {
     let correct = true;
-    board.forEach(row => {
-      row.forEach(square => {
-        const expectedPeice = expectedPeices.filter(
-          value => value.position === square.position,
-        );
+    board.forEach(position => {
+      const expectedPeice = expectedPeices.filter(
+        value => value.position === position.position,
+      );
 
-        if (expectedPeice.length === 0) {
-          // should be no piece here
-          if (square.piece !== null) {
-            correct = false;
-          }
-        } else {
-          // should be a piece here
-          if (
-            square.piece?.player !== expectedPeice[0].piece?.player ||
-            square.piece?.type !== expectedPeice[0].piece?.type
-          ) {
-            correct = false;
-          }
+      if (expectedPeice.length === 0) {
+        // should be no piece here
+        if (position.piece !== null) {
+          correct = false;
         }
-      });
+      } else {
+        // should be a piece here
+        if (
+          position.piece?.player !== expectedPeice[0].piece?.player ||
+          position.piece?.type !== expectedPeice[0].piece?.type
+        ) {
+          correct = false;
+        }
+      }
     });
     return correct;
   };
@@ -926,20 +914,24 @@ describe('makeMove', () => {
     },
   ];
   const boardCorrect = (
-    board: BoardPosition[][],
+    board: BoardPosition[],
     pliePosition: PlySquares,
     piece: Piece,
   ): boolean => {
-    const [fromRow, fromCol] = boardPositionToIdex(pliePosition.from);
-    const fromSquare = board[fromCol][fromRow];
-    const [toRow, toCol] = boardPositionToIdex(pliePosition.to);
-    const toSquare = board[toCol][toRow];
-    return (
-      fromSquare.piece === null &&
-      toSquare.piece !== null &&
-      toSquare.piece.player === piece.player &&
-      toSquare.piece?.type === piece.type
+    const fromSquare = board.find(
+      square => square.position === pliePosition.from,
     );
+    const toSquare = board.find(square => square.position === pliePosition.to);
+    if (fromSquare && toSquare) {
+      return (
+        fromSquare.piece === null &&
+        toSquare.piece !== null &&
+        toSquare.piece.player === piece.player &&
+        toSquare.piece?.type === piece.type
+      );
+    } else {
+      return true;
+    }
   };
   positions.forEach(function (position) {
     it(position.name, function () {
