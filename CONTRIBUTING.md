@@ -31,7 +31,8 @@ This file contains some high level guidelines for getting started and rules that
   3.  Pull requests should focus on a single feature/change
  
 ## 6. Code Guidelines 
-  1.  Expressions are preferred over statements (unless it severely reduces readability) (e.g. prefer `expr ? 0 : 1` over `if (expr) { return 0; } else { return 1;     }`)
+
+  1.  Expressions are preferred over statements unless it severely reduces readability (e.g. prefer `expr ? 0 : 1` over `if (expr) { return 0; } else { return 1; }' 
   2. Props should never be mutated
   3. Side effects should be avoided
   4. Mutation should be avoided
@@ -39,11 +40,12 @@ This file contains some high level guidelines for getting started and rules that
   6. Prefer [short hand object initialisation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer) (e.g. prefer `{ a }`     over `{ a: a }`)
   7. Prefer `array.prototype.map` over raw for loops
   8. Avoid `else` statements unless they add clarity/readability
-  9. Types should reflect the concept they represent as strictly as possible (e.g. prefer `type Players = { white: Player, black: Player }` over `type Players =         Player[]`)
+  9. Types should reflect the concept they represent as strictly as possible (e.g. prefer `type Players = { white: Player, black: Player }` over `type Players =  Player[]`)
  
 ## 7. Naming Guidelines 
   
   1. Prefer clear, descriptive names over short names (e.g. `chessBoardUid` should be preferred over `uid`)
+  2. Variables referring to colours should use the 'colour' spelling (as opposed to color)
   
  ## 8. General Guidelines 
 
