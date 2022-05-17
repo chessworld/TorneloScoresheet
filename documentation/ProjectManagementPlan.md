@@ -1,16 +1,44 @@
 # Project Management Plan
 
 ## Project Wide Vision Statement
-The aim of this project is to create an iOS application that can be used to record the moves made in chess tournaments. Tornelo is a company that hosts chess tournaments that are recognised by the world chess federation, and until recently the only approved method to record moves during games was to use paper and pen. Recently however, the world chess federation has approved the use of apps on mobile devices, and the goal of the project is to get the app endorsed by the federation for its use in official chess tournaments by Tornelo.
+The aim of this project is to create an iOS application that can be used to record the moves made in chess tournaments. Our client, Tornelo, is a company that provides a variety of services to support the organisation and running of chess tournaments. Recently, the International Chess Federation (FIDE) approved the use of digital recordkeeping. Our goal is to create an app that is endorsed for use by FIDE and can be used by Tornelo during chess tournaments. 
 
 ## Stakeholders
-Our primary stakeholders are the Tornelo team, who will be deploying the app in their tournaments. The tournament invigilators and organizers will also be our stakeholders, as they will be relying on the application to record the moves made by players during the matches. This means the application needs to work correctly and be intuitive to use. The players in these tournaments will also be our stakeholders as they will rely on our app to work correctly so that their games are properly recorded. The World Chess Federation will also be a stakeholder of the project as they will be endorsing our final app and will rely on it to work properly.
+- Our primary stakeholder is the Tornelo team, who will be deploying the app in their tournaments.
+
+- Arbiters and organizers will use our app during the tournament set up, requiring tablets displaying the correct game to be put on each table. These stakeholders will also rely on our app to record moves made by players, prevent cheating, and allow them to verify whether specific moves were legal.
+
+- The chess players in these tournaments will rely on our app to work correctly so that their games are properly recorded. 
+
+- The FIDE will also be a stakeholder of the project as they will be endorsing our final app and will rely on it to work properly.
+
+## Sprint Retrospective Methodology
+- During our sprint review meeting, all team members will summarise the work they completed during the sprint. 
+- The team will then discuss and document what could have been improved and what went well. 
+- The team should discuss possible solutions to problems encountered during the sprint, and create Trello tickets accordingly. 
+- If needed, team documents  (e.g QAP or PMP) should be updated to include any changes to team processes. 
 
 ## Sprint Planning Methodology
-During our sprint planning sessions, the development team will meet with our product owner to determine which stories will be included in the next sprint. The Product owner will detail which user stories the team must implement in the coming sprint. The team will then ask questions about the story to ensure that everyone understands what must be done, and what the scope of the story is. The team will then estimate the story points of the story and any discrepancies will be addressed. This process will be repeated until enough stories have been added to the sprint to last the full duration. Once this process is completed, the team will then have an internal meeting where they will discuss the implementation details and break down the responsibilities of each team member.
+Upon completion of the sprint review, the team will plan the upcoming sprint as follows: 
+1. The team will decide which tasks should be implemented. This will be done based on team availability and task priority. 
+2. The team will estimate the tasks according to the story point table
 
-## Sprint Review Methodology
-During our sprint review meeting, the team and product owner will meet to review the progress of the previous sprint. The team will go through each user story one by one and demo the story in action. Once this is done the product owner will give their feedback, and we will then move on the next story. Once all stories have been discussed, the sprint can be finalized and the meeting is over.
+| Story points | Description                                                                 | Time estimate |
+|--------------|-----------------------------------------------------------------------------|---------------|
+| 1            | Answering a question, quick investigation                                   | < 30 mins     |
+| 2            | Copy text / very minor code edits                                           | < 1 hour      |
+| 3            | Extensive docs / minor code edits                                           | < 3 hours     |
+| 5            | Substantial work, like a sub-feature                                        | < 1 day       |
+| 8            | Substantial work, with potentially unknown technology                       | < 2 days      |
+| 13           | Too big, like a full feature. Break down the task or convert it to an epic. | Full sprint   |
+
+3. At most two team members will be assigned to each ticket. 
+
+- Immediately after our sprint planning sessions, the development team will meet with the product owner/client to showcase the work done in the previous sprint and get approval for the work in the upcoming sprint.
+- If the client requests any changes, steps 1-3 above will be repeated until the client has approved the sprint backlog.
+
+### Working During Sprint 
+During the sprint, team members will work mostly independently or in pairs on pre-allocated tasks. Progress or roadblocks should be posted to messenger in lieu of daily stand ups to keep the entire team informed. If breaking changes are being made, the team should be informed in advance via Slack and Messenger.
 
 ## CI/CD Solutions
 Our project will require a CI pipeline to perform the following tasks:
@@ -53,27 +81,17 @@ The key stakeholders that need to be kept informed are
 - Supervisor (informed only about big-picture and project progress)
 
 The methods for keeping all parties informed and up-to-speed with the project progress have been agreed upon as follows: 
-- Facebook: for team member communication, such as asking quick questions and organising meetings.
-- Slack: for more significant team member communication, such as announcements or discussing larger and more complex problems. 
-- Email: for communicating with clients and supervisor to ask questions and/or organise meetings.
-- Meetings (Zoom/in-person): meetings with client, supervisor or between team members. These meetings will be used for requirement gathering, sprint planning, retrospectives or to resolve larger and more complex issues that require a more in-depth discussion. 
+- Facebook Messenger: for team member communication, such as asking quick questions and organising meetings. Team members should check this daily.
+- Slack: for more significant team member communication, such as announcements or discussing larger and more complex problems. All pull requests should be posted in the dedicated Slack channel. Team members should check the Slack at least weekly.
+- Email: for communicating with clients and supervisor to ask questions and/or organise meetings. Team members should check this at least weekly, Llio who is responsible for client communication should check daily.
+- Meetings (Zoom/in-person): meetings with client, supervisor or between team members. These meetings will be used for requirement gathering, sprint planning, retrospectives or to resolve larger and more complex issues that require a more in-depth discussion. Client and supervisor meetings will happen fortnightly. 
 
-Meetings will form an essential part of the project process, and will play a key role in the way all parties will stay in the loop. Meetings will likely be held in a mixture of online and/or in-person mode due to the client being located overseas, and some team members occasionally being unavailable for in-person meetings. It is expected that within the team meetings will be occurring more than once per week, client meetings should occur approximately once per fortnight, and meetings with the project supervisor to occur around once per month. During more formal meetings such as sprint planning and retrospectives, minutes should be noted down and made accessible to the entire team for future reference. 
+Meetings will form an essential part of the project process, and will play a key role in the way all parties will stay in the loop. Meetings will likely be held in a mixture of online and/or in-person mode due to the client preferring Zoom communication, and some team members occasionally being unavailable for in-person meetings. During more formal meetings such as sprint planning and retrospectives, minutes should be noted down and made accessible to the entire team for future reference. 
 
 ## Process Information
-
 This project will follow an adapted Agile methodology, which will involve sprint planning meetings, individual and team-based work during the sprint, and conclude with a retrospective session to reflect and improve upon the last sprint before beginning the next one. 
 
-Due to being a university project and the team not always being available at the same time, this project agile method will omit daily stand-ups from the methodology. However, to compensate for this and not lose team awareness and focus, we will be using Slack to post updates on progress whenever a task is being completed or worked on, or if an issue is encountered. 
-
-### Sprint Planning
-Sprint planning meetings will be held on a fortnightly basis to prepare for the sprint. This will be used to work through and decide which backlog items to be worked on in the coming fortnight. It can also be used to allocate specific tasks or tickets to individual team members. If the client is involved, this is a good time to continue to gather and understand requirements. 
-
-### Working During Sprint 
-During the sprint, team members will work mostly independently or in small sub-teams on pre-allocated tasks. Progress or roadblocks should be posted to the Slack channel in lieu of daily stand ups to keep the entire team informed. 
-
-### Retrospective
-Retrospective sessions will be held by the team on a fortnightly basis. These meetings will identify what the team did well, what did not go well, and highlight any areas of confusion. Teams should document the outcomes and the possible improvements that can be made in the next sprint. If the client is involved, it is a good time to also perform some requirement validation to ensure the project is going in the right direction.  
+Due to being a university project and the team not always being available at the same time, this project agile method will omit daily stand-ups. However, to compensate for this and not lose team awareness and focus, we will be using Messenger to post updates on progress whenever a task is being completed or worked on, or if an issue is encountered. 
 
 ## Team Management
 The team is following a modified version of the Agile methodology. As such, there are three main roles being used: product owner, scrum master, and developer. 
