@@ -31,9 +31,10 @@ Repeated HTML should be implemented as a different component.
 - All colours used in the project should be added to `colours.ts` -> no inline colours
 - There should be a single return statement from each Component
 - Each Component should only have one block of `JSX`
-- Prefer [short hand object initialisation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer) `{ a }` over `{ a: a }`
+- Prefer [short hand object initialisation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer) (e.g. prefer `{ a }` over `{ a: a }`)
 - Prefer clear, descriptive names over short names (e.g. `chessBoardUid` should be preferred over `uid`)
 - No abbreviations
 - Prefer `array.prototype.map` over raw for loops
 - Avoid `else` statements unless they add clarity/readability
 - Prefer early return statements on bad conditions
+- Types should reflect the concept they represent as strictly as possible (e.g. prefer `type Players = { white: Player, black: Player }` over `type Players = Player[]`)
