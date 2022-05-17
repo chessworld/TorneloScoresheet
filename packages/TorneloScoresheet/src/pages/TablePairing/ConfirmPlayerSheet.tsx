@@ -5,6 +5,7 @@ import PrimaryText, {
   FontWeight,
 } from '../../components/PrimaryText/PrimaryText';
 import Sheet from '../../components/Sheet/Sheet';
+import { colours } from '../../style/colour';
 import { Player } from '../../types/ChessGameInfo';
 import { fullName } from '../../util/player';
 import { styles } from './style';
@@ -27,7 +28,8 @@ const ConfirmPlayerSheet: React.FC<ComfirmPlayerSheetProps> = ({
       <PrimaryText
         style={styles.confirmText}
         weight={FontWeight.Bold}
-        size={30}>
+        size={30}
+        colour={colours.darkenedElements}>
         Confirm Start As {'\n'}
         {fullName(player)}
       </PrimaryText>
@@ -37,12 +39,6 @@ const ConfirmPlayerSheet: React.FC<ComfirmPlayerSheetProps> = ({
           labelStyle={styles.buttonText}
           onPress={confirm}
           label="CONFIRM"
-        />
-        <PrimaryButton
-          style={styles.cancelButton}
-          labelStyle={styles.buttonText}
-          onPress={cancel}
-          label="Cancel"
         />
       </View>
     </View>
