@@ -2,7 +2,7 @@ import React from 'react';
 import { colours } from '../../style/colour';
 import {
   BoardPosition,
-  boardPositionToIdex,
+  boardPositionToIndex,
   Position,
 } from '../../types/ChessBoardPositions';
 import { Piece, PlySquares } from '../../types/ChessMove';
@@ -21,12 +21,12 @@ export type ChessBoardProps = {
 };
 
 const squareColour = (position: Position) => {
-  const [col, row] = boardPositionToIdex(position);
+  const [col, row] = boardPositionToIndex(position);
   return (col + row) % 2 === 0 ? colours.darkBlue : colours.lightBlue;
 };
 
 const positionStyle = (position: Position, flipBoard: boolean) => {
-  const [col, row] = boardPositionToIdex(position);
+  const [col, row] = boardPositionToIndex(position);
 
   return {
     position: 'absolute' as const,
