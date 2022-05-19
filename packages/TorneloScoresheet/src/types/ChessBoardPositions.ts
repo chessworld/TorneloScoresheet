@@ -60,7 +60,7 @@ export const boardIndexToPosition = (
   return `${col}${row}`;
 };
 
-export const boardPositionToIdex = (position: Position): [number, number] => {
+export const boardPositionToIndex = (position: Position): [number, number] => {
   try {
     const col = position[0] as Column;
     const row = position[1] as Row;

@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { colours } from '../../style/colour';
 import {
   BoardPosition,
-  boardPositionToIdex,
+  boardPositionToIndex,
   Position,
 } from '../../types/ChessBoardPositions';
 import PieceAsset from '../PieceAsset/PieceAsset';
@@ -16,7 +16,7 @@ export type ChessSquareProps = {
 };
 
 const squareColor = (position: Position) => {
-  const [row, col] = boardPositionToIdex(position);
+  const [row, col] = boardPositionToIndex(position);
   const isAlternateTile = (row + col) % 2 === 0;
   return {
     backgroundColor: isAlternateTile ? colours.lightBlue : colours.darkBlue,

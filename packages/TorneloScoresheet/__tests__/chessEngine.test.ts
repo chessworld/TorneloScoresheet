@@ -1,10 +1,6 @@
 import moment from 'moment';
 import { chessEngine } from '../src/chessEngine/chessEngineInterface';
-import {
-  BoardPosition,
-  boardPositionToIdex,
-  Position,
-} from '../src/types/ChessBoardPositions';
+import { BoardPosition, Position } from '../src/types/ChessBoardPositions';
 import { PlayerColour } from '../src/types/ChessGameInfo';
 import { Piece, PieceType, PlySquares } from '../src/types/ChessMove';
 import { isError, succ } from '../src/types/Result';
