@@ -15,7 +15,6 @@ import {
 import { PlySquares } from '../src/types/ChessMove';
 import { chessEngine } from '../src/chessEngine/chessEngineInterface';
 import axios, { AxiosRequestConfig } from 'axios';
-import { ProfilerProps } from 'react';
 
 describe('useAppModeState', () => {
   test('initial state', () => {
@@ -69,8 +68,8 @@ describe('useAppModeState', () => {
     const axioGetMock = jest.spyOn(axios, 'get');
     axioGetMock.mockImplementation(
       (
-        url?: string,
-        config?: AxiosRequestConfig<unknown> | undefined,
+        _url?: string,
+        _config?: AxiosRequestConfig<unknown> | undefined,
       ): Promise<unknown> => Promise.resolve({ status: 200, data: pgnSucess }),
     );
 

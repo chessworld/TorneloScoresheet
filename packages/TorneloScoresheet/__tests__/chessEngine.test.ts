@@ -270,8 +270,11 @@ test('testStartGame', () => {
     'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
   );
   expect(board.length).toStrictEqual(8 * 8);
-  const countPeices = (board: BoardPosition[], color: PlayerColour): number => {
-    return board.filter(
+  const countPeices = (
+    boardToCount: BoardPosition[],
+    color: PlayerColour,
+  ): number => {
+    return boardToCount.filter(
       position => position.piece !== null && position.piece.player === color,
     ).length;
   };
@@ -940,7 +943,7 @@ describe('makeMove', () => {
           const board = chessEngine.fenToBoardPositions(result);
           expect(
             result &&
-              result == position.next &&
+              result === position.next &&
               boardCorrect(
                 board,
                 {

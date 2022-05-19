@@ -5,7 +5,7 @@ import {
   boardPositionToIndex,
   Position,
 } from '../../types/ChessBoardPositions';
-import { Piece, PlySquares } from '../../types/ChessMove';
+import { PlySquares } from '../../types/ChessMove';
 import { CHESS_SQUARE_SIZE } from '../ChessSquare/ChessSquare';
 import DragAndDropContextProvider from '../DragAndDrop/DragAndDropContext/DragAndDropContext';
 import Draggable from '../DragAndDrop/Draggable/Draggable';
@@ -98,7 +98,8 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
                 style={[
                   styles.boardSquare,
                   { backgroundColor: squareColour(square.position) },
-                ]}></DropTarget>
+                ]}
+              />
             );
           },
         )}
