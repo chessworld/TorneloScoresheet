@@ -1254,87 +1254,124 @@ export function getBoard(board: Board): (Piece | null)[][] {
 export function processMove(
   state: State,
   move: PartialMove,
-  flag?: number,
   promotion?: string
 ): HexMove | null {
   const us = state.turn
   const them = swapColor(us)
   const second_rank: { [key: string]: number } = { b: RANK_7, w: RANK_2 }
 
-  // check if square exists
+  // check if squares exists
   let from = move.from.toLowerCase()
   let to = move.to.toLowerCase()
   if (!isSquare(from) || !isSquare(to)) {
     return null
   }
-  let fromSquare = SQUARES[from]
-  let toSquare = SQUARES[to]
+  const fromSquare = SQUARES[from]
+  const toSquare = SQUARES[to]
 
-  // check from square corresponds to our peice
+  // check from square is our peice
   const piece = state.board[fromSquare]
   if (!piece || piece.color !== us) {
     return null
   }
 
-  // check dest square corresponds to our peice
+  // check dest square is not our piece
   const destPiece = state.board[toSquare]
   if (destPiece && destPiece.color !== them) {
     return null
   }
 
-  // if flag not specified (king side castle, queen side castle or pawn promotion), find correct flag
-  if (!flag) {
-    if (piece.type === PAWN) {
-      // check double square
-      const square2 = fromSquare + PAWN_OFFSETS[us][1]
-      if (
-        second_rank[us] === rank(fromSquare) &&
-        toSquare == square2 &&
-        !state.board[square2]
-      ) {
-        flag = BITS.BIG_PAWN
-      }
-      // check en passant
-      else if (toSquare === state.ep_square) {
-        flag = BITS.EP_CAPTURE
-      }
-      // regular move
-      else {
-        flag = BITS.NORMAL
-      }
-    }
-    // check for capture
-    else if (state.board[toSquare]) {
-      flag = BITS.CAPTURE
-    }
-    // regular move
-    else {
-      flag = BITS.NORMAL
-    }
-  }
-
-  // create new move
   const newMove: HexMove = {
     color: state.turn,
     from: fromSquare,
     to: toSquare,
-    flags: flag,
+    flags: BITS.NORMAL,
     piece: (state.board[fromSquare] as Piece).type,
   }
 
-  // promotion case
+  // check for casting
+  if (fromSquare === state.kings[us] && state.castling[us]) {
+    if (isKingSideCastle()) {
+      newMove.flags = BITS.KSIDE_CASTLE
+    }
+
+    if (isQueenSideCastle()) {
+      newMove.flags = BITS.QSIDE_CASTLE
+    }
+  }
+
+  // check for promotion
   if (promotion && isPieceSymbol(promotion)) {
     newMove.flags |= BITS.PROMOTION
     newMove.promotion = promotion
   }
 
-  // captured case
-  if (state.board[toSquare]) {
-    newMove.captured = state.board[toSquare]?.type
-  } else if (flag & BITS.EP_CAPTURE) {
-    newMove.captured = PAWN
+  // check for big pawn and en passant moves
+  if (piece.type === PAWN) {
+    if (isBigPawn()) {
+      newMove.flags = BITS.BIG_PAWN
+    }
+
+    if (isEnPassant()) {
+      newMove.flags = BITS.EP_CAPTURE
+      newMove.captured = PAWN
+    }
   }
+
+  // check for captures
+  if (state.board[toSquare]) {
+    newMove.flags |= BITS.CAPTURE
+    newMove.captured = state.board[toSquare]?.type
+  }
+
   return newMove
+
+  function isEnPassant(): boolean {
+    return toSquare === state.ep_square
+  }
+  function isBigPawn(): boolean {
+    const square2 = fromSquare + PAWN_OFFSETS[us][1]
+    if (
+      second_rank[us] === rank(fromSquare) &&
+      toSquare == square2 &&
+      !state.board[square2]
+    ) {
+      return true
+    }
+    return false
+  }
+  function isQueenSideCastle(): boolean {
+    if (toSquare === fromSquare - 2) {
+      const castlingSquare = fromSquare - 2
+      if (
+        !state.board[fromSquare - 1] &&
+        !state.board[fromSquare - 2] &&
+        !state.board[fromSquare - 3] &&
+        !isAttacked(state, them, state.kings[us]) &&
+        !isAttacked(state, them, fromSquare - 1) &&
+        !isAttacked(state, them, castlingSquare)
+      ) {
+        return true
+      }
+    }
+    return false
+  }
+
+  function isKingSideCastle(): boolean {
+    if (toSquare === fromSquare + 2) {
+      const castlingSquare = fromSquare + 2
+      if (
+        !state.board[fromSquare + 1] &&
+        !state.board[castlingSquare] &&
+        !isAttacked(state, them, state.kings[us]) &&
+        !isAttacked(state, them, fromSquare + 1) &&
+        !isAttacked(state, them, castlingSquare)
+      ) {
+        return true
+      }
+    }
+    return false
+  }
 }
 
 export function validateMove(

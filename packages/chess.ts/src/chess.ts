@@ -833,16 +833,11 @@ export class Chess {
     return prettyMove
   }
 
-  public force_move(
+  public forceMove(
     move: PartialMove,
-    options: { flag?: number; promotion?: string } = {}
+    options: { promotion?: string } = {}
   ): Move | null {
-    const hexMove = processMove(
-      this._state,
-      move,
-      options.flag,
-      options.promotion
-    )
+    const hexMove = processMove(this._state, move, options.promotion)
 
     if (!hexMove) {
       return null
