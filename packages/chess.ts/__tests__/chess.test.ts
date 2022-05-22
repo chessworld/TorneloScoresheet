@@ -1930,7 +1930,7 @@ describe('Force Move', function () {
       },
       captured: 'p',
     },
-    // castling
+    // king side castling
     {
       fen: 'rnbqkbnr/pppppp2/7p/6p1/8/4P2N/PPPPBPPP/RNBQK2R w KQkq - 0 1',
       legal: true,
@@ -1939,8 +1939,8 @@ describe('Force Move', function () {
         from: 'e1',
         to: 'g1',
       },
-      flags: BITS['KSIDE_CASTLE'],
     },
+    // queen side castling
     {
       fen: 'r3kbnr/pppbqppp/n2pp3/8/P7/1PPPPP2/6PP/RNBQKBNR b KQkq - 0 1',
       legal: true,
@@ -1949,7 +1949,6 @@ describe('Force Move', function () {
         from: 'e8',
         to: 'c8',
       },
-      flags: BITS['QSIDE_CASTLE'],
     },
     // promotion
     {
@@ -1960,7 +1959,6 @@ describe('Force Move', function () {
         from: 'h7',
         to: 'h8',
       },
-      flags: BITS['PROMOTION'],
       promotion: 'q',
     },
   ]
@@ -1971,8 +1969,7 @@ describe('Force Move', function () {
     it(
       position.fen + ' (' + position.move + ' ' + position.legal + ')',
       function () {
-        const result = chess.force_move(position.move, {
-          flag: position.flags,
+        const result = chess.forceMove(position.move, {
           promotion: position.promotion,
         })
         expect(
