@@ -279,6 +279,13 @@ test('testStartGame', () => {
   expect(countPeices(board, PlayerColour.Black)).toStrictEqual(16);
 });
 
+test('initialFen', () => {
+  const startingFen = chessEngine.initialFen();
+  expect(startingFen).toStrictEqual(
+    'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+  );
+});
+
 // ---- chessEngine.fenToBoardPositions() ----
 describe('fenToBoardPositions', () => {
   const testCases = [

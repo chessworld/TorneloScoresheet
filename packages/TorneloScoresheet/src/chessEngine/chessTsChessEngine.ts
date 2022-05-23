@@ -109,6 +109,14 @@ const makeMove = (
 };
 
 /**
+ * The initial board position of a chess game as a fen
+ *
+ * @returns the fen
+ */
+const initialFen = () =>
+  'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+
+/**
  * The exported chess engine object which implements all the public methods
  */
 export const chessTsChessEngine: ChessEngineInterface = {
@@ -116,6 +124,7 @@ export const chessTsChessEngine: ChessEngineInterface = {
   startGame,
   makeMove,
   fenToBoardPositions,
+  initialFen,
 };
 
 // ------- Privates

@@ -36,6 +36,12 @@ export type ChessEngineInterface = {
    * @returns the board postions of the chess board
    */
   fenToBoardPositions: (fen: string) => BoardPosition[];
+
+  /**
+   * Return a fen string that represents the starting state of a
+   * game
+   */
+  initialFen: () => string;
 };
 
 // change the chess engine implementation here
