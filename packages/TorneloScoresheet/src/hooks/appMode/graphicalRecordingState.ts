@@ -6,7 +6,8 @@ import {
   GraphicalRecordingMode,
 } from '../../types/AppModeState';
 import { BoardPosition } from '../../types/ChessBoardPositions';
-import { ChessMove, ChessPly, PlySquares } from '../../types/ChessMove';
+import { ChessMove, PlySquares } from '../../types/ChessMove';
+import { replaceLastElement } from '../../util/array';
 
 type GraphicalRecordingStateHookType = [
   GraphicalRecordingMode,
@@ -19,99 +20,85 @@ type GraphicalRecordingStateHookType = [
 ];
 
 /**
- * Process Ply based on the from and to positions
- * Returns the next Ply with it's starting fen
- * Returns null if move was impossible
- * @param currentPly the Ply that should be processed
- * @returns next ply if move is successfull else null
- */
-const processPly = (currentPly: ChessPly): ChessPly | null => {
-  if (currentPly.squares === undefined) {
-    return null;
-  }
-  const nextFen = chessEngine.makeMove(
-    currentPly.startingFen,
-    currentPly.squares,
-  );
-
-  // if move was not possible, return null
-  if (nextFen === null) {
-    return null;
-  }
-
-  return { startingFen: nextFen };
-};
-
-/**
- * Adds the next ply to the move history
- * If White's turn, sets blackPly as next ply
- * If Black's turn, set whitePly as next ply in a new move
- * @param moveHistory the list of all past moves
- * @param currentMove the current chess move
- * @param nextPly the next ply to add to move history
- * @returns the next move history including the next ply
- */
-const addNextPlyToMoveHistory = (
-  moveHistory: ChessMove[],
-  currentMove: ChessMove,
-  currentPly: ChessPly,
-  nextPly: ChessPly,
-): ChessMove[] => {
-  // White's move
-  if (currentMove.blackPly === undefined) {
-    return [
-      ...moveHistory.slice(0, -1),
-      { ...currentMove, whitePly: currentPly, blackPly: nextPly },
-    ];
-  }
-
-  // Black's move
-  else {
-    const nextMove = {
-      moveNo: currentMove.moveNo + 1,
-      whitePly: nextPly,
-    };
-    return [
-      ...moveHistory.slice(0, -1),
-      { ...currentMove, blackPly: currentPly },
-      nextMove,
-    ];
-  }
-};
-
-/**
- * Processes a player's move given to and from positons
+ * Processes a player's move given to and from positons and the
+ * current history of the game
+ *
  * Will Return the next board state and the move history array
  * Will return null if move is impossible
- * @param fromPos postion piece starts from
- * @param toPos postion piece goes to
- * @param appModeState the GraphicalRecordingMode state
- * @param setAppModeStateAfterMove the state update function
- * @returns [boardPositions, moveHistory] or null
+ * @param {PlySquares} plySquares
+ * @param {ChessMove[]} moveHistory
  */
 const processPlayerMove = (
   plySquares: PlySquares,
   moveHistory: ChessMove[],
-): [BoardPosition[], ChessMove[]] | null => {
-  const currentMove = moveHistory[moveHistory.length - 1];
-  const currentPly = {
-    ...(currentMove.blackPly === undefined
-      ? currentMove.whitePly
-      : currentMove.blackPly),
-    squares: plySquares,
-  };
+): { newPosition: BoardPosition[]; newHistory: ChessMove[] } | null => {
+  // This is the first move of the game so let's shortcircuit
+  if (!moveHistory.length) {
+    const resultantFen = chessEngine.makeMove(
+      chessEngine.initialFen(),
+      plySquares,
+    );
+    if (!resultantFen) {
+      return null;
+    }
 
-  // process ply, return null if not possible
-  const nextPly = processPly(currentPly);
-  if (nextPly === null) {
+    return {
+      newPosition: chessEngine.fenToBoardPositions(resultantFen),
+      newHistory: [
+        {
+          moveNo: 1,
+          whitePly: {
+            squares: plySquares,
+            resultantFen,
+          },
+        },
+      ],
+    };
+  }
+
+  // Now that we know a move has been made, we can fetch it from
+  // the history
+  const mostRecentMove = moveHistory[moveHistory.length - 1];
+  const isBlacksMove = mostRecentMove.blackPly === undefined;
+
+  const previousPly = isBlacksMove
+    ? mostRecentMove.whitePly
+    : mostRecentMove.blackPly;
+
+  if (!previousPly?.squares) {
     return null;
   }
 
-  // return new state
-  return [
-    chessEngine.fenToBoardPositions(nextPly.startingFen),
-    addNextPlyToMoveHistory(moveHistory, currentMove, currentPly, nextPly),
-  ];
+  const resultantFen = chessEngine.makeMove(
+    previousPly.resultantFen,
+    plySquares,
+  );
+
+  if (!resultantFen) {
+    return null;
+  }
+
+  // Need to replace the move in the end of the history
+  return {
+    newPosition: chessEngine.fenToBoardPositions(resultantFen),
+    newHistory: isBlacksMove
+      ? replaceLastElement(moveHistory, {
+          ...mostRecentMove,
+          blackPly: {
+            squares: plySquares,
+            resultantFen,
+          },
+        })
+      : moveHistory.concat([
+          {
+            moveNo: mostRecentMove.moveNo + 1,
+            whitePly: {
+              squares: plySquares,
+              resultantFen,
+            },
+          },
+        ]),
+  };
 };
 
 export const makeUseGraphicalRecordingState =
@@ -133,12 +120,11 @@ export const makeUseGraphicalRecordingState =
     const moveFunc = (plySquares: PlySquares): void => {
       const result = processPlayerMove(plySquares, appModeState.moveHistory);
       if (result !== null) {
-        const [board, moveHistory] = result;
-        console.log(moveHistory);
+        const { newPosition, newHistory } = result;
         setAppModeState({
           ...appModeState,
-          board,
-          moveHistory,
+          board: newPosition,
+          moveHistory: newHistory,
         });
       }
     };

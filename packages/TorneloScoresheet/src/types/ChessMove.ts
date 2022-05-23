@@ -16,8 +16,8 @@ export type Piece = {
 };
 
 export type ChessPly = {
-  squares?: PlySquares;
-  startingFen: string;
+  squares: PlySquares;
+  resultantFen: string;
 };
 
 export type PlySquares = {
