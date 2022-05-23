@@ -74,9 +74,9 @@ const parseGameInfo = (pgn: string): Result<ChessGameInfo> => {
  * Starts a new game and returns starting fen and board positions
  * @returns [Board positions, starting fen]
  */
-const startGame = (): [BoardPosition[], string] => {
+const startGame = (): BoardPosition[] => {
   const game = new Chess();
-  return [gameToPeiceArray(game), game.fen()];
+  return gameToPeiceArray(game);
 };
 
 /**

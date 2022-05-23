@@ -265,10 +265,7 @@ describe('parseGameInfo', () => {
 
 // ---- chessEngine.startGame() ----
 test('testStartGame', () => {
-  const [board, startingFen] = chessEngine.startGame();
-  expect(startingFen).toStrictEqual(
-    'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
-  );
+  const board = chessEngine.startGame();
   expect(board.length).toStrictEqual(8 * 8);
   const countPeices = (
     boardToCount: BoardPosition[],

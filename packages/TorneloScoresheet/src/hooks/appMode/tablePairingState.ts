@@ -27,12 +27,11 @@ export const makeUseTablePairingState =
     }
 
     const goToRecording = (currentPlayer: PlayerColour): void => {
-      var [board, fen] = chessEngine.startGame();
       setAppModeState({
         mode: AppMode.GraphicalRecording,
         pairing: appModeState.pairing,
-        moveHistory: [{ moveNo: 1, whitePly: { startingFen: fen } }],
-        board,
+        moveHistory: [],
+        board: chessEngine.startGame(),
         currentPlayer,
       });
     };

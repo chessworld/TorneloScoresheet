@@ -20,7 +20,7 @@ export type ChessEngineInterface = {
    * Starts a new game and returns starting fen and board positions
    * @returns [Board positions, starting fen]
    */
-  startGame: () => [BoardPosition[], string];
+  startGame: () => BoardPosition[];
 
   /**
    * Processes a move given the starting fen and to and from positions
