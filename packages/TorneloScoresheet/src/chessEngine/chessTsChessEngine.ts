@@ -100,7 +100,7 @@ const makeMove = (
   plySquares: PlySquares,
 ): string | null => {
   const game = new Chess(startingFen);
-  const result = game.force_move({ from: plySquares.from, to: plySquares.to });
+  const result = game.forceMove({ from: plySquares.from, to: plySquares.to });
   if (result === null) {
     return null;
   }
