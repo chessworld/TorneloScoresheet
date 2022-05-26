@@ -1,6 +1,6 @@
 import { BoardPosition } from '../types/ChessBoardPositions';
 import { ChessGameInfo } from '../types/ChessGameInfo';
-import { PlySquares } from '../types/ChessMove';
+import { MoveSquares } from '../types/ChessMove';
 import { Result } from '../types/Result';
 import { chessTsChessEngine } from './chessTsChessEngine';
 
@@ -17,18 +17,18 @@ export type ChessEngineInterface = {
   parseGameInfo: (pgn: string) => Result<ChessGameInfo>;
 
   /**
-   * Starts a new game and returns starting fen and board positions
-   * @returns [Board positions, starting fen]
+   * returns starting fen of a chess game
+   * @returns starting fen
    */
-  startGame: () => [BoardPosition[], string];
+  startingFen: () => string;
 
   /**
    * Processes a move given the starting fen and to and from positions
    * @param startingFen the fen of the game state before the move
-   * @param plySquares the to and from positions of the move
+   * @param moveSquares the to and from positions of the move
    * @returns the next fen if move is possible else null
    */
-  makeMove: (startingFen: string, plySquares: PlySquares) => string | null;
+  makeMove: (startingFen: string, moveSquares: MoveSquares) => string | null;
 
   /**
    * Returns the board postion state given a fen

@@ -5,7 +5,7 @@ import {
   boardPositionToIndex,
   Position,
 } from '../../types/ChessBoardPositions';
-import { PlySquares } from '../../types/ChessMove';
+import { MoveSquares } from '../../types/ChessMove';
 import { CHESS_SQUARE_SIZE } from '../ChessSquare/ChessSquare';
 import DragAndDropContextProvider from '../DragAndDrop/DragAndDropContext/DragAndDropContext';
 import Draggable from '../DragAndDrop/Draggable/Draggable';
@@ -17,7 +17,7 @@ import { styles } from './style';
 export type ChessBoardProps = {
   positions: BoardPosition[];
   flipBoard?: boolean;
-  onMove: (plySquares: PlySquares) => void;
+  onMove: (moveSquares: MoveSquares) => void;
 };
 
 const squareColour = (position: Position) => {

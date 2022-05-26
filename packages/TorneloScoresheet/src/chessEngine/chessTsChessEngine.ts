@@ -10,7 +10,7 @@ import {
   PlayerColour,
   PLAYER_COLOUR_NAME,
 } from '../types/ChessGameInfo';
-import { Piece, PieceType, PlySquares } from '../types/ChessMove';
+import { Piece, PieceType, MoveSquares } from '../types/ChessMove';
 import { Result, succ, fail, isError } from '../types/Result';
 import { ChessEngineInterface } from './chessEngineInterface';
 
@@ -71,12 +71,12 @@ const parseGameInfo = (pgn: string): Result<ChessGameInfo> => {
 };
 
 /**
- * Starts a new game and returns starting fen and board positions
- * @returns [Board positions, starting fen]
+ * returns starting fen of a chess game
+ * @returns starting fen
  */
-const startGame = (): [BoardPosition[], string] => {
+const startingFen = (): string => {
   const game = new Chess();
-  return [gameToPeiceArray(game), game.fen()];
+  return game.fen();
 };
 
 /**
@@ -92,15 +92,18 @@ const fenToBoardPositions = (fen: string): BoardPosition[] => {
 /**
  * Processes a move given the starting fen and to and from positions
  * @param startingFen the fen of the game state before the move
- * @param plie the to and from positions of the move
+ * @param moveSquares the to and from positions of the move
  * @returns the next fen if move is possible else null
  */
 const makeMove = (
   startingFen: string,
-  plySquares: PlySquares,
+  moveSquares: MoveSquares,
 ): string | null => {
   const game = new Chess(startingFen);
-  const result = game.forceMove({ from: plySquares.from, to: plySquares.to });
+  const result = game.forceMove({
+    from: moveSquares.from,
+    to: moveSquares.to,
+  });
   if (result === null) {
     return null;
   }
@@ -113,7 +116,7 @@ const makeMove = (
  */
 export const chessTsChessEngine: ChessEngineInterface = {
   parseGameInfo,
-  startGame,
+  startingFen,
   makeMove,
   fenToBoardPositions,
 };
