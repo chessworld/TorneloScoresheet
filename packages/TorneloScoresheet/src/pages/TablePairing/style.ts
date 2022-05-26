@@ -60,34 +60,4 @@ export const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
   },
-
-  confirmText: {
-    textAlign: 'center',
-    marginBottom: 40,
-  },
-
-  confirmButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    elevation: 3,
-    height: 60,
-    width: 300,
-    backgroundColor: colours.primary,
-  },
-
-  buttonText: {
-    fontSize: 23,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: colours.white,
-  },
-
-  buttonArea: {
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
 });
