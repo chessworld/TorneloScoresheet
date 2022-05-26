@@ -6,7 +6,7 @@ import {
   GraphicalRecordingMode,
 } from '../../types/AppModeState';
 import { PlayerColour } from '../../types/ChessGameInfo';
-import { ChessPly, MoveSquares } from '../../types/ChessMove';
+import { ChessPly, PieceType, MoveSquares } from '../../types/ChessMove';
 
 type GraphicalRecordingStateHookType = [
   GraphicalRecordingMode,
@@ -14,7 +14,7 @@ type GraphicalRecordingStateHookType = [
     goToEndGame: () => void;
     goToTextInput: () => void;
     goToArbiterMode: () => void;
-    move: (moveSquares: MoveSquares) => void;
+    move: (moveSquares: MoveSquares, promotion?: PieceType) => void;
     undoLastMove: () => void;
     isPawnPromotion: (moveSquares: MoveSquares) => boolean;
   },
@@ -32,7 +32,11 @@ const getCurrentFen = (moveHistory: ChessPly[]): string => {
   }
   // execute last move to get resulting fen
   const lastMove = moveHistory[moveHistory.length - 1];
-  const nextFen = chessEngine.makeMove(lastMove.startingFen, lastMove.move);
+  const nextFen = chessEngine.makeMove(
+    lastMove.startingFen,
+    lastMove.move,
+    lastMove.promotion,
+  );
 
   if (nextFen === null) {
     // all moves should be possible in move history array -> unreachable code
@@ -46,24 +50,30 @@ const getCurrentFen = (moveHistory: ChessPly[]): string => {
  * Processes a player's move given to and from positons
  * Will Return the next move history array
  * Will return null if move is impossible
- * @param move from and to positions
+ * @param moveSquares from and to positions
  * @param moveHistory ChessPly array of past moves
  * @returns new moveHistory array or null
  */
 const processPlayerMove = (
-  move: MoveSquares,
+  moveSquares: MoveSquares,
   moveHistory: ChessPly[],
+  promotion?: PieceType,
 ): ChessPly[] | null => {
   const nextPly: ChessPly = {
     startingFen: getCurrentFen(moveHistory),
-    move,
+    move: moveSquares,
     moveNo: Math.floor(moveHistory.length / 2) + 1,
     player:
       moveHistory.length % 2 === 0 ? PlayerColour.White : PlayerColour.Black,
+    promotion,
   };
+  const result = chessEngine.makeMove(
+    nextPly.startingFen,
+    nextPly.move,
+    promotion,
+  );
 
   // check move is possible
-  const result = chessEngine.makeMove(nextPly.startingFen, nextPly.move);
   if (result === null) {
     return null;
   }
@@ -95,8 +105,15 @@ export const makeUseGraphicalRecordingState =
     const goToEndGameFunc = (): void => {};
     const goToTextInputFunc = (): void => {};
     const goToArbiterModeFunc = (): void => {};
-    const moveFunc = (move: MoveSquares): void => {
-      const moveHistory = processPlayerMove(move, appModeState.moveHistory);
+    const moveFunc = (
+      moveSquares: MoveSquares,
+      promotion?: PieceType,
+    ): void => {
+      const moveHistory = processPlayerMove(
+        moveSquares,
+        appModeState.moveHistory,
+        promotion,
+      );
       if (moveHistory !== null) {
         updateBoard(moveHistory);
       }

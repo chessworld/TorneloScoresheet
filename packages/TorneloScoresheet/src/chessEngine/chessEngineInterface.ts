@@ -1,6 +1,6 @@
 import { BoardPosition } from '../types/ChessBoardPositions';
 import { ChessGameInfo } from '../types/ChessGameInfo';
-import { MoveSquares } from '../types/ChessMove';
+import { PieceType, MoveSquares } from '../types/ChessMove';
 import { Result } from '../types/Result';
 import { chessTsChessEngine } from './chessTsChessEngine';
 
@@ -26,9 +26,14 @@ export type ChessEngineInterface = {
    * Processes a move given the starting fen and to and from positions
    * @param startingFen the fen of the game state before the move
    * @param moveSquares the to and from positions of the move
+   * @param promotion the to and from positions of the move
    * @returns the next fen if move is possible else null
    */
-  makeMove: (startingFen: string, moveSquares: MoveSquares) => string | null;
+  makeMove: (
+    startingFen: string,
+    moveSquares: MoveSquares,
+    promotion?: PieceType,
+  ) => string | null;
 
   /**
    * Returns the board postion state given a fen
@@ -40,10 +45,10 @@ export type ChessEngineInterface = {
   /**
    * Checks if the move is a pawn promotion move
    * @param startingFen the fen of the game state before the move
-   * @param plySquares the to and from positions of the move
+   * @param moveSquares the to and from positions of the move
    * @returns true/false
    */
-  isPawnPromotion: (startingFen: string, plySquares: PlySquares) => boolean;
+  isPawnPromotion: (startingFen: string, moveSquares: MoveSquares) => boolean;
 };
 
 // change the chess engine implementation here
