@@ -17,6 +17,7 @@ import {
   ascii,
   getBoard,
   validateMove,
+  pawnPromotionAllowIllegal,
   processMove,
 } from './state'
 import {
@@ -922,6 +923,32 @@ export class Chess {
     }
 
     return !!(validMove.flags & BITS.PROMOTION)
+  }
+
+  /**
+   * Checks if a move results in a promotion. Illegal moves are allowed
+   *
+   * @example
+   * ```js
+   * const chess = new Chess()
+   *
+   * chess.isPromotion('e4')
+   * // -> false
+   *
+   * chess.load('8/2P2k2/8/8/8/5K2/8/8 w - - 0 1')
+   * chess.isPromotion('c8')
+   * // -> true
+   * ```
+   *
+   * @param move - object, e.g.  `{ from: 'h7', to: 'h8' }`
+   */
+  public isPromotionAllowIllegal(move: PartialMove): boolean {
+    return pawnPromotionAllowIllegal(
+      this._state.board,
+      move.from,
+      move.to,
+      this._state.turn
+    )
   }
 
   /**
