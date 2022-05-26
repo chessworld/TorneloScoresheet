@@ -36,6 +36,14 @@ export type ChessEngineInterface = {
    * @returns the board postions of the chess board
    */
   fenToBoardPositions: (fen: string) => BoardPosition[];
+
+  /**
+   * Checks if the move is a pawn promotion move
+   * @param startingFen the fen of the game state before the move
+   * @param plySquares the to and from positions of the move
+   * @returns true/false
+   */
+  isPawnPromotion: (startingFen: string, plySquares: PlySquares) => boolean;
 };
 
 // change the chess engine implementation here
