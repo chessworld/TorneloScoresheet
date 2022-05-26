@@ -9,7 +9,7 @@ import {
   GraphicalRecordingMode,
 } from './types/AppModeState';
 import { ChessGameInfo, PlayerColour } from './types/ChessGameInfo';
-import { ChessMove } from './types/ChessMove';
+import { ChessPly } from './types/ChessMove';
 
 /**
  * Mocks a hook for testing
@@ -62,7 +62,7 @@ export const generateGamePairingInfo = (): ChessGameInfo => {
  * @returns Graphical recording state object
  */
 export const generateGraphicalRecordingState = (
-  moveHistory: ChessMove[],
+  moveHistory: ChessPly[],
 ): GraphicalRecordingMode => {
   return {
     mode: AppMode.GraphicalRecording,

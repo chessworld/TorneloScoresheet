@@ -2,7 +2,7 @@ import moment from 'moment';
 import { chessEngine } from '../src/chessEngine/chessEngineInterface';
 import { BoardPosition, Position } from '../src/types/ChessBoardPositions';
 import { PlayerColour } from '../src/types/ChessGameInfo';
-import { Piece, PieceType, PlySquares } from '../src/types/ChessMove';
+import { Piece, PieceType, MoveSquares } from '../src/types/ChessMove';
 import { isError, succ } from '../src/types/Result';
 
 // ---- chessEngine.parseGameInfo() ----
@@ -265,21 +265,10 @@ describe('parseGameInfo', () => {
 
 // ---- chessEngine.startGame() ----
 test('testStartGame', () => {
-  const [board, startingFen] = chessEngine.startGame();
+  const startingFen = chessEngine.startingFen();
   expect(startingFen).toStrictEqual(
     'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
   );
-  expect(board.length).toStrictEqual(8 * 8);
-  const countPeices = (
-    boardToCount: BoardPosition[],
-    color: PlayerColour,
-  ): number => {
-    return boardToCount.filter(
-      position => position.piece !== null && position.piece.player === color,
-    ).length;
-  };
-  expect(countPeices(board, PlayerColour.White)).toStrictEqual(16);
-  expect(countPeices(board, PlayerColour.Black)).toStrictEqual(16);
 });
 
 // ---- chessEngine.fenToBoardPositions() ----
@@ -914,7 +903,7 @@ describe('makeMove', () => {
   ];
   const boardCorrect = (
     board: BoardPosition[],
-    pliePosition: PlySquares,
+    pliePosition: MoveSquares,
     piece: Piece,
   ): boolean => {
     const fromSquare = board.find(
