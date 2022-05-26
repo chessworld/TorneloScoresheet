@@ -17,7 +17,7 @@ import {
   ICON_UNDO,
 } from '../../style/images';
 import { PlayerColour } from '../../types/ChessGameInfo';
-import { PlySquares } from '../../types/ChessMove';
+import { MoveSquares } from '../../types/ChessMove';
 import { styles } from './style';
 
 const GraphicalRecording: React.FC = () => {
@@ -81,7 +81,7 @@ const GraphicalRecording: React.FC = () => {
     },
   ];
 
-  const onMove = (plySquares: PlySquares) => {
+  const onMove = (plySquares: MoveSquares) => {
     if (!move) {
       return;
     }

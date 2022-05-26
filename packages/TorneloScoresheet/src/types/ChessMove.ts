@@ -15,18 +15,14 @@ export type Piece = {
   player: PlayerColour;
 };
 
-export type ChessPly = {
-  squares?: PlySquares;
-  startingFen: string;
-};
-
-export type PlySquares = {
+export type MoveSquares = {
   from: Position;
   to: Position;
 };
 
-export type ChessMove = {
-  whitePly: ChessPly;
-  blackPly?: ChessPly;
+export type ChessPly = {
   moveNo: number;
+  startingFen: string;
+  player: PlayerColour;
+  move: MoveSquares;
 };
