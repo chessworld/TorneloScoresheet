@@ -652,6 +652,30 @@ export function removePiece(prevState: State, square?: string): State | null {
   return state
 }
 
+export function pawnPromotionAllowIllegal(
+  board: Board,
+  from: string,
+  to: string,
+  player: Color
+): boolean {
+  if (!isSquare(from) || !isSquare(to)) {
+    return false
+  }
+  const fromSquare = SQUARES[from]
+  const toSquare = SQUARES[to]
+
+  const piece = board[fromSquare]
+  if (
+    piece &&
+    piece.type === PAWN &&
+    ((player === 'w' && rank(toSquare) === RANK_8) ||
+      (player === 'b' && rank(toSquare) === RANK_1))
+  ) {
+    return true
+  }
+  return false
+}
+
 export function generateMoves(
   state: State,
   options: { legal?: boolean; square?: string } = {}
