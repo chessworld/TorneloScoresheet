@@ -12,9 +12,10 @@ import {
   mockAppModeContext,
   renderCustomHook,
 } from '../src/testUtils';
-import { PlySquares } from '../src/types/ChessMove';
+import { MoveSquares } from '../src/types/ChessMove';
 import { chessEngine } from '../src/chessEngine/chessEngineInterface';
 import axios, { AxiosRequestConfig } from 'axios';
+import { PlayerColour } from '../src/types/ChessGameInfo';
 
 describe('useAppModeState', () => {
   test('initial state', () => {
@@ -104,21 +105,13 @@ describe('graphical recording moving', () => {
     const resultingFen =
       'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1';
     const move = { from: 'e2', to: 'e4' };
-    const moveHistory = [
-      {
-        moveNo: 1,
-        whitePly: {
-          startingFen: originFen,
-        },
-      },
-    ];
 
-    const graphicalState = generateGraphicalRecordingState(moveHistory);
+    const graphicalState = generateGraphicalRecordingState([]);
     const setContextMock = mockAppModeContext(graphicalState);
     const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
 
     act(() => {
-      graphicalStateHook.current?.[1].move(move as PlySquares);
+      graphicalStateHook.current?.[1].move(move as MoveSquares);
 
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
@@ -127,11 +120,9 @@ describe('graphical recording moving', () => {
         moveHistory: [
           {
             moveNo: 1,
-            whitePly: {
-              startingFen: originFen,
-              squares: move,
-            },
-            blackPly: { startingFen: resultingFen },
+            startingFen: originFen,
+            move,
+            player: PlayerColour.White,
           },
         ],
       });
@@ -139,20 +130,16 @@ describe('graphical recording moving', () => {
   });
   test('test black move in graphical recording mode', () => {
     const originFen =
-      'rnbqkbnr/pppp2pp/8/4p3/4Pp2/2PP4/PP3PPP/RNBQKBNR b KQkq e3 0 1';
+      'rnbqkbnr/pppppppp/8/R7/8/8/PPPPPPPP/1NBQKBNR b Kkq - 1 1';
     const resultingFen =
-      'rnbqkbnr/pppp2pp/8/4p3/8/2PPp3/PP3PPP/RNBQKBNR w KQkq - 0 2';
-    const move = { from: 'f4', to: 'e3' };
+      'rnbqkbn1/pppppppp/8/R6r/8/8/PPPPPPPP/1NBQKBNR w Kq - 0 1';
+    const move = { from: 'h8', to: 'h5' };
     const moveHistory = [
       {
         moveNo: 1,
-        whitePly: {
-          startingFen: '',
-          squares: { from: 'a1', to: 'a5' } as PlySquares,
-        },
-        blackPly: {
-          startingFen: originFen,
-        },
+        player: PlayerColour.White,
+        startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+        move: { from: 'a1', to: 'a5' } as MoveSquares,
       },
     ];
 
@@ -161,7 +148,7 @@ describe('graphical recording moving', () => {
     const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
 
     act(() => {
-      graphicalStateHook.current?.[1].move(move as PlySquares);
+      graphicalStateHook.current?.[1].move(move as MoveSquares);
 
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
@@ -169,15 +156,17 @@ describe('graphical recording moving', () => {
         board: chessEngine.fenToBoardPositions(resultingFen),
         moveHistory: [
           {
-            ...moveHistory[0],
-            blackPly: {
-              startingFen: originFen,
-              squares: move,
-            },
+            moveNo: 1,
+            player: PlayerColour.White,
+            startingFen:
+              'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+            move: { from: 'a1', to: 'a5' } as MoveSquares,
           },
           {
-            moveNo: 2,
-            whitePly: { startingFen: resultingFen },
+            moveNo: 1,
+            player: PlayerColour.Black,
+            startingFen: originFen,
+            move,
           },
         ],
       });
