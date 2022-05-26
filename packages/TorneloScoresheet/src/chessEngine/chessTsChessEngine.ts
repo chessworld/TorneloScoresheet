@@ -112,6 +112,23 @@ const makeMove = (
 };
 
 /**
+ * Checks if the move is a pawn promotion move
+ * @param startingFen the fen of the game state before the move
+ * @param plySquares the to and from positions of the move
+ * @returns true/false
+ */
+const isPawnPromotion = (
+  startingFen: string,
+  plySquares: PlySquares,
+): boolean => {
+  const game = new Chess(startingFen);
+  return game.isPromotionAllowIllegal({
+    from: plySquares.from,
+    to: plySquares.to,
+  });
+};
+
+/**
  * The exported chess engine object which implements all the public methods
  */
 export const chessTsChessEngine: ChessEngineInterface = {
@@ -119,6 +136,7 @@ export const chessTsChessEngine: ChessEngineInterface = {
   startingFen,
   makeMove,
   fenToBoardPositions,
+  isPawnPromotion,
 };
 
 // ------- Privates
