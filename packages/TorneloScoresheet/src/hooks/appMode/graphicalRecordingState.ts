@@ -16,6 +16,7 @@ type GraphicalRecordingStateHookType = [
     goToArbiterMode: () => void;
     move: (moveSquares: MoveSquares) => void;
     undoLastMove: () => void;
+    isPawnPromotion: (moveSquares: MoveSquares) => boolean;
   },
 ];
 
@@ -100,6 +101,10 @@ export const makeUseGraphicalRecordingState =
         updateBoard(moveHistory);
       }
     };
+    const isPawnPromotionFunc = (moveSquares: MoveSquares): boolean => {
+      const fen = getCurrentFen(appModeState.moveHistory);
+      return chessEngine.isPawnPromotion(fen, moveSquares);
+    };
 
     const undoLastMoveFunc = () => {
       updateBoard(appModeState.moveHistory.slice(0, -1));
@@ -113,6 +118,7 @@ export const makeUseGraphicalRecordingState =
         goToArbiterMode: goToArbiterModeFunc,
         move: moveFunc,
         undoLastMove: undoLastMoveFunc,
+        isPawnPromotion: isPawnPromotionFunc,
       },
     ];
   };
