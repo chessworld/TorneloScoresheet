@@ -4,12 +4,13 @@ import { styles } from './style';
 import { View } from 'react-native';
 import { PlayerColour } from '../../types/ChessGameInfo';
 import PlayerCard from './PlayerCard';
-import ConfirmPlayerSheet from './ConfirmPlayerSheet';
 import PrimaryText, {
   FontWeight,
 } from '../../components/PrimaryText/PrimaryText';
 import { colours } from '../../style/colour';
 import { chessGameIdentifier } from '../../util/chessGameInfo';
+import OptionSheet from '../../components/OptionSheet/OptionSheet';
+import { fullName } from '../../util/player';
 
 const playerColourAsIndex = (player: PlayerColour) => {
   return player === PlayerColour.White ? 0 : 1;
@@ -53,15 +54,18 @@ const TablePairing: React.FC = () => {
       {tablePairingMode && (
         <View>
           {selectedPlayer !== undefined && (
-            <ConfirmPlayerSheet
-              player={
-                tablePairingMode.pairing.players[
-                  playerColourAsIndex(selectedPlayer)
-                ]
+            <OptionSheet
+              message={
+                'Confirm Start As \n' +
+                fullName(
+                  tablePairingMode.pairing.players[
+                    playerColourAsIndex(selectedPlayer)
+                  ],
+                )
               }
-              cancel={cancelSelection}
+              options={[{ text: 'CONFIRM', onPress: confirm }]}
+              onCancel={cancelSelection}
               visible={showConfirmSheet}
-              confirm={confirm}
             />
           )}
           <PrimaryText
