@@ -17,7 +17,7 @@ import { styles } from './style';
 export type ChessBoardProps = {
   positions: BoardPosition[];
   flipBoard?: boolean;
-  onMove: (moveSquares: MoveSquares) => void;
+  onMove: (moveSquares: MoveSquares) => Promise<void>;
 };
 
 const squareColour = (position: Position) => {

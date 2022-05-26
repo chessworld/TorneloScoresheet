@@ -3,7 +3,7 @@ import { StyleProp, View, ViewStyle } from 'react-native';
 import { useDropTarget } from '../DragAndDropContext/DragAndDropContext';
 
 type DropTargetProps = {
-  onDrop: (data: unknown) => void;
+  onDrop: (data: unknown) => Promise<void>;
   style?: StyleProp<ViewStyle>;
 };
 
