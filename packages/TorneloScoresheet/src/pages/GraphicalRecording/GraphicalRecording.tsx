@@ -85,11 +85,14 @@ const GraphicalRecording: React.FC = () => {
     },
   ];
 
-  const onMove = (plySquares: MoveSquares) => {
+  const onMove = async (moveSquares: MoveSquares): Promise<void> => {
+    // TODO: replace sleep promise with paen promotion check
+    await new Promise(r => setTimeout(r, 5000));
+
     if (!move) {
       return;
     }
-    move(plySquares);
+    move(moveSquares);
   };
 
   return (

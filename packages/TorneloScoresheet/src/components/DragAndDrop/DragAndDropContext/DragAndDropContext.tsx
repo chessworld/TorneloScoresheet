@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { measure, pointIsWithinView } from '../../../util/measure';
 
 type DragAndDropContextState = {
-  dropTargetRefs: [React.RefObject<View>, (data: unknown) => void][];
+  dropTargetRefs: [React.RefObject<View>, (data: unknown) => Promise<void>][];
 };
 
 const DragAndDropContext = React.createContext<
@@ -21,7 +21,7 @@ const DragAndDropContext = React.createContext<
 // To become a drop target, a component should call this function
 export const useDropTarget = (
   ref: React.RefObject<View>,
-  callback: (data: unknown) => void,
+  callback: (data: unknown) => Promise<void>,
 ) => {
   const [, setDropTargetRefs] = useContext(DragAndDropContext);
 
@@ -82,7 +82,7 @@ export const useHitTest = (
       return;
     }
 
-    targetDroppedOn.callback(data);
+    await targetDroppedOn.callback(data);
     onMiss();
   };
 };
