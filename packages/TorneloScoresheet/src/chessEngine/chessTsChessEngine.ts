@@ -98,12 +98,16 @@ const fenToBoardPositions = (fen: string): BoardPosition[] => {
 const makeMove = (
   startingFen: string,
   moveSquares: MoveSquares,
+  promotion?: PieceType,
 ): string | null => {
   const game = new Chess(startingFen);
-  const result = game.forceMove({
-    from: moveSquares.from,
-    to: moveSquares.to,
-  });
+  const result = game.forceMove(
+    { from: moveSquares.from, to: moveSquares.to },
+    {
+      promotion:
+        promotion !== undefined ? chessTsPieceMap[promotion] : undefined,
+    },
+  );
   if (result === null) {
     return null;
   }
@@ -114,17 +118,17 @@ const makeMove = (
 /**
  * Checks if the move is a pawn promotion move
  * @param startingFen the fen of the game state before the move
- * @param plySquares the to and from positions of the move
+ * @param moveSquares the to and from positions of the move
  * @returns true/false
  */
 const isPawnPromotion = (
   startingFen: string,
-  plySquares: PlySquares,
+  moveSquares: MoveSquares,
 ): boolean => {
   const game = new Chess(startingFen);
   return game.isPromotionAllowIllegal({
-    from: plySquares.from,
-    to: plySquares.to,
+    from: moveSquares.from,
+    to: moveSquares.to,
   });
 };
 
@@ -191,6 +195,14 @@ const pieceMap: Record<PieceSymbol, PieceType> = {
   k: PieceType.King,
   q: PieceType.Queen,
   n: PieceType.Knight,
+};
+const chessTsPieceMap: Record<PieceType, PieceSymbol> = {
+  0: 'p',
+  1: 'n',
+  2: 'b',
+  3: 'r',
+  4: 'q',
+  5: 'k',
 };
 const colorMap: Record<Color, PlayerColour> = {
   w: PlayerColour.White,

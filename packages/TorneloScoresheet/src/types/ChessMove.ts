@@ -25,4 +25,5 @@ export type ChessPly = {
   startingFen: string;
   player: PlayerColour;
   move: MoveSquares;
+  promotion?: PieceType;
 };
