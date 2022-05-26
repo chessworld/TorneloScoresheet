@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View } from 'react-native';
 import ActionBar from '../../components/ActionBar/ActionBar';
 import {
@@ -6,31 +6,47 @@ import {
   ButtonHeight,
 } from '../../components/ActionButton/ActionButton';
 import ChessBoard from '../../components/ChessBoard/ChessBoard';
+import OptionSheet from '../../components/OptionSheet/OptionSheet';
 import PrimaryText from '../../components/PrimaryText/PrimaryText';
 import { useGraphicalRecordingState } from '../../context/AppModeStateContext';
 import {
+  BISHOP,
   ICON_CLOCK,
   ICON_FLIP,
   ICON_HALF,
   ICON_HASTAG,
   ICON_SKIP,
   ICON_UNDO,
+  KNIGHT,
+  PAWN,
+  QUEEN,
+  ROOK,
 } from '../../style/images';
 import { PlayerColour } from '../../types/ChessGameInfo';
-import { MoveSquares } from '../../types/ChessMove';
+import { PieceType, MoveSquares } from '../../types/ChessMove';
 import { styles } from './style';
 
 const GraphicalRecording: React.FC = () => {
+  // app mode hook unpacking
   const graphicalRecordingState = useGraphicalRecordingState();
-
   const graphicalRecordingMode = graphicalRecordingState?.[0];
   const move = graphicalRecordingState?.[1].move;
   const undoLastMove = graphicalRecordingState?.[1].undoLastMove;
+  const isPawnPromotion = graphicalRecordingState?.[1].isPawnPromotion;
 
+  // states
   const [flipBoard, setFlipBoard] = useState(
     graphicalRecordingMode?.currentPlayer === PlayerColour.Black,
   );
+  const [showPromotion, setShowPromotion] = useState(false);
 
+  // when the promotion popup opens, the app will await untill a promise is resolved
+  // this ref stores this resolve function (it will be called once the user selects a promotion)
+  const promotionSelectedFunc = useRef<
+    ((value: PieceType | PromiseLike<PieceType>) => void) | null
+  >(null);
+
+  // Button parameters
   const actionButtons: ActionButtonProps[] = [
     {
       text: 'flip',
@@ -85,13 +101,64 @@ const GraphicalRecording: React.FC = () => {
     },
   ];
 
-  const onMove = async (moveSquares: MoveSquares): Promise<void> => {
-    // TODO: replace sleep promise with paen promotion check
-    await new Promise(r => setTimeout(r, 5000));
+  const promotionButtons = [
+    {
+      icon: QUEEN,
+      onPress: () => onSelectPromotion(PieceType.Queen),
+    },
+    { icon: ROOK, onPress: () => onSelectPromotion(PieceType.Rook) },
+    { icon: PAWN, onPress: () => onSelectPromotion(PieceType.Pawn) },
+    {
+      icon: KNIGHT,
+      onPress: () => onSelectPromotion(PieceType.Knight),
+    },
+    {
+      icon: BISHOP,
+      onPress: () => onSelectPromotion(PieceType.Bishop),
+    },
+  ];
 
-    if (!move) {
+  /**
+   * this will prompt user to select a promotion piece and will not return until they do
+   */
+  const promptUserForPromotionChoice = (): Promise<PieceType> => {
+    // prompt user to select promotion
+    setShowPromotion(true);
+
+    // create a promise, store the resolve function in the ref
+    // this promise will not return until the resolve function is called by onSelectPromotion()
+    return new Promise<PieceType>(r => (promotionSelectedFunc.current = r));
+  };
+
+  /**
+   * function called once the user has selected their promotion from the pop up
+   * @param promotion the promotion piece the user has selected
+   */
+  const onSelectPromotion = (promotion: PieceType) => {
+    // hide the popup
+    setShowPromotion(false);
+
+    // call the promise's resolve function
+    // this will end the await and result in the move being executed
+    if (promotionSelectedFunc.current !== null) {
+      promotionSelectedFunc.current(promotion);
+    }
+  };
+
+  const onMove = async (moveSquares: MoveSquares): Promise<void> => {
+    if (!move || !isPawnPromotion) {
       return;
     }
+
+    if (isPawnPromotion(moveSquares)) {
+      // prompt user to select piece and wait until they do
+      const selectedPromotion = await promptUserForPromotionChoice();
+      move(moveSquares, selectedPromotion);
+
+      return;
+    }
+
+    // no pawn promotion -> normal move
     move(moveSquares);
   };
 
@@ -99,6 +166,12 @@ const GraphicalRecording: React.FC = () => {
     <>
       {graphicalRecordingMode && (
         <View style={styles.mainContainer}>
+          <OptionSheet
+            visible={showPromotion}
+            onCancel={() => setShowPromotion(false)}
+            message={'Select Promotion Piece'}
+            options={promotionButtons}
+          />
           <View style={{ height: 100 }}>
             <PrimaryText label="Placeholder" size={30} />
           </View>
