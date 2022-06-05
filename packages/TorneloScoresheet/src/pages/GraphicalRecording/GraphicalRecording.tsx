@@ -25,6 +25,7 @@ const GraphicalRecording: React.FC = () => {
 
   const graphicalRecordingMode = graphicalRecordingState?.[0];
   const move = graphicalRecordingState?.[1].move;
+  const undoLastMove = graphicalRecordingState?.[1].undoLastMove;
 
   const [flipBoard, setFlipBoard] = useState(
     graphicalRecordingMode?.currentPlayer === PlayerColour.Black,
@@ -74,7 +75,10 @@ const GraphicalRecording: React.FC = () => {
     {
       text: 'undo',
       onPress: () => {
-        return;
+        if (!undoLastMove) {
+          return;
+        }
+        undoLastMove();
       },
       Icon: ICON_UNDO,
       buttonHeight: ButtonHeight.SINGLE,

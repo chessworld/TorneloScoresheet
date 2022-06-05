@@ -173,3 +173,83 @@ describe('graphical recording moving', () => {
     });
   });
 });
+
+describe('undoing last move', () => {
+  test('undo with empty move history', () => {
+    const graphicalState = generateGraphicalRecordingState([]);
+    const setContextMock = mockAppModeContext(graphicalState);
+    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+
+    act(() => {
+      graphicalStateHook.current?.[1].undoLastMove();
+      expect(setContextMock).toHaveBeenCalledTimes(1);
+      expect(setContextMock).toHaveBeenCalledWith({
+        ...graphicalState,
+        moveHistory: [],
+      });
+    });
+  });
+
+  test('undo white move no capture', () => {
+    const moveHistory = [
+      {
+        moveNo: 1,
+        player: PlayerColour.White,
+        startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+        move: { from: 'a1', to: 'a5' } as MoveSquares,
+      },
+    ];
+    const graphicalState = generateGraphicalRecordingState(moveHistory);
+    const setContextMock = mockAppModeContext(graphicalState);
+    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+
+    act(() => {
+      graphicalStateHook.current?.[1].undoLastMove();
+      expect(setContextMock).toHaveBeenCalledTimes(1);
+      expect(setContextMock).toHaveBeenCalledWith({
+        ...graphicalState,
+        moveHistory: [],
+      });
+    });
+  });
+
+  test('undo black move no capture', () => {
+    const moveHistory = [
+      {
+        moveNo: 1,
+        player: PlayerColour.White,
+        startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+        move: { from: 'a1', to: 'a5' } as MoveSquares,
+      },
+      {
+        moveNo: 1,
+        player: PlayerColour.Black,
+        startingFen: 'rnbqkbnr/pppppppp/8/R7/8/8/PPPPPPPP/1NBQKBNR b Kkq - 1 1',
+        move: { from: 'h8', to: 'h5' } as MoveSquares,
+      },
+    ];
+    const graphicalState = generateGraphicalRecordingState(moveHistory);
+    const setContextMock = mockAppModeContext(graphicalState);
+    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+
+    act(() => {
+      graphicalStateHook.current?.[1].undoLastMove();
+      expect(setContextMock).toHaveBeenCalledTimes(1);
+      expect(setContextMock).toHaveBeenCalledWith({
+        ...graphicalState,
+        board: chessEngine.fenToBoardPositions(
+          'rnbqkbnr/pppppppp/8/R7/8/8/PPPPPPPP/1NBQKBNR b Kkq - 1 1',
+        ),
+        moveHistory: [
+          {
+            moveNo: 1,
+            player: PlayerColour.White,
+            startingFen:
+              'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+            move: { from: 'a1', to: 'a5' } as MoveSquares,
+          },
+        ],
+      });
+    });
+  });
+});

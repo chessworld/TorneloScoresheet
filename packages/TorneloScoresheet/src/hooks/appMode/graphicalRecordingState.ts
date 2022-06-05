@@ -15,6 +15,7 @@ type GraphicalRecordingStateHookType = [
     goToTextInput: () => void;
     goToArbiterMode: () => void;
     move: (moveSquares: MoveSquares) => void;
+    undoLastMove: () => void;
   },
 ];
 
@@ -100,6 +101,10 @@ export const makeUseGraphicalRecordingState =
       }
     };
 
+    const undoLastMoveFunc = () => {
+      updateBoard(appModeState.moveHistory.slice(0, -1));
+    };
+
     return [
       appModeState,
       {
@@ -107,6 +112,7 @@ export const makeUseGraphicalRecordingState =
         goToTextInput: goToTextInputFunc,
         goToArbiterMode: goToArbiterModeFunc,
         move: moveFunc,
+        undoLastMove: undoLastMoveFunc,
       },
     ];
   };
