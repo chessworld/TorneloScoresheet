@@ -1027,3 +1027,26 @@ describe('isPromotion', function () {
     });
   });
 });
+
+// ---- chessEngine.skipTurn() ----
+describe('Skip Turn', () => {
+  const testCases = [
+    {
+      name: 'white move skip',
+      startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+      expectedFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 1 1',
+    },
+    {
+      name: 'black move skip',
+      startingFen: 'rnbqkbnr/pppppppp/8/4P3/8/8/PPPP1PPP/RNBQKBNR b KQkq - 1 1',
+      expectedFen: 'rnbqkbnr/pppppppp/8/4P3/8/8/PPPP1PPP/RNBQKBNR w KQkq - 2 2',
+    },
+  ];
+
+  testCases.forEach(testCase => {
+    it(testCase.name, () => {
+      const resultingFen = chessEngine.skipTurn(testCase.startingFen);
+      expect(resultingFen).toStrictEqual(testCase.expectedFen);
+    });
+  });
+});

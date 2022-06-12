@@ -49,6 +49,14 @@ export type ChessEngineInterface = {
    * @returns true/false
    */
   isPawnPromotion: (startingFen: string, moveSquares: MoveSquares) => boolean;
+
+  /**
+   * Skips the turn of the current player
+   * Returns the fen as the other player's turn
+   * @param fen the current state of the board
+   * @returns the fen as the next player's turn
+   */
+  skipTurn: (fen: string) => string;
 };
 
 // change the chess engine implementation here

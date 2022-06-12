@@ -133,6 +133,18 @@ const isPawnPromotion = (
 };
 
 /**
+ * Skips the turn of the current player
+ * Returns the fen as the other player's turn
+ * @param fen the current state of the board
+ * @returns the fen as the next player's turn
+ */
+const skipTurn = (fen: string): string => {
+  const game = new Chess(fen);
+  game.skipTurn();
+  return game.fen();
+};
+
+/**
  * The exported chess engine object which implements all the public methods
  */
 export const chessTsChessEngine: ChessEngineInterface = {
@@ -141,6 +153,7 @@ export const chessTsChessEngine: ChessEngineInterface = {
   makeMove,
   fenToBoardPositions,
   isPawnPromotion,
+  skipTurn,
 };
 
 // ------- Privates
