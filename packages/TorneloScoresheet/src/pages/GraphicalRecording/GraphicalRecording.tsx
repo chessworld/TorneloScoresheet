@@ -34,6 +34,9 @@ const GraphicalRecording: React.FC = () => {
   const undoLastMove = graphicalRecordingState?.[1].undoLastMove;
   const isPawnPromotion = graphicalRecordingState?.[1].isPawnPromotion;
   const skipTurn = graphicalRecordingState?.[1].skipTurn;
+  const isOtherPlayersPiece = graphicalRecordingState?.[1].isOtherPlayersPiece;
+  const skipTurnAndProcessMove =
+    graphicalRecordingState?.[1].skipTurnAndProcessMove;
 
   // states
   const [flipBoard, setFlipBoard] = useState(
@@ -150,20 +153,26 @@ const GraphicalRecording: React.FC = () => {
   };
 
   const onMove = async (moveSquares: MoveSquares): Promise<void> => {
-    if (!move || !isPawnPromotion) {
+    if (
+      !move ||
+      !isPawnPromotion ||
+      !isOtherPlayersPiece ||
+      !skipTurnAndProcessMove
+    ) {
       return;
     }
 
+    // check for promotion
+    let promotion: PieceType | undefined;
     if (isPawnPromotion(moveSquares)) {
       // prompt user to select piece and wait until they do
-      const selectedPromotion = await promptUserForPromotionChoice();
-      move(moveSquares, selectedPromotion);
-
-      return;
+      promotion = await promptUserForPromotionChoice();
     }
 
-    // no pawn promotion -> normal move
-    move(moveSquares);
+    // auto skip turn + move or regular move
+    isOtherPlayersPiece(moveSquares)
+      ? skipTurnAndProcessMove(moveSquares, promotion)
+      : move(moveSquares, promotion);
   };
 
   return (
