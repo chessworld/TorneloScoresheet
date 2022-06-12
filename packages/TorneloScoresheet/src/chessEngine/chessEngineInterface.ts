@@ -57,6 +57,16 @@ export type ChessEngineInterface = {
    * @returns the fen as the next player's turn
    */
   skipTurn: (fen: string) => string;
+
+  /**
+   * Determins if the move is attempting to move the opposite player's piece
+   * This can be used to determine if the player is intending to auto skip a turn
+   *
+   * @param fen the current state of the board
+   * @param moveSquares the to and from positions of the move
+   * @returns if the move is targeting the opposite player's piece
+   */
+  isOtherPlayersPiece: (fen: string, move: MoveSquares) => boolean;
 };
 
 // change the chess engine implementation here
