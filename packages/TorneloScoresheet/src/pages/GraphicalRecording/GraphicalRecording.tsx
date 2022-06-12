@@ -33,6 +33,7 @@ const GraphicalRecording: React.FC = () => {
   const move = graphicalRecordingState?.[1].move;
   const undoLastMove = graphicalRecordingState?.[1].undoLastMove;
   const isPawnPromotion = graphicalRecordingState?.[1].isPawnPromotion;
+  const skipTurn = graphicalRecordingState?.[1].skipTurn;
 
   // states
   const [flipBoard, setFlipBoard] = useState(
@@ -83,7 +84,10 @@ const GraphicalRecording: React.FC = () => {
     {
       text: 'skip',
       onPress: () => {
-        return;
+        if (!skipTurn) {
+          return;
+        }
+        skipTurn();
       },
       Icon: ICON_SKIP,
       buttonHeight: ButtonHeight.DOUBLE,
