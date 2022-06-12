@@ -261,3 +261,68 @@ describe('undoing last move', () => {
     });
   });
 });
+
+describe('Skipping player turn', () => {
+  test("Skip White's turn", () => {
+    const graphicalState = generateGraphicalRecordingState([]);
+    const setContextMock = mockAppModeContext(graphicalState);
+    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const startingFen =
+      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+    const resultingFen =
+      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 1 1';
+    act(() => {
+      graphicalStateHook.current?.[1].skipTurn();
+      expect(setContextMock).toHaveBeenCalledTimes(1);
+      expect(setContextMock).toHaveBeenCalledWith({
+        ...graphicalState,
+        moveHistory: [
+          {
+            moveNo: 1,
+            player: PlayerColour.White,
+            startingFen,
+            type: PlyTypes.SkipPly,
+          },
+        ],
+        board: chessEngine.fenToBoardPositions(resultingFen),
+      });
+    });
+  });
+
+  test("skip Black's turn", () => {
+    const moveHistory = [
+      {
+        moveNo: 1,
+        player: PlayerColour.White,
+        startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+        type: PlyTypes.MovePly,
+        move: { from: 'a1', to: 'a5' } as MoveSquares,
+      },
+    ];
+    const graphicalState = generateGraphicalRecordingState(moveHistory);
+    const setContextMock = mockAppModeContext(graphicalState);
+    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const startingFen =
+      'rnbqkbnr/pppppppp/8/R7/8/8/PPPPPPPP/1NBQKBNR b Kkq - 1 1';
+    const resultingFen =
+      'rnbqkbnr/pppppppp/8/R7/8/8/PPPPPPPP/1NBQKBNR w Kkq - 2 2';
+
+    act(() => {
+      graphicalStateHook.current?.[1].skipTurn();
+      expect(setContextMock).toHaveBeenCalledTimes(1);
+      expect(setContextMock).toHaveBeenCalledWith({
+        ...graphicalState,
+        moveHistory: [
+          ...moveHistory,
+          {
+            moveNo: 1,
+            player: PlayerColour.Black,
+            startingFen,
+            type: PlyTypes.SkipPly,
+          },
+        ],
+        board: chessEngine.fenToBoardPositions(resultingFen),
+      });
+    });
+  });
+});
