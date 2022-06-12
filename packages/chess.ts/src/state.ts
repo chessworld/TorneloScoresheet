@@ -1205,6 +1205,17 @@ export function makeMove(prevState: State, move: HexMove): State {
   return state
 }
 
+export function skipTurn(state: State): State {
+  state.ep_square = EMPTY
+  state.half_moves++
+
+  if (state.turn === BLACK) {
+    state.move_number++
+  }
+  state.turn = swapColor(state.turn)
+  return state
+}
+
 export function buildMove(
   state: State,
   from: number,

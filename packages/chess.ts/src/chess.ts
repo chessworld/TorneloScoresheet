@@ -19,6 +19,7 @@ import {
   validateMove,
   pawnPromotionAllowIllegal,
   processMove,
+  skipTurn,
 } from './state'
 import {
   Color,
@@ -1240,6 +1241,28 @@ export class Chess {
     }
 
     return nodes
+  }
+
+  /**
+   * Skips the current turn
+   * Caution: This will cause issues with the chess engine
+   * Only use to generate the fen if the turn was skipped
+   * Do not call any other method after calling skipTurn
+   * Ie use in the following way:
+   * const game = new Chess()
+   * game.move('e4')
+   * game.skipTurn()
+   * const fenAfterSkip = game.fen()
+   *
+   * DO NOT USE IN THE FOLLOWING WAY:
+   * const game = new Chess()
+   * game.move('e4')
+   * game.skipTurn()
+   * game.undo() // inconsistant state
+   *
+   */
+  public skipTurn(): void {
+    this._state = skipTurn(this._state)
   }
 
   /**
