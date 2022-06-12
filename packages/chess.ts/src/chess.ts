@@ -20,6 +20,7 @@ import {
   pawnPromotionAllowIllegal,
   processMove,
   skipTurn,
+  isOtherPlayersPiece,
 } from './state'
 import {
   Color,
@@ -1258,6 +1259,16 @@ export class Chess {
    */
   public skipTurn(): void {
     this._state = skipTurn(this._state)
+  }
+
+  /**
+   * Will determin if the current move is trying to move the other player's piece
+   * This can be used to determin if the player intends to skip a turn automatically
+   * @param move the move inputed
+   * @returns whether the move is targeting the opposite player's piece
+   */
+  public isOtherPlayersPiece(move: PartialMove): boolean {
+    return isOtherPlayersPiece(this._state, move)
   }
 
   /**

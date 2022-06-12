@@ -1213,6 +1213,24 @@ export function skipTurn(state: State): State {
   return state
 }
 
+export function isOtherPlayersPiece(state: State, move: PartialMove): boolean {
+  const us = state.turn
+
+  // check if squares exists
+  let from = move.from.toLowerCase()
+  if (!isSquare(from)) {
+    return false
+  }
+  const fromSquare = SQUARES[from]
+
+  // check from square is our peice
+  const piece = state.board[fromSquare]
+  if (piece && piece.color !== us) {
+    return true
+  }
+  return false
+}
+
 export function buildMove(
   state: State,
   from: number,
