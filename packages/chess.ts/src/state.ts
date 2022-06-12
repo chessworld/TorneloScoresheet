@@ -655,8 +655,7 @@ export function removePiece(prevState: State, square?: string): State | null {
 export function pawnPromotionAllowIllegal(
   board: Board,
   from: string,
-  to: string,
-  player: Color
+  to: string
 ): boolean {
   if (!isSquare(from) || !isSquare(to)) {
     return false
@@ -665,15 +664,13 @@ export function pawnPromotionAllowIllegal(
   const toSquare = SQUARES[to]
 
   const piece = board[fromSquare]
-  if (
-    piece &&
+  return (
+    piece !== undefined &&
     piece.type === PAWN &&
-    ((player === 'w' && rank(toSquare) === RANK_8) ||
-      (player === 'b' && rank(toSquare) === RANK_1))
-  ) {
-    return true
-  }
-  return false
+    (piece.color === WHITE
+      ? rank(toSquare) === RANK_8
+      : rank(toSquare) === RANK_1)
+  )
 }
 
 export function generateMoves(

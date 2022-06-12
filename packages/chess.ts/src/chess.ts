@@ -944,12 +944,7 @@ export class Chess {
    * @param move - object, e.g.  `{ from: 'h7', to: 'h8' }`
    */
   public isPromotionAllowIllegal(move: PartialMove): boolean {
-    return pawnPromotionAllowIllegal(
-      this._state.board,
-      move.from,
-      move.to,
-      this._state.turn
-    )
+    return pawnPromotionAllowIllegal(this._state.board, move.from, move.to)
   }
 
   /**
