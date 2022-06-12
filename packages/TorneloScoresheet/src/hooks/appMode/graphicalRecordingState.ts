@@ -25,6 +25,8 @@ type GraphicalRecordingStateHookType = [
     undoLastMove: () => void;
     isPawnPromotion: (moveSquares: MoveSquares) => boolean;
     skipTurn: () => void;
+    isOtherPlayersPiece: (move: MoveSquares) => boolean;
+    skipTurnAndProcessMove: (move: MoveSquares, promotion?: PieceType) => void;
   },
 ];
 
@@ -41,25 +43,20 @@ const getCurrentFen = (moveHistory: ChessPly[]): string => {
 
   // execute last ply to get resulting fen
   const lastPly = moveHistory[moveHistory.length - 1];
-  let nextFen = '';
 
   // Last ply = SkipPly
   if (lastPly.type === PlyTypes.SkipPly) {
-    nextFen = chessEngine.skipTurn(lastPly.startingFen);
+    return chessEngine.skipTurn(lastPly.startingFen);
   }
 
   // Last ply = MovePly
-  if (lastPly.type === PlyTypes.MovePly) {
-    // all move in history array will be legal, so makeMove should never return undef
-    nextFen =
-      chessEngine.makeMove(
-        lastPly.startingFen,
-        lastPly.move,
-        lastPly.promotion,
-      ) ?? '';
-  }
-
-  return nextFen;
+  return (
+    chessEngine.makeMove(
+      lastPly.startingFen,
+      lastPly.move,
+      lastPly.promotion,
+    ) ?? '' // all move in history are legal, -> should never return undef
+  );
 };
 
 /**
@@ -101,18 +98,12 @@ const processPlayerMove = (
       moveHistory.length % 2 === 0 ? PlayerColour.White : PlayerColour.Black,
     promotion,
   };
-  const result = chessEngine.makeMove(
-    nextPly.startingFen,
-    nextPly.move,
-    promotion,
-  );
 
-  // check move is possible
-  if (result === null) {
-    return null;
-  }
-
-  return [...moveHistory, nextPly];
+  // return history array or null if move is not legal
+  return chessEngine.makeMove(nextPly.startingFen, nextPly.move, promotion) ===
+    null
+    ? null
+    : [...moveHistory, nextPly];
 };
 
 export const makeUseGraphicalRecordingState =
@@ -165,6 +156,30 @@ export const makeUseGraphicalRecordingState =
       updateBoard(skipPlayerTurn(appModeState.moveHistory));
     };
 
+    const isOtherPlayersPieceFunc = (move: MoveSquares): boolean => {
+      return chessEngine.isOtherPlayersPiece(
+        getCurrentFen(appModeState.moveHistory),
+        move,
+      );
+    };
+
+    const skipTurnAndProcessMoveFunc = (
+      move: MoveSquares,
+      promotion?: PieceType,
+    ): void => {
+      const historyAfterSkip = skipPlayerTurn(appModeState.moveHistory);
+      const historyAfterSkipAndMove = processPlayerMove(
+        move,
+        historyAfterSkip,
+        promotion,
+      );
+      if (historyAfterSkipAndMove !== null) {
+        updateBoard(historyAfterSkipAndMove);
+      } else {
+        updateBoard(historyAfterSkip);
+      }
+    };
+
     return [
       appModeState,
       {
@@ -175,6 +190,8 @@ export const makeUseGraphicalRecordingState =
         undoLastMove: undoLastMoveFunc,
         isPawnPromotion: isPawnPromotionFunc,
         skipTurn: skipTurnFunc,
+        isOtherPlayersPiece: isOtherPlayersPieceFunc,
+        skipTurnAndProcessMove: skipTurnAndProcessMoveFunc,
       },
     ];
   };
