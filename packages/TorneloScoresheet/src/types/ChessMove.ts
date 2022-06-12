@@ -20,10 +20,25 @@ export type MoveSquares = {
   to: Position;
 };
 
-export type ChessPly = {
+export enum PlyTypes {
+  MovePly,
+  SkipPly,
+}
+export type PlyInfo = {
   moveNo: number;
   startingFen: string;
   player: PlayerColour;
-  move: MoveSquares;
-  promotion?: PieceType;
+  type: PlyTypes;
 };
+
+export type MovePly = {
+  move: MoveSquares;
+  type: PlyTypes.MovePly;
+  promotion?: PieceType;
+} & PlyInfo;
+
+export type SkipPly = {
+  type: PlyTypes.SkipPly;
+} & PlyInfo;
+
+export type ChessPly = MovePly | SkipPly;
