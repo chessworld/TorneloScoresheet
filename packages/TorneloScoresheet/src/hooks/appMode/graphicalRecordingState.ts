@@ -6,7 +6,13 @@ import {
   GraphicalRecordingMode,
 } from '../../types/AppModeState';
 import { PlayerColour } from '../../types/ChessGameInfo';
-import { ChessPly, PieceType, MoveSquares } from '../../types/ChessMove';
+import {
+  ChessPly,
+  MovePly,
+  MoveSquares,
+  PieceType,
+  PlyTypes,
+} from '../../types/ChessMove';
 
 type GraphicalRecordingStateHookType = [
   GraphicalRecordingMode,
@@ -30,17 +36,25 @@ const getCurrentFen = (moveHistory: ChessPly[]): string => {
   if (moveHistory.length === 0) {
     return chessEngine.startingFen();
   }
-  // execute last move to get resulting fen
-  const lastMove = moveHistory[moveHistory.length - 1];
-  const nextFen = chessEngine.makeMove(
-    lastMove.startingFen,
-    lastMove.move,
-    lastMove.promotion,
-  );
 
-  if (nextFen === null) {
-    // all moves should be possible in move history array -> unreachable code
-    return '';
+  // execute last ply to get resulting fen
+  const lastPly = moveHistory[moveHistory.length - 1];
+  let nextFen = '';
+
+  // Last ply = SkipPly
+  if (lastPly.type === PlyTypes.SkipPly) {
+    nextFen = chessEngine.skipTurn(lastPly.startingFen);
+  }
+
+  // Last ply = MovePly
+  if (lastPly.type === PlyTypes.MovePly) {
+    // all move in history array will be legal, so makeMove should never return undef
+    nextFen =
+      chessEngine.makeMove(
+        lastPly.startingFen,
+        lastPly.move,
+        lastPly.promotion,
+      ) ?? '';
   }
 
   return nextFen;
@@ -59,9 +73,10 @@ const processPlayerMove = (
   moveHistory: ChessPly[],
   promotion?: PieceType,
 ): ChessPly[] | null => {
-  const nextPly: ChessPly = {
+  const nextPly: MovePly = {
     startingFen: getCurrentFen(moveHistory),
     move: moveSquares,
+    type: PlyTypes.MovePly,
     moveNo: Math.floor(moveHistory.length / 2) + 1,
     player:
       moveHistory.length % 2 === 0 ? PlayerColour.White : PlayerColour.Black,

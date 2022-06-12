@@ -12,7 +12,7 @@ import {
   mockAppModeContext,
   renderCustomHook,
 } from '../src/testUtils';
-import { MoveSquares } from '../src/types/ChessMove';
+import { MoveSquares, PlyTypes } from '../src/types/ChessMove';
 import { chessEngine } from '../src/chessEngine/chessEngineInterface';
 import axios, { AxiosRequestConfig } from 'axios';
 import { PlayerColour } from '../src/types/ChessGameInfo';
@@ -122,6 +122,7 @@ describe('graphical recording moving', () => {
             moveNo: 1,
             startingFen: originFen,
             move,
+            type: PlyTypes.MovePly,
             player: PlayerColour.White,
           },
         ],
@@ -140,6 +141,7 @@ describe('graphical recording moving', () => {
         player: PlayerColour.White,
         startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
         move: { from: 'a1', to: 'a5' } as MoveSquares,
+        type: PlyTypes.MovePly,
       },
     ];
 
@@ -158,6 +160,7 @@ describe('graphical recording moving', () => {
           {
             moveNo: 1,
             player: PlayerColour.White,
+            type: PlyTypes.MovePly,
             startingFen:
               'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
             move: { from: 'a1', to: 'a5' } as MoveSquares,
@@ -165,6 +168,7 @@ describe('graphical recording moving', () => {
           {
             moveNo: 1,
             player: PlayerColour.Black,
+            type: PlyTypes.MovePly,
             startingFen: originFen,
             move,
           },
@@ -196,6 +200,7 @@ describe('undoing last move', () => {
         moveNo: 1,
         player: PlayerColour.White,
         startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+        type: PlyTypes.MovePly,
         move: { from: 'a1', to: 'a5' } as MoveSquares,
       },
     ];
@@ -218,6 +223,7 @@ describe('undoing last move', () => {
       {
         moveNo: 1,
         player: PlayerColour.White,
+        type: PlyTypes.MovePly,
         startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
         move: { from: 'a1', to: 'a5' } as MoveSquares,
       },
@@ -226,6 +232,7 @@ describe('undoing last move', () => {
         player: PlayerColour.Black,
         startingFen: 'rnbqkbnr/pppppppp/8/R7/8/8/PPPPPPPP/1NBQKBNR b Kkq - 1 1',
         move: { from: 'h8', to: 'h5' } as MoveSquares,
+        type: PlyTypes.MovePly,
       },
     ];
     const graphicalState = generateGraphicalRecordingState(moveHistory);
@@ -244,6 +251,7 @@ describe('undoing last move', () => {
           {
             moveNo: 1,
             player: PlayerColour.White,
+            type: PlyTypes.MovePly,
             startingFen:
               'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
             move: { from: 'a1', to: 'a5' } as MoveSquares,
