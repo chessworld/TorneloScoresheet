@@ -489,6 +489,13 @@ describe('isPromotionAllowIllegal', function () {
       move: { from: 'g7', to: 'g8' },
       promotion: false,
     },
+    // legal promotion - checking as white when black's turn
+    {
+      fen: '8/2P2k2/8/8/8/5K2/8/8 b - - 0 1',
+      san: 'c8',
+      move: { from: 'c7', to: 'c8' },
+      promotion: true,
+    },
   ]
 
   positions.forEach(function (position) {
