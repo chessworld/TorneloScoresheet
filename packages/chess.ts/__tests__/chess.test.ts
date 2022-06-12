@@ -3256,3 +3256,42 @@ describe('Skip Turn', () => {
     })
   })
 })
+
+describe("is other player's piece", () => {
+  const testCases = [
+    {
+      name: 'White turn own piece',
+      startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+      move: { from: 'e2', to: 'e4' },
+      isOtherPlayersPiece: false,
+    },
+    {
+      name: "White turn Black's piece",
+      startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+      move: { from: 'e8', to: 'e5' },
+      isOtherPlayersPiece: true,
+    },
+    {
+      name: 'Black turn own piece',
+      startingFen:
+        'rnbqkbnr/pppp2pp/8/4p3/4Pp2/2PP4/PP3PPP/RNBQKBNR b KQkq e3 0 1',
+      move: { from: 'f4', to: 'e3' },
+      isOtherPlayersPiece: false,
+    },
+    {
+      name: "Black turn white's piece",
+      startingFen:
+        'rnbqkbnr/pppp2pp/8/4p3/4Pp2/2PP4/PP3PPP/RNBQKBNR b KQkq e3 0 1',
+      move: { from: 'a1', to: 'a5' },
+      isOtherPlayersPiece: true,
+    },
+  ]
+
+  testCases.forEach((testCase) => {
+    it(testCase.name, () => {
+      const game = new Chess(testCase.startingFen)
+      const result = game.isOtherPlayersPiece(testCase.move)
+      expect(result).toStrictEqual(testCase.isOtherPlayersPiece)
+    })
+  })
+})
