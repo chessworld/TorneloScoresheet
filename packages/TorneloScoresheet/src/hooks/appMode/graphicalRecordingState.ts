@@ -12,6 +12,7 @@ import {
   MoveSquares,
   PieceType,
   PlyTypes,
+  SkipPly,
 } from '../../types/ChessMove';
 
 type GraphicalRecordingStateHookType = [
@@ -23,6 +24,7 @@ type GraphicalRecordingStateHookType = [
     move: (moveSquares: MoveSquares, promotion?: PieceType) => void;
     undoLastMove: () => void;
     isPawnPromotion: (moveSquares: MoveSquares) => boolean;
+    skipTurn: () => void;
   },
 ];
 
@@ -58,6 +60,23 @@ const getCurrentFen = (moveHistory: ChessPly[]): string => {
   }
 
   return nextFen;
+};
+
+/**
+ * Skips a player's turn
+ * Will Return the next move history array
+ * @param moveHistory ChessPly array of past moves
+ * @returns new moveHistory array
+ */
+const skipPlayerTurn = (moveHistory: ChessPly[]): ChessPly[] => {
+  const nextPly: SkipPly = {
+    startingFen: getCurrentFen(moveHistory),
+    type: PlyTypes.SkipPly,
+    moveNo: Math.floor(moveHistory.length / 2) + 1,
+    player:
+      moveHistory.length % 2 === 0 ? PlayerColour.White : PlayerColour.Black,
+  };
+  return [...moveHistory, nextPly];
 };
 
 /**
@@ -138,8 +157,12 @@ export const makeUseGraphicalRecordingState =
       return chessEngine.isPawnPromotion(fen, moveSquares);
     };
 
-    const undoLastMoveFunc = () => {
+    const undoLastMoveFunc = (): void => {
       updateBoard(appModeState.moveHistory.slice(0, -1));
+    };
+
+    const skipTurnFunc = (): void => {
+      updateBoard(skipPlayerTurn(appModeState.moveHistory));
     };
 
     return [
@@ -151,6 +174,7 @@ export const makeUseGraphicalRecordingState =
         move: moveFunc,
         undoLastMove: undoLastMoveFunc,
         isPawnPromotion: isPawnPromotionFunc,
+        skipTurn: skipTurnFunc,
       },
     ];
   };
