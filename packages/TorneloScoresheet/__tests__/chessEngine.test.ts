@@ -703,8 +703,8 @@ describe('fenToBoardPositions', () => {
       } else {
         // should be a piece here
         if (
-          position.piece?.player !== expectedPeice[0].piece?.player ||
-          position.piece?.type !== expectedPeice[0].piece?.type
+          position.piece?.player !== expectedPeice?.[0]?.piece?.player ||
+          position.piece?.type !== expectedPeice?.[0]?.piece?.type
         ) {
           correct = false;
         }

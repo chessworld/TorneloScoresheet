@@ -54,7 +54,7 @@ const reverseRowOrder = (board: BoardPosition[]) => {
         }
 
         // same row
-        resultArray[rowIndex].push(item);
+        resultArray[rowIndex]!.push(item);
 
         return resultArray;
       }, [])

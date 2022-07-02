@@ -55,8 +55,8 @@ export const boardIndexToPosition = (
   rowIdx: number,
   colIdx: number,
 ): Position => {
-  const row = rowIdxToRow[rowIdx];
-  const col = colIdxToCol[colIdx];
+  const row = rowIdxToRow[rowIdx]!;
+  const col = colIdxToCol[colIdx]!;
   return `${col}${row}`;
 };
 
