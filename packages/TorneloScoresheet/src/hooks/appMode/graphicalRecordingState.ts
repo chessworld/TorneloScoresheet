@@ -42,7 +42,7 @@ const getCurrentFen = (moveHistory: ChessPly[]): string => {
   }
 
   // execute last ply to get resulting fen
-  const lastPly = moveHistory[moveHistory.length - 1];
+  const lastPly = moveHistory[moveHistory.length - 1]!;
 
   // Last ply = SkipPly
   if (lastPly.type === PlyTypes.SkipPly) {

@@ -35,7 +35,11 @@ const parseGameInfo = (pgn: string): Result<ChessGameInfo> => {
     }
 
     // extract rounds
-    const rounds = parseRoundInfo(game.header().Round);
+    const roundHeader = game.header().Round;
+    if (!roundHeader) {
+      return PARSING_FAILURE;
+    }
+    const rounds = parseRoundInfo(roundHeader);
     if (isError(rounds)) {
       return rounds;
     }
@@ -91,16 +95,16 @@ const fenToBoardPositions = (fen: string): BoardPosition[] => {
 
 /**
  * Processes a move given the starting fen and to and from positions
- * @param startingFen the fen of the game state before the move
+ * @param fromFen the fen of the game state before the move
  * @param moveSquares the to and from positions of the move
  * @returns the next fen if move is possible else null
  */
 const makeMove = (
-  startingFen: string,
+  fromFen: string,
   moveSquares: MoveSquares,
   promotion?: PieceType,
 ): string | null => {
-  const game = new Chess(startingFen);
+  const game = new Chess(fromFen);
   const result = game.forceMove(
     { from: moveSquares.from, to: moveSquares.to },
     {
@@ -117,15 +121,15 @@ const makeMove = (
 
 /**
  * Checks if the move is a pawn promotion move
- * @param startingFen the fen of the game state before the move
+ * @param fromFen the fen of the game state before the move
  * @param moveSquares the to and from positions of the move
  * @returns true/false
  */
 const isPawnPromotion = (
-  startingFen: string,
+  fromFen: string,
   moveSquares: MoveSquares,
 ): boolean => {
-  const game = new Chess(startingFen);
+  const game = new Chess(fromFen);
   return game.isPromotionAllowIllegal({
     from: moveSquares.from,
     to: moveSquares.to,
@@ -276,7 +280,7 @@ const parsePlayerName = (name: string): Result<[string, string]> => {
   }
 
   // return firstname, lastname
-  return succ([nameRegexResult[2], nameRegexResult[1]]);
+  return succ([nameRegexResult[2]!, nameRegexResult[1]!]);
 };
 
 /**
@@ -295,9 +299,9 @@ export const parseRoundInfo = (
   }
 
   // get
-  let one = parseInt(regexResults.groups.one, 10);
-  let two = parseInt(regexResults.groups.two, 10);
-  let three = parseInt(regexResults.groups.three, 10);
+  let one = parseInt(regexResults.groups.one ?? '', 10);
+  let two = parseInt(regexResults.groups.two ?? '', 10);
+  let three = parseInt(regexResults.groups.three ?? '', 10);
 
   // format: ''.0.1 -> failure
   if (isNaN(one)) {

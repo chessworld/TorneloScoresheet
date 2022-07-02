@@ -8,7 +8,7 @@ export type ChessGameInfo = {
   game?: number;
   board: number;
   result: string;
-  players: Player[];
+  players: [Player, Player];
   pgn: string;
 };
 
