@@ -13,6 +13,9 @@ import IconButton from '../IconButton/IconButton';
 import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import Sheet from '../Sheet/Sheet';
 import { styles } from './style';
+import ToolbarButton from './ToolbarButton';
+import { ICON_ARBITER_MODE } from '../../style/images';
+import App from '../../../App';
 
 /**
  * The App's toolbar.
@@ -27,7 +30,14 @@ const colourForMode: Record<AppMode, ColourType> = {
   [AppMode.TablePairing]: colours.primary,
   [AppMode.GraphicalRecording]: colours.primary,
   [AppMode.ResultDisplay]: colours.primary,
-  [AppMode.TablePairing]: colours.primary,
+};
+
+const arbiterModeDisplay: Record<AppMode, 'none' | undefined> = {
+  [AppMode.EnterPgn]: 'none',
+  [AppMode.PariringSelection]: 'none',
+  [AppMode.TablePairing]: 'none',
+  [AppMode.GraphicalRecording]: undefined,
+  [AppMode.ResultDisplay]: undefined,
 };
 
 const backgroundColorStyle = (backgroundColor: string) => ({
@@ -41,6 +51,7 @@ const Toolbar: React.FC = () => {
     setShowSheet(a => !a);
   };
   const currentColour = colourForMode[appModeState.mode];
+  const arbiterModeVisibility = arbiterModeDisplay[appModeState.mode];
   const currentTextColour = textColour(currentColour);
   return (
     <>
@@ -52,6 +63,13 @@ const Toolbar: React.FC = () => {
         <PrimaryText>Put help here!</PrimaryText>
       </Sheet>
       <View style={[styles.container, backgroundColorStyle(currentColour)]}>
+        <ToolbarButton
+          Icon={ICON_ARBITER_MODE}
+          onPress={function (): void {
+            throw new Error('Function not implemented.');
+          }}
+          colour={currentColour}
+          display={arbiterModeVisibility}></ToolbarButton>
         <View style={styles.logo}>
           <Image
             style={styles.logoImage}
