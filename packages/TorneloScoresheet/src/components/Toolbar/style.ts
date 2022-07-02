@@ -26,4 +26,7 @@ export const styles = StyleSheet.create({
     height: LOGO_HEIGHT,
     marginRight: 24,
   },
+
+  buttonContainer: {},
+  iconContainer: {},
 });
