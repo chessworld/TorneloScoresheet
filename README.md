@@ -2,7 +2,6 @@
 
 A Chess Scoresheet App for iOS.
 
-
 ## Development:
 
 It is strongly recommended to setup `pre-commit` when setting up a new environment: see `SETUP.md`.
@@ -18,6 +17,7 @@ It is strongly recommended to setup `pre-commit` when setting up a new environme
 ### Build app dependancies
 
 > go to TorneloScoresheet directory
+
 - `npm link ..\chess.ts`
 - `npm install`
 
@@ -37,3 +37,17 @@ It is strongly recommended to setup `pre-commit` when setting up a new environme
 > go to TorneloScoresheet directory
 
 - `npm run android`
+
+## Testing:
+
+To test the `chess.ts` package:
+
+- `cd packages/chess.ts`
+- `npm i`
+- `npm run test`
+
+To test the `TorneloScoresheet` package:
+
+- `cd packages/TorneloScoresheet`
+- `npm i`
+- `npm run test`
