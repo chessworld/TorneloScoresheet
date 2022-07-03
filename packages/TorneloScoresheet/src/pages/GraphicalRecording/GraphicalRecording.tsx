@@ -9,6 +9,7 @@ import {
 import ChessBoard from '../../components/ChessBoard/ChessBoard';
 import MoveCard from '../../components/MoveCard/MoveCard';
 import OptionSheet from '../../components/OptionSheet/OptionSheet';
+import PrimaryButton from '../../components/PrimaryButton/PrimaryButton';
 import PrimaryText from '../../components/PrimaryText/PrimaryText';
 import { useGraphicalRecordingState } from '../../context/AppModeStateContext';
 import {
@@ -48,6 +49,8 @@ const GraphicalRecording: React.FC = () => {
     graphicalRecordingMode?.currentPlayer === PlayerColour.Black,
   );
   const [showPromotion, setShowPromotion] = useState(false);
+  const [showEndGame, setShowEndGame] = useState(false);
+  const goToEndGame = graphicalRecordingState?.[1].goToEndGame;
 
   // when the promotion popup opens, the app will await untill a promise is resolved
   // this ref stores this resolve function (it will be called once the user selects a promotion)
@@ -55,6 +58,17 @@ const GraphicalRecording: React.FC = () => {
     ((value: PieceType | PromiseLike<PieceType>) => void) | null
   >(null);
 
+  const handleConfirm = () => {
+    if (!graphicalRecordingMode || !goToEndGame) {
+      return;
+    } else {
+      goToEndGame();
+    }
+  };
+
+  const cancelSelection = () => {
+    setShowEndGame(false);
+  };
   // Button parameters
   const actionButtons: ActionButtonProps[] = [
     {
@@ -68,7 +82,7 @@ const GraphicalRecording: React.FC = () => {
     {
       text: 'end',
       onPress: () => {
-        return;
+        setShowEndGame(true);
       },
       Icon: ICON_HASTAG,
       buttonHeight: ButtonHeight.DOUBLE,
@@ -197,6 +211,16 @@ const GraphicalRecording: React.FC = () => {
           <View style={{ height: 100, marginLeft: 10 }}>
             <PrimaryText label="Placeholder" size={30} />
           </View>
+          {showEndGame ? (
+            <OptionSheet
+              message={'Confirm End Game'}
+              options={[{ text: 'CONFIRM', onPress: handleConfirm }]}
+              visible={showEndGame}
+              onCancel={cancelSelection}
+            />
+          ) : (
+            <View style={styles.noConfirmButton} />
+          )}
           <View style={styles.boardButtonContainer}>
             <ActionBar actionButtons={actionButtons} />
             <ChessBoard
