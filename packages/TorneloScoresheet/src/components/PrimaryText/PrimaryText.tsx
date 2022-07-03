@@ -3,43 +3,22 @@ import { StyleProp, Text, TextStyle } from 'react-native';
 import { primary } from '../../style/font';
 
 export enum FontWeight {
-  Thin,
-  ExtraLight,
-  Light,
-  Regular,
-  Medium,
-  SemiBold,
-  Bold,
-  ExtraBold,
-  Black,
+  Thin = '100',
+  ExtraLight = '200',
+  Light = '300',
+  Regular = '400',
+  Medium = '500',
+  SemiBold = '600',
+  Bold = '700',
+  ExtraBold = '800',
+  Black = '900',
 }
 
-const fontWeightStyle = (
-  fontWeight?: FontWeight,
-): '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900' => {
-  switch (fontWeight) {
-    case FontWeight.Thin:
-      return '100';
-    case FontWeight.ExtraLight:
-      return '200';
-    case FontWeight.Light:
-      return '300';
-    case FontWeight.Regular:
-      return '400';
-    case FontWeight.Medium:
-      return '500';
-    case FontWeight.SemiBold:
-      return '600';
-    case FontWeight.Bold:
-      return '700';
-    case FontWeight.ExtraBold:
-      return '800';
-    case FontWeight.Black:
-      return '900';
-    case undefined:
-      return '400';
-  }
-};
+export enum Align {
+  Center = 'center',
+  Left = 'left',
+  Right = 'right',
+}
 
 type PrimaryTextProps = {
   label?: string;
@@ -47,6 +26,7 @@ type PrimaryTextProps = {
   colour?: string;
   size?: number;
   style?: StyleProp<TextStyle>;
+  align?: Align;
 };
 
 const PrimaryText: React.FC<PrimaryTextProps> = ({
@@ -56,15 +36,17 @@ const PrimaryText: React.FC<PrimaryTextProps> = ({
   style,
   size,
   children,
+  align,
 }) => {
   return (
     <Text
       style={[
         {
-          fontWeight: fontWeightStyle(weight),
+          fontWeight: weight,
           fontFamily: primary,
           color: colour,
           fontSize: size,
+          textAlign: align,
         },
         style,
       ]}>
