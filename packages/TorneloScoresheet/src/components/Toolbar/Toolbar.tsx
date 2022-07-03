@@ -15,7 +15,7 @@ import Sheet from '../Sheet/Sheet';
 import { styles } from './style';
 import ToolbarButton from './ToolbarButton';
 import { ICON_ARBITER_MODE } from '../../style/images';
-import App from '../../../App';
+import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 
 /**
  * The App's toolbar.
@@ -35,7 +35,7 @@ const colourForMode: Record<AppMode, ColourType> = {
 const arbiterModeDisplay: Record<AppMode, 'none' | undefined> = {
   [AppMode.EnterPgn]: 'none',
   [AppMode.PariringSelection]: 'none',
-  [AppMode.TablePairing]: 'none',
+  [AppMode.TablePairing]: undefined,
   [AppMode.GraphicalRecording]: undefined,
   [AppMode.ResultDisplay]: undefined,
 };
@@ -52,6 +52,7 @@ const Toolbar: React.FC = () => {
   };
   const currentColour = colourForMode[appModeState.mode];
   const arbiterModeVisibility = arbiterModeDisplay[appModeState.mode];
+  const code = '';
   const currentTextColour = textColour(currentColour);
   return (
     <>
@@ -70,6 +71,10 @@ const Toolbar: React.FC = () => {
           }}
           colour={currentColour}
           display={arbiterModeVisibility}></ToolbarButton>
+        {/* <SmoothPinCodeInput
+          value={code}
+          //onTextChange={(code: any) => this.setState({ code })}
+        /> */}
         <View style={styles.logo}>
           <Image
             style={styles.logoImage}
