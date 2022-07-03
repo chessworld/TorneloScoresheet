@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import App from '../../../App';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
 import {
   AppMode,
