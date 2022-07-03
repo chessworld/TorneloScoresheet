@@ -23,6 +23,7 @@ const Draggable: React.FC<DraggableProps> = ({ children, data, style }) => {
   const startingPosition = 0;
   const x = useSharedValue(startingPosition);
   const y = useSharedValue(startingPosition);
+  const z = useSharedValue(0);
   const viewRef = useRef<View>(null);
 
   const hitTest = useHitTest(viewRef, data, () => {
@@ -37,21 +38,22 @@ const Draggable: React.FC<DraggableProps> = ({ children, data, style }) => {
     onStart: (_event, ctx) => {
       ctx.startX = x.value;
       ctx.startY = y.value;
+      z.value = 100;
     },
     onActive: (event, ctx) => {
       x.value = ctx.startX + event.translationX;
       y.value = ctx.startY + event.translationY;
     },
     onEnd: (_event, _ctx) => {
+      z.value = 0;
       runOnJS(hitTest)();
     },
   });
 
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateX: x.value }, { translateY: y.value }],
-    };
-  });
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: x.value }, { translateY: y.value }],
+    zIndex: z.value,
+  }));
 
   return (
     <PanGestureHandler onGestureEvent={eventHandler}>
