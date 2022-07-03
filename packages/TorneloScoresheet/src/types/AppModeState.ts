@@ -32,8 +32,13 @@ export type GraphicalRecordingMode = {
   currentPlayer: PlayerColour;
 };
 
+export type ResultDisplayMode = {
+  mode: AppMode.ResultDisplay;
+};
+
 export type AppModeState =
   | EnterPgnMode
   | PairingSelectionMode
   | TablePairingMode
-  | GraphicalRecordingMode;
+  | GraphicalRecordingMode
+  | ResultDisplayMode;

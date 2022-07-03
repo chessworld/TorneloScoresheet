@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import App from '../../../App';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
 import {
   AppMode,
@@ -127,7 +128,11 @@ export const makeUseGraphicalRecordingState =
       });
     };
 
-    const goToEndGameFunc = (): void => {};
+    const goToEndGameFunc = (): void => {
+      setAppModeState({
+        mode: AppMode.ResultDisplay,
+      });
+    };
     const goToTextInputFunc = (): void => {};
     const goToArbiterModeFunc = (): void => {};
     const moveFunc = (
