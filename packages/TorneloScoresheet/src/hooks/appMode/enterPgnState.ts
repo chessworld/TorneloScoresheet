@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import React, { useContext } from 'react';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
 import { AppModeState, AppMode, EnterPgnMode } from '../../types/AppModeState';
@@ -22,7 +22,21 @@ const makegoToTablePairingSelection =
       );
     }
     // fetch pgn from api
-    const result = await axios.get(liveLinkUrl, { validateStatus: () => true });
+    const resultOrErr: Result<AxiosResponse> = await (async () => {
+      try {
+        return succ(
+          await axios.get(liveLinkUrl, { validateStatus: () => true }),
+        );
+      } catch (e) {
+        return fail('Network error, please check your internet connection');
+      }
+    })();
+
+    if (isError(resultOrErr)) {
+      return resultOrErr;
+    }
+
+    const result = resultOrErr.data;
 
     if (result.status !== 200 || typeof result.data !== 'string') {
       return fail('Error downloading PGN. Please double check the link');
