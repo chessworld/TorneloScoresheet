@@ -16,4 +16,5 @@ export const styles = StyleSheet.create({
   buttonLabel: {
     textTransform: 'uppercase',
   },
+  loadingIndicator: { position: 'absolute', top: '50%', zIndex: 2 },
 });

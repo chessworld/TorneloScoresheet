@@ -20,6 +20,7 @@ import PrimaryText, {
 
 const EnterPgn: React.FC = () => {
   const state = useEnterPgnState();
+  const [loading, setLoading] = useState(false);
   const goToPairingSelection = state?.[1]?.goToPairingSelection;
   const appMode = state?.[0];
 
@@ -38,6 +39,7 @@ const EnterPgn: React.FC = () => {
   }, []);
 
   const handleNextClick = async () => {
+    setLoading(true);
     await storePgnUrl(url);
     if (!goToPairingSelection) {
       return;
@@ -47,6 +49,7 @@ const EnterPgn: React.FC = () => {
 
     if (isError(result)) {
       showError(result.error);
+      setLoading(false);
     }
   };
 
@@ -93,6 +96,7 @@ const EnterPgn: React.FC = () => {
               labelStyle={styles.startButtonLabel}
               onPress={handleNextClick}
               label="Start"
+              loading={loading}
             />
           </View>
         </KeyboardAvoidingView>
