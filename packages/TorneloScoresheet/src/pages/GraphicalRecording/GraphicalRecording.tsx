@@ -1,11 +1,13 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import ActionBar from '../../components/ActionBar/ActionBar';
 import {
   ActionButtonProps,
   ButtonHeight,
 } from '../../components/ActionButton/ActionButton';
 import ChessBoard from '../../components/ChessBoard/ChessBoard';
+import MoveCard from '../../components/MoveCard/MoveCard';
 import OptionSheet from '../../components/OptionSheet/OptionSheet';
 import PrimaryText from '../../components/PrimaryText/PrimaryText';
 import { useGraphicalRecordingState } from '../../context/AppModeStateContext';
@@ -23,20 +25,23 @@ import {
   ROOK,
 } from '../../style/images';
 import { PlayerColour } from '../../types/ChessGameInfo';
-import { PieceType, MoveSquares } from '../../types/ChessMove';
+import { PieceType, MoveSquares, ChessPly, Move } from '../../types/ChessMove';
 import { styles } from './style';
 
 const GraphicalRecording: React.FC = () => {
   // app mode hook unpacking
   const graphicalRecordingState = useGraphicalRecordingState();
   const graphicalRecordingMode = graphicalRecordingState?.[0];
-  const move = graphicalRecordingState?.[1].move;
+  const makeMove = graphicalRecordingState?.[1].move;
   const undoLastMove = graphicalRecordingState?.[1].undoLastMove;
   const isPawnPromotion = graphicalRecordingState?.[1].isPawnPromotion;
   const skipTurn = graphicalRecordingState?.[1].skipTurn;
   const isOtherPlayersPiece = graphicalRecordingState?.[1].isOtherPlayersPiece;
   const skipTurnAndProcessMove =
     graphicalRecordingState?.[1].skipTurnAndProcessMove;
+
+  // Scroll view ref
+  const scrollRef = useRef<ScrollView>(null);
 
   // states
   const [flipBoard, setFlipBoard] = useState(
@@ -154,7 +159,7 @@ const GraphicalRecording: React.FC = () => {
 
   const onMove = async (moveSquares: MoveSquares): Promise<void> => {
     if (
-      !move ||
+      !makeMove ||
       !isPawnPromotion ||
       !isOtherPlayersPiece ||
       !skipTurnAndProcessMove
@@ -172,8 +177,12 @@ const GraphicalRecording: React.FC = () => {
     // auto skip turn + move or regular move
     isOtherPlayersPiece(moveSquares)
       ? skipTurnAndProcessMove(moveSquares, promotion)
-      : move(moveSquares, promotion);
+      : makeMove(moveSquares, promotion);
   };
+
+  useEffect(() => {
+    scrollRef.current?.scrollToEnd();
+  }, [graphicalRecordingMode?.moveHistory]);
 
   return (
     <>
@@ -185,7 +194,7 @@ const GraphicalRecording: React.FC = () => {
             message={'Select Promotion Piece'}
             options={promotionButtons}
           />
-          <View style={{ height: 100 }}>
+          <View style={{ height: 100, marginLeft: 10 }}>
             <PrimaryText label="Placeholder" size={30} />
           </View>
           <View style={styles.boardButtonContainer}>
@@ -196,10 +205,29 @@ const GraphicalRecording: React.FC = () => {
               flipBoard={flipBoard}
             />
           </View>
+          <ScrollView
+            ref={scrollRef}
+            horizontal
+            style={styles.moveCardContainer}>
+            {moves(graphicalRecordingMode.moveHistory).map((move, index) => (
+              <MoveCard key={index} move={move} />
+            ))}
+          </ScrollView>
         </View>
       )}
     </>
   );
 };
+
+// Utility function to take a list of ply, and return a list of moves
+const moves = (ply: ChessPly[]): Move[] =>
+  ply.reduce((acc, el) => {
+    if (el.player === PlayerColour.White) {
+      return [...acc, { white: el, black: undefined }];
+    }
+    return acc
+      .slice(0, -1)
+      .concat({ white: acc[acc.length - 1]!.white, black: el });
+  }, [] as Move[]);
 
 export default GraphicalRecording;
