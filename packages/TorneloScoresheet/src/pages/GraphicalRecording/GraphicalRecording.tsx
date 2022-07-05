@@ -9,7 +9,6 @@ import {
 import ChessBoard from '../../components/ChessBoard/ChessBoard';
 import MoveCard from '../../components/MoveCard/MoveCard';
 import OptionSheet from '../../components/OptionSheet/OptionSheet';
-import PrimaryButton from '../../components/PrimaryButton/PrimaryButton';
 import PrimaryText from '../../components/PrimaryText/PrimaryText';
 import { useGraphicalRecordingState } from '../../context/AppModeStateContext';
 import {
@@ -211,15 +210,13 @@ const GraphicalRecording: React.FC = () => {
           <View style={{ height: 100, marginLeft: 10 }}>
             <PrimaryText label="Placeholder" size={30} />
           </View>
-          {showEndGame ? (
+          {showEndGame && (
             <OptionSheet
               message={'Confirm End Game'}
               options={[{ text: 'CONFIRM', onPress: handleConfirm }]}
               visible={showEndGame}
               onCancel={cancelSelection}
             />
-          ) : (
-            <View style={styles.noConfirmButton} />
           )}
           <View style={styles.boardButtonContainer}>
             <ActionBar actionButtons={actionButtons} />
