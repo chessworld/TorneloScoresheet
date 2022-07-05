@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState, useRef } from 'react';
 import { Image, StatusBar, View } from 'react-native';
 import { useAppModeState } from '../../context/AppModeStateContext';
 import {
@@ -15,7 +15,7 @@ import Sheet from '../Sheet/Sheet';
 import { styles } from './style';
 import ToolbarButton from './ToolbarButton';
 import { ICON_ARBITER_MODE } from '../../style/images';
-import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
+import PinInput from 'react-native-pincode-input-component';
 
 /**
  * The App's toolbar.
@@ -46,37 +46,57 @@ const backgroundColorStyle = (backgroundColor: string) => ({
 
 const Toolbar: React.FC = () => {
   const appModeState = useAppModeState();
-  const [showSheet, setShowSheet] = useState(false);
+  const [showHelpSheet, setShowHelpSheet] = useState(false);
+  const [showArbiterSheet, setShowArbiterSheet] = useState(false);
+  const ref = useRef();
+  const [pin, setPin] = useState('');
   const handleHelpPress = () => {
-    setShowSheet(a => !a);
+    setShowHelpSheet(a => !a);
   };
+  const handleArbiterPress = () => {
+    setShowArbiterSheet(a => !a);
+  };
+  const onValueChange = useCallback((value, { isFulfilled }) => {
+    if (isFulfilled) {
+      setPin('');
+      /*
+      if (value !== '0000' && ref.current !== null) {
+        ref.current.shake();
+      }*/
+    } else {
+      setPin(value);
+    }
+  }, []);
   const currentColour = colourForMode[appModeState.mode];
   const arbiterModeVisibility = arbiterModeDisplay[appModeState.mode];
-  const code = '';
   const currentTextColour = textColour(currentColour);
   return (
     <>
       <StatusBar barStyle={statusBarStyleForColor(currentColour)} />
       <Sheet
         title="Help"
-        dismiss={() => setShowSheet(false)}
-        visible={showSheet}>
+        dismiss={() => setShowHelpSheet(false)}
+        visible={showHelpSheet}>
         <PrimaryText>Put help here!</PrimaryText>
+      </Sheet>
+      <Sheet
+        title="Enter Pin"
+        dismiss={() => setShowArbiterSheet(false)}
+        visible={showArbiterSheet}>
+        <PinInput
+          ref={ref}
+          value={pin}
+          onValueChange={onValueChange}
+          password
+          autoFocus
+        />
       </Sheet>
       <View style={[styles.container, backgroundColorStyle(currentColour)]}>
         <ToolbarButton
           Icon={ICON_ARBITER_MODE}
-          onPress={function (): void {
-            throw new Error('Function not implemented.');
-          }}
+          onPress={handleArbiterPress}
           colour={currentColour}
           display={arbiterModeVisibility}></ToolbarButton>
-        {
-          <SmoothPinCodeInput
-            value={code}
-            //onTextChange={(code: any) => this.setState({ code })}
-          />
-        }
         <View style={styles.logo}>
           <Image
             style={styles.logoImage}
