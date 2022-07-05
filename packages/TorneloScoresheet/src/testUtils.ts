@@ -1,4 +1,4 @@
-import { renderHook, RenderResult } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import moment from 'moment';
 import React from 'react';
 import { chessEngine } from './chessEngine/chessEngineInterface';
@@ -16,7 +16,7 @@ import { ChessPly } from './types/ChessMove';
  * @param hook the hook function to mock
  * @returns the rendered hook result
  */
-export const renderCustomHook = <T>(hook: () => T): RenderResult<T> => {
+export const renderCustomHook = <T>(hook: () => T): { current: T } => {
   const { result: state } = renderHook(() => hook(), {
     wrapper: AppModeStateContextProvider,
   });

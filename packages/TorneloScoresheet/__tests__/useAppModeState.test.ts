@@ -4,7 +4,7 @@ import {
   useEnterPgnState,
   useGraphicalRecordingState,
 } from '../src/context/AppModeStateContext';
-import { act, renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react';
 import { AppMode } from '../src/types/AppModeState';
 import { isError } from '../src/types/Result';
 import {
@@ -91,10 +91,9 @@ describe('useAppModeState', () => {
 
       // should not return an error
       expect(isError(actionResult)).toEqual(false);
-
-      // should no longer be in pgn state
-      expect(enterPgnState.current).toBeNull();
     });
+    // should no longer be in pgn state
+    expect(enterPgnState.current).toBeNull();
   });
 });
 
