@@ -71,10 +71,12 @@ const Toolbar: React.FC = () => {
           }}
           colour={currentColour}
           display={arbiterModeVisibility}></ToolbarButton>
-        {/* <SmoothPinCodeInput
-          value={code}
-          //onTextChange={(code: any) => this.setState({ code })}
-        /> */}
+        {
+          <SmoothPinCodeInput
+            value={code}
+            //onTextChange={(code: any) => this.setState({ code })}
+          />
+        }
         <View style={styles.logo}>
           <Image
             style={styles.logoImage}
