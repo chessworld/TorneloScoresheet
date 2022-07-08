@@ -3,7 +3,7 @@ import { colours } from '../../style/colour';
 
 export const styles = StyleSheet.create({
   signature: {
-    width: 700,
+    width: '100%',
     height: 400,
   },
 
@@ -26,5 +26,4 @@ export const styles = StyleSheet.create({
   messageText: {
     textAlign: 'center',
   },
-  signatureArea: {},
 });

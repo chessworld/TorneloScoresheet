@@ -51,7 +51,7 @@ const GraphicalRecording: React.FC = () => {
   );
   const [showPromotion, setShowPromotion] = useState(false);
   const [showEndGame, setShowEndGame] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
+  const [showSignature, setShowSignature] = useState(false);
   const goToEndGame = graphicalRecordingState?.[1].goToEndGame;
   const [selectedWinner, setSelectedWinner] = useState<undefined | Player>(
     undefined,
@@ -72,13 +72,13 @@ const GraphicalRecording: React.FC = () => {
   };
 
   const handleSelectWinner = (player: Player) => {
-    setShowConfirm(true);
+    setShowSignature(true);
     setShowEndGame(false);
     setSelectedWinner(player);
   };
 
   const cancelSelection = () => {
-    setShowConfirm(false);
+    setShowSignature(false);
     setSelectedWinner(undefined);
   };
   // Button parameters
@@ -252,16 +252,10 @@ const GraphicalRecording: React.FC = () => {
               onCancel={cancelSelection}
             />
           )}
-          {showConfirm && selectedWinner && (
+          {showSignature && selectedWinner && (
             <>
-              {/* <OptionSheet
-                message={'Confirm End Game'}
-                options={[{ text: 'CONFIRM', onPress: handleConfirm }]}
-                visible={showConfirm}
-                onCancel={cancelSelection}
-              /> */}
               <Signature
-                visible={showConfirm}
+                visible={showSignature}
                 onCancel={cancelSelection}
                 playerName={fullName(selectedWinner)}
                 onConfirm={handleConfirm}
