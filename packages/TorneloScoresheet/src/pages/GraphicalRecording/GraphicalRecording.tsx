@@ -257,7 +257,7 @@ const GraphicalRecording: React.FC = () => {
               <Signature
                 visible={showSignature}
                 onCancel={cancelSelection}
-                playerName={fullName(selectedWinner)}
+                winnerName={fullName(selectedWinner)}
                 onConfirm={handleConfirm}
               />
             </>
