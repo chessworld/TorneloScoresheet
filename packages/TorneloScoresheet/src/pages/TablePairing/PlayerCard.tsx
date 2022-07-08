@@ -41,7 +41,7 @@ const PlayerCard: React.FC<playerCardProps> = ({
             <PrimaryText size={35} weight={FontWeight.Light}>
               {player.elo + ' '}
             </PrimaryText>
-            {/* TODO - parse and render the country (and it's flag) */}
+            {/* TODO - parse and render the country (and its flag) */}
             <PieceAsset
               piece={{ type: PieceType.King, player: player.color }}
               size={50}
