@@ -5,12 +5,15 @@ import { styles } from './style';
 import { colours } from '../../style/colour';
 import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import React from 'react';
-import TextIconButton from '../TextIconButton/TextIconButton';
+import TextIconButton, {
+  TextIconButtonProps,
+} from '../TextIconButton/TextIconButton';
 
 type Option = {
   icon?: React.FC<SvgProps>;
   text?: string;
   onPress: () => void;
+  style?: TextIconButtonProps['style'];
 };
 type OptionSheetProps = {
   message: string;
@@ -44,7 +47,7 @@ const OptionSheet: React.FC<OptionSheetProps> = ({
               onPress={option.onPress}
               key={'button-' + i.toString()}
               buttonTextStyle={styles.buttonText}
-              style={styles.button}
+              style={[styles.button, option.style]}
             />
           ))}
         </View>
