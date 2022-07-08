@@ -24,7 +24,7 @@ import {
   QUEEN,
   ROOK,
 } from '../../style/images';
-import { PlayerColour } from '../../types/ChessGameInfo';
+import { Player, PlayerColour } from '../../types/ChessGameInfo';
 import { PieceType, MoveSquares, ChessPly, Move } from '../../types/ChessMove';
 import { styles } from './style';
 import { fullName } from '../../util/player';
@@ -53,6 +53,9 @@ const GraphicalRecording: React.FC = () => {
   const [showEndGame, setShowEndGame] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const goToEndGame = graphicalRecordingState?.[1].goToEndGame;
+  const [selectedWinner, setSelectedWinner] = useState<undefined | Player>(
+    undefined,
+  );
 
   // when the promotion popup opens, the app will await untill a promise is resolved
   // this ref stores this resolve function (it will be called once the user selects a promotion)
@@ -68,13 +71,15 @@ const GraphicalRecording: React.FC = () => {
     }
   };
 
-  const handleSelectWinner = () => {
+  const handleSelectWinner = (player: Player) => {
     setShowConfirm(true);
     setShowEndGame(false);
+    setSelectedWinner(player);
   };
 
   const cancelSelection = () => {
     setShowConfirm(false);
+    setSelectedWinner(undefined);
   };
   // Button parameters
   const actionButtons: ActionButtonProps[] = [
@@ -224,18 +229,24 @@ const GraphicalRecording: React.FC = () => {
               options={[
                 {
                   text: fullName(graphicalRecordingMode.pairing.players[0]),
-                  onPress: handleSelectWinner,
+                  onPress: () =>
+                    handleSelectWinner(
+                      graphicalRecordingMode.pairing.players[0],
+                    ),
                 },
                 {
                   text: fullName(graphicalRecordingMode.pairing.players[1]),
-                  onPress: handleSelectWinner,
+                  onPress: () =>
+                    handleSelectWinner(
+                      graphicalRecordingMode.pairing.players[1],
+                    ),
                 },
               ]}
               visible={showEndGame}
               onCancel={cancelSelection}
             />
           )}
-          {showConfirm && (
+          {showConfirm && selectedWinner && (
             <>
               {/* <OptionSheet
                 message={'Confirm End Game'}
@@ -246,7 +257,8 @@ const GraphicalRecording: React.FC = () => {
               <Signature
                 visible={showConfirm}
                 onCancel={cancelSelection}
-                playerName={fullName(graphicalRecordingMode.pairing.players[1])}
+                playerName={fullName(selectedWinner)}
+                onConfirm={handleConfirm}
               />
             </>
           )}

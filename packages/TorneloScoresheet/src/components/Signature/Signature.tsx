@@ -1,13 +1,17 @@
 import React, { createRef } from 'react';
-import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
+import { View, Text, TouchableHighlight } from 'react-native';
 import SignatureCapture from 'react-native-signature-capture';
-import PrimaryText from '../PrimaryText/PrimaryText';
+import { colours } from '../../style/colour';
+import PrimaryButton from '../PrimaryButton/PrimaryButton';
+import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import Sheet from '../Sheet/Sheet';
+import { styles } from './style';
 
 export type SignatureProps = {
   visible: boolean;
   onCancel: () => void;
   playerName: string;
+  onConfirm: () => void;
 };
 
 const sign = createRef<any>();
@@ -24,71 +28,47 @@ const Signature: React.FC<SignatureProps> = ({
   visible,
   onCancel,
   playerName,
+  onConfirm,
 }) => {
   return (
     <>
-      <Sheet dismiss={onCancel} visible={visible}>
-        <View style={styles.mainContainer}>
-          <PrimaryText>{'Confirm Winner: ' + playerName}</PrimaryText>
-          <SignatureCapture
-            style={styles.signature}
-            ref={sign}
-            showNativeButtons={false}
-            showTitleLabel={false}
-            viewMode={'portrait'}
-          />
-          <View style={{ flexDirection: 'row' }}>
-            <TouchableHighlight
+      <View style={styles.mainContainer}>
+        <Sheet dismiss={onCancel} visible={visible}>
+          <PrimaryText
+            style={styles.messageText}
+            weight={FontWeight.Bold}
+            size={30}
+            colour={colours.darkenedElements}>
+            {'Sign to Confirm Winner: ' + playerName}
+          </PrimaryText>
+          <View style={styles.signatureArea}>
+            <SignatureCapture
+              ref={sign}
+              style={styles.signature}
+              showNativeButtons={false}
+              showTitleLabel={false}
+              viewMode={'portrait'}
+            />
+          </View>
+          <View style={styles.buttonArea}>
+            <PrimaryButton
               style={styles.buttonStyle}
               onPress={() => {
                 confirmSign();
-              }}>
-              <PrimaryText>Confirm</PrimaryText>
-            </TouchableHighlight>
-            <TouchableHighlight
+                onConfirm();
+              }}
+              label={'Confirm'}></PrimaryButton>
+            <PrimaryButton
               style={styles.buttonStyle}
               onPress={() => {
                 resetSign();
-              }}>
-              <Text>Reset</Text>
-            </TouchableHighlight>
+              }}
+              label={'Reset'}></PrimaryButton>
           </View>
-        </View>
-      </Sheet>
+        </Sheet>
+      </View>
     </>
   );
 };
 
 export default Signature;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    height: 50,
-  },
-  titleStyle: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  signature: {
-    flex: 1,
-    borderColor: '#000033',
-    borderWidth: 1,
-    width: 700,
-    height: 400,
-  },
-  buttonStyle: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 50,
-    backgroundColor: '#eeeeee',
-    margin: 10,
-  },
-  mainContainer: {
-    display: 'flex',
-    height: '70%',
-  },
-});
