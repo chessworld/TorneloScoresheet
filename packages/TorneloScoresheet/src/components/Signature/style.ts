@@ -5,8 +5,8 @@ export const styles = StyleSheet.create({
   signature: {
     width: 700,
     height: 400,
-    flex: 0,
   },
+
   buttonStyle: {
     flex: 1,
     justifyContent: 'center',
