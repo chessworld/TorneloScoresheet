@@ -1,5 +1,5 @@
 import React, { createRef } from 'react';
-import { View, Text, TouchableHighlight } from 'react-native';
+import { View } from 'react-native';
 import SignatureCapture from 'react-native-signature-capture';
 import { colours } from '../../style/colour';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
