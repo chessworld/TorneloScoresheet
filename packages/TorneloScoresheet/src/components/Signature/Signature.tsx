@@ -10,7 +10,7 @@ import { styles } from './style';
 export type SignatureProps = {
   visible: boolean;
   onCancel: () => void;
-  playerName: string;
+  winnerName: string;
   onConfirm: () => void;
 };
 
@@ -27,7 +27,7 @@ const resetSign = () => {
 const Signature: React.FC<SignatureProps> = ({
   visible,
   onCancel,
-  playerName,
+  winnerName,
   onConfirm,
 }) => {
   return (
@@ -39,7 +39,7 @@ const Signature: React.FC<SignatureProps> = ({
             weight={FontWeight.Bold}
             size={30}
             colour={colours.darkenedElements}>
-            {'Sign to Confirm Winner: ' + playerName}
+            {'Sign to Confirm Winner: ' + winnerName}
           </PrimaryText>
           <SignatureCapture
             ref={sign}
