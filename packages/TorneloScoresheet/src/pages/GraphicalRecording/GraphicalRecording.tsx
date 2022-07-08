@@ -233,6 +233,9 @@ const GraphicalRecording: React.FC = () => {
                     handleSelectWinner(
                       graphicalRecordingMode.pairing.players[0],
                     ),
+                  style: {
+                    width: '100%',
+                  },
                 },
                 {
                   text: fullName(graphicalRecordingMode.pairing.players[1]),
@@ -240,6 +243,9 @@ const GraphicalRecording: React.FC = () => {
                     handleSelectWinner(
                       graphicalRecordingMode.pairing.players[1],
                     ),
+                  style: {
+                    width: '100%',
+                  },
                 },
               ]}
               visible={showEndGame}

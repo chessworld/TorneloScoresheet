@@ -11,7 +11,7 @@ import PrimaryText from '../PrimaryText/PrimaryText';
 import RoundedView from '../RoundedView/RoundedView';
 import { styles } from './style';
 
-type TextIconButtonParms = {
+export type TextIconButtonProps = {
   Icon?: React.FC<SvgProps>;
   text?: string;
   buttonHeight?: number;
@@ -19,7 +19,7 @@ type TextIconButtonParms = {
   buttonTextStyle?: StyleProp<TextStyle>;
 } & TouchableOpacityProps;
 
-const TextIconButton: React.FC<TextIconButtonParms> = ({
+const TextIconButton: React.FC<TextIconButtonProps> = ({
   Icon,
   text,
   buttonHeight,
