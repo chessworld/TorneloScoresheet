@@ -79,6 +79,7 @@ const GraphicalRecording: React.FC = () => {
 
   const cancelSelection = () => {
     setShowSignature(false);
+    setShowEndGame(false);
     setSelectedWinner(undefined);
   };
   // Button parameters
