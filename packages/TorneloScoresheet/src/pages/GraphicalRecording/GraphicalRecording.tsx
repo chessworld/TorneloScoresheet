@@ -27,6 +27,8 @@ import {
 import { PlayerColour } from '../../types/ChessGameInfo';
 import { PieceType, MoveSquares, ChessPly, Move } from '../../types/ChessMove';
 import { styles } from './style';
+import { fullName } from '../../util/player';
+import Signature from '../../components/Signature/Signature';
 
 const GraphicalRecording: React.FC = () => {
   // app mode hook unpacking
@@ -49,6 +51,7 @@ const GraphicalRecording: React.FC = () => {
   );
   const [showPromotion, setShowPromotion] = useState(false);
   const [showEndGame, setShowEndGame] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const goToEndGame = graphicalRecordingState?.[1].goToEndGame;
 
   // when the promotion popup opens, the app will await untill a promise is resolved
@@ -65,8 +68,13 @@ const GraphicalRecording: React.FC = () => {
     }
   };
 
-  const cancelSelection = () => {
+  const handleSelectWinner = () => {
+    setShowConfirm(true);
     setShowEndGame(false);
+  };
+
+  const cancelSelection = () => {
+    setShowConfirm(false);
   };
   // Button parameters
   const actionButtons: ActionButtonProps[] = [
@@ -212,11 +220,35 @@ const GraphicalRecording: React.FC = () => {
           </View>
           {showEndGame && (
             <OptionSheet
-              message={'Confirm End Game'}
-              options={[{ text: 'CONFIRM', onPress: handleConfirm }]}
+              message={'Please Select the Winner'}
+              options={[
+                {
+                  text: fullName(graphicalRecordingMode.pairing.players[0]),
+                  onPress: handleSelectWinner,
+                },
+                {
+                  text: fullName(graphicalRecordingMode.pairing.players[1]),
+                  onPress: handleSelectWinner,
+                },
+              ]}
               visible={showEndGame}
               onCancel={cancelSelection}
             />
+          )}
+          {showConfirm && (
+            <>
+              {/* <OptionSheet
+                message={'Confirm End Game'}
+                options={[{ text: 'CONFIRM', onPress: handleConfirm }]}
+                visible={showConfirm}
+                onCancel={cancelSelection}
+              /> */}
+              <Signature
+                visible={showConfirm}
+                onCancel={cancelSelection}
+                playerName={fullName(graphicalRecordingMode.pairing.players[1])}
+              />
+            </>
           )}
           <View style={styles.boardButtonContainer}>
             <ActionBar actionButtons={actionButtons} />
