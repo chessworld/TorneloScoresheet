@@ -11,10 +11,11 @@ export const styles = StyleSheet.create({
   },
   contentContainer: {
     backgroundColor: colours.white,
-    margin: 200,
     borderRadius: 20,
     display: 'flex',
     flexDirection: 'column',
+    minWidth: 400,
+    maxWidth: '90%',
   },
   content: {
     marginLeft: 20,
@@ -26,7 +27,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: 400,
   },
   title: {
     paddingLeft: 20,
