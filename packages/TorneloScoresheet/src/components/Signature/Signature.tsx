@@ -41,15 +41,13 @@ const Signature: React.FC<SignatureProps> = ({
             colour={colours.darkenedElements}>
             {'Sign to Confirm Winner: ' + playerName}
           </PrimaryText>
-          <View style={styles.signatureArea}>
-            <SignatureCapture
-              ref={sign}
-              style={styles.signature}
-              showNativeButtons={false}
-              showTitleLabel={false}
-              viewMode={'portrait'}
-            />
-          </View>
+          <SignatureCapture
+            ref={sign}
+            style={styles.signature}
+            showNativeButtons={false}
+            showTitleLabel={false}
+            viewMode={'portrait'}
+          />
           <View style={styles.buttonArea}>
             <PrimaryButton
               style={styles.buttonStyle}
