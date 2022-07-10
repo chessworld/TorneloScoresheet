@@ -16,10 +16,6 @@ export const styles = StyleSheet.create({
     margin: 10,
   },
 
-  mainContainer: {
-    height: '100%',
-  },
-
   buttonArea: {
     flexDirection: 'row',
   },

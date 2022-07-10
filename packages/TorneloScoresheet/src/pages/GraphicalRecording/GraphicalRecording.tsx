@@ -63,25 +63,6 @@ const GraphicalRecording: React.FC = () => {
     ((value: PieceType | PromiseLike<PieceType>) => void) | null
   >(null);
 
-  const handleConfirm = () => {
-    if (!graphicalRecordingMode || !goToEndGame) {
-      return;
-    } else {
-      goToEndGame();
-    }
-  };
-
-  const handleSelectWinner = (player: Player) => {
-    setShowSignature(true);
-    setShowEndGame(false);
-    setSelectedWinner(player);
-  };
-
-  const cancelSelection = () => {
-    setShowSignature(false);
-    setShowEndGame(false);
-    setSelectedWinner(undefined);
-  };
   // Button parameters
   const actionButtons: ActionButtonProps[] = [
     {
@@ -157,6 +138,26 @@ const GraphicalRecording: React.FC = () => {
     },
   ];
 
+  const endGameOptions = graphicalRecordingMode
+    ? [
+        {
+          text: fullName(graphicalRecordingMode.pairing.players[0]),
+          onPress: () =>
+            handleSelectWinner(graphicalRecordingMode.pairing.players[0]),
+          style: {
+            width: '100%',
+          },
+        },
+        {
+          text: fullName(graphicalRecordingMode.pairing.players[1]),
+          onPress: () =>
+            handleSelectWinner(graphicalRecordingMode.pairing.players[1]),
+          style: {
+            width: '100%',
+          },
+        },
+      ]
+    : [];
   /**
    * this will prompt user to select a promotion piece and will not return until they do
    */
@@ -169,6 +170,26 @@ const GraphicalRecording: React.FC = () => {
     return new Promise<PieceType>(r => (promotionSelectedFunc.current = r));
   };
 
+  //Button Functions
+  const handleConfirmWinner = () => {
+    if (!graphicalRecordingMode || !goToEndGame) {
+      return;
+    } else {
+      goToEndGame();
+    }
+  };
+
+  const handleSelectWinner = (player: Player) => {
+    setShowSignature(true);
+    setShowEndGame(false);
+    setSelectedWinner(player);
+  };
+
+  const cancelSelection = () => {
+    setShowSignature(false);
+    setShowEndGame(false);
+    setSelectedWinner(undefined);
+  };
   /**
    * function called once the user has selected their promotion from the pop up
    * @param promotion the promotion piece the user has selected
@@ -227,28 +248,7 @@ const GraphicalRecording: React.FC = () => {
           {showEndGame && (
             <OptionSheet
               message={'Please Select the Winner'}
-              options={[
-                {
-                  text: fullName(graphicalRecordingMode.pairing.players[0]),
-                  onPress: () =>
-                    handleSelectWinner(
-                      graphicalRecordingMode.pairing.players[0],
-                    ),
-                  style: {
-                    width: '100%',
-                  },
-                },
-                {
-                  text: fullName(graphicalRecordingMode.pairing.players[1]),
-                  onPress: () =>
-                    handleSelectWinner(
-                      graphicalRecordingMode.pairing.players[1],
-                    ),
-                  style: {
-                    width: '100%',
-                  },
-                },
-              ]}
+              options={endGameOptions}
               visible={showEndGame}
               onCancel={cancelSelection}
             />
@@ -259,7 +259,7 @@ const GraphicalRecording: React.FC = () => {
                 visible={showSignature}
                 onCancel={cancelSelection}
                 winnerName={fullName(selectedWinner)}
-                onConfirm={handleConfirm}
+                onConfirm={handleConfirmWinner}
               />
             </>
           )}
