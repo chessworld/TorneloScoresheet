@@ -41,6 +41,7 @@ This file contains some high level guidelines for getting started and rules that
   7. Prefer `array.prototype.map` over raw for loops
   8. Avoid `else` statements unless they add clarity/readability
   9. Types should reflect the concept they represent as strictly as possible (e.g. prefer `type Players = { white: Player, black: Player }` over `type Players =  Player[]`)
+  10. Function naming should be in the format of onEvent = {handleEvent}
  
 ## 7. Naming Guidelines 
   
