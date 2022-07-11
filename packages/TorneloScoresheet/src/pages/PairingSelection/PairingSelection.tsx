@@ -18,7 +18,7 @@ const PairingSelection: React.FC = () => {
   const goToEnterPgn = pairingSelectionState?.[1]?.goToEnterPgn;
   const goToTablePairing = pairingSelectionState?.[1]?.goToTablePairing;
 
-  const onSelectPairing = (pairing: ChessGameInfo) => {
+  const handleSelectPairing = (pairing: ChessGameInfo) => {
     if (selectedPairing === pairing) {
       setSelected(null);
       setShowConfirm(false);
@@ -71,7 +71,7 @@ const PairingSelection: React.FC = () => {
             data={pairingSelectionMode.pairings}
             renderItem={({ item }) => (
               <BoardPairing
-                onPress={() => onSelectPairing(item)}
+                onPress={() => handleSelectPairing(item)}
                 style={styles.boardPairingContainer}
                 board={item}
                 selected={
