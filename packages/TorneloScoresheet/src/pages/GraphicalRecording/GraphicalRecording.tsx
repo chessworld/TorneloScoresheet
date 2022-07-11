@@ -124,17 +124,17 @@ const GraphicalRecording: React.FC = () => {
   const promotionButtons = [
     {
       icon: QUEEN,
-      onPress: () => onSelectPromotion(PieceType.Queen),
+      onPress: () => handleSelectPromotion(PieceType.Queen),
     },
-    { icon: ROOK, onPress: () => onSelectPromotion(PieceType.Rook) },
-    { icon: PAWN, onPress: () => onSelectPromotion(PieceType.Pawn) },
+    { icon: ROOK, onPress: () => handleSelectPromotion(PieceType.Rook) },
+    { icon: PAWN, onPress: () => handleSelectPromotion(PieceType.Pawn) },
     {
       icon: KNIGHT,
-      onPress: () => onSelectPromotion(PieceType.Knight),
+      onPress: () => handleSelectPromotion(PieceType.Knight),
     },
     {
       icon: BISHOP,
-      onPress: () => onSelectPromotion(PieceType.Bishop),
+      onPress: () => handleSelectPromotion(PieceType.Bishop),
     },
   ];
 
@@ -166,7 +166,7 @@ const GraphicalRecording: React.FC = () => {
     setShowPromotion(true);
 
     // create a promise, store the resolve function in the ref
-    // this promise will not return until the resolve function is called by onSelectPromotion()
+    // this promise will not return until the resolve function is called by handleSelectPromotion()
     return new Promise<PieceType>(r => (promotionSelectedFunc.current = r));
   };
 
@@ -185,7 +185,7 @@ const GraphicalRecording: React.FC = () => {
     setSelectedWinner(player);
   };
 
-  const cancelSelection = () => {
+  const handleCancelSelection = () => {
     setShowSignature(false);
     setShowEndGame(false);
     setSelectedWinner(undefined);
@@ -194,7 +194,7 @@ const GraphicalRecording: React.FC = () => {
    * function called once the user has selected their promotion from the pop up
    * @param promotion the promotion piece the user has selected
    */
-  const onSelectPromotion = (promotion: PieceType) => {
+  const handleSelectPromotion = (promotion: PieceType) => {
     // hide the popup
     setShowPromotion(false);
 
@@ -205,7 +205,7 @@ const GraphicalRecording: React.FC = () => {
     }
   };
 
-  const onMove = async (moveSquares: MoveSquares): Promise<void> => {
+  const handleMove = async (moveSquares: MoveSquares): Promise<void> => {
     if (
       !makeMove ||
       !isPawnPromotion ||
@@ -250,14 +250,14 @@ const GraphicalRecording: React.FC = () => {
               message={'Please Select the Winner'}
               options={endGameOptions}
               visible={showEndGame}
-              onCancel={cancelSelection}
+              onCancel={handleCancelSelection}
             />
           )}
           {showSignature && selectedWinner && (
             <>
               <Signature
                 visible={showSignature}
-                onCancel={cancelSelection}
+                onCancel={handleCancelSelection}
                 winnerName={fullName(selectedWinner)}
                 onConfirm={handleConfirmWinner}
               />
@@ -267,7 +267,7 @@ const GraphicalRecording: React.FC = () => {
             <ActionBar actionButtons={actionButtons} />
             <ChessBoard
               positions={graphicalRecordingMode.board}
-              onMove={onMove}
+              onMove={handleMove}
               flipBoard={flipBoard}
             />
           </View>

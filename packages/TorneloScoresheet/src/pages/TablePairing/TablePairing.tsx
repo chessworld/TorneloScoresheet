@@ -33,7 +33,7 @@ const TablePairing: React.FC = () => {
     goToRecording(selectedPlayer);
   };
 
-  const cancelSelection = () => {
+  const handleCancelSelection = () => {
     setSelectedPlayer(undefined);
     setShowConfirmSheet(false);
   };
@@ -64,7 +64,7 @@ const TablePairing: React.FC = () => {
                 )
               }
               options={[{ text: 'CONFIRM', onPress: confirm }]}
-              onCancel={cancelSelection}
+              onCancel={handleCancelSelection}
               visible={showConfirmSheet}
             />
           )}
