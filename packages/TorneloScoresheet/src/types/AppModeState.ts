@@ -1,5 +1,5 @@
 import { BoardPosition } from './ChessBoardPositions';
-import { ChessGameInfo, PlayerColour } from './ChessGameInfo';
+import { ChessGameInfo, ChessGameResult, PlayerColour } from './ChessGameInfo';
 import { ChessPly } from './ChessMove';
 
 export enum AppMode {
@@ -34,6 +34,8 @@ export type GraphicalRecordingMode = {
 
 export type ResultDisplayMode = {
   mode: AppMode.ResultDisplay;
+  pairing: ChessGameInfo;
+  result: ChessGameResult;
 };
 
 export type AppModeState =
