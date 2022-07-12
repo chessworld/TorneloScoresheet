@@ -5,7 +5,11 @@ import {
   AppModeState,
   GraphicalRecordingMode,
 } from '../../types/AppModeState';
-import { PlayerColour } from '../../types/ChessGameInfo';
+import {
+  ChessGameInfo,
+  ChessGameResult,
+  PlayerColour,
+} from '../../types/ChessGameInfo';
 import {
   ChessPly,
   MovePly,
@@ -18,7 +22,7 @@ import {
 type GraphicalRecordingStateHookType = [
   GraphicalRecordingMode,
   {
-    goToEndGame: () => void;
+    goToEndGame: (result: ChessGameResult) => void;
     goToTextInput: () => void;
     goToArbiterMode: () => void;
     move: (moveSquares: MoveSquares, promotion?: PieceType) => void;
@@ -106,6 +110,15 @@ const processPlayerMove = (
     : [...moveHistory, nextPly];
 };
 
+export const generatePgnFromHistory = (
+  pairing: ChessGameInfo,
+  history: ChessPly[],
+  result: ChessGameResult,
+): string => {
+  // TODO: Implement pgn generation
+  return '';
+};
+
 export const makeUseGraphicalRecordingState =
   (
     context: React.Context<
@@ -127,9 +140,18 @@ export const makeUseGraphicalRecordingState =
       });
     };
 
-    const goToEndGameFunc = (): void => {
+    const goToEndGameFunc = (result: ChessGameResult): void => {
       setAppModeState({
         mode: AppMode.ResultDisplay,
+        pairing: appModeState.pairing,
+        result: {
+          ...result,
+          gamePgn: generatePgnFromHistory(
+            appModeState.pairing,
+            appModeState.moveHistory,
+            result,
+          ),
+        },
       });
     };
     const goToTextInputFunc = (): void => {};
