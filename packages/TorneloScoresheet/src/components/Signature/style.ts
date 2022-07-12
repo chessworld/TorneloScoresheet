@@ -21,5 +21,6 @@ export const styles = StyleSheet.create({
   },
   messageText: {
     textAlign: 'center',
+    minWidth: 500,
   },
 });
