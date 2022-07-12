@@ -179,11 +179,14 @@ const GraphicalRecording: React.FC = () => {
   };
 
   //Button Functions
-  const handleConfirmWinner = () => {
+  const handleConfirmWinner = (signature: string) => {
     if (!graphicalRecordingMode || !goToEndGame) {
       return;
     } else {
-      goToEndGame();
+      goToEndGame({
+        winner: selectedWinner?.color ?? null,
+        signature: signature,
+      });
     }
   };
 
