@@ -1,6 +1,8 @@
 import React, { useRef } from 'react';
 import { View } from 'react-native';
-import SignatureCapture from 'react-native-signature-capture';
+import SignatureCapture, {
+  SaveEventParams,
+} from 'react-native-signature-capture';
 import { colours } from '../../style/colour';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
@@ -10,8 +12,8 @@ import { styles } from './style';
 export type SignatureProps = {
   visible: boolean;
   onCancel: () => void;
-  winnerName: string;
-  onConfirm: () => void;
+  winnerName: string | null;
+  onConfirm: (signature: string) => void;
 };
 
 const Signature: React.FC<SignatureProps> = ({
@@ -22,13 +24,11 @@ const Signature: React.FC<SignatureProps> = ({
 }) => {
   const sign = useRef<any>();
 
-  const confirmSign = () => {
-    sign.current.saveImage();
+  const handleSaveSignature = async (event: SaveEventParams) => {
+    const base64Image = `data:image/png;base64,${event.encoded}`;
+    onConfirm(base64Image);
   };
 
-  const resetSign = () => {
-    sign.current.resetImage();
-  };
   return (
     <>
       <Sheet dismiss={onCancel} visible={visible}>
@@ -37,9 +37,13 @@ const Signature: React.FC<SignatureProps> = ({
           weight={FontWeight.Bold}
           size={30}
           colour={colours.darkenedElements}>
-          {'Sign to Confirm Winner: ' + winnerName}
+          {`Sign to confirm ${
+            (winnerName && 'winner: ' + winnerName) ?? 'draw'
+          }`}
         </PrimaryText>
         <SignatureCapture
+          onSaveEvent={handleSaveSignature}
+          saveImageFileInExtStorage={false}
           ref={sign}
           style={styles.signature}
           showNativeButtons={false}
@@ -50,14 +54,13 @@ const Signature: React.FC<SignatureProps> = ({
           <PrimaryButton
             style={styles.buttonStyle}
             onPress={() => {
-              resetSign();
+              sign.current.resetImage();
             }}
             label={'Reset'}></PrimaryButton>
           <PrimaryButton
             style={styles.buttonStyle}
-            onPress={() => {
-              confirmSign();
-              onConfirm();
+            onPress={async () => {
+              sign.current.saveImage();
             }}
             label={'Confirm'}></PrimaryButton>
         </View>
