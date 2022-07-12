@@ -53,9 +53,9 @@ const GraphicalRecording: React.FC = () => {
   const [showEndGame, setShowEndGame] = useState(false);
   const [showSignature, setShowSignature] = useState(false);
   const goToEndGame = graphicalRecordingState?.[1].goToEndGame;
-  const [selectedWinner, setSelectedWinner] = useState<undefined | Player>(
-    undefined,
-  );
+  const [selectedWinner, setSelectedWinner] = useState<
+    undefined | Player | null
+  >(undefined);
 
   // when the promotion popup opens, the app will await untill a promise is resolved
   // this ref stores this resolve function (it will be called once the user selects a promotion)
@@ -156,8 +156,16 @@ const GraphicalRecording: React.FC = () => {
             width: '100%',
           },
         },
+        {
+          text: 'Draw',
+          onPress: () => handleSelectWinner(null),
+          style: {
+            width: '100%',
+          },
+        },
       ]
     : [];
+
   /**
    * this will prompt user to select a promotion piece and will not return until they do
    */
@@ -179,7 +187,7 @@ const GraphicalRecording: React.FC = () => {
     }
   };
 
-  const handleSelectWinner = (player: Player) => {
+  const handleSelectWinner = (player: Player | null) => {
     setShowSignature(true);
     setShowEndGame(false);
     setSelectedWinner(player);
@@ -253,12 +261,14 @@ const GraphicalRecording: React.FC = () => {
               onCancel={handleCancelSelection}
             />
           )}
-          {showSignature && selectedWinner && (
+          {showSignature && selectedWinner !== undefined && (
             <>
               <Signature
                 visible={showSignature}
                 onCancel={handleCancelSelection}
-                winnerName={fullName(selectedWinner)}
+                winnerName={
+                  (selectedWinner && fullName(selectedWinner)) ?? null
+                }
                 onConfirm={handleConfirmWinner}
               />
             </>
