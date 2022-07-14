@@ -42,9 +42,6 @@ const GraphicalRecording: React.FC = () => {
   const skipTurnAndProcessMove =
     graphicalRecordingState?.[1].skipTurnAndProcessMove;
 
-  // Scroll view ref
-  const scrollRef = useRef<ScrollView>(null);
-
   // states
   const [flipBoard, setFlipBoard] = useState(
     graphicalRecordingMode?.currentPlayer === PlayerColour.Black,
@@ -56,6 +53,9 @@ const GraphicalRecording: React.FC = () => {
   const [selectedWinner, setSelectedWinner] = useState<
     undefined | Player | null
   >(undefined);
+
+  // Scroll view ref
+  const scrollRef = useRef<ScrollView>(null);
 
   // when the promotion popup opens, the app will await untill a promise is resolved
   // this ref stores this resolve function (it will be called once the user selects a promotion)
@@ -166,19 +166,7 @@ const GraphicalRecording: React.FC = () => {
       ]
     : [];
 
-  /**
-   * this will prompt user to select a promotion piece and will not return until they do
-   */
-  const promptUserForPromotionChoice = (): Promise<PieceType> => {
-    // prompt user to select promotion
-    setShowPromotion(true);
-
-    // create a promise, store the resolve function in the ref
-    // this promise will not return until the resolve function is called by handleSelectPromotion()
-    return new Promise<PieceType>(r => (promotionSelectedFunc.current = r));
-  };
-
-  //Button Functions
+  // Button Functions
   const handleConfirmWinner = (signature: string) => {
     if (!graphicalRecordingMode || !goToEndGame) {
       return;
@@ -201,6 +189,7 @@ const GraphicalRecording: React.FC = () => {
     setShowEndGame(false);
     setSelectedWinner(undefined);
   };
+
   /**
    * function called once the user has selected their promotion from the pop up
    * @param promotion the promotion piece the user has selected
@@ -214,6 +203,18 @@ const GraphicalRecording: React.FC = () => {
     if (promotionSelectedFunc.current !== null) {
       promotionSelectedFunc.current(promotion);
     }
+  };
+
+  /**
+   * this will prompt user to select a promotion piece and will not return until they do
+   */
+  const promptUserForPromotionChoice = (): Promise<PieceType> => {
+    // prompt user to select promotion
+    setShowPromotion(true);
+
+    // create a promise, store the resolve function in the ref
+    // this promise will not return until the resolve function is called by handleSelectPromotion()
+    return new Promise<PieceType>(r => (promotionSelectedFunc.current = r));
   };
 
   const handleMove = async (moveSquares: MoveSquares): Promise<void> => {
@@ -247,35 +248,31 @@ const GraphicalRecording: React.FC = () => {
     <>
       {graphicalRecordingMode && (
         <View style={styles.mainContainer}>
+          {/*----- Popups -----*/}
           <OptionSheet
             visible={showPromotion}
             onCancel={() => setShowPromotion(false)}
             message={'Select Promotion Piece'}
             options={promotionButtons}
           />
+          <OptionSheet
+            message={'Please Select the Winner'}
+            options={endGameOptions}
+            visible={showEndGame}
+            onCancel={handleCancelSelection}
+          />
+          <Signature
+            visible={showSignature}
+            onCancel={handleCancelSelection}
+            winnerName={(selectedWinner && fullName(selectedWinner)) ?? null}
+            onConfirm={handleConfirmWinner}
+          />
+
+          {/*----- body ----- */}
           <View style={{ height: 100, marginLeft: 10 }}>
             <PrimaryText label="Placeholder" size={30} />
           </View>
-          {showEndGame && (
-            <OptionSheet
-              message={'Please Select the Winner'}
-              options={endGameOptions}
-              visible={showEndGame}
-              onCancel={handleCancelSelection}
-            />
-          )}
-          {showSignature && selectedWinner !== undefined && (
-            <>
-              <Signature
-                visible={showSignature}
-                onCancel={handleCancelSelection}
-                winnerName={
-                  (selectedWinner && fullName(selectedWinner)) ?? null
-                }
-                onConfirm={handleConfirmWinner}
-              />
-            </>
-          )}
+
           <View style={styles.boardButtonContainer}>
             <ActionBar actionButtons={actionButtons} />
             <ChessBoard
