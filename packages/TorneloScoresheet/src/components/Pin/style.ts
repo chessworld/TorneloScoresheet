@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
   codeFieldRoot: { marginTop: 20 },
   cell: {
     width: 50,
-    height: 50,
+    height: 70,
     lineHeight: 38,
     fontSize: 24,
     borderWidth: 2,
@@ -19,5 +19,10 @@ export const styles = StyleSheet.create({
   verifyButtonArea: {
     marginTop: 100,
     flex: 0,
+  },
+
+  numbersInCells: {
+    fontSize: 40,
+    textAlign: 'center',
   },
 });

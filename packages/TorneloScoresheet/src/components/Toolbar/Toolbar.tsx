@@ -78,6 +78,7 @@ const Toolbar: React.FC = () => {
     tablePairingState?.[1]?.goToArbiterGameMode;
 
   const handleVerify = () => {
+    setShowArbiterSheet(false);
     if (appModeState.mode == AppMode.GraphicalRecording) {
       if (!goToArbiterGameFromGraphicalRecording) {
         return;
