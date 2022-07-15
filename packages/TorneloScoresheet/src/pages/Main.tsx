@@ -5,6 +5,7 @@ import { AppMode } from '../types/AppModeState';
 import EnterPgn from './EnterPgn/EnterPgn';
 import GraphicalRecording from './GraphicalRecording/GraphicalRecording';
 import PairingSelection from './PairingSelection/PairingSelection';
+import ResultDisplay from './ResultDisplay/ResultDisplay';
 import TablePairing from './TablePairing/TablePairing';
 
 const Main: React.FC = () => {
@@ -27,6 +28,8 @@ const Main: React.FC = () => {
       return (
         <PrimaryText label="Arbiter Table Pairing is unsupported app mode" />
       );
+    case AppMode.ResultDisplay:
+      return <ResultDisplay />;
     default:
       return <PrimaryText label="Unsupported app mode" />;
   }
