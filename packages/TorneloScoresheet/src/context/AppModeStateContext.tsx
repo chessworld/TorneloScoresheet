@@ -4,6 +4,7 @@ import { makeUsePairingSelectionState } from '../hooks/appMode/pairingSelectionS
 import { makeUseTablePairingState } from '../hooks/appMode/tablePairingState';
 import { makeUseGraphicalRecordingState } from '../hooks/appMode/graphicalRecordingState';
 import { AppModeState, AppMode } from '../types/AppModeState';
+import { makeUseResultDisplayState } from '../hooks/appMode/resultDisplayState';
 
 // The global state for the app
 // This is not exported so the setAppModeState is never leaked
@@ -37,3 +38,5 @@ export const useTablePairingState =
   makeUseTablePairingState(AppModeStateContext);
 export const useGraphicalRecordingState =
   makeUseGraphicalRecordingState(AppModeStateContext);
+export const useResultDisplayState =
+  makeUseResultDisplayState(AppModeStateContext);
