@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
 import { styles } from './style';
 import {
   CodeField,
@@ -38,12 +38,15 @@ const Pin: React.FC<PinProps> = ({ onPress }) => {
           keyboardType="number-pad"
           textContentType="oneTimeCode"
           renderCell={({ index, symbol, isFocused }) => (
-            <Text
+            <View
+              // Make sure that you pass onLayout={getCellOnLayoutHandler(index)} prop to root component of "Cell"
+              onLayout={getCellOnLayoutHandler(index)}
               key={index}
-              style={[styles.cell, isFocused && styles.focusCell]}
-              onLayout={getCellOnLayoutHandler(index)}>
-              {symbol || (isFocused ? <Cursor /> : null)}
-            </Text>
+              style={[styles.cell, isFocused && styles.focusCell]}>
+              <PrimaryText style={styles.numbersInCells}>
+                {symbol || (isFocused ? <Cursor /> : null)}
+              </PrimaryText>
+            </View>
           )}
         />
       </SafeAreaView>
