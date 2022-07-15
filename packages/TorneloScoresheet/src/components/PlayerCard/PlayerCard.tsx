@@ -1,22 +1,22 @@
 import { TouchableOpacityProps } from 'react-native';
 import React from 'react';
 import { Player } from '../../types/ChessGameInfo';
-import { styles } from './style';
 import { TouchableOpacity, View } from 'react-native';
 import { PieceType } from '../../types/ChessMove';
-import PieceAsset from '../../components/PieceAsset/PieceAsset';
-import PrimaryText, {
-  FontWeight,
-} from '../../components/PrimaryText/PrimaryText';
+import PieceAsset from '../PieceAsset/PieceAsset';
+import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import { fullName } from '../../util/player';
 import { colours } from '../../style/colour';
+import { styles } from './style';
 
 type playerCardProps = {
   player: Player;
+  result?: number;
 } & TouchableOpacityProps;
 
 const PlayerCard: React.FC<playerCardProps> = ({
   player,
+  result,
   ...touchableOpacityProps
 }) => {
   return (
@@ -26,7 +26,6 @@ const PlayerCard: React.FC<playerCardProps> = ({
           <PieceAsset
             piece={{ type: PieceType.King, player: player.color }}
             size={100}
-            style={styles.piece}
           />
         </View>
         <View style={styles.cardCentre}>
@@ -55,7 +54,13 @@ const PlayerCard: React.FC<playerCardProps> = ({
             label="render team here"
           />
         </View>
-        <View style={styles.cardColumns} />
+        <View style={styles.cardColumns}>
+          <View style={styles.resultBox}>
+            <PrimaryText weight={FontWeight.Bold} style={styles.resultText}>
+              {result && result}
+            </PrimaryText>
+          </View>
+        </View>
       </View>
     </TouchableOpacity>
   );

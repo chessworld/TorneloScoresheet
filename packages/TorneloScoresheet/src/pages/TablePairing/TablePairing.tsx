@@ -3,7 +3,7 @@ import { useTablePairingState } from '../../context/AppModeStateContext';
 import { styles } from './style';
 import { View } from 'react-native';
 import { PlayerColour } from '../../types/ChessGameInfo';
-import PlayerCard from './PlayerCard';
+import PlayerCard from '../../components/PlayerCard/PlayerCard';
 import PrimaryText, {
   FontWeight,
 } from '../../components/PrimaryText/PrimaryText';
