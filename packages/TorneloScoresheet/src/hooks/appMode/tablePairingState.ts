@@ -11,6 +11,8 @@ type TablePairingStateHookType = [
   TablePairingMode,
   {
     goToRecording: (currentPlayer: PlayerColour) => void;
+
+    goToArbiterGameMode: () => void;
   },
 ];
 
@@ -25,7 +27,11 @@ export const makeUseTablePairingState =
     if (appModeState.mode !== AppMode.TablePairing) {
       return null;
     }
-
+    const goToArbiterGameMode = (): void => {
+      setAppModeState({
+        mode: AppMode.ArbiterGame,
+      });
+    };
     const goToRecording = (currentPlayer: PlayerColour): void => {
       const board = chessEngine.fenToBoardPositions(chessEngine.startingFen());
       setAppModeState({
@@ -37,5 +43,5 @@ export const makeUseTablePairingState =
       });
     };
 
-    return [appModeState, { goToRecording }];
+    return [appModeState, { goToRecording, goToArbiterGameMode }];
   };

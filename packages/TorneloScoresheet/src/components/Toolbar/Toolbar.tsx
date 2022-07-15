@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Image, StatusBar, View } from 'react-native';
-import { useAppModeState } from '../../context/AppModeStateContext';
+import {
+  useAppModeState,
+  useGraphicalRecordingState,
+  useTablePairingState,
+} from '../../context/AppModeStateContext';
 
 import {
   colours,
@@ -31,6 +35,7 @@ import Pin from '../Pin/Pin';
 const colourForMode: Record<AppMode, ColourType> = {
   [AppMode.EnterPgn]: colours.tertiary,
   [AppMode.PariringSelection]: colours.tertiary,
+  [AppMode.ArbiterGame]: colours.tertiary,
   [AppMode.TablePairing]: colours.primary,
   [AppMode.GraphicalRecording]: colours.primary,
   [AppMode.ResultDisplay]: colours.primary,
@@ -40,6 +45,7 @@ const colourForMode: Record<AppMode, ColourType> = {
 const arbiterModeDisplay: Record<AppMode, 'none' | undefined> = {
   [AppMode.EnterPgn]: 'none',
   [AppMode.PariringSelection]: 'none',
+  [AppMode.ArbiterGame]: 'none',
   [AppMode.TablePairing]: undefined,
   [AppMode.GraphicalRecording]: undefined,
   [AppMode.ResultDisplay]: undefined,
@@ -62,6 +68,28 @@ const Toolbar: React.FC = () => {
   const currentColour = colourForMode[appModeState.mode];
   const arbiterModeVisibility = arbiterModeDisplay[appModeState.mode];
   const currentTextColour = textColour(currentColour);
+
+  const graphicalRecordingState = useGraphicalRecordingState();
+  const goToArbiterGameFromGraphicalRecording =
+    graphicalRecordingState?.[1]?.goToArbiterGameMode;
+
+  const tablePairingState = useTablePairingState();
+  const goToArbiterGameFromTablePairing =
+    tablePairingState?.[1]?.goToArbiterGameMode;
+
+  const handleVerify = () => {
+    if (appModeState.mode == AppMode.GraphicalRecording) {
+      if (!goToArbiterGameFromGraphicalRecording) {
+        return;
+      }
+      goToArbiterGameFromGraphicalRecording();
+    } else {
+      if (!goToArbiterGameFromTablePairing) {
+        return;
+      }
+      goToArbiterGameFromTablePairing();
+    }
+  };
   return (
     <>
       <StatusBar barStyle={statusBarStyleForColor(currentColour)} />
@@ -72,10 +100,10 @@ const Toolbar: React.FC = () => {
         <PrimaryText>Put help here!</PrimaryText>
       </Sheet>
       <Sheet
-        title="Enter Pin"
         dismiss={() => setShowArbiterSheet(false)}
         visible={showArbiterSheet}>
-        <Pin></Pin>
+        <PrimaryText size={40} weight={FontWeight.Bold} label={'Enter Pin'} />
+        <Pin onPress={handleVerify}></Pin>
       </Sheet>
       <View style={[styles.container, backgroundColorStyle(currentColour)]}>
         <ToolbarButton
