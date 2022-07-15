@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Image, StatusBar, View } from 'react-native';
 import { useAppModeState } from '../../context/AppModeStateContext';
+
 import {
   colours,
   ColourType,
@@ -18,6 +19,7 @@ import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import Sheet from '../Sheet/Sheet';
 import { styles } from './style';
 import ToolbarButton from './ToolbarButton';
+import Pin from '../Pin/Pin';
 
 /**
  * The App's toolbar.
@@ -72,7 +74,9 @@ const Toolbar: React.FC = () => {
       <Sheet
         title="Enter Pin"
         dismiss={() => setShowArbiterSheet(false)}
-        visible={showArbiterSheet}></Sheet>
+        visible={showArbiterSheet}>
+        <Pin></Pin>
+      </Sheet>
       <View style={[styles.container, backgroundColorStyle(currentColour)]}>
         <ToolbarButton
           Icon={ICON_ARBITER_MODE}
