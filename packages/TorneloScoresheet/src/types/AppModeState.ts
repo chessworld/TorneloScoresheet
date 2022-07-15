@@ -8,6 +8,7 @@ export enum AppMode {
   TablePairing,
   GraphicalRecording,
   ResultDisplay,
+  ArbiterGame,
 }
 
 export type EnterPgnMode = {
@@ -38,9 +39,14 @@ export type ResultDisplayMode = {
   result: ChessGameResult;
 };
 
+export type ArbiterGameMode = {
+  mode: AppMode.ArbiterGame;
+};
+
 export type AppModeState =
   | EnterPgnMode
   | PairingSelectionMode
   | TablePairingMode
   | GraphicalRecordingMode
-  | ResultDisplayMode;
+  | ResultDisplayMode
+  | ArbiterGameMode;

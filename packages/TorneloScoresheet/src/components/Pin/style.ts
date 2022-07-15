@@ -1,8 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-  root: { flex: 1, padding: 10, maxHeight: '15%' },
-  title: { textAlign: 'center', fontSize: 30 },
+  root: { flex: 1, padding: 10, maxHeight: '10%' },
   codeFieldRoot: { marginTop: 20 },
   cell: {
     width: 50,
@@ -15,5 +14,10 @@ export const styles = StyleSheet.create({
   },
   focusCell: {
     borderColor: '#000',
+  },
+
+  verifyButtonArea: {
+    marginTop: 100,
+    flex: 0,
   },
 });

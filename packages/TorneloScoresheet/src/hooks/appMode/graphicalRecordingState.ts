@@ -24,7 +24,7 @@ type GraphicalRecordingStateHookType = [
   {
     goToEndGame: (result: ChessGameResult) => void;
     goToTextInput: () => void;
-    goToArbiterMode: () => void;
+    goToArbiterGameMode: () => void;
     move: (moveSquares: MoveSquares, promotion?: PieceType) => void;
     undoLastMove: () => void;
     isPawnPromotion: (moveSquares: MoveSquares) => boolean;
@@ -155,7 +155,11 @@ export const makeUseGraphicalRecordingState =
       });
     };
     const goToTextInputFunc = (): void => {};
-    const goToArbiterModeFunc = (): void => {};
+    const goToArbiterModeFunc = (): void => {
+      setAppModeState({
+        mode: AppMode.ArbiterGame,
+      });
+    };
     const moveFunc = (
       moveSquares: MoveSquares,
       promotion?: PieceType,
@@ -211,7 +215,7 @@ export const makeUseGraphicalRecordingState =
       {
         goToEndGame: goToEndGameFunc,
         goToTextInput: goToTextInputFunc,
-        goToArbiterMode: goToArbiterModeFunc,
+        goToArbiterGameMode: goToArbiterModeFunc,
         move: moveFunc,
         undoLastMove: undoLastMoveFunc,
         isPawnPromotion: isPawnPromotionFunc,
