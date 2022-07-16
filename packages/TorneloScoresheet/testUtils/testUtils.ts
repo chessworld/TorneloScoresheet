@@ -1,15 +1,15 @@
 import { renderHook, RenderResult } from '@testing-library/react-hooks';
 import moment from 'moment';
 import React from 'react';
-import { chessEngine } from './chessEngine/chessEngineInterface';
-import { AppModeStateContextProvider } from './context/AppModeStateContext';
+import { chessEngine } from '../src/chessEngine/chessEngineInterface';
+import { AppModeStateContextProvider } from '../src/context/AppModeStateContext';
 import {
   AppMode,
   AppModeState,
   GraphicalRecordingMode,
-} from './types/AppModeState';
-import { ChessGameInfo, PlayerColour } from './types/ChessGameInfo';
-import { ChessPly } from './types/ChessMove';
+} from '../src/types/AppModeState';
+import { ChessGameInfo, PlayerColour } from '../src/types/ChessGameInfo';
+import { ChessPly } from '../src/types/ChessMove';
 
 /**
  * Mocks a hook for testing
@@ -27,7 +27,7 @@ export const renderCustomHook = <T>(hook: () => T): RenderResult<T> => {
  * Generates a fake pairing
  * @returns a ChessGameInfo object with test values
  */
-export const generateGamePairingInfo = (): ChessGameInfo => {
+export const generateGamePairingInfo = (pgn?: string): ChessGameInfo => {
   return {
     name: 'name',
     site: 'site',
@@ -52,7 +52,7 @@ export const generateGamePairingInfo = (): ChessGameInfo => {
       },
     ],
     result: '',
-    pgn: '',
+    pgn: pgn ?? '',
   };
 };
 
@@ -63,10 +63,11 @@ export const generateGamePairingInfo = (): ChessGameInfo => {
  */
 export const generateGraphicalRecordingState = (
   moveHistory: ChessPly[],
+  pgn?: string,
 ): GraphicalRecordingMode => {
   return {
     mode: AppMode.GraphicalRecording,
-    pairing: generateGamePairingInfo(),
+    pairing: generateGamePairingInfo(pgn),
     moveHistory: moveHistory,
     board: chessEngine.fenToBoardPositions(
       'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
@@ -89,4 +90,13 @@ export const mockAppModeContext = (
   const useContextSpy = jest.spyOn(React, 'useContext');
   useContextSpy.mockImplementation(_ => [state, setContextMock]);
   return setContextMock;
+};
+
+/**
+ * Strips a PGN string of its star characterS
+ * @param pgn The pgn string
+ * @returns The pgn minus the ending star
+ */
+export const stripStarFromPgn = (pgn: string): string => {
+  return pgn.substring(0, pgn.length - 2);
 };

@@ -1,6 +1,6 @@
 import { BoardPosition } from '../types/ChessBoardPositions';
-import { ChessGameInfo } from '../types/ChessGameInfo';
-import { PieceType, MoveSquares } from '../types/ChessMove';
+import { ChessGameInfo, PlayerColour } from '../types/ChessGameInfo';
+import { PieceType, MoveSquares, ChessPly } from '../types/ChessMove';
 import { Result } from '../types/Result';
 import { chessTsChessEngine } from './chessTsChessEngine';
 
@@ -67,6 +67,19 @@ export type ChessEngineInterface = {
    * @returns if the move is targeting the opposite player's piece
    */
   isOtherPlayersPiece: (fen: string, move: MoveSquares) => boolean;
+
+  /**
+   * Generates the PGN of the game
+   * @param originPgn the pgn of the event with the headers
+   * @param moveHistory the list of ChessPlys of the game
+   * @param winner The player who won or null if its a draw
+   * @returns A result with the pgn, if an error occurs, will return an error
+   */
+  generatePgn: (
+    originPgn: string,
+    moveHistory: ChessPly[],
+    winner: PlayerColour | null,
+  ) => Result<string>;
 };
 
 // change the chess engine implementation here

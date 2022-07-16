@@ -10,7 +10,13 @@ import {
   PlayerColour,
   PLAYER_COLOUR_NAME,
 } from '../types/ChessGameInfo';
-import { Piece, PieceType, MoveSquares } from '../types/ChessMove';
+import {
+  Piece,
+  PieceType,
+  MoveSquares,
+  ChessPly,
+  PlyTypes,
+} from '../types/ChessMove';
 import { Result, succ, fail, isError } from '../types/Result';
 import { ChessEngineInterface } from './chessEngineInterface';
 
@@ -162,6 +168,66 @@ const isOtherPlayersPiece = (fen: string, move: MoveSquares): boolean => {
 };
 
 /**
+ * Generates the PGN of the game
+ * @param originPgn the pgn of the event with the headers
+ * @param moveHistory the list of ChessPlys of the game
+ * @param winner The player who won or null if its a draw
+ * @returns A result with the pgn, if an error occurs, will return an error
+ */
+const generatePgn = (
+  originPgn: string,
+  moveHistory: ChessPly[],
+  winner: PlayerColour | null,
+): Result<string> => {
+  const stripStarFromPgn = (pgn: string): string => {
+    return pgn.substring(0, pgn.length - 1);
+  };
+
+  const getResultString = (winner: PlayerColour | null): string => {
+    switch (winner) {
+      case PlayerColour.Black:
+        return '0-1';
+      case PlayerColour.White:
+        return '1-0';
+      case null:
+        return '1-1';
+    }
+  };
+
+  // create game and parse initial pgn to get correct headers
+  const game = new Chess();
+  if (!game.loadPgn(originPgn)) {
+    return fail('Error parsing pgn, please contact the arbiter');
+  }
+
+  const error = moveHistory
+    .map(move => {
+      if (move.type === PlyTypes.SkipPly) {
+        return 'Cannot finish a game with skipped moves, go back and fill in the moves that were skipped.';
+      }
+      if (
+        game.forceMove(move.move, {
+          promotion:
+            move.promotion !== undefined
+              ? chessTsPieceMap[move.promotion]
+              : undefined,
+        }) === null
+      ) {
+        return 'Error processing move, an impossible move has been recorded';
+      }
+      return '';
+    })
+    .find(error => error !== '');
+
+  if (error) {
+    return fail(error);
+  }
+
+  const pgn = stripStarFromPgn(game.pgn()) + getResultString(winner);
+  return succ(pgn);
+};
+
+/**
  * The exported chess engine object which implements all the public methods
  */
 export const chessTsChessEngine: ChessEngineInterface = {
@@ -172,6 +238,7 @@ export const chessTsChessEngine: ChessEngineInterface = {
   isPawnPromotion,
   skipTurn,
   isOtherPlayersPiece,
+  generatePgn,
 };
 
 // ------- Privates
