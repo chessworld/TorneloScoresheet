@@ -18,6 +18,7 @@ import {
   PlyTypes,
   SkipPly,
 } from '../../types/ChessMove';
+import { Result } from '../../types/Result';
 
 type GraphicalRecordingStateHookType = [
   GraphicalRecordingMode,
@@ -31,6 +32,7 @@ type GraphicalRecordingStateHookType = [
     skipTurn: () => void;
     isOtherPlayersPiece: (move: MoveSquares) => boolean;
     skipTurnAndProcessMove: (move: MoveSquares, promotion?: PieceType) => void;
+    generatePgn: (winner: PlayerColour | null) => Result<string>;
   },
 ];
 
@@ -110,15 +112,6 @@ const processPlayerMove = (
     : [...moveHistory, nextPly];
 };
 
-export const generatePgnFromHistory = (
-  pairing: ChessGameInfo,
-  history: ChessPly[],
-  result: ChessGameResult,
-): string => {
-  // TODO: Implement pgn generation
-  return '';
-};
-
 export const makeUseGraphicalRecordingState =
   (
     context: React.Context<
@@ -144,14 +137,7 @@ export const makeUseGraphicalRecordingState =
       setAppModeState({
         mode: AppMode.ResultDisplay,
         pairing: appModeState.pairing,
-        result: {
-          ...result,
-          gamePgn: generatePgnFromHistory(
-            appModeState.pairing,
-            appModeState.moveHistory,
-            result,
-          ),
-        },
+        result,
       });
     };
     const goToTextInputFunc = (): void => {};
@@ -214,6 +200,14 @@ export const makeUseGraphicalRecordingState =
       }
     };
 
+    const generatePgnFunc = (winner: PlayerColour | null): Result<string> => {
+      return chessEngine.generatePgn(
+        appModeState.pairing.pgn,
+        appModeState.moveHistory,
+        winner,
+      );
+    };
+
     return [
       appModeState,
       {
@@ -226,6 +220,7 @@ export const makeUseGraphicalRecordingState =
         skipTurn: skipTurnFunc,
         isOtherPlayersPiece: isOtherPlayersPieceFunc,
         skipTurnAndProcessMove: skipTurnAndProcessMoveFunc,
+        generatePgn: generatePgnFunc,
       },
     ];
   };
