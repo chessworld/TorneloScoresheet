@@ -59,11 +59,24 @@ export function getDisambiguator(
   move: HexMove,
   sloppy: boolean
 ): string {
+  const moveIsIllegal = (move: HexMove, moves: HexMove[]): boolean => {
+    return (
+      moves.filter(
+        (legalMove) => legalMove.from === move.from && legalMove.to === move.to
+      ).length === 0
+    )
+  }
+
   const moves = generateMoves(state, { legal: !sloppy })
 
   const from = move.from
   const to = move.to
   const piece = move.piece
+
+  //if move is illegal, return from square as disambiguator
+  if (moveIsIllegal(move, moves)) {
+    return algebraic(from)
+  }
 
   let ambiguities = 0
   let same_rank = 0
@@ -865,7 +878,10 @@ export function generateMoves(
 export function moveToSan(
   state: State,
   move: HexMove,
-  options: { sloppy?: boolean; checkPromotion?: boolean } = {}
+  options: {
+    sloppy?: boolean
+    checkPromotion?: boolean
+  } = {}
 ): string {
   const { sloppy = false, checkPromotion = true } = options
   let output = ''
@@ -879,6 +895,8 @@ export function moveToSan(
 
     if (move.piece !== PAWN) {
       output += move.piece.toUpperCase() + disambiguator
+    } else if (disambiguator.length === 2) {
+      output += disambiguator
     }
 
     if (move.flags & (BITS.CAPTURE | BITS.EP_CAPTURE)) {
