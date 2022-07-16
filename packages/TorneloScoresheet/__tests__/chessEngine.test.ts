@@ -2,8 +2,15 @@ import moment from 'moment';
 import { chessEngine } from '../src/chessEngine/chessEngineInterface';
 import { BoardPosition, Position } from '../src/types/ChessBoardPositions';
 import { PlayerColour } from '../src/types/ChessGameInfo';
-import { Piece, PieceType, MoveSquares } from '../src/types/ChessMove';
+import {
+  Piece,
+  PieceType,
+  MoveSquares,
+  PlyTypes,
+  ChessPly,
+} from '../src/types/ChessMove';
 import { isError, succ } from '../src/types/Result';
+import { stripStarFromPgn } from '../testUtils/testUtils';
 
 // ---- chessEngine.parseGameInfo() ----
 const pgnSucess = `[Event "Skywalker Challenge - A"]
@@ -78,6 +85,7 @@ describe('parseGameInfo', () => {
         site: 'Prague, Czechia',
         round: 6,
         board: 1,
+        game: undefined,
         result: '*',
         date: moment('2021.09.12', 'YYYY.MM.DD'),
         pgn: pgnSucess,
@@ -95,8 +103,8 @@ describe('parseGameInfo', () => {
             firstName: ' Master',
             lastName: 'Yoda',
             elo: 0,
-            country: '',
             fideId: 1000000,
+            country: '',
           },
         ],
       },
@@ -1089,6 +1097,655 @@ describe("is other player's piece", () => {
         testCase.move as MoveSquares,
       );
       expect(result).toStrictEqual(testCase.isOtherPlayersPiece);
+    });
+  });
+});
+
+// ---- chessEngine.generatePgn() ----
+describe('generatePgn', () => {
+  const testCases = [
+    {
+      name: 'White win no error',
+      pgn: pgnSucess,
+      isError: false,
+      moves: [
+        {
+          moveNo: 1,
+          startingFen: chessEngine.startingFen(),
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e2',
+            to: 'e4',
+          },
+        },
+      ] as ChessPly[],
+      winner: PlayerColour.White,
+      expectedPgn: stripStarFromPgn(pgnSucess) + '1. e4 1-0',
+    },
+    {
+      name: 'Skip ply error',
+      pgn: pgnSucess,
+      isError: true,
+      moves: [
+        {
+          moveNo: 1,
+          startingFen: chessEngine.startingFen(),
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e2',
+            to: 'e4',
+          },
+        },
+        {
+          moveNo: 2,
+          startingFen: chessEngine.startingFen(),
+          player: PlayerColour.Black,
+          type: PlyTypes.SkipPly,
+        },
+      ] as ChessPly[],
+      winner: PlayerColour.White,
+      expectedPgn: stripStarFromPgn(pgnSucess) + '1. e4 1-0',
+    },
+    {
+      name: 'Parse PGN error',
+      pgn: '',
+      isError: true,
+      moves: [
+        {
+          moveNo: 1,
+          startingFen: chessEngine.startingFen(),
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e2',
+            to: 'e4',
+          },
+        },
+      ] as ChessPly[],
+      winner: PlayerColour.White,
+      expectedPgn: stripStarFromPgn(pgnSucess) + '1. e4 1-0',
+    },
+    {
+      name: 'Impossible move error',
+      pgn: pgnSucess,
+      isError: true,
+      moves: [
+        {
+          moveNo: 1,
+          startingFen: chessEngine.startingFen(),
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e3',
+            to: 'e4',
+          },
+        },
+      ] as ChessPly[],
+      winner: PlayerColour.White,
+      expectedPgn: stripStarFromPgn(pgnSucess) + '1. e4 1-0',
+    },
+    {
+      name: 'Black win no error',
+      pgn: pgnSucess,
+      isError: false,
+      moves: [
+        {
+          moveNo: 1,
+          startingFen: chessEngine.startingFen(),
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e2',
+            to: 'e4',
+          },
+        },
+        {
+          moveNo: 2,
+          startingFen:
+            'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'g7',
+            to: 'g6',
+          },
+        },
+      ] as ChessPly[],
+      winner: PlayerColour.Black,
+      expectedPgn: stripStarFromPgn(pgnSucess) + '1. e4 g6 0-1',
+    },
+    {
+      name: 'Draw win no error',
+      pgn: pgnSucess,
+      isError: false,
+      moves: [
+        {
+          moveNo: 1,
+          startingFen: chessEngine.startingFen(),
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e2',
+            to: 'e4',
+          },
+        },
+        {
+          moveNo: 2,
+          startingFen:
+            'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'g7',
+            to: 'g6',
+          },
+        },
+      ] as ChessPly[],
+      winner: null,
+      expectedPgn: stripStarFromPgn(pgnSucess) + '1. e4 g6 1-1',
+    },
+    {
+      name: 'Illegal move',
+      pgn: pgnSucess,
+      isError: false,
+      moves: [
+        {
+          moveNo: 1,
+          startingFen: chessEngine.startingFen(),
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e2',
+            to: 'e6',
+          },
+        },
+      ] as ChessPly[],
+      winner: PlayerColour.White,
+      expectedPgn: stripStarFromPgn(pgnSucess) + '1. e2e6 1-0',
+    },
+    {
+      name: 'En Passant move',
+      pgn: pgnSucess,
+      isError: false,
+      moves: [
+        {
+          moveNo: 1,
+          startingFen: chessEngine.startingFen(),
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e2',
+            to: 'e4',
+          },
+        },
+        {
+          moveNo: 2,
+          startingFen:
+            'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd7',
+            to: 'd5',
+          },
+        },
+        {
+          moveNo: 3,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e4',
+            to: 'e5',
+          },
+        },
+        {
+          moveNo: 4,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3pP3/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'f7',
+            to: 'f5',
+          },
+        },
+        {
+          moveNo: 5,
+          startingFen:
+            'rnbqkbnr/ppp1p1pp/8/3pPp2/8/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e5',
+            to: 'f6',
+          },
+        },
+      ] as ChessPly[],
+      winner: PlayerColour.White,
+      expectedPgn:
+        stripStarFromPgn(pgnSucess) + '1. e4 d5 2. e5 f5 3. exf6 1-0',
+    },
+    {
+      name: 'Capture',
+      isError: false,
+      pgn: pgnSucess,
+      moves: [
+        {
+          moveNo: 1,
+          startingFen: chessEngine.startingFen(),
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e2',
+            to: 'e4',
+          },
+        },
+        {
+          moveNo: 2,
+          startingFen:
+            'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd7',
+            to: 'd5',
+          },
+        },
+        {
+          moveNo: 3,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e4',
+            to: 'd5',
+          },
+        },
+      ] as ChessPly[],
+      winner: PlayerColour.White,
+      expectedPgn: stripStarFromPgn(pgnSucess) + '1. e4 d5 2. exd5 1-0',
+    },
+    {
+      name: 'Pawn Promotion and check symbol',
+      pgn: pgnSucess,
+      isError: false,
+      moves: [
+        {
+          moveNo: 1,
+          startingFen: chessEngine.startingFen(),
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e2',
+            to: 'e4',
+          },
+        },
+        {
+          moveNo: 2,
+          startingFen:
+            'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd7',
+            to: 'd5',
+          },
+        },
+        {
+          moveNo: 3,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e4',
+            to: 'd5',
+          },
+        },
+        {
+          moveNo: 4,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd8',
+            to: 'd7',
+          },
+        },
+        {
+          moveNo: 5,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd5',
+            to: 'd6',
+          },
+        },
+        {
+          moveNo: 6,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd7',
+            to: 'f5',
+          },
+        },
+        {
+          moveNo: 7,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd6',
+            to: 'd7',
+          },
+        },
+        {
+          moveNo: 8,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'f5',
+            to: 'f4',
+          },
+        },
+        {
+          moveNo: 9,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd7',
+            to: 'd8',
+          },
+          promotion: PieceType.Queen,
+        },
+      ] as ChessPly[],
+      winner: PlayerColour.White,
+      expectedPgn:
+        stripStarFromPgn(pgnSucess) +
+        '1. e4 d5 2. exd5 Qd7 3. d6 Qf5 4. d7+ Qf5f4 5. d8=Q+ 1-0',
+    },
+    {
+      name: 'check mate',
+      isError: false,
+      pgn: pgnSucess,
+      moves: [
+        {
+          moveNo: 1,
+          startingFen: chessEngine.startingFen(),
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e2',
+            to: 'e4',
+          },
+        },
+        {
+          moveNo: 2,
+          startingFen:
+            'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd7',
+            to: 'd5',
+          },
+        },
+        {
+          moveNo: 3,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e4',
+            to: 'd5',
+          },
+        },
+        {
+          moveNo: 4,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd8',
+            to: 'd7',
+          },
+        },
+        {
+          moveNo: 5,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd5',
+            to: 'd6',
+          },
+        },
+        {
+          moveNo: 6,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd7',
+            to: 'f5',
+          },
+        },
+        {
+          moveNo: 7,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd6',
+            to: 'd7',
+          },
+        },
+        {
+          moveNo: 8,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'f5',
+            to: 'f4',
+          },
+        },
+        {
+          moveNo: 9,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd7',
+            to: 'd8',
+          },
+          promotion: PieceType.Queen,
+        },
+        {
+          moveNo: 10,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'f4',
+            to: 'f5',
+          },
+        },
+        {
+          moveNo: 11,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd2',
+            to: 'e2',
+          },
+        },
+      ] as ChessPly[],
+      winner: PlayerColour.White,
+      expectedPgn:
+        stripStarFromPgn(pgnSucess) +
+        '1. e4 d5 2. exd5 Qd7 3. d6 Qf5 4. d7+ Qf5f4 5. d8=Q+ Qf4f5 6. d2e2# 1-0',
+    },
+    {
+      name: 'King and Queen Side Castling',
+      pgn: pgnSucess,
+      isError: false,
+
+      moves: [
+        {
+          moveNo: 1,
+          startingFen: chessEngine.startingFen(),
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e2',
+            to: 'e4',
+          },
+        },
+        {
+          moveNo: 2,
+          startingFen:
+            'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd7',
+            to: 'd5',
+          },
+        },
+        {
+          moveNo: 3,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'f1',
+            to: 'd3',
+          },
+        },
+        {
+          moveNo: 4,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/3B4/PPPP1PPP/RNBQK1NR b KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd8',
+            to: 'd6',
+          },
+        },
+        {
+          moveNo: 5,
+          startingFen:
+            'rnb1kbnr/ppp1pppp/3q4/3p4/4P3/3B4/PPPP1PPP/RNBQK1NR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'g1',
+            to: 'h3',
+          },
+        },
+        {
+          moveNo: 6,
+          startingFen:
+            'rnb1kbnr/ppp1pppp/3q4/3p4/4P3/3B3N/PPPP1PPP/RNBQK2R b KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'c8',
+            to: 'd7',
+          },
+        },
+        {
+          moveNo: 7,
+          startingFen:
+            'rn2kbnr/pppbpppp/3q4/3p4/4P3/3B3N/PPPP1PPP/RNBQK2R w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e1',
+            to: 'g1',
+          },
+        },
+        {
+          moveNo: 8,
+          startingFen:
+            'rn2kbnr/pppbpppp/3q4/3p4/4P3/3B3N/PPPP1PPP/RNBQ1RK1 b kq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'b8',
+            to: 'c6',
+          },
+        },
+        {
+          moveNo: 9,
+          startingFen:
+            'r3kbnr/pppbpppp/2nq4/3p4/4P3/3B3N/PPPP1PPP/RNBQ1RK1 w kq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'f2',
+            to: 'f3',
+          },
+        },
+        {
+          moveNo: 10,
+          startingFen:
+            'r3kbnr/pppbpppp/2nq4/3p4/4P3/3B1P1N/PPPP2PP/RNBQ1RK1 b kq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e8',
+            to: 'c8',
+          },
+        },
+      ] as ChessPly[],
+      winner: PlayerColour.White,
+      expectedPgn:
+        stripStarFromPgn(pgnSucess) +
+        '1. e4 d5 2. Bd3 Qd6 3. Nh3 Bd7 4. O-O Nc6 5. f3 O-O-O 1-0',
+    },
+  ];
+
+  testCases.forEach(testCase => {
+    test(testCase.name, () => {
+      const result = chessEngine.generatePgn(
+        testCase.pgn,
+        testCase.moves,
+        testCase.winner,
+      );
+      expect(isError(result)).toStrictEqual(testCase.isError);
+      if (!isError(result)) {
+        expect(result.data).toStrictEqual(testCase.expectedPgn);
+      }
     });
   });
 });
