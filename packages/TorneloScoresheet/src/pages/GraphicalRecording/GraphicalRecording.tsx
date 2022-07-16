@@ -29,6 +29,8 @@ import { PieceType, MoveSquares, ChessPly, Move } from '../../types/ChessMove';
 import { styles } from './style';
 import { fullName } from '../../util/player';
 import Signature from '../../components/Signature/Signature';
+import { isError } from '../../types/Result';
+import { useError } from '../../context/ErrorContext';
 
 const GraphicalRecording: React.FC = () => {
   // app mode hook unpacking
@@ -41,12 +43,15 @@ const GraphicalRecording: React.FC = () => {
   const isOtherPlayersPiece = graphicalRecordingState?.[1].isOtherPlayersPiece;
   const skipTurnAndProcessMove =
     graphicalRecordingState?.[1].skipTurnAndProcessMove;
+  const generatePgn = graphicalRecordingState?.[1].generatePgn;
 
   // states
   const [flipBoard, setFlipBoard] = useState(
     graphicalRecordingMode?.currentPlayer === PlayerColour.Black,
   );
   const [showPromotion, setShowPromotion] = useState(false);
+  const [pgn, setPgn] = useState('');
+  const [, showError] = useError();
   const [showEndGame, setShowEndGame] = useState(false);
   const [showSignature, setShowSignature] = useState(false);
   const goToEndGame = graphicalRecordingState?.[1].goToEndGame;
@@ -174,11 +179,25 @@ const GraphicalRecording: React.FC = () => {
       goToEndGame({
         winner: selectedWinner?.color ?? null,
         signature: signature,
+        gamePgn: pgn,
       });
     }
   };
 
   const handleSelectWinner = (player: Player | null) => {
+    // generate pgn first to ensure no errors present
+    if (!generatePgn) {
+      return;
+    }
+    const pgnResult = generatePgn(player?.color ?? null);
+    if (isError(pgnResult)) {
+      showError(pgnResult.error);
+      return;
+    }
+    console.log(pgnResult.data);
+    setPgn(pgnResult.data);
+
+    // if pgn can be generated -> prompt user for signature
     setShowSignature(true);
     setShowEndGame(false);
     setSelectedWinner(player);
