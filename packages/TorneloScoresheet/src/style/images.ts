@@ -24,7 +24,7 @@ import ICON_HASHTAG_ASSET from '../../assets/images/buttonIcons/icon_hashtag.svg
 import ICON_REPEAT_ASSET from '../../assets/images/buttonIcons/icon_repeat.svg';
 import ICON_UNDO_ASSET from '../../assets/images/buttonIcons/icon_undo.svg';
 import ICON_CLOCK_ASSET from '../../assets/images/buttonIcons/icon_clock.svg';
-import ICON_ARBITER_MODE_ASSET from '../../assets/images/buttonIcons/icon_arbiter_mode.svg';
+import ICON_GEAR_ASSET from '../../assets/images/buttonIcons/icon_gear.svg';
 
 export const ICON_FLIP = ICON_FLIP_ASSET;
 export const ICON_SKIP = ICON_SKIP_ASSET;
@@ -33,4 +33,4 @@ export const ICON_HASTAG = ICON_HASHTAG_ASSET;
 export const ICON_REPEAT = ICON_REPEAT_ASSET;
 export const ICON_UNDO = ICON_UNDO_ASSET;
 export const ICON_CLOCK = ICON_CLOCK_ASSET;
-export const ICON_ARBITER_MODE = ICON_ARBITER_MODE_ASSET;
+export const ICON_GEAR = ICON_GEAR_ASSET;

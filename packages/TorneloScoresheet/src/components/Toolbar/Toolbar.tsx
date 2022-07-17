@@ -5,7 +5,6 @@ import {
   useGraphicalRecordingState,
   useTablePairingState,
 } from '../../context/AppModeStateContext';
-
 import {
   colours,
   ColourType,
@@ -14,16 +13,16 @@ import {
 } from '../../style/colour';
 import {
   BLACK_LOGO_IMAGE,
-  ICON_ARBITER_MODE,
+  ICON_GEAR,
   WHITE_LOGO_IMAGE,
 } from '../../style/images';
-import { AppMode } from '../../types/AppModeState';
+import { AppMode, GraphicalRecordingMode } from '../../types/AppModeState';
 import IconButton from '../IconButton/IconButton';
 import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import Sheet from '../Sheet/Sheet';
 import { styles } from './style';
-import ToolbarButton from './ToolbarButton';
 import Pin from '../Pin/Pin';
+import ActionButton, { ButtonHeight } from '../ActionButton/ActionButton';
 
 /**
  * The App's toolbar.
@@ -42,13 +41,13 @@ const colourForMode: Record<AppMode, ColourType> = {
   [AppMode.TablePairing]: colours.primary,
 };
 
-const arbiterModeDisplay: Record<AppMode, 'none' | undefined> = {
-  [AppMode.EnterPgn]: 'none',
-  [AppMode.PariringSelection]: 'none',
-  [AppMode.ArbiterGame]: 'none',
-  [AppMode.TablePairing]: undefined,
-  [AppMode.GraphicalRecording]: undefined,
-  [AppMode.ResultDisplay]: undefined,
+const arbiterModeDisplay: Record<AppMode, boolean> = {
+  [AppMode.EnterPgn]: true,
+  [AppMode.PariringSelection]: true,
+  [AppMode.ArbiterGame]: true,
+  [AppMode.TablePairing]: false,
+  [AppMode.GraphicalRecording]: false,
+  [AppMode.ResultDisplay]: false,
 };
 
 const backgroundColorStyle = (backgroundColor: string) => ({
@@ -79,16 +78,17 @@ const Toolbar: React.FC = () => {
 
   const handleVerify = () => {
     setShowArbiterSheet(false);
-    if (appModeState.mode == AppMode.GraphicalRecording) {
-      if (!goToArbiterGameFromGraphicalRecording) {
-        return;
-      }
-      goToArbiterGameFromGraphicalRecording();
-    } else {
-      if (!goToArbiterGameFromTablePairing) {
-        return;
-      }
-      goToArbiterGameFromTablePairing();
+    switch (appModeState.mode) {
+      case AppMode.GraphicalRecording:
+        if (!goToArbiterGameFromGraphicalRecording) {
+          return;
+        }
+        return goToArbiterGameFromGraphicalRecording();
+      case AppMode.TablePairing:
+        if (!goToArbiterGameFromTablePairing) {
+          return;
+        }
+        return goToArbiterGameFromTablePairing();
     }
   };
   return (
@@ -104,14 +104,16 @@ const Toolbar: React.FC = () => {
         dismiss={() => setShowArbiterSheet(false)}
         visible={showArbiterSheet}>
         <PrimaryText size={40} weight={FontWeight.Bold} label={'Enter Pin'} />
-        <Pin onPress={handleVerify}></Pin>
+        <Pin onPress={handleVerify} />
       </Sheet>
       <View style={[styles.container, backgroundColorStyle(currentColour)]}>
-        <ToolbarButton
-          Icon={ICON_ARBITER_MODE}
+        <ActionButton
+          Icon={ICON_GEAR}
           onPress={handleArbiterPress}
-          colour={currentColour}
-          display={arbiterModeVisibility}></ToolbarButton>
+          buttonHeight={ButtonHeight.SINGLE}
+          text={'ARB'}
+          invertColours={true}
+          notShown={arbiterModeVisibility}></ActionButton>
         <View style={styles.logo}>
           <Image
             style={styles.logoImage}

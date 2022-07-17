@@ -20,8 +20,5 @@ export const makeArbiterGameState =
       return null;
     }
 
-    //    const goToArbiterGameFunc =
-    //    makegoToArbiterGame(setAppModeState);
-
     return [appModeState, {}];
   };
