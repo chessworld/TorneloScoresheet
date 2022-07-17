@@ -16,7 +16,7 @@ import {
   ICON_GEAR,
   WHITE_LOGO_IMAGE,
 } from '../../style/images';
-import { AppMode, GraphicalRecordingMode } from '../../types/AppModeState';
+import { AppMode } from '../../types/AppModeState';
 import IconButton from '../IconButton/IconButton';
 import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import Sheet from '../Sheet/Sheet';
@@ -34,17 +34,18 @@ import ActionButton, { ButtonHeight } from '../ActionButton/ActionButton';
 const colourForMode: Record<AppMode, ColourType> = {
   [AppMode.EnterPgn]: colours.tertiary,
   [AppMode.PariringSelection]: colours.tertiary,
-  [AppMode.ArbiterGame]: colours.tertiary,
+  [AppMode.ArbiterGraphicalRecording]: colours.tertiary,
+  [AppMode.ArbiterTablePairing]: colours.tertiary,
   [AppMode.TablePairing]: colours.primary,
   [AppMode.GraphicalRecording]: colours.primary,
   [AppMode.ResultDisplay]: colours.primary,
-  [AppMode.TablePairing]: colours.primary,
 };
 
 const arbiterModeDisplay: Record<AppMode, boolean> = {
   [AppMode.EnterPgn]: true,
   [AppMode.PariringSelection]: true,
-  [AppMode.ArbiterGame]: true,
+  [AppMode.ArbiterGraphicalRecording]: true,
+  [AppMode.ArbiterTablePairing]: true,
   [AppMode.TablePairing]: false,
   [AppMode.GraphicalRecording]: false,
   [AppMode.ResultDisplay]: false,

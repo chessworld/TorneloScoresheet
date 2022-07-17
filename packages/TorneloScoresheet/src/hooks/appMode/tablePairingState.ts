@@ -29,7 +29,8 @@ export const makeUseTablePairingState =
     }
     const goToArbiterGameMode = (): void => {
       setAppModeState({
-        mode: AppMode.ArbiterGame,
+        mode: AppMode.ArbiterTablePairing,
+        pairing: appModeState.pairing,
       });
     };
     const goToRecording = (currentPlayer: PlayerColour): void => {
