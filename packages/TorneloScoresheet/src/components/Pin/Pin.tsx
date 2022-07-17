@@ -37,7 +37,15 @@ const Pin: React.FC<PinProps> = ({ onPress }) => {
           rootStyle={styles.codeFieldRoot}
           keyboardType="number-pad"
           textContentType="oneTimeCode"
-          renderCell={({ index, symbol, isFocused }) => (
+          renderCell={({
+            index,
+            symbol,
+            isFocused,
+          }: {
+            index: number;
+            symbol: string;
+            isFocused: boolean;
+          }) => (
             <View
               // Make sure that you pass onLayout={getCellOnLayoutHandler(index)} prop to root component of "Cell"
               onLayout={getCellOnLayoutHandler(index)}
