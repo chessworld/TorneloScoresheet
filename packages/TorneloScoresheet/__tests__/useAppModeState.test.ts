@@ -11,11 +11,30 @@ import {
   generateGraphicalRecordingState,
   mockAppModeContext,
   renderCustomHook,
-} from '../src/testUtils';
-import { MoveSquares, PieceType, PlyTypes } from '../src/types/ChessMove';
+  stripStarFromPgn,
+} from '../testUtils/testUtils';
+import {
+  ChessPly,
+  MoveSquares,
+  PieceType,
+  PlyTypes,
+} from '../src/types/ChessMove';
 import { chessEngine } from '../src/chessEngine/chessEngineInterface';
 import axios, { AxiosRequestConfig } from 'axios';
 import { PlayerColour } from '../src/types/ChessGameInfo';
+
+const pgnSucess = `[Event "Skywalker Challenge - A"]
+[Site "Prague, Czechia"]
+[Date "2021.09.12"]
+[Round "6.1"]
+[White "Skywalker, Anakin"]
+[Black "Yoda, Master"]
+[Result "*"]
+[BlackFideId "1000000"]
+[WhiteFideId "600000"]
+
+*
+`;
 
 describe('useAppModeState', () => {
   test('initial state', () => {
@@ -50,18 +69,6 @@ describe('useAppModeState', () => {
     });
   });
 
-  const pgnSucess = `[Event "Skywalker Challenge - A"]
-[Site "Prague, Czechia"]
-[Date "2021.09.12"]
-[Round "6.1"]
-[White "Skywalker, Anakin"]
-[Black "Yoda, Master"]
-[Result "*"]
-[BlackFideId "1000000"]
-[WhiteFideId "600000"]
-
-*
-`;
   const pgnUrl =
     'https://staging-api.tornelo.com/divisions/a1aaede1-fba1-4d63-a92b-acb789b9dcce/broadcast-pgn?convertMatchNumbers=false&includeDivisionName=true&round=6&token=46260fc4ed6887bbb45e8f793a70b950&withClocks=true';
   test('enterTablePairingSelectionViewValidUrl', async () => {
@@ -531,6 +538,698 @@ describe('Auto Skip player turn', () => {
           },
         ],
         board: chessEngine.fenToBoardPositions(afterMoveResultingFen),
+      });
+    });
+  });
+});
+
+describe('Generate pgn', () => {
+  test('Generate pgn without error', () => {
+    const graphicalState = generateGraphicalRecordingState(
+      [
+        {
+          moveNo: 1,
+          startingFen: chessEngine.startingFen(),
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e2',
+            to: 'e4',
+          },
+        },
+        {
+          moveNo: 2,
+          startingFen:
+            'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd7',
+            to: 'd5',
+          },
+        },
+        {
+          moveNo: 3,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e4',
+            to: 'd5',
+          },
+        },
+        {
+          moveNo: 4,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd8',
+            to: 'd7',
+          },
+        },
+        {
+          moveNo: 5,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd5',
+            to: 'd6',
+          },
+        },
+        {
+          moveNo: 6,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd7',
+            to: 'f5',
+          },
+        },
+        {
+          moveNo: 7,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd6',
+            to: 'd7',
+          },
+        },
+        {
+          moveNo: 8,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'f5',
+            to: 'f4',
+          },
+        },
+        {
+          moveNo: 9,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd7',
+            to: 'd8',
+          },
+          promotion: PieceType.Queen,
+        },
+        {
+          moveNo: 10,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'f4',
+            to: 'f5',
+          },
+        },
+        {
+          moveNo: 11,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd2',
+            to: 'e2',
+          },
+        },
+      ] as ChessPly[],
+      pgnSucess,
+    );
+    const setContextMock = mockAppModeContext(graphicalState);
+    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    act(() => {
+      const pgnResult = graphicalStateHook.current?.[1].generatePgn(
+        PlayerColour.Black,
+      );
+      if (pgnResult) {
+        expect(isError(pgnResult)).toBe(false);
+        if (!isError(pgnResult)) {
+          expect(pgnResult.data).toStrictEqual(
+            stripStarFromPgn(pgnSucess) +
+              '1. e4 d5 2. exd5 Qd7 3. d6 Qf5 4. d7+ Qf5f4 5. d8=Q+ Qf4f5 6. d2e2# 0-1',
+          );
+        }
+      }
+    });
+  });
+
+  test('Generate pgn with error', () => {
+    const graphicalState = generateGraphicalRecordingState(
+      [
+        {
+          moveNo: 1,
+          startingFen: chessEngine.startingFen(),
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e2',
+            to: 'e4',
+          },
+        },
+        {
+          moveNo: 2,
+          startingFen:
+            'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd7',
+            to: 'd5',
+          },
+        },
+        {
+          moveNo: 3,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.SkipPly,
+        },
+        {
+          moveNo: 4,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd8',
+            to: 'd7',
+          },
+        },
+        {
+          moveNo: 5,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd5',
+            to: 'd6',
+          },
+        },
+        {
+          moveNo: 6,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.SkipPly,
+        },
+        {
+          moveNo: 7,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd6',
+            to: 'd7',
+          },
+        },
+        {
+          moveNo: 8,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'f5',
+            to: 'f4',
+          },
+        },
+        {
+          moveNo: 9,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd7',
+            to: 'd8',
+          },
+          promotion: PieceType.Queen,
+        },
+        {
+          moveNo: 10,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.Black,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'f4',
+            to: 'f5',
+          },
+        },
+        {
+          moveNo: 11,
+          startingFen:
+            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'd2',
+            to: 'e2',
+          },
+        },
+      ] as ChessPly[],
+      pgnSucess,
+    );
+    const setContextMock = mockAppModeContext(graphicalState);
+
+    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    act(() => {
+      const pgnResult = graphicalStateHook.current?.[1].generatePgn(
+        PlayerColour.Black,
+      );
+      if (pgnResult) {
+        expect(isError(pgnResult)).toBe(true);
+      }
+    });
+  });
+});
+
+describe('goToResultDisplayFromGraphicalRecording', () => {
+  test('White win', () => {
+    const graphicalState = generateGraphicalRecordingState([
+      {
+        moveNo: 1,
+        startingFen: chessEngine.startingFen(),
+        player: PlayerColour.White,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'e2',
+          to: 'e4',
+        },
+      },
+      {
+        moveNo: 2,
+        startingFen:
+          'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
+        player: PlayerColour.Black,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'd7',
+          to: 'd5',
+        },
+      },
+      {
+        moveNo: 3,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.White,
+        type: PlyTypes.SkipPly,
+      },
+      {
+        moveNo: 4,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.Black,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'd8',
+          to: 'd7',
+        },
+      },
+      {
+        moveNo: 5,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.White,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'd5',
+          to: 'd6',
+        },
+      },
+      {
+        moveNo: 6,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.Black,
+        type: PlyTypes.SkipPly,
+      },
+      {
+        moveNo: 7,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.White,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'd6',
+          to: 'd7',
+        },
+      },
+      {
+        moveNo: 8,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.Black,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'f5',
+          to: 'f4',
+        },
+      },
+      {
+        moveNo: 9,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.White,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'd7',
+          to: 'd8',
+        },
+        promotion: PieceType.Queen,
+      },
+      {
+        moveNo: 10,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.Black,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'f4',
+          to: 'f5',
+        },
+      },
+      {
+        moveNo: 11,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.White,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'd2',
+          to: 'e2',
+        },
+      },
+    ] as ChessPly[]);
+    graphicalState.pairing.pgn = pgnSucess;
+
+    const setContextMock = mockAppModeContext(graphicalState);
+    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const result = {
+      winner: PlayerColour.White,
+      signature: 'base 64 image',
+      gamePgn: 'game pgn',
+    };
+
+    act(() => {
+      graphicalStateHook.current?.[1].goToEndGame(result);
+      expect(setContextMock).toHaveBeenCalledTimes(1);
+      expect(setContextMock).toHaveBeenCalledWith({
+        mode: AppMode.ResultDisplay,
+        result,
+        pairing: graphicalState.pairing,
+      });
+    });
+  });
+
+  test('Black win', () => {
+    const graphicalState = generateGraphicalRecordingState([
+      {
+        moveNo: 1,
+        startingFen: chessEngine.startingFen(),
+        player: PlayerColour.White,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'e2',
+          to: 'e4',
+        },
+      },
+      {
+        moveNo: 2,
+        startingFen:
+          'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
+        player: PlayerColour.Black,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'd7',
+          to: 'd5',
+        },
+      },
+      {
+        moveNo: 3,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.White,
+        type: PlyTypes.SkipPly,
+      },
+      {
+        moveNo: 4,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.Black,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'd8',
+          to: 'd7',
+        },
+      },
+      {
+        moveNo: 5,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.White,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'd5',
+          to: 'd6',
+        },
+      },
+      {
+        moveNo: 6,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.Black,
+        type: PlyTypes.SkipPly,
+      },
+      {
+        moveNo: 7,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.White,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'd6',
+          to: 'd7',
+        },
+      },
+      {
+        moveNo: 8,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.Black,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'f5',
+          to: 'f4',
+        },
+      },
+      {
+        moveNo: 9,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.White,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'd7',
+          to: 'd8',
+        },
+        promotion: PieceType.Queen,
+      },
+      {
+        moveNo: 10,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.Black,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'f4',
+          to: 'f5',
+        },
+      },
+      {
+        moveNo: 11,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.White,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'd2',
+          to: 'e2',
+        },
+      },
+    ] as ChessPly[]);
+    graphicalState.pairing.pgn = pgnSucess;
+
+    const setContextMock = mockAppModeContext(graphicalState);
+    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const result = {
+      winner: PlayerColour.Black,
+      signature: 'base 64 image',
+      gamePgn: 'game pgn',
+    };
+
+    act(() => {
+      graphicalStateHook.current?.[1].goToEndGame(result);
+      expect(setContextMock).toHaveBeenCalledTimes(1);
+      expect(setContextMock).toHaveBeenCalledWith({
+        mode: AppMode.ResultDisplay,
+        result,
+        pairing: graphicalState.pairing,
+      });
+    });
+  });
+
+  test('Draw', () => {
+    const graphicalState = generateGraphicalRecordingState([
+      {
+        moveNo: 1,
+        startingFen: chessEngine.startingFen(),
+        player: PlayerColour.White,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'e2',
+          to: 'e4',
+        },
+      },
+      {
+        moveNo: 2,
+        startingFen:
+          'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
+        player: PlayerColour.Black,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'd7',
+          to: 'd5',
+        },
+      },
+      {
+        moveNo: 3,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.White,
+        type: PlyTypes.SkipPly,
+      },
+      {
+        moveNo: 4,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.Black,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'd8',
+          to: 'd7',
+        },
+      },
+      {
+        moveNo: 5,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.White,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'd5',
+          to: 'd6',
+        },
+      },
+      {
+        moveNo: 6,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.Black,
+        type: PlyTypes.SkipPly,
+      },
+      {
+        moveNo: 7,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.White,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'd6',
+          to: 'd7',
+        },
+      },
+      {
+        moveNo: 8,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.Black,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'f5',
+          to: 'f4',
+        },
+      },
+      {
+        moveNo: 9,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.White,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'd7',
+          to: 'd8',
+        },
+        promotion: PieceType.Queen,
+      },
+      {
+        moveNo: 10,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.Black,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'f4',
+          to: 'f5',
+        },
+      },
+      {
+        moveNo: 11,
+        startingFen:
+          'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
+        player: PlayerColour.White,
+        type: PlyTypes.MovePly,
+        move: {
+          from: 'd2',
+          to: 'e2',
+        },
+      },
+    ] as ChessPly[]);
+    graphicalState.pairing.pgn = pgnSucess;
+
+    const setContextMock = mockAppModeContext(graphicalState);
+    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const result = {
+      winner: null,
+      signature: 'base 64 image',
+      gamePgn: 'game pgn',
+    };
+
+    act(() => {
+      graphicalStateHook.current?.[1].goToEndGame(result);
+      expect(setContextMock).toHaveBeenCalledTimes(1);
+      expect(setContextMock).toHaveBeenCalledWith({
+        mode: AppMode.ResultDisplay,
+        result,
+        pairing: graphicalState.pairing,
       });
     });
   });
