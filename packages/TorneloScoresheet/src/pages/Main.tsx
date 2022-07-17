@@ -19,8 +19,14 @@ const Main: React.FC = () => {
       return <TablePairing />;
     case AppMode.GraphicalRecording:
       return <GraphicalRecording />;
-    case AppMode.ArbiterGame:
-      return <PrimaryText label="Arbiter Game is unsupported app mode" />;
+    case AppMode.ArbiterGraphicalRecording:
+      return (
+        <PrimaryText label="Arbiter Graphical Recording is unsupported app mode" />
+      );
+    case AppMode.ArbiterTablePairing:
+      return (
+        <PrimaryText label="Arbiter Table Pairing is unsupported app mode" />
+      );
     default:
       return <PrimaryText label="Unsupported app mode" />;
   }

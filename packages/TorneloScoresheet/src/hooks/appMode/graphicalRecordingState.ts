@@ -157,7 +157,11 @@ export const makeUseGraphicalRecordingState =
     const goToTextInputFunc = (): void => {};
     const goToArbiterModeFunc = (): void => {
       setAppModeState({
-        mode: AppMode.ArbiterGame,
+        mode: AppMode.ArbiterGraphicalRecording,
+        pairing: appModeState.pairing,
+        moveHistory: appModeState.moveHistory,
+        board: appModeState.board,
+        currentPlayer: appModeState.currentPlayer,
       });
     };
     const moveFunc = (
