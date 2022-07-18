@@ -113,6 +113,11 @@ const Toolbar: React.FC = () => {
           text={'ARB'}
           invertColours={true}
           notShown={arbiterModeVisibility}></ActionButton>
+        <View
+          style={[
+            styles.placeHolderButton,
+            { display: arbiterModeVisibility ? undefined : 'none' },
+          ]}></View>
         <View style={styles.logo}>
           <Image
             style={styles.logoImage}

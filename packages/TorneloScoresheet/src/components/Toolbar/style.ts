@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native';
-
+import { ButtonHeight } from '../ActionButton/ActionButton';
 const TOP_PADDING = 10;
 const BOTTOM_PADDING = 10;
 const LOGO_HEIGHT = 44;
 
-export const TOOLBAR_HEIGHT = TOP_PADDING + BOTTOM_PADDING + LOGO_HEIGHT;
+export const TOOLBAR_HEIGHT =
+  TOP_PADDING + BOTTOM_PADDING + LOGO_HEIGHT + ButtonHeight.SINGLE;
 
 export const styles = StyleSheet.create({
   container: {
@@ -25,5 +26,10 @@ export const styles = StyleSheet.create({
     width: 40,
     height: LOGO_HEIGHT,
     marginRight: 24,
+    marginLeft: -24,
+  },
+  placeHolderButton: {
+    height: 70,
+    width: 70,
   },
 });
