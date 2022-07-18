@@ -69,29 +69,27 @@ const Toolbar: React.FC = () => {
   const arbiterModeVisibility = arbiterModeDisplay[appModeState.mode];
   const currentTextColour = textColour(currentColour);
 
-  const graphicalRecordingState = useGraphicalRecordingState();
-  const goToArbiterGameFromGraphicalRecording =
-    graphicalRecordingState?.[1]?.goToArbiterGameMode;
+  const voidReturn: () => void = () => {
+    return;
+  };
 
-  const tablePairingState = useTablePairingState();
-  const goToArbiterGameFromTablePairing =
-    tablePairingState?.[1]?.goToArbiterGameMode;
+  const appModeArbiterTransition: Record<AppMode, () => void> = {
+    [AppMode.ArbiterGraphicalRecording]: voidReturn,
+    [AppMode.ArbiterTablePairing]: voidReturn,
+    [AppMode.EnterPgn]: voidReturn,
+    [AppMode.GraphicalRecording]:
+      useGraphicalRecordingState()?.[1].goToArbiterGameMode ?? voidReturn,
+    [AppMode.PariringSelection]: voidReturn,
+    [AppMode.ResultDisplay]: voidReturn,
+    [AppMode.TablePairing]:
+      useTablePairingState()?.[1].goToArbiterGameMode ?? voidReturn,
+  };
 
   const handleVerify = () => {
     setShowArbiterSheet(false);
-    switch (appModeState.mode) {
-      case AppMode.GraphicalRecording:
-        if (!goToArbiterGameFromGraphicalRecording) {
-          return;
-        }
-        return goToArbiterGameFromGraphicalRecording();
-      case AppMode.TablePairing:
-        if (!goToArbiterGameFromTablePairing) {
-          return;
-        }
-        return goToArbiterGameFromTablePairing();
-    }
+    appModeArbiterTransition[appModeState.mode]();
   };
+
   return (
     <>
       <StatusBar barStyle={statusBarStyleForColor(currentColour)} />

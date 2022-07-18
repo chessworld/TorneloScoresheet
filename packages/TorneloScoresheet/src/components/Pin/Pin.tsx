@@ -59,7 +59,7 @@ const Pin: React.FC<PinProps> = ({ onPress }) => {
         />
       </SafeAreaView>
       <View style={styles.verifyButtonArea}>
-        <PrimaryButton onPress={() => onPress()} label="Verify" />
+        <PrimaryButton onPress={onPress} label="Verify" />
       </View>
     </View>
   );
