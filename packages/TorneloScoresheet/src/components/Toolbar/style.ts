@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
-const TOP_PADDING = 34;
-const BOTTOM_PADDING = 20;
+const TOP_PADDING = 10;
+const BOTTOM_PADDING = 10;
 const LOGO_HEIGHT = 44;
 
 export const TOOLBAR_HEIGHT = TOP_PADDING + BOTTOM_PADDING + LOGO_HEIGHT;
