@@ -28,6 +28,10 @@ const Main: React.FC = () => {
       return (
         <PrimaryText label="Arbiter Table Pairing is unsupported app mode" />
       );
+    case AppMode.ArbiterResultDisplay:
+      return (
+        <PrimaryText label="Arbiter Result Display is unsupported app mode" />
+      );
     case AppMode.ResultDisplay:
       return <ResultDisplay />;
     default:

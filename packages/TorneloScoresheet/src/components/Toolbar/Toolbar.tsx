@@ -3,6 +3,7 @@ import { Image, StatusBar, View } from 'react-native';
 import {
   useAppModeState,
   useGraphicalRecordingState,
+  useResultDisplayState,
   useTablePairingState,
 } from '../../context/AppModeStateContext';
 import {
@@ -36,6 +37,7 @@ const colourForMode: Record<AppMode, ColourType> = {
   [AppMode.PariringSelection]: colours.tertiary,
   [AppMode.ArbiterGraphicalRecording]: colours.tertiary,
   [AppMode.ArbiterTablePairing]: colours.tertiary,
+  [AppMode.ArbiterResultDisplay]: colours.tertiary,
   [AppMode.TablePairing]: colours.primary,
   [AppMode.GraphicalRecording]: colours.primary,
   [AppMode.ResultDisplay]: colours.primary,
@@ -49,6 +51,7 @@ const arbiterModeDisplay: Record<AppMode, boolean> = {
   [AppMode.TablePairing]: false,
   [AppMode.GraphicalRecording]: false,
   [AppMode.ResultDisplay]: false,
+  [AppMode.ArbiterResultDisplay]: true,
 };
 
 const backgroundColorStyle = (backgroundColor: string) => ({
@@ -76,11 +79,13 @@ const Toolbar: React.FC = () => {
   const appModeArbiterTransition: Record<AppMode, () => void> = {
     [AppMode.ArbiterGraphicalRecording]: voidReturn,
     [AppMode.ArbiterTablePairing]: voidReturn,
+    [AppMode.ArbiterResultDisplay]: voidReturn,
     [AppMode.EnterPgn]: voidReturn,
     [AppMode.GraphicalRecording]:
       useGraphicalRecordingState()?.[1].goToArbiterGameMode ?? voidReturn,
     [AppMode.PariringSelection]: voidReturn,
-    [AppMode.ResultDisplay]: voidReturn,
+    [AppMode.ResultDisplay]:
+      useResultDisplayState()?.[1].goToArbiterMode ?? voidReturn,
     [AppMode.TablePairing]:
       useTablePairingState()?.[1].goToArbiterGameMode ?? voidReturn,
   };

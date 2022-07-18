@@ -1,23 +1,35 @@
-import { useContext } from "react";
-import { AppMode, AppModeState, ResultDisplayMode } from "../../types/AppModeState";
+import { useContext } from 'react';
+import {
+  AppMode,
+  AppModeState,
+  ResultDisplayMode,
+} from '../../types/AppModeState';
 
 type ResultDisplayStateHookType = [
-    ResultDisplayMode,
-    {
-    },
-  ];
+  ResultDisplayMode,
+  {
+    goToArbiterMode: () => void;
+  },
+];
 
-  export const makeUseResultDisplayState =
+export const makeUseResultDisplayState =
   (
     context: React.Context<
       [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
     >,
   ): (() => ResultDisplayStateHookType | null) =>
   (): ResultDisplayStateHookType | null => {
-    const [appModeState] = useContext(context);
+    const [appModeState, setAppModeState] = useContext(context);
     if (appModeState.mode !== AppMode.ResultDisplay) {
       return null;
     }
 
-    return [appModeState, {}];
+    const goToArbiterModeFunc = () => {
+      setAppModeState({
+        ...appModeState,
+        mode: AppMode.ArbiterResultDisplay,
+      });
+    };
+
+    return [appModeState, { goToArbiterMode: goToArbiterModeFunc }];
   };
