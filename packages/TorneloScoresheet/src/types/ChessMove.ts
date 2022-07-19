@@ -41,6 +41,7 @@ export type PlyInfo = {
   startingFen: string;
   player: PlayerColour;
   type: PlyTypes;
+  drawOffer: boolean;
 };
 
 // A move ply is a recorded ply that involved

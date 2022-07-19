@@ -21,13 +21,14 @@ export const styles = StyleSheet.create({
     borderTopColor: colours.darkGrey,
     borderTopWidth: 2,
     width: '100%',
-    paddingVertical: 12,
   },
   blackPlyContainer: {
     borderTopColor: colours.darkGrey,
     borderTopWidth: 2,
     width: '100%',
-    paddingVertical: 12,
     minHeight: 50,
+  },
+  containerIcon: {
+    alignItems: 'flex-end',
   },
 });

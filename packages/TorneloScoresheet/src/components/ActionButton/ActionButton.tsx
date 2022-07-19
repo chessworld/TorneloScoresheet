@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { Color, SvgProps } from 'react-native-svg';
+import { SvgProps } from 'react-native-svg';
 import { colours } from '../../style/colour';
 import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import RoundedView from '../RoundedView/RoundedView';
