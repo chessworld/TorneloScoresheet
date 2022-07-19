@@ -1,5 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
+import Icon from 'react-native-vector-icons/Entypo';
 import { colours } from '../../style/colour';
 import { ChessPly, Move, PlyTypes } from '../../types/ChessMove';
 import PrimaryText, { Align, FontWeight } from '../PrimaryText/PrimaryText';
@@ -17,16 +18,32 @@ const MoveCard: React.FC<MoveCardProps> = ({ move }) => {
           # {move.white.moveNo}
         </PrimaryText>
       </View>
-      <View style={styles.whitePlyContainer}>
+      <View
+        style={[
+          styles.whitePlyContainer,
+          { paddingVertical: move.white.drawOffer ? 0 : 12 },
+        ]}>
+        <View style={styles.containerIcon}>
+          {move.white.drawOffer && (
+            <Icon name={'creative-commons-noderivs'} size={20} color="black" />
+          )}
+        </View>
         <PrimaryText size={20} align={Align.Center} weight={FontWeight.Bold}>
           {moveString(move.white)}
         </PrimaryText>
       </View>
+
       <View
         style={[
           styles.blackPlyContainer,
+          { paddingVertical: move.black && move.black.drawOffer ? 2 : 13 },
           blackPlyBackgroundColour(move.black),
         ]}>
+        <View style={styles.containerIcon}>
+          {move.black && move.black.drawOffer && (
+            <Icon name={'creative-commons-noderivs'} size={20} color="black" />
+          )}
+        </View>
         {move.black && (
           <PrimaryText size={20} align={Align.Center} weight={FontWeight.Bold}>
             {moveString(move.black)}

@@ -5,11 +5,7 @@ import {
   AppModeState,
   GraphicalRecordingMode,
 } from '../../types/AppModeState';
-import {
-  ChessGameInfo,
-  ChessGameResult,
-  PlayerColour,
-} from '../../types/ChessGameInfo';
+import { ChessGameResult, PlayerColour } from '../../types/ChessGameInfo';
 import {
   ChessPly,
   MovePly,
@@ -33,6 +29,7 @@ type GraphicalRecordingStateHookType = [
     isOtherPlayersPiece: (move: MoveSquares) => boolean;
     skipTurnAndProcessMove: (move: MoveSquares, promotion?: PieceType) => void;
     generatePgn: (winner: PlayerColour | null) => Result<string>;
+    toggleDraw: (drawIndex: number) => void;
   },
 ];
 
@@ -78,6 +75,7 @@ const skipPlayerTurn = (moveHistory: ChessPly[]): ChessPly[] => {
     moveNo: Math.floor(moveHistory.length / 2) + 1,
     player:
       moveHistory.length % 2 === 0 ? PlayerColour.White : PlayerColour.Black,
+    drawOffer: false,
   };
   return [...moveHistory, nextPly];
 };
@@ -103,6 +101,7 @@ const processPlayerMove = (
     player:
       moveHistory.length % 2 === 0 ? PlayerColour.White : PlayerColour.Black,
     promotion,
+    drawOffer: false,
   };
 
   // return history array or null if move is not legal
@@ -208,6 +207,22 @@ export const makeUseGraphicalRecordingState =
       );
     };
 
+    const toggleDrawFunc = (drawIndex: number) => {
+      setAppModeState(graphicalRecordingState => {
+        // Do nothing if we aren't in graphical recording mode
+        if (graphicalRecordingState.mode !== AppMode.GraphicalRecording) {
+          return graphicalRecordingState;
+        }
+        // Otherwise, update the last move
+        return {
+          ...graphicalRecordingState,
+          moveHistory: graphicalRecordingState.moveHistory.map((el, index) =>
+            index === drawIndex ? { ...el, drawOffer: !el.drawOffer } : el,
+          ),
+        };
+      });
+    };
+
     return [
       appModeState,
       {
@@ -221,6 +236,7 @@ export const makeUseGraphicalRecordingState =
         isOtherPlayersPiece: isOtherPlayersPieceFunc,
         skipTurnAndProcessMove: skipTurnAndProcessMoveFunc,
         generatePgn: generatePgnFunc,
+        toggleDraw: toggleDrawFunc,
       },
     ];
   };
