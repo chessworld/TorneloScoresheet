@@ -30,6 +30,7 @@ import { fullName } from '../../util/player';
 import Signature from '../../components/Signature/Signature';
 import { isError } from '../../types/Result';
 import { useError } from '../../context/ErrorContext';
+import PrimaryText from '../../components/PrimaryText/PrimaryText';
 
 const GraphicalRecording: React.FC = () => {
   // app mode hook unpacking
@@ -316,12 +317,10 @@ const GraphicalRecording: React.FC = () => {
             winnerName={(selectedWinner && fullName(selectedWinner)) ?? null}
             onConfirm={handleConfirmWinner}
           />
-
           {/*----- body ----- */}
-          {/* <View style={{ height: 100, marginLeft: 10 }}>
+          <View style={{ height: 100, marginLeft: 10 }}>
             <PrimaryText label="Placeholder" size={30} />
-          </View> */}
-
+          </View>
           <View style={styles.boardButtonContainer}>
             <ActionBar actionButtons={actionButtons} />
             <ChessBoard
