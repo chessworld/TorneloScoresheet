@@ -306,7 +306,7 @@ const GraphicalRecording: React.FC = () => {
             onCancel={handleCancelSelection}
           />
           <OptionSheet
-            message={'Confirm Toggle Draw'}
+            message={'Confirm Toggle Draw Offer'}
             options={toggleDrawOptions}
             visible={showToggleDrawOffer}
             onCancel={handleCancelToggleDraw}
