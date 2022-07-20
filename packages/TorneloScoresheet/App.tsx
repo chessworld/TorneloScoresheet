@@ -17,7 +17,7 @@ const App = () => {
   };
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView>
       <ErrorContextProvider>
         <AppModeStateContextProvider>
           <Toolbar />

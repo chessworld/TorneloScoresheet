@@ -65,7 +65,8 @@ const ResultDisplay: React.FC = () => {
             <PrimaryButton
               label="Email Game"
               onPress={handleEmailGame}
-              style={styles.emailButton}></PrimaryButton>
+              style={styles.emailButton}
+            />
           </View>
         </View>
       )}

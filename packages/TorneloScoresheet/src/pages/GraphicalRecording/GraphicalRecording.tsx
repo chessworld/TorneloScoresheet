@@ -299,7 +299,7 @@ const GraphicalRecording: React.FC = () => {
             onConfirm={handleConfirmWinner}
           />
           {/*----- body ----- */}
-          <View style={{ height: 100, marginLeft: 10 }}>
+          <View style={styles.placeholder}>
             <PrimaryText label="Placeholder" size={30} />
           </View>
           <View style={styles.boardButtonContainer}>

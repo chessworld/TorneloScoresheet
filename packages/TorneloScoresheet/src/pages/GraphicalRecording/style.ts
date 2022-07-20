@@ -12,4 +12,5 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
   },
+  placeholder: { height: 100, marginLeft: 10 },
 });
