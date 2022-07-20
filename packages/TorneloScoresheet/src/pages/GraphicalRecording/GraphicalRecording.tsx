@@ -2,10 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import ActionBar from '../../components/ActionBar/ActionBar';
-import {
-  ActionButtonProps,
-  ButtonHeight,
-} from '../../components/ActionButton/ActionButton';
+import { ActionButtonProps } from '../../components/ActionButton/ActionButton';
 import ChessBoard from '../../components/ChessBoard/ChessBoard';
 import MoveCard from '../../components/MoveCard/MoveCard';
 import OptionSheet from '../../components/OptionSheet/OptionSheet';
@@ -28,8 +25,9 @@ import { PieceType, MoveSquares, ChessPly, Move } from '../../types/ChessMove';
 import { styles } from './style';
 import { fullName } from '../../util/player';
 import Signature from '../../components/Signature/Signature';
-import { isError } from '../../types/Result';
+import { colours } from '../../style/colour';
 import { useError } from '../../context/ErrorContext';
+import { isError } from '../../types/Result';
 import PrimaryText from '../../components/PrimaryText/PrimaryText';
 
 const GraphicalRecording: React.FC = () => {
@@ -76,24 +74,22 @@ const GraphicalRecording: React.FC = () => {
       onPress: () => {
         setFlipBoard(!flipBoard);
       },
-      Icon: ICON_FLIP,
-      buttonHeight: ButtonHeight.SINGLE,
+      icon: <ICON_FLIP height={40} fill={colours.white} />,
     },
     {
       text: 'end',
       onPress: () => {
         setShowEndGame(true);
       },
-      Icon: ICON_HASTAG,
-      buttonHeight: ButtonHeight.DOUBLE,
+      icon: <ICON_HASTAG height={40} fill={colours.white} />,
+      style: { height: 136 },
     },
     {
       text: 'time',
       onPress: () => {
         return;
       },
-      Icon: ICON_CLOCK,
-      buttonHeight: ButtonHeight.SINGLE,
+      icon: <ICON_CLOCK height={40} fill={colours.white} />,
     },
     {
       text: 'draw',
@@ -105,8 +101,7 @@ const GraphicalRecording: React.FC = () => {
         // Currently it is the most recent move.
         handleToggleDraw(graphicalRecordingMode.moveHistory.length - 1);
       },
-      Icon: ICON_HALF,
-      buttonHeight: ButtonHeight.SINGLE,
+      icon: <ICON_HALF height={40} fill={colours.white} />,
     },
     {
       text: 'skip',
@@ -116,8 +111,8 @@ const GraphicalRecording: React.FC = () => {
         }
         skipTurn();
       },
-      Icon: ICON_SKIP,
-      buttonHeight: ButtonHeight.DOUBLE,
+      icon: <ICON_SKIP height={40} fill={colours.white} />,
+      style: { height: 136 },
     },
     {
       text: 'undo',
@@ -127,8 +122,7 @@ const GraphicalRecording: React.FC = () => {
         }
         undoLastMove();
       },
-      Icon: ICON_UNDO,
-      buttonHeight: ButtonHeight.SINGLE,
+      icon: <ICON_UNDO height={40} fill={colours.white} />,
     },
   ];
 

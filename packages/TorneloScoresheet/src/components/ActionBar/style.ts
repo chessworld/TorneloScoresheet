@@ -5,4 +5,7 @@ export const styles = StyleSheet.create({
     display: 'flex',
     marginHorizontal: 10,
   },
+  actionButtonsGutter: {
+    marginVertical: 4,
+  },
 });
