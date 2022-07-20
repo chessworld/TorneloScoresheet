@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     backgroundColor: colours.primary,
     alignItems: 'center',
     paddingVertical: 10,
-    marginVertical: 7,
+    justifyContent: 'center',
   },
   buttonText: {
     textTransform: 'uppercase',
@@ -17,7 +17,6 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   iconContainer: {
-    height: '70%',
     display: 'flex',
     justifyContent: 'center',
   },

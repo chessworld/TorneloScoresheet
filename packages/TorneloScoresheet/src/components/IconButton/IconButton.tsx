@@ -1,5 +1,6 @@
 import React from 'react';
-import { Pressable, StyleProp, TextStyle } from 'react-native';
+import { StyleProp, TextStyle } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 /**
@@ -24,9 +25,9 @@ const IconButton: React.FC<IconButtonProps> = ({
   size,
 }) => {
   return (
-    <Pressable onPress={onPress}>
+    <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
       <Icon style={style} size={size ?? 40} color={colour} name={icon} />
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 

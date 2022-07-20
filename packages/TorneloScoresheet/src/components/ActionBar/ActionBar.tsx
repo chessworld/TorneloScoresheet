@@ -10,13 +10,11 @@ export type ActionBarProps = {
 const ActionBar: React.FC<ActionBarProps> = ({ actionButtons }) => {
   return (
     <View style={styles.actionBarContainer}>
-      {actionButtons.map(button => (
+      {actionButtons.map((button, index) => (
         <ActionButton
-          onPress={button.onPress}
-          Icon={button.Icon}
-          buttonHeight={button.buttonHeight}
-          text={button.text}
-          key={button.text}
+          {...button}
+          style={[button.style, styles.actionButtonsGutter]}
+          key={index}
         />
       ))}
     </View>

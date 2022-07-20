@@ -5,11 +5,7 @@ import {
   AppModeState,
   GraphicalRecordingMode,
 } from '../../types/AppModeState';
-import {
-  ChessGameInfo,
-  ChessGameResult,
-  PlayerColour,
-} from '../../types/ChessGameInfo';
+import { ChessGameResult, PlayerColour } from '../../types/ChessGameInfo';
 import {
   ChessPly,
   MovePly,
@@ -113,15 +109,6 @@ const processPlayerMove = (
     null
     ? null
     : [...moveHistory, nextPly];
-};
-
-export const generatePgnFromHistory = (
-  _pairing: ChessGameInfo,
-  _history: ChessPly[],
-  _result: ChessGameResult,
-): string => {
-  // TODO: Implement pgn generation
-  return '';
 };
 
 export const makeUseGraphicalRecordingState =

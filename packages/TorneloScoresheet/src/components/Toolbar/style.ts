@@ -1,11 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { ButtonHeight } from '../ActionButton/ActionButton';
-const TOP_PADDING = 10;
-const BOTTOM_PADDING = 10;
+const TOP_PADDING = 30;
+const BOTTOM_PADDING = 14;
 const LOGO_HEIGHT = 44;
 
-export const TOOLBAR_HEIGHT =
-  TOP_PADDING + BOTTOM_PADDING + LOGO_HEIGHT + ButtonHeight.SINGLE;
+export const TOOLBAR_HEIGHT = TOP_PADDING + LOGO_HEIGHT + BOTTOM_PADDING;
 
 export const styles = StyleSheet.create({
   container: {
@@ -17,10 +15,12 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    height: TOOLBAR_HEIGHT,
   },
   logo: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
   },
   logoImage: {
     width: 40,
@@ -29,7 +29,16 @@ export const styles = StyleSheet.create({
     marginLeft: -24,
   },
   placeHolderButton: {
-    height: 70,
-    width: 70,
+    height: 40,
+    width: 40,
   },
+  enterPinText: { marginTop: 40 },
+  arbiterModeButton: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginLeft: 10,
+    marginRight: -10,
+  },
+  logoTitle: { lineHeight: LOGO_HEIGHT },
 });

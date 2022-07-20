@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, StatusBar, View } from 'react-native';
+import { Image, StatusBar, TouchableOpacity, View } from 'react-native';
 import {
   useAppModeState,
   useGraphicalRecordingState,
@@ -23,7 +23,6 @@ import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import Sheet from '../Sheet/Sheet';
 import { styles } from './style';
 import Pin from '../Pin/Pin';
-import ActionButton, { ButtonHeight } from '../ActionButton/ActionButton';
 
 /**
  * The App's toolbar.
@@ -69,7 +68,7 @@ const Toolbar: React.FC = () => {
     setShowArbiterSheet(a => !a);
   };
   const currentColour = colourForMode[appModeState.mode];
-  const arbiterModeVisibility = arbiterModeDisplay[appModeState.mode];
+  const showArbiterModeButton = !arbiterModeDisplay[appModeState.mode];
   const currentTextColour = textColour(currentColour);
 
   const voidReturn: () => void = () => {
@@ -105,24 +104,27 @@ const Toolbar: React.FC = () => {
         <PrimaryText>Put help here!</PrimaryText>
       </Sheet>
       <Sheet
+        title="Arbiter Mode"
         dismiss={() => setShowArbiterSheet(false)}
         visible={showArbiterSheet}>
-        <PrimaryText size={40} weight={FontWeight.Bold} label={'Enter Pin'} />
+        <PrimaryText
+          style={styles.enterPinText}
+          size={40}
+          weight={FontWeight.Bold}
+          label={'Enter Pin'}
+        />
         <Pin onPress={handleVerify} />
       </Sheet>
       <View style={[styles.container, backgroundColorStyle(currentColour)]}>
-        <ActionButton
-          Icon={ICON_GEAR}
-          onPress={handleArbiterPress}
-          buttonHeight={ButtonHeight.SINGLE}
-          text={'ARB'}
-          invertColours={true}
-          notShown={arbiterModeVisibility}></ActionButton>
-        <View
-          style={[
-            styles.placeHolderButton,
-            { display: arbiterModeVisibility ? undefined : 'none' },
-          ]}></View>
+        {showArbiterModeButton ? (
+          <IconButton
+            icon="lock"
+            onPress={handleArbiterPress}
+            colour={currentTextColour}
+          />
+        ) : (
+          <View style={[styles.placeHolderButton]} />
+        )}
         <View style={styles.logo}>
           <Image
             style={styles.logoImage}
@@ -137,6 +139,7 @@ const Toolbar: React.FC = () => {
             size={34}
             weight={FontWeight.Bold}
             label="Tornelo"
+            style={{ lineHeight: 44 }}
           />
         </View>
         <IconButton
