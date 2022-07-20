@@ -66,7 +66,7 @@ const moveString = (ply: ChessPly): string => {
 
 const blackPlyBackgroundColour = (ply: ChessPly | undefined) => ({
   backgroundColor: ply ? colours.darkBlue : colours.tertiary,
-  paddingBottom: 15,
+  paddingBottom: ply ? 0 : 5,
 });
 
 export default MoveCard;
