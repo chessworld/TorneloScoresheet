@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { colours } from '../../style/colour';
 
 export const styles = StyleSheet.create({
   title: {

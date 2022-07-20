@@ -56,13 +56,15 @@ const Signature: React.FC<SignatureProps> = ({
             onPress={() => {
               sign.current.resetImage();
             }}
-            label={'Reset'}></PrimaryButton>
+            label={'Reset'}
+          />
           <PrimaryButton
             style={styles.buttonStyle}
             onPress={async () => {
               sign.current.saveImage();
             }}
-            label={'Confirm'}></PrimaryButton>
+            label={'Confirm'}
+          />
         </View>
       </Sheet>
     </>
