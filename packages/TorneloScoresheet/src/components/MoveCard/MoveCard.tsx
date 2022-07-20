@@ -21,11 +21,13 @@ const MoveCard: React.FC<MoveCardProps> = ({ move }) => {
       <View
         style={[
           styles.whitePlyContainer,
-          { paddingVertical: move.white.drawOffer ? 0 : 12 },
+          {
+            paddingTop: move.white.drawOffer ? 0 : 16,
+          },
         ]}>
         <View style={styles.containerIcon}>
           {move.white.drawOffer && (
-            <Icon name={'creative-commons-noderivs'} size={20} color="black" />
+            <Icon name={'creative-commons-noderivs'} size={15} color="black" />
           )}
         </View>
         <PrimaryText size={20} align={Align.Center} weight={FontWeight.Bold}>
@@ -36,12 +38,12 @@ const MoveCard: React.FC<MoveCardProps> = ({ move }) => {
       <View
         style={[
           styles.blackPlyContainer,
-          { paddingVertical: move.black && move.black.drawOffer ? 2 : 13 },
+          { paddingTop: move.black && move.black.drawOffer ? 0 : 16 },
           blackPlyBackgroundColour(move.black),
         ]}>
         <View style={styles.containerIcon}>
           {move.black && move.black.drawOffer && (
-            <Icon name={'creative-commons-noderivs'} size={20} color="black" />
+            <Icon name={'creative-commons-noderivs'} size={15} color="black" />
           )}
         </View>
         {move.black && (
@@ -64,6 +66,7 @@ const moveString = (ply: ChessPly): string => {
 
 const blackPlyBackgroundColour = (ply: ChessPly | undefined) => ({
   backgroundColor: ply ? colours.darkBlue : colours.tertiary,
+  paddingBottom: 15,
 });
 
 export default MoveCard;

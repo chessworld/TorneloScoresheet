@@ -14,19 +14,21 @@ export const styles = StyleSheet.create({
   moveNumberContainer: {
     backgroundColor: colours.primary,
     width: '100%',
-    paddingVertical: 12,
+    paddingVertical: 2,
   },
   whitePlyContainer: {
     backgroundColor: colours.lightBlue,
     borderTopColor: colours.darkGrey,
     borderTopWidth: 2,
     width: '100%',
+    paddingBottom: 16,
   },
   blackPlyContainer: {
     borderTopColor: colours.darkGrey,
     borderTopWidth: 2,
     width: '100%',
     minHeight: 50,
+    paddingBottom: 16,
   },
   containerIcon: {
     alignItems: 'flex-end',
