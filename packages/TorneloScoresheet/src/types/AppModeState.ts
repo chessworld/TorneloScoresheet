@@ -4,7 +4,7 @@ import { ChessPly } from './ChessMove';
 
 export enum AppMode {
   EnterPgn,
-  PariringSelection,
+  PairingSelection,
   TablePairing,
   GraphicalRecording,
   ResultDisplay,
@@ -16,7 +16,7 @@ export enum AppMode {
 export const isArbiterMode = (mode: AppMode): boolean =>
   ({
     [AppMode.EnterPgn]: true,
-    [AppMode.PariringSelection]: true,
+    [AppMode.PairingSelection]: true,
     [AppMode.TablePairing]: false,
     [AppMode.GraphicalRecording]: false,
     [AppMode.ResultDisplay]: false,
@@ -29,7 +29,7 @@ export type EnterPgnMode = {
   mode: AppMode.EnterPgn;
 };
 export type PairingSelectionMode = {
-  mode: AppMode.PariringSelection;
+  mode: AppMode.PairingSelection;
   games?: number;
   pairings?: ChessGameInfo[];
 };

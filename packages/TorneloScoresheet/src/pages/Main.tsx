@@ -14,7 +14,7 @@ const Main: React.FC = () => {
   switch (appMode.mode) {
     case AppMode.EnterPgn:
       return <EnterPgn />;
-    case AppMode.PariringSelection:
+    case AppMode.PairingSelection:
       return <PairingSelection />;
     case AppMode.TablePairing:
       return <TablePairing />;

@@ -23,7 +23,7 @@ export const makeUsePairingSelectionState =
   (): PairingSelectionStateHookType | null => {
     const [appModeState, setAppModeState] = useContext(context);
 
-    if (appModeState.mode !== AppMode.PariringSelection) {
+    if (appModeState.mode !== AppMode.PairingSelection) {
       return null;
     }
 

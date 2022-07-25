@@ -68,7 +68,7 @@ const makegoToTablePairingSelection =
       .map(({ data }) => data);
 
     setAppMode({
-      mode: AppMode.PariringSelection,
+      mode: AppMode.PairingSelection,
       games: pairings.length,
       pairings,
     });

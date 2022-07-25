@@ -59,7 +59,7 @@ const Toolbar: React.FC = () => {
     [AppMode.EnterPgn]: voidReturn,
     [AppMode.GraphicalRecording]:
       useGraphicalRecordingState()?.[1].goToArbiterGameMode ?? voidReturn,
-    [AppMode.PariringSelection]: voidReturn,
+    [AppMode.PairingSelection]: voidReturn,
     [AppMode.ResultDisplay]:
       useResultDisplayState()?.[1].goToArbiterMode ?? voidReturn,
     [AppMode.TablePairing]:
