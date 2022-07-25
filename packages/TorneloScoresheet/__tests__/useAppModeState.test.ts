@@ -693,7 +693,7 @@ describe('Generate pgn', () => {
       ] as ChessPly[],
       pgnSucess,
     );
-    const setContextMock = mockAppModeContext(graphicalState);
+    mockAppModeContext(graphicalState);
     const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
     act(() => {
       const pgnResult = graphicalStateHook.current?.[1].generatePgn(
@@ -830,7 +830,7 @@ describe('Generate pgn', () => {
       ] as ChessPly[],
       pgnSucess,
     );
-    const setContextMock = mockAppModeContext(graphicalState);
+    mockAppModeContext(graphicalState);
 
     const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
     act(() => {
@@ -1276,7 +1276,8 @@ describe('Toggle Draw Offer', () => {
     act(() => {
       graphicalStateHook.current?.[1].toggleDraw(0);
       expect(setContextMock).toHaveBeenCalledTimes(1);
-      expect(setContextMock).toHaveBeenCalledWith({
+      expect(typeof setContextMock.mock.calls[0][0]).toBe('function');
+      expect(setContextMock.mock.calls[0][0](graphicalState)).toEqual({
         ...graphicalState,
         moveHistory: [
           {
@@ -1311,7 +1312,8 @@ describe('Toggle Draw Offer', () => {
     act(() => {
       graphicalStateHook.current?.[1].toggleDraw(0);
       expect(setContextMock).toHaveBeenCalledTimes(1);
-      expect(setContextMock).toHaveBeenCalledWith({
+      expect(typeof setContextMock.mock.calls[0][0]).toBe('function');
+      expect(setContextMock.mock.calls[0][0](graphicalState)).toEqual({
         ...graphicalState,
         moveHistory: [
           {
@@ -1352,9 +1354,10 @@ describe('Toggle Draw Offer', () => {
     const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
 
     act(() => {
-      graphicalStateHook.current?.[1].undoLastMove();
+      graphicalStateHook.current?.[1].toggleDraw(1);
       expect(setContextMock).toHaveBeenCalledTimes(1);
-      expect(setContextMock).toHaveBeenCalledWith({
+      expect(typeof setContextMock.mock.calls[0][0]).toBe('function');
+      expect(setContextMock.mock.calls[0][0](graphicalState)).toEqual({
         ...graphicalState,
         board: chessEngine.fenToBoardPositions(
           'rnbqkbnr/pppppppp/8/R7/8/8/PPPPPPPP/1NBQKBNR b Kkq - 1 1',
@@ -1407,9 +1410,10 @@ describe('Toggle Draw Offer', () => {
     const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
 
     act(() => {
-      graphicalStateHook.current?.[1].undoLastMove();
+      graphicalStateHook.current?.[1].toggleDraw(1);
       expect(setContextMock).toHaveBeenCalledTimes(1);
-      expect(setContextMock).toHaveBeenCalledWith({
+      expect(typeof setContextMock.mock.calls[0][0]).toBe('function');
+      expect(setContextMock.mock.calls[0][0](graphicalState)).toEqual({
         ...graphicalState,
         board: chessEngine.fenToBoardPositions(
           'rnbqkbnr/pppppppp/8/R7/8/8/PPPPPPPP/1NBQKBNR b Kkq - 1 1',
