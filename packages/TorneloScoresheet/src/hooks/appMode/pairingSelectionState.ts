@@ -27,13 +27,13 @@ export const makeUsePairingSelectionState =
       return null;
     }
 
-    const goToEnterPgnFunc = (): void => {
+    const goToEnterPgn = (): void => {
       setAppModeState({
         mode: AppMode.EnterPgn,
       });
     };
 
-    const goToTablePairingFunc = (pairing: ChessGameInfo): void => {
+    const goToTablePairing = (pairing: ChessGameInfo): void => {
       setAppModeState({
         mode: AppMode.TablePairing,
         pairing: pairing,
@@ -43,8 +43,8 @@ export const makeUsePairingSelectionState =
     return [
       appModeState,
       {
-        goToEnterPgn: goToEnterPgnFunc,
-        goToTablePairing: goToTablePairingFunc,
+        goToEnterPgn,
+        goToTablePairing,
       },
     ];
   };
