@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
     height: 40,
     width: 40,
   },
-  enterPinText: { marginTop: 40 },
+  enterPinText: { marginTop: 40, marginLeft: 100 },
   arbiterModeButton: {
     display: 'flex',
     flexDirection: 'column',

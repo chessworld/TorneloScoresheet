@@ -35,7 +35,8 @@ const Pin: React.FC<PinProps> = ({ onPress }) => {
           onChangeText={setValue}
           cellCount={CELL_COUNT}
           rootStyle={styles.codeFieldRoot}
-          keyboardType="number-pad"
+          autoFocus={true}
+          keyboardType="numeric"
           textContentType="oneTimeCode"
           renderCell={({
             index,
