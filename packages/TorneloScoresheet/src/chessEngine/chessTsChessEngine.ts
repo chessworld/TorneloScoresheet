@@ -179,10 +179,6 @@ const generatePgn = (
   moveHistory: ChessPly[],
   winner: PlayerColour | null,
 ): Result<string> => {
-  const stripStarFromPgn = (pgn: string): string => {
-    return pgn.substring(0, pgn.length - 1);
-  };
-
   const getResultString = (): string => {
     switch (winner) {
       case PlayerColour.Black:
@@ -223,8 +219,11 @@ const generatePgn = (
     return fail(error);
   }
 
-  const pgn = stripStarFromPgn(game.pgn()) + getResultString();
-  return succ(pgn);
+  // add result to headers
+  game.removeHeader('Result');
+  game.addHeader('Result', getResultString());
+
+  return succ(game.pgn());
 };
 
 /**
