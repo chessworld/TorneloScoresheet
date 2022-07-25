@@ -1,8 +1,10 @@
 import { StyleSheet } from 'react-native';
+import { pageHeight } from '../../util/pageSize';
 
 export const styles = StyleSheet.create({
   mainContainer: {
     display: 'flex',
+    height: pageHeight,
   },
   boardButtonContainer: {
     display: 'flex',

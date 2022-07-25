@@ -1,16 +1,14 @@
 import { colours, textColour } from '../../style/colour';
-import { Dimensions, StyleSheet } from 'react-native';
-import { TOOLBAR_HEIGHT } from '../../components/Toolbar/style';
+import { StyleSheet } from 'react-native';
+import { pageHeight } from '../../util/pageSize';
 
 const ACTION_BUTTON_WIDTH = 200;
 const ACTION_BUTTON_HORIZONTAL_PADDING = 20;
 
-const { height } = Dimensions.get('screen');
-
 export const styles = StyleSheet.create({
   pairingSelection: {
     padding: 18,
-    height: height - TOOLBAR_HEIGHT,
+    height: pageHeight,
   },
   headerRow: {
     display: 'flex',

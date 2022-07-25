@@ -1,15 +1,13 @@
-import { Dimensions, StyleSheet } from 'react-native';
-import { TOOLBAR_HEIGHT } from '../../components/Toolbar/style';
+import { StyleSheet } from 'react-native';
 import { colours } from '../../style/colour';
 import { primary } from '../../style/font';
-
-const { height } = Dimensions.get('screen');
+import { pageHeight } from '../../util/pageSize';
 
 export const styles = StyleSheet.create({
   container: {
     display: 'flex',
     justifyContent: 'space-between',
-    height: height - TOOLBAR_HEIGHT,
+    height: pageHeight,
     backgroundColor: colours.white,
     paddingLeft: 58,
     paddingRight: 58,
