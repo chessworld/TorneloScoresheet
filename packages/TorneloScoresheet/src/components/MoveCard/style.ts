@@ -7,6 +7,7 @@ export const styles = StyleSheet.create({
     borderColor: colours.grey,
     borderWidth: 2,
     minWidth: 100,
+    height: 145,
     alignItems: 'center',
     marginVertical: 20,
     marginHorizontal: 5,

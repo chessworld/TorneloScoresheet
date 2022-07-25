@@ -28,7 +28,7 @@ const ResultDisplay: React.FC = () => {
   return (
     <>
       {resultDisplayMode && (
-        <View>
+        <View style={styles.container}>
           <PrimaryText
             weight={FontWeight.Regular}
             size={70}

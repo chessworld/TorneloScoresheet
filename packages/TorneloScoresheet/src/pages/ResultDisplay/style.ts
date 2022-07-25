@@ -1,6 +1,10 @@
 import { StyleSheet } from 'react-native';
+import { pageHeight } from '../../util/pageSize';
 
 export const styles = StyleSheet.create({
+  container: {
+    height: pageHeight,
+  },
   title: {
     textAlign: 'center',
     marginLeft: 30,
