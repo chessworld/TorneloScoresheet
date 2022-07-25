@@ -70,7 +70,7 @@ export const generateGraphicalRecordingState = (
     pairing: generateGamePairingInfo(pgn),
     moveHistory: moveHistory,
     board: chessEngine.fenToBoardPositions(
-      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+      moveHistory.at(-1)?.startingFen ?? chessEngine.startingFen(),
     ),
     currentPlayer: PlayerColour.White,
   };

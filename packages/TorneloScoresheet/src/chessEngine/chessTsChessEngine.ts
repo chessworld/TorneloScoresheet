@@ -183,7 +183,7 @@ const generatePgn = (
     return pgn.substring(0, pgn.length - 1);
   };
 
-  const getResultString = (winner: PlayerColour | null): string => {
+  const getResultString = (): string => {
     switch (winner) {
       case PlayerColour.Black:
         return '0-1';
@@ -217,13 +217,13 @@ const generatePgn = (
       }
       return '';
     })
-    .find(error => error !== '');
+    .find(errorMessage => errorMessage !== '');
 
   if (error) {
     return fail(error);
   }
 
-  const pgn = stripStarFromPgn(game.pgn()) + getResultString(winner);
+  const pgn = stripStarFromPgn(game.pgn()) + getResultString();
   return succ(pgn);
 };
 
