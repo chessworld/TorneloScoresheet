@@ -13,6 +13,18 @@ export enum AppMode {
   ArbiterResultDisplay,
 }
 
+export const isArbiterMode = (mode: AppMode): boolean =>
+  ({
+    [AppMode.EnterPgn]: true,
+    [AppMode.PariringSelection]: true,
+    [AppMode.TablePairing]: false,
+    [AppMode.GraphicalRecording]: false,
+    [AppMode.ResultDisplay]: false,
+    [AppMode.ArbiterGraphicalRecording]: true,
+    [AppMode.ArbiterTablePairing]: true,
+    [AppMode.ArbiterResultDisplay]: true,
+  }[mode]);
+
 export type EnterPgnMode = {
   mode: AppMode.EnterPgn;
 };

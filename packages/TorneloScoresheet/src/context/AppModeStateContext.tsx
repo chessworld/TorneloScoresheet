@@ -32,11 +32,17 @@ export const AppModeStateContextProvider: React.FC = ({ children }) => {
 
 // state creations
 export const useEnterPgnState = makeUseEnterPgnState(AppModeStateContext);
+
 export const usePairingSelectionState =
   makeUsePairingSelectionState(AppModeStateContext);
+
 export const useTablePairingState =
   makeUseTablePairingState(AppModeStateContext);
+
 export const useGraphicalRecordingState =
   makeUseGraphicalRecordingState(AppModeStateContext);
+
 export const useResultDisplayState =
   makeUseResultDisplayState(AppModeStateContext);
+
+export const useCurrentAppMode = () => useContext(AppModeStateContext)[0].mode;

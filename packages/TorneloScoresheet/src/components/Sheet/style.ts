@@ -27,11 +27,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  title: {
-    paddingLeft: 20,
+    padding: 20,
   },
   exitButton: {
-    padding: 20,
+    paddingLeft: 20,
   },
 });

@@ -8,6 +8,8 @@ import { AppModeStateContextProvider } from './src/context/AppModeStateContext';
 import { ErrorContextProvider } from './src/context/ErrorContext';
 import Main from './src/pages/Main';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import LockAppOnExit from './src/components/LockAppOnExit/LockAppOnExit';
+import { ModalStackContextProvider } from './src/context/ModalStackContext';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -19,13 +21,17 @@ const App = () => {
   return (
     <GestureHandlerRootView>
       <ErrorContextProvider>
-        <AppModeStateContextProvider>
-          <Toolbar />
-          <SafeAreaView style={backgroundStyle}>
-            <Main />
-          </SafeAreaView>
-          <ErrorToast />
-        </AppModeStateContextProvider>
+        <ModalStackContextProvider>
+          <AppModeStateContextProvider>
+            <LockAppOnExit>
+              <Toolbar />
+              <SafeAreaView style={backgroundStyle}>
+                <Main />
+              </SafeAreaView>
+              <ErrorToast />
+            </LockAppOnExit>
+          </AppModeStateContextProvider>
+        </ModalStackContextProvider>
       </ErrorContextProvider>
     </GestureHandlerRootView>
   );
