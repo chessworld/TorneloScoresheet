@@ -52,7 +52,7 @@ const TablePairing: React.FC = () => {
   return (
     <>
       {tablePairingMode && (
-        <View>
+        <View style={styles.container}>
           {selectedPlayer !== undefined && (
             <OptionSheet
               message={
@@ -75,7 +75,7 @@ const TablePairing: React.FC = () => {
             label={infoString}
             colour={colours.darkenedElements}
           />
-          <View>
+          <View style={styles.playerCardContainer}>
             <PlayerCard
               player={tablePairingMode.pairing.players[0]}
               onPress={() =>

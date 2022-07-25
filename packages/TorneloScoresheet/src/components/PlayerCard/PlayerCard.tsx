@@ -4,7 +4,7 @@ import { Player } from '../../types/ChessGameInfo';
 import { TouchableOpacity, View } from 'react-native';
 import { PieceType } from '../../types/ChessMove';
 import PieceAsset from '../PieceAsset/PieceAsset';
-import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
+import PrimaryText, { Align, FontWeight } from '../PrimaryText/PrimaryText';
 import { fullName } from '../../util/player';
 import { colours } from '../../style/colour';
 import { styles } from './style';
@@ -37,20 +37,21 @@ const PlayerCard: React.FC<playerCardProps> = ({
             label={fullName(player)}
           />
           <View style={styles.playerInfoAlign}>
-            <PrimaryText size={35} weight={FontWeight.Light}>
+            <PrimaryText
+              size={35}
+              weight={FontWeight.Light}
+              align={Align.Center}>
               {player.elo + ' '}
             </PrimaryText>
             {/* TODO - parse and render the country (and its flag) */}
-            <PieceAsset
-              piece={{ type: PieceType.King, player: player.color }}
-              size={50}
-            />
+            <View style={styles.flag} />
           </View>
           {/* TODO - parse and render the team */}
           <PrimaryText
             size={30}
             weight={FontWeight.SemiBold}
             colour={colours.darkenedElements}
+            align={Align.Center}
             label="render team here"
           />
         </View>

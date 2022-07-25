@@ -19,13 +19,13 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardColumns: {
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
     flex: 2,
     paddingHorizontal: 20,
+    marginLeft: 50,
   },
   playerInfoAlign: {
     flexDirection: 'row',
+    alignItems: 'center',
     marginTop: 5,
     marginBottom: 5,
   },
@@ -44,5 +44,11 @@ export const styles = StyleSheet.create({
     alignContent: 'flex-start',
     textAlign: 'left',
     alignSelf: 'flex-start',
+  },
+  flag: {
+    backgroundColor: 'yellow',
+    width: 70,
+    height: 40,
+    marginLeft: 20,
   },
 });
