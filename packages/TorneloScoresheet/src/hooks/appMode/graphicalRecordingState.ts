@@ -132,15 +132,17 @@ export const makeUseGraphicalRecordingState =
       });
     };
 
-    const goToEndGameFunc = (result: ChessGameResult): void => {
+    const goToEndGame = (result: ChessGameResult): void => {
       setAppModeState({
         mode: AppMode.ResultDisplay,
         pairing: appModeState.pairing,
         result,
       });
     };
-    const goToTextInputFunc = (): void => {};
-    const goToArbiterModeFunc = (): void => {
+
+    const goToTextInput = (): void => {};
+
+    const goToArbiterGameMode = (): void => {
       setAppModeState({
         mode: AppMode.ArbiterGraphicalRecording,
         pairing: appModeState.pairing,
@@ -149,10 +151,8 @@ export const makeUseGraphicalRecordingState =
         currentPlayer: appModeState.currentPlayer,
       });
     };
-    const moveFunc = (
-      moveSquares: MoveSquares,
-      promotion?: PieceType,
-    ): void => {
+
+    const move = (moveSquares: MoveSquares, promotion?: PieceType): void => {
       const moveHistory = processPlayerMove(
         moveSquares,
         appModeState.moveHistory,
@@ -162,33 +162,33 @@ export const makeUseGraphicalRecordingState =
         updateBoard(moveHistory);
       }
     };
-    const isPawnPromotionFunc = (moveSquares: MoveSquares): boolean => {
+    const isPawnPromotion = (moveSquares: MoveSquares): boolean => {
       const fen = getCurrentFen(appModeState.moveHistory);
       return chessEngine.isPawnPromotion(fen, moveSquares);
     };
 
-    const undoLastMoveFunc = (): void => {
+    const undoLastMove = (): void => {
       updateBoard(appModeState.moveHistory.slice(0, -1));
     };
 
-    const skipTurnFunc = (): void => {
+    const skipTurn = (): void => {
       updateBoard(skipPlayerTurn(appModeState.moveHistory));
     };
 
-    const isOtherPlayersPieceFunc = (move: MoveSquares): boolean => {
+    const isOtherPlayersPiece = (moveSquares: MoveSquares): boolean => {
       return chessEngine.isOtherPlayersPiece(
         getCurrentFen(appModeState.moveHistory),
-        move,
+        moveSquares,
       );
     };
 
-    const skipTurnAndProcessMoveFunc = (
-      move: MoveSquares,
+    const skipTurnAndProcessMove = (
+      moveSquares: MoveSquares,
       promotion?: PieceType,
     ): void => {
       const historyAfterSkip = skipPlayerTurn(appModeState.moveHistory);
       const historyAfterSkipAndMove = processPlayerMove(
-        move,
+        moveSquares,
         historyAfterSkip,
         promotion,
       );
@@ -199,7 +199,7 @@ export const makeUseGraphicalRecordingState =
       }
     };
 
-    const generatePgnFunc = (winner: PlayerColour | null): Result<string> => {
+    const generatePgn = (winner: PlayerColour | null): Result<string> => {
       return chessEngine.generatePgn(
         appModeState.pairing.pgn,
         appModeState.moveHistory,
@@ -207,7 +207,7 @@ export const makeUseGraphicalRecordingState =
       );
     };
 
-    const toggleDrawFunc = (drawIndex: number) => {
+    const toggleDraw = (drawIndex: number) => {
       setAppModeState(graphicalRecordingState => {
         // Do nothing if we aren't in graphical recording mode
         if (graphicalRecordingState.mode !== AppMode.GraphicalRecording) {
@@ -226,17 +226,17 @@ export const makeUseGraphicalRecordingState =
     return [
       appModeState,
       {
-        goToEndGame: goToEndGameFunc,
-        goToTextInput: goToTextInputFunc,
-        goToArbiterGameMode: goToArbiterModeFunc,
-        move: moveFunc,
-        undoLastMove: undoLastMoveFunc,
-        isPawnPromotion: isPawnPromotionFunc,
-        skipTurn: skipTurnFunc,
-        isOtherPlayersPiece: isOtherPlayersPieceFunc,
-        skipTurnAndProcessMove: skipTurnAndProcessMoveFunc,
-        generatePgn: generatePgnFunc,
-        toggleDraw: toggleDrawFunc,
+        goToEndGame,
+        goToTextInput,
+        goToArbiterGameMode,
+        move,
+        undoLastMove,
+        isPawnPromotion,
+        skipTurn,
+        isOtherPlayersPiece,
+        skipTurnAndProcessMove,
+        generatePgn,
+        toggleDraw,
       },
     ];
   };

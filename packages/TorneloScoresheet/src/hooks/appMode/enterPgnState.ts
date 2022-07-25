@@ -111,8 +111,7 @@ export const makeUseEnterPgnState =
       return null;
     }
 
-    const goToPairingSelectionFunc =
-      makegoToTablePairingSelection(setAppModeState);
+    const goToPairingSelection = makegoToTablePairingSelection(setAppModeState);
 
-    return [appModeState, { goToPairingSelection: goToPairingSelectionFunc }];
+    return [appModeState, { goToPairingSelection }];
   };

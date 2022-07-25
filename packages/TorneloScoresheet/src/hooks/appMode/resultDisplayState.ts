@@ -24,12 +24,12 @@ export const makeUseResultDisplayState =
       return null;
     }
 
-    const goToArbiterModeFunc = () => {
+    const goToArbiterMode = () => {
       setAppModeState({
         ...appModeState,
         mode: AppMode.ArbiterResultDisplay,
       });
     };
 
-    return [appModeState, { goToArbiterMode: goToArbiterModeFunc }];
+    return [appModeState, { goToArbiterMode }];
   };
