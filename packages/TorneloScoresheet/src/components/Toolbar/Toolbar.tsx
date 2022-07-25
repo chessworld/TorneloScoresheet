@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, StatusBar, TouchableOpacity, View } from 'react-native';
+import { Image, StatusBar, View } from 'react-native';
 import {
   useAppModeState,
   useGraphicalRecordingState,
@@ -12,11 +12,7 @@ import {
   statusBarStyleForColor,
   textColour,
 } from '../../style/colour';
-import {
-  BLACK_LOGO_IMAGE,
-  ICON_GEAR,
-  WHITE_LOGO_IMAGE,
-} from '../../style/images';
+import { BLACK_LOGO_IMAGE, WHITE_LOGO_IMAGE } from '../../style/images';
 import { AppMode } from '../../types/AppModeState';
 import IconButton from '../IconButton/IconButton';
 import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
@@ -139,7 +135,7 @@ const Toolbar: React.FC = () => {
             size={34}
             weight={FontWeight.Bold}
             label="Tornelo"
-            style={{ lineHeight: 44 }}
+            style={styles.logoTitle}
           />
         </View>
         <IconButton
