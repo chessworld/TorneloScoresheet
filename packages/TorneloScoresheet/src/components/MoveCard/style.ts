@@ -4,7 +4,7 @@ import { colours } from '../../style/colour';
 export const styles = StyleSheet.create({
   container: {
     borderRadius: 4,
-    borderColor: colours.darkGrey,
+    borderColor: colours.grey,
     borderWidth: 2,
     minWidth: 100,
     alignItems: 'center',
@@ -16,21 +16,20 @@ export const styles = StyleSheet.create({
     width: '100%',
     paddingVertical: 2,
   },
+  plyContainer: {
+    width: '100%',
+    paddingVertical: 16,
+    borderTopWidth: 2,
+  },
   whitePlyContainer: {
     backgroundColor: colours.lightBlue,
-    borderTopColor: colours.darkGrey,
-    borderTopWidth: 2,
-    width: '100%',
-    paddingBottom: 16,
+    borderTopColor: colours.grey,
   },
   blackPlyContainer: {
-    borderTopColor: colours.darkGrey,
-    borderTopWidth: 2,
-    width: '100%',
-    minHeight: 50,
-    paddingBottom: 16,
+    borderTopColor: colours.grey,
   },
-  containerIcon: {
-    alignItems: 'flex-end',
+  drawIconContainer: {
+    position: 'absolute',
+    right: 0,
   },
 });

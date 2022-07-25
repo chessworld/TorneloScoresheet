@@ -18,39 +18,23 @@ const MoveCard: React.FC<MoveCardProps> = ({ move }) => {
           # {move.white.moveNo}
         </PrimaryText>
       </View>
-      <View
-        style={[
-          styles.whitePlyContainer,
-          {
-            paddingTop: move.white.drawOffer ? 0 : 16,
-          },
-        ]}>
-        <View style={styles.containerIcon}>
-          {move.white.drawOffer && (
-            <Icon name={'creative-commons-noderivs'} size={15} color="black" />
-          )}
-        </View>
-        <PrimaryText size={20} align={Align.Center} weight={FontWeight.Bold}>
+      <View style={[styles.plyContainer, styles.whitePlyContainer]}>
+        {move.white.drawOffer && <DrawOfferIcon />}
+        <PrimaryText size={18} align={Align.Center} weight={FontWeight.Bold}>
           {moveString(move.white)}
         </PrimaryText>
       </View>
 
       <View
         style={[
+          styles.plyContainer,
           styles.blackPlyContainer,
-          { paddingTop: move.black && move.black.drawOffer ? 0 : 16 },
           blackPlyBackgroundColour(move.black),
         ]}>
-        <View style={styles.containerIcon}>
-          {move.black && move.black.drawOffer && (
-            <Icon name={'creative-commons-noderivs'} size={15} color="black" />
-          )}
-        </View>
-        {move.black && (
-          <PrimaryText size={20} align={Align.Center} weight={FontWeight.Bold}>
-            {moveString(move.black)}
-          </PrimaryText>
-        )}
+        {move.black?.drawOffer && <DrawOfferIcon />}
+        <PrimaryText size={18} align={Align.Center} weight={FontWeight.Bold}>
+          {move.black ? moveString(move.black) : ' '}
+        </PrimaryText>
       </View>
     </View>
   );
@@ -66,7 +50,32 @@ const moveString = (ply: ChessPly): string => {
 
 const blackPlyBackgroundColour = (ply: ChessPly | undefined) => ({
   backgroundColor: ply ? colours.darkBlue : colours.tertiary,
-  paddingBottom: ply ? 0 : 5,
 });
+
+const iconBackground = (size: number) =>
+  ({
+    width: size - 1,
+    height: size,
+    borderRadius: size,
+    backgroundColor: 'white',
+    position: 'absolute',
+    top: 0,
+    left: 1,
+    zIndex: -1,
+  } as const);
+
+const DrawOfferIcon = () => {
+  const size = 16;
+  return (
+    <View style={styles.drawIconContainer}>
+      <Icon
+        name="creative-commons-noderivs"
+        size={size}
+        color={colours.darkGrey}
+      />
+      <View style={iconBackground(size)} />
+    </View>
+  );
+};
 
 export default MoveCard;
