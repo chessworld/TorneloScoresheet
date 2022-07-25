@@ -13,7 +13,7 @@ import {
   textColour,
 } from '../../style/colour';
 import { BLACK_LOGO_IMAGE, WHITE_LOGO_IMAGE } from '../../style/images';
-import { AppMode } from '../../types/AppModeState';
+import { AppMode, isArbiterMode } from '../../types/AppModeState';
 import IconButton from '../IconButton/IconButton';
 import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import Sheet from '../Sheet/Sheet';
@@ -27,27 +27,8 @@ import Pin from '../Pin/Pin';
  * as well as what actions and buttons are available
  */
 
-const colourForMode: Record<AppMode, ColourType> = {
-  [AppMode.EnterPgn]: colours.tertiary,
-  [AppMode.PariringSelection]: colours.tertiary,
-  [AppMode.ArbiterGraphicalRecording]: colours.tertiary,
-  [AppMode.ArbiterTablePairing]: colours.tertiary,
-  [AppMode.ArbiterResultDisplay]: colours.tertiary,
-  [AppMode.TablePairing]: colours.primary,
-  [AppMode.GraphicalRecording]: colours.primary,
-  [AppMode.ResultDisplay]: colours.primary,
-};
-
-const arbiterModeDisplay: Record<AppMode, boolean> = {
-  [AppMode.EnterPgn]: true,
-  [AppMode.PariringSelection]: true,
-  [AppMode.ArbiterGraphicalRecording]: true,
-  [AppMode.ArbiterTablePairing]: true,
-  [AppMode.TablePairing]: false,
-  [AppMode.GraphicalRecording]: false,
-  [AppMode.ResultDisplay]: false,
-  [AppMode.ArbiterResultDisplay]: true,
-};
+const colourForMode = (appMode: AppMode): ColourType =>
+  isArbiterMode(appMode) ? colours.tertiary : colours.primary;
 
 const backgroundColorStyle = (backgroundColor: string) => ({
   backgroundColor,
@@ -63,8 +44,8 @@ const Toolbar: React.FC = () => {
   const handleArbiterPress = () => {
     setShowArbiterSheet(a => !a);
   };
-  const currentColour = colourForMode[appModeState.mode];
-  const showArbiterModeButton = !arbiterModeDisplay[appModeState.mode];
+  const currentColour = colourForMode(appModeState.mode);
+  const showArbiterModeButton = !isArbiterMode(appModeState.mode);
   const currentTextColour = textColour(currentColour);
 
   const voidReturn: () => void = () => {
