@@ -11,7 +11,7 @@ import {
   generateGraphicalRecordingState,
   mockAppModeContext,
   renderCustomHook,
-  stripStarFromPgn,
+  stripStarAndReplaceResultFromPgn,
 } from '../testUtils/testUtils';
 import {
   ChessPly,
@@ -703,7 +703,7 @@ describe('Generate pgn', () => {
         expect(isError(pgnResult)).toBe(false);
         if (!isError(pgnResult)) {
           expect(pgnResult.data).toStrictEqual(
-            stripStarFromPgn(pgnSucess) +
+            stripStarAndReplaceResultFromPgn(pgnSucess, '0-1') +
               '1. e4 d5 2. exd5 Qd7 3. d6 Qf5 4. d7+ Qf5f4 5. d8=Q+ Qf4f5 6. d2e2# 0-1',
           );
         }

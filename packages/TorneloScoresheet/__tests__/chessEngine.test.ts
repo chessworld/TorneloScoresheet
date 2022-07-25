@@ -10,10 +10,10 @@ import {
   ChessPly,
 } from '../src/types/ChessMove';
 import { isError, succ } from '../src/types/Result';
-import { stripStarFromPgn } from '../testUtils/testUtils';
+import { stripStarAndReplaceResultFromPgn } from '../testUtils/testUtils';
 
 // ---- chessEngine.parseGameInfo() ----
-const pgnSucess = `[Event "Skywalker Challenge - A"]
+const pgnSuccess = `[Event "Skywalker Challenge - A"]
 [Site "Prague, Czechia"]
 [Date "2021.09.12"]
 [Round "6.1"]
@@ -78,7 +78,7 @@ describe('parseGameInfo', () => {
   const testCases = [
     {
       name: 'ParsePgnSuccess',
-      pgn: pgnSucess,
+      pgn: pgnSuccess,
       shouldFail: false,
       expectedResult: {
         name: 'Skywalker Challenge - A',
@@ -88,7 +88,7 @@ describe('parseGameInfo', () => {
         game: undefined,
         result: '*',
         date: moment('2021.09.12', 'YYYY.MM.DD'),
-        pgn: pgnSucess,
+        pgn: pgnSuccess,
         players: [
           {
             color: 0,
@@ -1106,7 +1106,7 @@ describe('generatePgn', () => {
   const testCases = [
     {
       name: 'White win no error',
-      pgn: pgnSucess,
+      pgn: pgnSuccess,
       isError: false,
       moves: [
         {
@@ -1121,11 +1121,12 @@ describe('generatePgn', () => {
         },
       ] as ChessPly[],
       winner: PlayerColour.White,
-      expectedPgn: stripStarFromPgn(pgnSucess) + '1. e4 1-0',
+      expectedPgn:
+        stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') + '1. e4 1-0',
     },
     {
       name: 'Skip ply error',
-      pgn: pgnSucess,
+      pgn: pgnSuccess,
       isError: true,
       moves: [
         {
@@ -1146,7 +1147,8 @@ describe('generatePgn', () => {
         },
       ] as ChessPly[],
       winner: PlayerColour.White,
-      expectedPgn: stripStarFromPgn(pgnSucess) + '1. e4 1-0',
+      expectedPgn:
+        stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') + '1. e4 1-0',
     },
     {
       name: 'Parse PGN error',
@@ -1165,11 +1167,12 @@ describe('generatePgn', () => {
         },
       ] as ChessPly[],
       winner: PlayerColour.White,
-      expectedPgn: stripStarFromPgn(pgnSucess) + '1. e4 1-0',
+      expectedPgn:
+        stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') + '1. e4 1-0',
     },
     {
       name: 'Impossible move error',
-      pgn: pgnSucess,
+      pgn: pgnSuccess,
       isError: true,
       moves: [
         {
@@ -1184,11 +1187,12 @@ describe('generatePgn', () => {
         },
       ] as ChessPly[],
       winner: PlayerColour.White,
-      expectedPgn: stripStarFromPgn(pgnSucess) + '1. e4 1-0',
+      expectedPgn:
+        stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') + '1. e4 1-0',
     },
     {
       name: 'Black win no error',
-      pgn: pgnSucess,
+      pgn: pgnSuccess,
       isError: false,
       moves: [
         {
@@ -1214,11 +1218,12 @@ describe('generatePgn', () => {
         },
       ] as ChessPly[],
       winner: PlayerColour.Black,
-      expectedPgn: stripStarFromPgn(pgnSucess) + '1. e4 g6 0-1',
+      expectedPgn:
+        stripStarAndReplaceResultFromPgn(pgnSuccess, '0-1') + '1. e4 g6 0-1',
     },
     {
       name: 'Draw win no error',
-      pgn: pgnSucess,
+      pgn: pgnSuccess,
       isError: false,
       moves: [
         {
@@ -1244,11 +1249,12 @@ describe('generatePgn', () => {
         },
       ] as ChessPly[],
       winner: null,
-      expectedPgn: stripStarFromPgn(pgnSucess) + '1. e4 g6 1-1',
+      expectedPgn:
+        stripStarAndReplaceResultFromPgn(pgnSuccess, '1-1') + '1. e4 g6 1-1',
     },
     {
       name: 'Illegal move',
-      pgn: pgnSucess,
+      pgn: pgnSuccess,
       isError: false,
       moves: [
         {
@@ -1263,11 +1269,12 @@ describe('generatePgn', () => {
         },
       ] as ChessPly[],
       winner: PlayerColour.White,
-      expectedPgn: stripStarFromPgn(pgnSucess) + '1. e2e6 1-0',
+      expectedPgn:
+        stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') + '1. e2e6 1-0',
     },
     {
       name: 'En Passant move',
-      pgn: pgnSucess,
+      pgn: pgnSuccess,
       isError: false,
       moves: [
         {
@@ -1327,12 +1334,13 @@ describe('generatePgn', () => {
       ] as ChessPly[],
       winner: PlayerColour.White,
       expectedPgn:
-        stripStarFromPgn(pgnSucess) + '1. e4 d5 2. e5 f5 3. exf6 1-0',
+        stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') +
+        '1. e4 d5 2. e5 f5 3. exf6 1-0',
     },
     {
       name: 'Capture',
       isError: false,
-      pgn: pgnSucess,
+      pgn: pgnSuccess,
       moves: [
         {
           moveNo: 1,
@@ -1368,11 +1376,13 @@ describe('generatePgn', () => {
         },
       ] as ChessPly[],
       winner: PlayerColour.White,
-      expectedPgn: stripStarFromPgn(pgnSucess) + '1. e4 d5 2. exd5 1-0',
+      expectedPgn:
+        stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') +
+        '1. e4 d5 2. exd5 1-0',
     },
     {
       name: 'Pawn Promotion and check symbol',
-      pgn: pgnSucess,
+      pgn: pgnSuccess,
       isError: false,
       moves: [
         {
@@ -1477,13 +1487,13 @@ describe('generatePgn', () => {
       ] as ChessPly[],
       winner: PlayerColour.White,
       expectedPgn:
-        stripStarFromPgn(pgnSucess) +
+        stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') +
         '1. e4 d5 2. exd5 Qd7 3. d6 Qf5 4. d7+ Qf5f4 5. d8=Q+ 1-0',
     },
     {
       name: 'check mate',
       isError: false,
-      pgn: pgnSucess,
+      pgn: pgnSuccess,
       moves: [
         {
           moveNo: 1,
@@ -1609,12 +1619,12 @@ describe('generatePgn', () => {
       ] as ChessPly[],
       winner: PlayerColour.White,
       expectedPgn:
-        stripStarFromPgn(pgnSucess) +
+        stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') +
         '1. e4 d5 2. exd5 Qd7 3. d6 Qf5 4. d7+ Qf5f4 5. d8=Q+ Qf4f5 6. d2e2# 1-0',
     },
     {
       name: 'King and Queen Side Castling',
-      pgn: pgnSucess,
+      pgn: pgnSuccess,
       isError: false,
 
       moves: [
@@ -1730,7 +1740,7 @@ describe('generatePgn', () => {
       ] as ChessPly[],
       winner: PlayerColour.White,
       expectedPgn:
-        stripStarFromPgn(pgnSucess) +
+        stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') +
         '1. e4 d5 2. Bd3 Qd6 3. Nh3 Bd7 4. O-O Nc6 5. f3 O-O-O 1-0',
     },
   ];

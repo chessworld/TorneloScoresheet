@@ -93,10 +93,32 @@ export const mockAppModeContext = (
 };
 
 /**
- * Strips a PGN string of its star characterS
- * @param pgn The pgn string
- * @returns The pgn minus the ending star
+ * Replaces the headers for a pgn with a score
+ * @param pgn the pgn
+ * @param result the result string
+ * @returns the new pgn
  */
-export const stripStarFromPgn = (pgn: string): string => {
-  return pgn.substring(0, pgn.length - 2);
+export const replaceResultHeaderFromPgn = (
+  pgn: string,
+  result: string,
+): string => {
+  let newPgn = pgn.replace(`\n[Result "*"]`, '');
+  newPgn += `[Result "${result}"]`;
+  return newPgn;
+};
+
+/**
+ * Replaces the '*' Result from a pgn with a score and adds score to the headers
+ * @param pgn the pgn
+ * @param result the result string
+ * @returns the new pgn
+ */
+export const stripStarAndReplaceResultFromPgn = (
+  pgn: string,
+  result: string,
+): string => {
+  return (
+    replaceResultHeaderFromPgn(pgn.substring(0, pgn.length - 3), result) +
+    '\n\n'
+  );
 };
