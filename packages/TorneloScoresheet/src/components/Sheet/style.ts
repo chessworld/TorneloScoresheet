@@ -11,16 +11,23 @@ export const styles = StyleSheet.create({
   },
   contentContainer: {
     backgroundColor: colours.white,
-    borderRadius: 20,
+    borderRadius: 5,
     display: 'flex',
     flexDirection: 'column',
     minWidth: 400,
     maxWidth: '90%',
+    shadowColor: 'rgba(0,0,0,0.5)',
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowRadius: 4,
+    shadowOpacity: 0.6,
   },
   content: {
     marginLeft: 20,
     marginRight: 20,
-    marginBottom: 40,
+    marginBottom: 10,
   },
   header: {
     display: 'flex',
