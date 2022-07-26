@@ -306,6 +306,8 @@ const GraphicalRecording: React.FC = () => {
             onCancel={handleCancelSelection}
             winnerName={(selectedWinner && fullName(selectedWinner)) ?? null}
             onConfirm={handleConfirmWinner}
+            whitePlayer={graphicalRecordingMode.pairing.players[0]}
+            blackPlayer={graphicalRecordingMode.pairing.players[1]}
           />
           {/*----- body ----- */}
           <View style={styles.placeholder}>
