@@ -55,14 +55,11 @@ const TablePairing: React.FC = () => {
         <View style={styles.container}>
           {selectedPlayer !== undefined && (
             <OptionSheet
-              message={
-                'Confirm Start As \n' +
-                fullName(
-                  tablePairingMode.pairing.players[
-                    playerColourAsIndex(selectedPlayer)
-                  ],
-                )
-              }
+              message={`Confirm Start As ${fullName(
+                tablePairingMode.pairing.players[
+                  playerColourAsIndex(selectedPlayer)
+                ],
+              )}`}
               options={[{ text: 'CONFIRM', onPress: confirm }]}
               onCancel={handleCancelSelection}
               visible={showConfirmSheet}
