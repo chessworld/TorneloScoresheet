@@ -192,6 +192,7 @@ const GraphicalRecording: React.FC = () => {
     const pgnResult = generatePgn(player?.color ?? null);
     if (isError(pgnResult)) {
       showError(pgnResult.error);
+      setShowEndGame(false);
       return;
     }
     console.log(pgnResult.data);
