@@ -29,6 +29,7 @@ import { colours } from '../../style/colour';
 import { useError } from '../../context/ErrorContext';
 import { isError } from '../../types/Result';
 import PrimaryText from '../../components/PrimaryText/PrimaryText';
+import MoveOptionsSheet, { EditingMove } from './MoveOptionsSheet';
 
 const GraphicalRecording: React.FC = () => {
   // app mode hook unpacking
@@ -265,6 +266,15 @@ const GraphicalRecording: React.FC = () => {
       : makeMove(moveSquares, promotion);
   };
 
+  const [editingMove, setEditingMove] = useState<undefined | EditingMove>(
+    undefined,
+  );
+
+  const handleRequestEditMove = (colour: PlayerColour, moveIndex: number) =>
+    setEditingMove({ colour, moveIndex });
+
+  const handleDismissMoveOptions = () => setEditingMove(undefined);
+
   useEffect(() => {
     scrollRef.current?.scrollToEnd();
   }, [graphicalRecordingMode?.moveHistory]);
@@ -277,14 +287,18 @@ const GraphicalRecording: React.FC = () => {
           <OptionSheet
             visible={showPromotion}
             onCancel={() => setShowPromotion(false)}
-            message={'Select Promotion Piece'}
+            message="Select Promotion Piece"
             options={promotionButtons}
           />
           <OptionSheet
-            message={'Please Select the Winner'}
+            message="Please Select the Winner"
             options={endGameOptions}
             visible={showEndGame}
             onCancel={handleCancelSelection}
+          />
+          <MoveOptionsSheet
+            editingMove={editingMove}
+            dismiss={handleDismissMoveOptions}
           />
           <Signature
             visible={showSignature}
@@ -309,7 +323,13 @@ const GraphicalRecording: React.FC = () => {
             horizontal
             style={styles.moveCardContainer}>
             {moves(graphicalRecordingMode.moveHistory).map((move, index) => (
-              <MoveCard key={index} move={move} />
+              <MoveCard
+                key={index}
+                move={move}
+                onRequestEditMove={colour =>
+                  handleRequestEditMove(colour, index)
+                }
+              />
             ))}
           </ScrollView>
         </View>

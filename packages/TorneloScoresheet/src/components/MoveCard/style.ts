@@ -19,8 +19,11 @@ export const styles = StyleSheet.create({
   },
   plyContainer: {
     width: '100%',
-    paddingVertical: 16,
     borderTopWidth: 2,
+  },
+  touchableOpacity: {
+    paddingVertical: 16,
+    width: '100%',
   },
   whitePlyContainer: {
     backgroundColor: colours.lightBlue,
