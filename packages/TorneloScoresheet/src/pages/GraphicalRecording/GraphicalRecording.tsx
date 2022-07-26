@@ -52,11 +52,13 @@ const GraphicalRecording: React.FC = () => {
   const [pgn, setPgn] = useState('');
   const [, showError] = useError();
   const [showEndGame, setShowEndGame] = useState(false);
-  const [showSignature, setShowSignature] = useState(false);
+  const [showFirstSignature, setShowFirstSignature] = useState(false);
+  const [showSecondSignature, setShowSecondSignature] = useState(false);
   const goToEndGame = graphicalRecordingState?.[1].goToEndGame;
   const [selectedWinner, setSelectedWinner] = useState<
     undefined | Player | null
   >(undefined);
+  const [playerSignatures, setPlayerSignatures] = useState<string[]>([]);
 
   // Scroll view ref
   const scrollRef = useRef<ScrollView>(null);
@@ -171,16 +173,30 @@ const GraphicalRecording: React.FC = () => {
     : [];
 
   // Button Functions
-  const handleConfirmWinner = (signature: string) => {
+
+  const handleConfirmWinner = (signatureInput: string) => {
+    const signatureArray = [...playerSignatures, signatureInput];
     if (!graphicalRecordingMode || !goToEndGame) {
       return;
     } else {
-      goToEndGame({
-        winner: selectedWinner?.color ?? null,
-        signature: signature,
-        gamePgn: pgn,
-      });
+      if (signatureArray.length == 2) {
+        setPlayerSignatures(() => []);
+        goToEndGame({
+          winner: selectedWinner?.color ?? null,
+          signature: signatureArray,
+          gamePgn: pgn,
+        });
+      }
     }
+  };
+
+  const handleConfirmFirstSignature = (signatureInput: string) => {
+    setPlayerSignatures(playerSignatures => [
+      ...playerSignatures,
+      signatureInput,
+    ]);
+    setShowFirstSignature(false);
+    setShowSecondSignature(true);
   };
 
   const handleSelectWinner = (player: Player | null) => {
@@ -197,13 +213,14 @@ const GraphicalRecording: React.FC = () => {
     setPgn(pgnResult.data);
 
     // if pgn can be generated -> prompt user for signature
-    setShowSignature(true);
+    setShowFirstSignature(true);
     setShowEndGame(false);
     setSelectedWinner(player);
   };
 
   const handleCancelSelection = () => {
-    setShowSignature(false);
+    setShowFirstSignature(false);
+    setShowSecondSignature(false);
     setShowEndGame(false);
     setSelectedWinner(undefined);
   };
@@ -287,12 +304,22 @@ const GraphicalRecording: React.FC = () => {
             onCancel={handleCancelSelection}
           />
           <Signature
-            visible={showSignature}
+            visible={showFirstSignature}
+            onCancel={handleCancelSelection}
+            winnerName={(selectedWinner && fullName(selectedWinner)) ?? null}
+            onConfirm={handleConfirmFirstSignature}
+            white={graphicalRecordingMode.pairing.players[0]}
+            black={graphicalRecordingMode.pairing.players[1]}
+            currentPlayer={graphicalRecordingMode.pairing.players[0]}
+          />
+          <Signature
+            visible={showSecondSignature}
             onCancel={handleCancelSelection}
             winnerName={(selectedWinner && fullName(selectedWinner)) ?? null}
             onConfirm={handleConfirmWinner}
-            whitePlayer={graphicalRecordingMode.pairing.players[0]}
-            blackPlayer={graphicalRecordingMode.pairing.players[1]}
+            white={graphicalRecordingMode.pairing.players[0]}
+            black={graphicalRecordingMode.pairing.players[1]}
+            currentPlayer={graphicalRecordingMode.pairing.players[1]}
           />
           {/*----- body ----- */}
           <View style={styles.placeholder}>

@@ -17,8 +17,9 @@ export type SignatureProps = {
   visible: boolean;
   onCancel: () => void;
   winnerName: string | null;
-  whitePlayer: Player;
-  blackPlayer: Player;
+  white: Player;
+  black: Player;
+  currentPlayer: Player;
   onConfirm: (signature: string) => void;
 };
 
@@ -26,8 +27,9 @@ const Signature: React.FC<SignatureProps> = ({
   visible,
   onCancel,
   winnerName,
-  whitePlayer,
-  blackPlayer,
+  white: white,
+  black: black,
+  currentPlayer: player,
   onConfirm,
 }) => {
   const sign = useRef<any>();
@@ -57,10 +59,10 @@ const Signature: React.FC<SignatureProps> = ({
             weight={FontWeight.Bold}
             size={40}
             colour={colours.darkenedElements}>
-            {`${fullName(whitePlayer)} \n `}
-            {`${resultText(winnerName, fullName(whitePlayer))}`}
+            {`${fullName(white)} \n `}
+            {`${resultText(winnerName, fullName(white))}`}
             <PieceAsset
-              piece={{ type: PieceType.King, player: whitePlayer.color }}
+              piece={{ type: PieceType.King, player: white.color }}
               size={40}
             />
           </PrimaryText>
@@ -69,12 +71,12 @@ const Signature: React.FC<SignatureProps> = ({
             weight={FontWeight.Bold}
             size={40}
             colour={colours.darkenedElements}>
-            {`${fullName(blackPlayer)} \n`}
+            {`${fullName(black)} \n`}
             <PieceAsset
-              piece={{ type: PieceType.King, player: blackPlayer.color }}
+              piece={{ type: PieceType.King, player: black.color }}
               size={40}
             />
-            {`${resultText(winnerName, fullName(blackPlayer))}`}
+            {`${resultText(winnerName, fullName(black))}`}
           </PrimaryText>
         </View>
         <View style={styles.signatureArea}>
@@ -83,23 +85,7 @@ const Signature: React.FC<SignatureProps> = ({
             weight={FontWeight.Bold}
             size={30}
             colour={colours.darkenedElements}>
-            {`Signature of ${fullName(whitePlayer)}`}
-          </PrimaryText>
-          <SignatureCapture
-            onSaveEvent={handleSaveSignature}
-            saveImageFileInExtStorage={false}
-            ref={sign}
-            style={styles.signature}
-            showNativeButtons={false}
-            showTitleLabel={false}
-            viewMode={'portrait'}
-          />
-          <PrimaryText
-            style={styles.messageText}
-            weight={FontWeight.Bold}
-            size={30}
-            colour={colours.darkenedElements}>
-            {`Signature of ${fullName(blackPlayer)}`}
+            {`Signature of ${fullName(player)}`}
           </PrimaryText>
           <SignatureCapture
             onSaveEvent={handleSaveSignature}
