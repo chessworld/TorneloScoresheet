@@ -15,7 +15,7 @@ export type ChessGameInfo = {
 export type ChessGameResult = {
   winner: PlayerColour | null;
   gamePgn?: string;
-  signature: string;
+  signature: string[];
 };
 
 export enum PlayerColour {
