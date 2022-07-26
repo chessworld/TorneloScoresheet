@@ -78,7 +78,7 @@ const Toolbar: React.FC = () => {
         title="Help"
         dismiss={() => setShowSheet(false)}
         visible={showSheet}>
-        <PrimaryText>Put help here!</PrimaryText>
+        <PrimaryText style={styles.helpText}>Put help here!</PrimaryText>
       </Sheet>
       <Sheet
         title="Arbiter Mode"

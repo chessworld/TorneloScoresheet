@@ -41,4 +41,5 @@ export const styles = StyleSheet.create({
     marginRight: -10,
   },
   logoTitle: { lineHeight: LOGO_HEIGHT },
+  helpText: { marginBottom: 10 },
 });
