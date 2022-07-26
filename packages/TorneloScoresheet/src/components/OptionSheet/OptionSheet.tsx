@@ -2,8 +2,6 @@ import { View } from 'react-native';
 import { SvgProps } from 'react-native-svg';
 import Sheet from '../Sheet/Sheet';
 import { styles } from './style';
-import { colours } from '../../style/colour';
-import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import React from 'react';
 import TextIconButton, {
   TextIconButtonProps,
@@ -29,15 +27,8 @@ const OptionSheet: React.FC<OptionSheetProps> = ({
   onCancel,
 }) => {
   return (
-    <Sheet dismiss={onCancel} visible={visible}>
+    <Sheet dismiss={onCancel} visible={visible} title={message}>
       <View style={styles.mainContainer}>
-        <PrimaryText
-          style={styles.messageText}
-          weight={FontWeight.Bold}
-          size={30}
-          colour={colours.darkenedElements}>
-          {message}
-        </PrimaryText>
         <View style={styles.buttonArea}>
           {options.map((option, i) => (
             <TextIconButton
