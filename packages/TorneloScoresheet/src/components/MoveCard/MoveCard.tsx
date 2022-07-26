@@ -1,16 +1,18 @@
 import React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import { colours } from '../../style/colour';
 import { ChessPly, Move, PlyTypes } from '../../types/ChessMove';
 import PrimaryText, { Align, FontWeight } from '../PrimaryText/PrimaryText';
+import { PlayerColour } from '../../types/ChessGameInfo';
 import { styles } from './style';
 
 type MoveCardProps = {
   move: Move;
+  onRequestEditMove: (colour: PlayerColour) => void;
 };
 
-const MoveCard: React.FC<MoveCardProps> = ({ move }) => {
+const MoveCard: React.FC<MoveCardProps> = ({ move, onRequestEditMove }) => {
   return (
     <View style={styles.container}>
       <View style={styles.moveNumberContainer}>
@@ -19,10 +21,14 @@ const MoveCard: React.FC<MoveCardProps> = ({ move }) => {
         </PrimaryText>
       </View>
       <View style={[styles.plyContainer, styles.whitePlyContainer]}>
-        {move.white.drawOffer && <DrawOfferIcon />}
-        <PrimaryText size={18} align={Align.Center} weight={FontWeight.Bold}>
-          {moveString(move.white)}
-        </PrimaryText>
+        <TouchableOpacity
+          style={styles.touchableOpacity}
+          onLongPress={() => onRequestEditMove(PlayerColour.White)}>
+          {move.white.drawOffer && <DrawOfferIcon />}
+          <PrimaryText size={18} align={Align.Center} weight={FontWeight.Bold}>
+            {moveString(move.white)}
+          </PrimaryText>
+        </TouchableOpacity>
       </View>
 
       <View
@@ -31,10 +37,15 @@ const MoveCard: React.FC<MoveCardProps> = ({ move }) => {
           styles.blackPlyContainer,
           blackPlyBackgroundColour(move.black),
         ]}>
-        {move.black?.drawOffer && <DrawOfferIcon />}
-        <PrimaryText size={18} align={Align.Center} weight={FontWeight.Bold}>
-          {move.black ? moveString(move.black) : ' '}
-        </PrimaryText>
+        <TouchableOpacity
+          style={styles.touchableOpacity}
+          disabled={!move.black}
+          onLongPress={() => onRequestEditMove(PlayerColour.Black)}>
+          {move.black?.drawOffer && <DrawOfferIcon />}
+          <PrimaryText size={18} align={Align.Center} weight={FontWeight.Bold}>
+            {move.black ? moveString(move.black) : ' '}
+          </PrimaryText>
+        </TouchableOpacity>
       </View>
     </View>
   );
