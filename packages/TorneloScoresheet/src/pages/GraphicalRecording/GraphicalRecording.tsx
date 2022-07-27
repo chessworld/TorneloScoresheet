@@ -223,6 +223,7 @@ const GraphicalRecording: React.FC = () => {
     setShowSecondSignature(false);
     setShowEndGame(false);
     setSelectedWinner(undefined);
+    setPlayerSignatures(() => []);
   };
 
   const handleToggleDraw = (drawIndex: number) => {
