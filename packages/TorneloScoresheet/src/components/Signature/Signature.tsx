@@ -4,7 +4,7 @@ import SignatureCapture, {
   SaveEventParams,
 } from 'react-native-signature-capture';
 import { colours } from '../../style/colour';
-import { Player, PlayerColour } from '../../types/ChessGameInfo';
+import { Player } from '../../types/ChessGameInfo';
 import { PieceType } from '../../types/ChessMove';
 import { fullName } from '../../util/player';
 import PieceAsset from '../PieceAsset/PieceAsset';
@@ -41,10 +41,6 @@ const Signature: React.FC<SignatureProps> = ({
 
   const resultText = (winnerName: string | null, playerName: string | null) => {
     return winnerName === null ? 1 : playerName === winnerName ? 1 : 0;
-  };
-
-  const playerName = (currentPlayer: PlayerColour) => {
-    return currentPlayer === white.color ? fullName(white) : fullName(black);
   };
 
   return (
