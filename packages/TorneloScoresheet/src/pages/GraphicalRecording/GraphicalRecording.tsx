@@ -325,7 +325,11 @@ const GraphicalRecording: React.FC = () => {
             onConfirm={handleConfirmFirstSignature}
             white={graphicalRecordingMode.pairing.players[0]}
             black={graphicalRecordingMode.pairing.players[1]}
-            currentPlayer={graphicalRecordingMode.pairing.players[0]}
+            currentPlayer={
+              graphicalRecordingMode.currentPlayer === PlayerColour.White
+                ? fullName(graphicalRecordingMode.pairing.players[0])
+                : fullName(graphicalRecordingMode.pairing.players[1])
+            }
           />
           <Signature
             visible={showSecondSignature}
@@ -334,7 +338,11 @@ const GraphicalRecording: React.FC = () => {
             onConfirm={handleConfirmWinner}
             white={graphicalRecordingMode.pairing.players[0]}
             black={graphicalRecordingMode.pairing.players[1]}
-            currentPlayer={graphicalRecordingMode.pairing.players[1]}
+            currentPlayer={
+              graphicalRecordingMode.currentPlayer === PlayerColour.White
+                ? fullName(graphicalRecordingMode.pairing.players[1])
+                : fullName(graphicalRecordingMode.pairing.players[0])
+            }
           />
           {/*----- body ----- */}
           <View style={styles.placeholder}>
