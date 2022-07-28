@@ -66,9 +66,12 @@ const Toolbar: React.FC = () => {
       useTablePairingState()?.[1].goToArbiterGameMode ?? voidReturn,
   };
 
-  const handleVerify = () => {
-    setShowArbiterSheet(false);
-    appModeArbiterTransition[appModeState.mode]();
+  const handleVerify = (pinValid: boolean) => {
+    if (pinValid) {
+      //pin is correct - move to arbiter mode
+      setShowArbiterSheet(false);
+      appModeArbiterTransition[appModeState.mode]();
+    }
   };
 
   return (
