@@ -9,11 +9,13 @@ import {
 } from 'react-native-confirmation-code-field';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import PrimaryText from '../PrimaryText/PrimaryText';
+import { useError } from '../../context/ErrorContext';
+import { pinValid } from '../../util/arbiterPin';
 
 const CELL_COUNT = 4;
 
 export type PinProps = {
-  onPress: () => void;
+  onPress: (pinCorrect: boolean) => void;
 };
 
 const Pin: React.FC<PinProps> = ({ onPress }) => {
@@ -24,6 +26,7 @@ const Pin: React.FC<PinProps> = ({ onPress }) => {
     setValue,
   });
 
+  const [, showError] = useError();
   return (
     <View>
       <SafeAreaView style={styles.root}>
@@ -60,7 +63,19 @@ const Pin: React.FC<PinProps> = ({ onPress }) => {
         />
       </SafeAreaView>
       <View style={styles.verifyButtonArea}>
-        <PrimaryButton onPress={onPress} label="Verify" />
+        <PrimaryButton
+          onPress={() => {
+            if (pinValid(value)) {
+              //pin is correct - move to arbiter mode
+              onPress(true);
+            } else {
+              //incorrect pin
+              setValue('');
+              showError('Invalid Pin - Please Try Again');
+            }
+          }}
+          label="Enter Arbiter Mode"
+        />
       </View>
     </View>
   );
