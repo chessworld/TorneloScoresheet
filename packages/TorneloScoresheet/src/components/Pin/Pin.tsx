@@ -6,6 +6,8 @@ import {
   Cursor,
   useBlurOnFulfill,
   useClearByFocusCell,
+  MaskSymbol,
+  isLastFilledCell,
 } from 'react-native-confirmation-code-field';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import PrimaryText from '../PrimaryText/PrimaryText';
@@ -56,7 +58,13 @@ const Pin: React.FC<PinProps> = ({ onPress }) => {
               key={index}
               style={[styles.cell, isFocused && styles.focusCell]}>
               <PrimaryText style={styles.numbersInCells}>
-                {symbol || (isFocused ? <Cursor /> : null)}
+                {(symbol ? (
+                  <MaskSymbol
+                    maskSymbol="•"
+                    isLastFilledCell={isLastFilledCell({ index, value })}>
+                    {symbol}
+                  </MaskSymbol>
+                ) : null) || (isFocused ? <Cursor /> : null)}
               </PrimaryText>
             </View>
           )}
