@@ -15,10 +15,15 @@ export type EditingMove = {
 
 type MoveOptionsSheetProps = {
   editingMove: EditingMove | undefined;
+  handleGameTime: (index: number) => void;
   dismiss: () => void;
 };
 
-const MoveOptionsSheet = ({ editingMove, dismiss }: MoveOptionsSheetProps) => {
+const MoveOptionsSheet = ({
+  editingMove,
+  handleGameTime,
+  dismiss,
+}: MoveOptionsSheetProps) => {
   const recordingState = useGraphicalRecordingState();
   const actions = recordingState?.[1];
 
@@ -40,7 +45,15 @@ const MoveOptionsSheet = ({ editingMove, dismiss }: MoveOptionsSheetProps) => {
       dismiss={dismiss}
       title="Move options">
       <MoveOption
-        onPress={() => undefined}
+        onPress={() => {
+          if (editingMove) {
+            handleGameTime(
+              editingMove.moveIndex * 2 +
+                (editingMove.colour === PlayerColour.Black ? 1 : 0),
+            );
+          }
+          dismiss();
+        }}
         colour={colours.primary}
         icon={<ICON_CLOCK color={colours.white} />}
         label="Record time"
