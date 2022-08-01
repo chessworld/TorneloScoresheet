@@ -53,13 +53,20 @@ const GraphicalRecording: React.FC = () => {
   const [pgn, setPgn] = useState('');
   const [, showError] = useError();
   const [showEndGame, setShowEndGame] = useState(false);
-  const [showFirstSignature, setShowFirstSignature] = useState(false);
-  const [showSecondSignature, setShowSecondSignature] = useState(false);
+  const [showSignature, setShowFirstSignature] = useState(false);
   const goToEndGame = graphicalRecordingState?.[1].goToEndGame;
   const [selectedWinner, setSelectedWinner] = useState<
     undefined | Player | null
   >(undefined);
-  const [playerSignatures, setPlayerSignatures] = useState<string[]>([]);
+  const signatureFromPlayer: Record<PlayerColour, string | undefined> = {
+    [PlayerColour.Black]: undefined,
+    [PlayerColour.White]: undefined,
+  };
+  const [playerSignatures, setPlayerSignatures] =
+    useState<Record<PlayerColour, string | undefined>>(signatureFromPlayer);
+  const [signingPlayer, setSigningPlayer] = useState(
+    graphicalRecordingMode?.currentPlayer,
+  );
 
   // Scroll view ref
   const scrollRef = useRef<ScrollView>(null);
@@ -176,28 +183,35 @@ const GraphicalRecording: React.FC = () => {
   // Button Functions
 
   const handleConfirmWinner = (signatureInput: string) => {
-    const signatureArray = [...playerSignatures, signatureInput];
     if (!graphicalRecordingMode || !goToEndGame) {
       return;
     } else {
-      if (signatureArray.length == 2) {
-        setPlayerSignatures(() => []);
+      signingPlayer == PlayerColour.White
+        ? setSigningPlayer(PlayerColour.Black)
+        : setSigningPlayer(PlayerColour.White);
+      const signatureRecord = { ...playerSignatures };
+      // if the current player is player 1 update the 0th index first, otherwise update index 1
+      graphicalRecordingMode.currentPlayer == PlayerColour.White
+        ? !signatureRecord[0]
+          ? (signatureRecord[0] = signatureInput)
+          : (signatureRecord[1] = signatureInput)
+        : !signatureRecord[1]
+        ? (signatureRecord[1] = signatureInput)
+        : (signatureRecord[0] = signatureInput);
+
+      setPlayerSignatures(signatureRecord);
+      console.log(signatureRecord);
+      if (signatureRecord[0] && signatureRecord[1]) {
+        //resetting the signature state to empty values
+        setPlayerSignatures(signatureFromPlayer);
+        setSigningPlayer(graphicalRecordingMode?.currentPlayer);
         goToEndGame({
           winner: selectedWinner?.color ?? null,
-          signature: signatureArray,
+          signature: signatureRecord,
           gamePgn: pgn,
         });
       }
     }
-  };
-
-  const handleConfirmFirstSignature = (signatureInput: string) => {
-    setPlayerSignatures(playerSignatures => [
-      ...playerSignatures,
-      signatureInput,
-    ]);
-    setShowFirstSignature(false);
-    setShowSecondSignature(true);
   };
 
   const handleSelectWinner = (player: Player | null) => {
@@ -222,10 +236,10 @@ const GraphicalRecording: React.FC = () => {
 
   const handleCancelSelection = () => {
     setShowFirstSignature(false);
-    setShowSecondSignature(false);
     setShowEndGame(false);
     setSelectedWinner(undefined);
-    setPlayerSignatures(() => []);
+    setPlayerSignatures(signatureFromPlayer);
+    setSigningPlayer(graphicalRecordingMode?.currentPlayer);
   };
 
   const handleToggleDraw = (drawIndex: number) => {
@@ -320,29 +334,16 @@ const GraphicalRecording: React.FC = () => {
             dismiss={handleDismissMoveOptions}
           />
           <Signature
-            visible={showFirstSignature}
-            onCancel={handleCancelSelection}
-            winnerName={(selectedWinner && fullName(selectedWinner)) ?? null}
-            onConfirm={handleConfirmFirstSignature}
-            white={graphicalRecordingMode.pairing.players[0]}
-            black={graphicalRecordingMode.pairing.players[1]}
-            currentPlayer={
-              graphicalRecordingMode.currentPlayer === PlayerColour.White
-                ? fullName(graphicalRecordingMode.pairing.players[0])
-                : fullName(graphicalRecordingMode.pairing.players[1])
-            }
-          />
-          <Signature
-            visible={showSecondSignature}
+            visible={showSignature}
             onCancel={handleCancelSelection}
             winnerName={(selectedWinner && fullName(selectedWinner)) ?? null}
             onConfirm={handleConfirmWinner}
             white={graphicalRecordingMode.pairing.players[0]}
             black={graphicalRecordingMode.pairing.players[1]}
             currentPlayer={
-              graphicalRecordingMode.currentPlayer === PlayerColour.White
-                ? fullName(graphicalRecordingMode.pairing.players[1])
-                : fullName(graphicalRecordingMode.pairing.players[0])
+              signingPlayer === PlayerColour.White
+                ? fullName(graphicalRecordingMode.pairing.players[0])
+                : fullName(graphicalRecordingMode.pairing.players[1])
             }
           />
           {/*----- body ----- */}
