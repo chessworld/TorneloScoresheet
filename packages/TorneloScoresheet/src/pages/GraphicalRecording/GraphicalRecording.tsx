@@ -35,7 +35,7 @@ import { colours } from '../../style/colour';
 import { useError } from '../../context/ErrorContext';
 import { isError } from '../../types/Result';
 import MoveOptionsSheet, { EditingMove } from './MoveOptionsSheet';
-import RecordingPlayerCard from '../../components/RecordingPlayerCard/RecordingPlayerCard';
+import GraphicalModePlayerCard from '../../components/GraphicalModePlayerCard/GraphicalModePlayerCard';
 import TimePickerSheet from '../../components/TimePickerSheet/TimePickerSheet';
 
 const otherPlayer = (player: PlayerColour | undefined) => {
@@ -430,10 +430,12 @@ const GraphicalRecording: React.FC = () => {
           />
 
           <View style={styles.playerCardsContainer}>
-            <RecordingPlayerCard
+            <GraphicalModePlayerCard
+              align="left"
               player={graphicalRecordingMode.pairing.players[0]}
             />
-            <RecordingPlayerCard
+            <GraphicalModePlayerCard
+              align="right"
               player={graphicalRecordingMode.pairing.players[1]}
             />
           </View>

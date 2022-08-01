@@ -13,11 +13,13 @@ export const colours = {
   primary20: 'rgba(0, 174, 239, 0.2)' as const,
   secondary: '#1a2136' as const,
   secondary40: 'rgba(26, 33, 54, 0.4)' as const,
+  secondary70: 'rgba(26, 33, 54, 0.7)' as const,
   tertiary: '#ffbf00' as const,
   // Elements Colours
   darkenedElements: '#141414' as const,
   lightGrey: '#00000030' as const,
   grey: '#6B6A6E' as const,
+  grey20: 'rgba(26, 33, 54, 0.2)' as const,
   darkGrey: '#323232' as const,
   // Chess Board Colours
   darkBlue: '#A2CEE3' as const,
