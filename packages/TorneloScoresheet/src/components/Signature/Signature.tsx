@@ -36,6 +36,7 @@ const Signature: React.FC<SignatureProps> = ({
 
   const handleSaveSignature = async (event: SaveEventParams) => {
     const base64Image = `data:image/png;base64,${event.encoded}`;
+    sign.current.resetImage();
     onConfirm(base64Image);
   };
 
