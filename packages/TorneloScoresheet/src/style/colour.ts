@@ -16,6 +16,7 @@ export const colours = {
   tertiary: '#ffbf00' as const,
   // Elements Colours
   darkenedElements: '#141414' as const,
+  lightGrey: '#00000030' as const,
   grey: '#6B6A6E' as const,
   darkGrey: '#323232' as const,
   // Chess Board Colours
@@ -33,6 +34,7 @@ export const statusBarStyleForColor = (colour: ColourType): StatusBarStyle => {
     case colours.negative:
     case colours.darkenedElements:
     case colours.black:
+    case colours.lightGrey:
     case colours.grey:
     case colours.darkGrey:
       return 'light-content';
@@ -62,6 +64,7 @@ export const textColour = (colour: ColourType): string => {
     case colours.black:
     case colours.lightBlue:
     case colours.darkBlue:
+    case colours.lightGrey:
     case colours.grey:
     case colours.darkGrey:
       return 'white';
