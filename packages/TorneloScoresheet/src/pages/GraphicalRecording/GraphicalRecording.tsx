@@ -28,8 +28,8 @@ import Signature from '../../components/Signature/Signature';
 import { colours } from '../../style/colour';
 import { useError } from '../../context/ErrorContext';
 import { isError } from '../../types/Result';
-import PrimaryText from '../../components/PrimaryText/PrimaryText';
 import MoveOptionsSheet, { EditingMove } from './MoveOptionsSheet';
+import RecordingPlayerCard from '../../components/RecordingPlayerCard/RecordingPlayerCard';
 
 const GraphicalRecording: React.FC = () => {
   // app mode hook unpacking
@@ -145,30 +145,30 @@ const GraphicalRecording: React.FC = () => {
   ];
   const endGameOptions = graphicalRecordingMode
     ? [
-        {
-          text: fullName(graphicalRecordingMode.pairing.players[0]),
-          onPress: () =>
-            handleSelectWinner(graphicalRecordingMode.pairing.players[0]),
-          style: {
-            width: '100%',
-          },
+      {
+        text: fullName(graphicalRecordingMode.pairing.players[0]),
+        onPress: () =>
+          handleSelectWinner(graphicalRecordingMode.pairing.players[0]),
+        style: {
+          width: '100%',
         },
-        {
-          text: fullName(graphicalRecordingMode.pairing.players[1]),
-          onPress: () =>
-            handleSelectWinner(graphicalRecordingMode.pairing.players[1]),
-          style: {
-            width: '100%',
-          },
+      },
+      {
+        text: fullName(graphicalRecordingMode.pairing.players[1]),
+        onPress: () =>
+          handleSelectWinner(graphicalRecordingMode.pairing.players[1]),
+        style: {
+          width: '100%',
         },
-        {
-          text: 'Draw',
-          onPress: () => handleSelectWinner(null),
-          style: {
-            width: '100%',
-          },
+      },
+      {
+        text: 'Draw',
+        onPress: () => handleSelectWinner(null),
+        style: {
+          width: '100%',
         },
-      ]
+      },
+    ]
     : [];
 
   // Button Functions
@@ -307,10 +307,12 @@ const GraphicalRecording: React.FC = () => {
             winnerName={(selectedWinner && fullName(selectedWinner)) ?? null}
             onConfirm={handleConfirmWinner}
           />
-          {/*----- body ----- */}
-          <View style={styles.placeholder}>
-            <PrimaryText label="Placeholder" size={30} />
+
+          <View style={styles.playerCardsContainer}>
+            <RecordingPlayerCard player={graphicalRecordingMode.pairing.players[0]} />
+            <RecordingPlayerCard player={graphicalRecordingMode.pairing.players[1]} />
           </View>
+
           <View style={styles.boardButtonContainer}>
             <ActionBar actionButtons={actionButtons} />
             <ChessBoard
