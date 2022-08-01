@@ -14,6 +14,13 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
   },
+  playerCardsContainer: {
+    height: 100,
+    padding: 20,
+    width: "100%",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   placeholder: { height: 100, marginLeft: 10 },
   moveOption: {
     display: 'flex',
