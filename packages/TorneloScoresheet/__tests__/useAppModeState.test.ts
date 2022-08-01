@@ -967,7 +967,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
     const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
     const result = {
       winner: PlayerColour.White,
-      signature: ['base 64 image', 'base 64 image'],
+      signature: { 0: 'base 64 image', 1: 'base 64 image' },
       gamePgn: 'game pgn',
     };
 
@@ -1104,7 +1104,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
     const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
     const result = {
       winner: PlayerColour.Black,
-      signature: ['base 64 image', 'base 64 image'],
+      signature: { 0: 'base 64 image', 1: 'base 64 image' },
       gamePgn: 'game pgn',
     };
 
@@ -1241,7 +1241,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
     const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
     const result = {
       winner: null,
-      signature: ['base 64 image', 'base 64 image'],
+      signature: { 0: 'base 64 image', 1: 'base 64 image' },
       gamePgn: 'game pgn',
     };
 
