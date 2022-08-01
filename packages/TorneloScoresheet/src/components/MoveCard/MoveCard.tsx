@@ -25,6 +25,7 @@ const MoveCard: React.FC<MoveCardProps> = ({ move, onRequestEditMove }) => {
           style={styles.touchableOpacity}
           onLongPress={() => onRequestEditMove(PlayerColour.White)}>
           {move.white.drawOffer && <DrawOfferIcon />}
+          {move.white.gameTime && <GameTimeIcon />}
           <PrimaryText size={18} align={Align.Center} weight={FontWeight.Bold}>
             {moveString(move.white)}
           </PrimaryText>
@@ -42,6 +43,7 @@ const MoveCard: React.FC<MoveCardProps> = ({ move, onRequestEditMove }) => {
           disabled={!move.black}
           onLongPress={() => onRequestEditMove(PlayerColour.Black)}>
           {move.black?.drawOffer && <DrawOfferIcon />}
+          {move.black?.gameTime && <GameTimeIcon />}
           <PrimaryText size={18} align={Align.Center} weight={FontWeight.Bold}>
             {move.black ? moveString(move.black) : ' '}
           </PrimaryText>
@@ -84,6 +86,16 @@ const DrawOfferIcon = () => {
         size={size}
         color={colours.darkGrey}
       />
+      <View style={iconBackground(size)} />
+    </View>
+  );
+};
+
+const GameTimeIcon = () => {
+  const size = 16;
+  return (
+    <View style={styles.gameTimeIconContainer}>
+      <Icon name="clock" size={size} color={colours.darkGrey} />
       <View style={iconBackground(size)} />
     </View>
   );

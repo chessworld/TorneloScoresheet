@@ -36,4 +36,8 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
   },
+  gameTimeIconContainer: {
+    position: 'absolute',
+    left: 0,
+  },
 });
