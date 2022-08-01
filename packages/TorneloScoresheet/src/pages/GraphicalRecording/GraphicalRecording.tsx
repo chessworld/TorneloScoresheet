@@ -34,8 +34,8 @@ import Signature from '../../components/Signature/Signature';
 import { colours } from '../../style/colour';
 import { useError } from '../../context/ErrorContext';
 import { isError } from '../../types/Result';
-import PrimaryText from '../../components/PrimaryText/PrimaryText';
 import MoveOptionsSheet, { EditingMove } from './MoveOptionsSheet';
+import RecordingPlayerCard from '../../components/RecordingPlayerCard/RecordingPlayerCard';
 import TimePickerSheet from '../../components/TimePickerSheet/TimePickerSheet';
 
 const otherPlayer = (player: PlayerColour | undefined) => {
@@ -429,10 +429,15 @@ const GraphicalRecording: React.FC = () => {
             }}
           />
 
-          {/*----- body ----- */}
-          <View style={styles.placeholder}>
-            <PrimaryText label="Placeholder" size={30} />
+          <View style={styles.playerCardsContainer}>
+            <RecordingPlayerCard
+              player={graphicalRecordingMode.pairing.players[0]}
+            />
+            <RecordingPlayerCard
+              player={graphicalRecordingMode.pairing.players[1]}
+            />
           </View>
+
           <View style={styles.boardButtonContainer}>
             <ActionBar actionButtons={actionButtons} />
             <ChessBoard
