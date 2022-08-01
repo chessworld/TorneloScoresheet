@@ -15,9 +15,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   playerCardsContainer: {
-    height: 100,
+    height: 110,
     padding: 20,
-    width: "100%",
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
