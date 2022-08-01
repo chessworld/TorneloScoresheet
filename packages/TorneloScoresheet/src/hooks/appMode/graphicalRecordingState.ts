@@ -8,6 +8,7 @@ import {
 import { ChessGameResult, PlayerColour } from '../../types/ChessGameInfo';
 import {
   ChessPly,
+  GameTime,
   MovePly,
   MoveSquares,
   PieceType,
@@ -30,6 +31,7 @@ type GraphicalRecordingStateHookType = [
     skipTurnAndProcessMove: (move: MoveSquares, promotion?: PieceType) => void;
     generatePgn: (winner: PlayerColour | null) => Result<string>;
     toggleDraw: (drawIndex: number) => void;
+    setGameTime: (index: number, gameTime: GameTime | undefined) => void;
   },
 ];
 
@@ -223,6 +225,23 @@ export const makeUseGraphicalRecordingState =
       });
     };
 
+    const setGameTime = (index: number, gameTime: GameTime | undefined) => {
+      setAppModeState(graphicalRecordingState => {
+        // Do nothing if we aren't in graphical recording mode
+        if (graphicalRecordingState.mode !== AppMode.GraphicalRecording) {
+          return graphicalRecordingState;
+        }
+
+        // Otherwise, set the game time of the desired move
+        return {
+          ...graphicalRecordingState,
+          moveHistory: graphicalRecordingState.moveHistory.map((el, i) =>
+            i === index ? { ...el, gameTime } : el,
+          ),
+        };
+      });
+    };
+
     return [
       appModeState,
       {
@@ -237,6 +256,7 @@ export const makeUseGraphicalRecordingState =
         skipTurnAndProcessMove,
         generatePgn,
         toggleDraw,
+        setGameTime,
       },
     ];
   };
