@@ -15,6 +15,7 @@ import {
 } from '../testUtils/testUtils';
 import {
   ChessPly,
+  GameTime,
   MoveSquares,
   PieceType,
   PlyTypes,
@@ -1427,6 +1428,143 @@ describe('Toggle Draw Offer', () => {
               'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
             move: { from: 'a1', to: 'a5' } as MoveSquares,
             drawOffer: false,
+          },
+          {
+            moveNo: 1,
+            player: PlayerColour.Black,
+            startingFen:
+              'rnbqkbnr/pppppppp/8/R7/8/8/PPPPPPPP/1NBQKBNR b Kkq - 1 1',
+            move: { from: 'h8', to: 'h5' } as MoveSquares,
+            type: PlyTypes.MovePly,
+            drawOffer: false,
+          },
+        ],
+      });
+    });
+  });
+});
+
+describe('Add Game time', () => {
+  test('Add game time on move with no existing game time', () => {
+    const moveHistory = [
+      {
+        moveNo: 1,
+        player: PlayerColour.White,
+        startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+        type: PlyTypes.MovePly,
+        move: { from: 'a1', to: 'a5' } as MoveSquares,
+        drawOffer: false,
+      },
+    ];
+    const graphicalState = generateGraphicalRecordingState(moveHistory);
+    const setContextMock = mockAppModeContext(graphicalState);
+    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+
+    const gameTime: GameTime = { hours: 1, minutes: 1 };
+
+    act(() => {
+      ``;
+      graphicalStateHook.current?.[1].setGameTime(0, gameTime);
+      expect(setContextMock).toHaveBeenCalledTimes(1);
+      expect(typeof setContextMock.mock.calls[0][0]).toBe('function');
+      expect(setContextMock.mock.calls[0][0](graphicalState)).toEqual({
+        ...graphicalState,
+        moveHistory: [
+          {
+            moveNo: 1,
+            player: PlayerColour.White,
+            startingFen:
+              'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+            type: PlyTypes.MovePly,
+            move: { from: 'a1', to: 'a5' } as MoveSquares,
+            drawOffer: false,
+            gameTime,
+          },
+        ],
+      });
+    });
+  });
+
+  test('rfemove game time on move with existing game time', () => {
+    const moveHistory = [
+      {
+        moveNo: 1,
+        player: PlayerColour.White,
+        startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+        type: PlyTypes.MovePly,
+        move: { from: 'a1', to: 'a5' } as MoveSquares,
+        drawOffer: true,
+        gameTime: { hours: 1, minutes: 1 },
+      },
+    ];
+    const graphicalState = generateGraphicalRecordingState(moveHistory);
+    const setContextMock = mockAppModeContext(graphicalState);
+    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+
+    act(() => {
+      graphicalStateHook.current?.[1].setGameTime(0, undefined);
+      expect(setContextMock).toHaveBeenCalledTimes(1);
+      expect(typeof setContextMock.mock.calls[0][0]).toBe('function');
+      expect(setContextMock.mock.calls[0][0](graphicalState)).toEqual({
+        ...graphicalState,
+        moveHistory: [
+          {
+            moveNo: 1,
+            player: PlayerColour.White,
+            startingFen:
+              'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+            type: PlyTypes.MovePly,
+            move: { from: 'a1', to: 'a5' } as MoveSquares,
+            drawOffer: true,
+          },
+        ],
+      });
+    });
+  });
+
+  test('update game time to different time', () => {
+    const moveHistory = [
+      {
+        moveNo: 1,
+        player: PlayerColour.White,
+        type: PlyTypes.MovePly,
+        startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+        move: { from: 'a1', to: 'a5' } as MoveSquares,
+        drawOffer: false,
+        gameTime: { hours: 1, minutes: 1 },
+      },
+      {
+        moveNo: 1,
+        player: PlayerColour.Black,
+        startingFen: 'rnbqkbnr/pppppppp/8/R7/8/8/PPPPPPPP/1NBQKBNR b Kkq - 1 1',
+        move: { from: 'h8', to: 'h5' } as MoveSquares,
+        type: PlyTypes.MovePly,
+        drawOffer: false,
+      },
+    ];
+    const graphicalState = generateGraphicalRecordingState(moveHistory);
+    const setContextMock = mockAppModeContext(graphicalState);
+    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const newGameTime = { hours: 2, minutes: 2 };
+    act(() => {
+      graphicalStateHook.current?.[1].setGameTime(0, newGameTime);
+      expect(setContextMock).toHaveBeenCalledTimes(1);
+      expect(typeof setContextMock.mock.calls[0][0]).toBe('function');
+      expect(setContextMock.mock.calls[0][0](graphicalState)).toEqual({
+        ...graphicalState,
+        board: chessEngine.fenToBoardPositions(
+          'rnbqkbnr/pppppppp/8/R7/8/8/PPPPPPPP/1NBQKBNR b Kkq - 1 1',
+        ),
+        moveHistory: [
+          {
+            moveNo: 1,
+            player: PlayerColour.White,
+            type: PlyTypes.MovePly,
+            startingFen:
+              'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+            move: { from: 'a1', to: 'a5' } as MoveSquares,
+            drawOffer: false,
+            gameTime: newGameTime,
           },
           {
             moveNo: 1,
