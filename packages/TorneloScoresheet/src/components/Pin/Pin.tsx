@@ -31,7 +31,7 @@ const Pin: React.FC<PinProps> = ({ onPress }) => {
   const [, showError] = useError();
   return (
     <View>
-      <SafeAreaView style={styles.root}>
+      <SafeAreaView>
         <CodeField
           ref={ref}
           {...props}
@@ -70,21 +70,20 @@ const Pin: React.FC<PinProps> = ({ onPress }) => {
           )}
         />
       </SafeAreaView>
-      <View style={styles.verifyButtonArea}>
-        <PrimaryButton
-          onPress={() => {
-            if (pinValid(value)) {
-              //pin is correct - move to arbiter mode
-              onPress(true);
-            } else {
-              //incorrect pin
-              setValue('');
-              showError('Invalid Pin - Please Try Again');
-            }
-          }}
-          label="Enter Arbiter Mode"
-        />
-      </View>
+      <PrimaryButton
+        style={styles.verifyButton}
+        onPress={() => {
+          if (pinValid(value)) {
+            //pin is correct - move to arbiter mode
+            onPress(true);
+          } else {
+            //incorrect pin
+            setValue('');
+            showError('Invalid Pin - Please Try Again');
+          }
+        }}
+        label="Enter Arbiter Mode"
+      />
     </View>
   );
 };
