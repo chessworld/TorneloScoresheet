@@ -1,6 +1,6 @@
 import { BoardPosition } from './ChessBoardPositions';
 import { ChessGameInfo, ChessGameResult, PlayerColour } from './ChessGameInfo';
-import { ChessPly } from './ChessMove';
+import { ChessPly, GameTime } from './ChessMove';
 
 export enum AppMode {
   EnterPgn,
@@ -53,6 +53,7 @@ export type TablePairingMode = {
 
 export type GraphicalRecordingMode = {
   mode: AppMode.GraphicalRecording;
+  startTime: number;
   pairing: ChessGameInfo;
   moveHistory: ChessPly[];
   board: BoardPosition[];
