@@ -52,14 +52,14 @@ const GraphicalRecording: React.FC = () => {
   const [pgn, setPgn] = useState('');
   const [, showError] = useError();
   const [showEndGame, setShowEndGame] = useState(false);
-  const [showSignature, setShowFirstSignature] = useState(false);
+  const [showSignature, setShowSignature] = useState(false);
   const goToEndGame = graphicalRecordingState?.[1].goToEndGame;
   const [selectedWinner, setSelectedWinner] = useState<
     undefined | Player | null
   >(undefined);
   const signatureFromPlayer: Record<PlayerColour, string | undefined> = {
-    [PlayerColour.Black]: undefined,
     [PlayerColour.White]: undefined,
+    [PlayerColour.Black]: undefined,
   };
   const [playerSignatures, setPlayerSignatures] =
     useState<Record<PlayerColour, string | undefined>>(signatureFromPlayer);
@@ -199,14 +199,16 @@ const GraphicalRecording: React.FC = () => {
         : (signatureRecord[0] = signatureInput);
 
       setPlayerSignatures(signatureRecord);
-      console.log(signatureRecord);
       if (signatureRecord[0] && signatureRecord[1]) {
         //resetting the signature state to empty values
         setPlayerSignatures(signatureFromPlayer);
         setSigningPlayer(graphicalRecordingMode?.currentPlayer);
         goToEndGame({
           winner: selectedWinner?.color ?? null,
-          signature: signatureRecord,
+          signature: {
+            [PlayerColour.White]: signatureRecord[PlayerColour.White] ?? '',
+            [PlayerColour.Black]: signatureRecord[PlayerColour.Black] ?? '',
+          },
           gamePgn: pgn,
         });
       }
@@ -227,13 +229,13 @@ const GraphicalRecording: React.FC = () => {
     setPgn(pgnResult.data);
 
     // if pgn can be generated -> prompt user for signature
-    setShowFirstSignature(true);
+    setShowSignature(true);
     setShowEndGame(false);
     setSelectedWinner(player);
   };
 
   const handleCancelSelection = () => {
-    setShowFirstSignature(false);
+    setShowSignature(false);
     setShowEndGame(false);
     setSelectedWinner(undefined);
     setPlayerSignatures(signatureFromPlayer);
