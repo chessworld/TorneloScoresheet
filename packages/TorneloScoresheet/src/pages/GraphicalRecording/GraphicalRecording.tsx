@@ -28,8 +28,8 @@ import Signature from '../../components/Signature/Signature';
 import { colours } from '../../style/colour';
 import { useError } from '../../context/ErrorContext';
 import { isError } from '../../types/Result';
-import PrimaryText from '../../components/PrimaryText/PrimaryText';
 import MoveOptionsSheet, { EditingMove } from './MoveOptionsSheet';
+import GraphicalModePlayerCard from '../../components/GraphicalModePlayerCard/GraphicalModePlayerCard';
 
 const GraphicalRecording: React.FC = () => {
   // app mode hook unpacking
@@ -348,10 +348,18 @@ const GraphicalRecording: React.FC = () => {
                 : fullName(graphicalRecordingMode.pairing.players[1])
             }
           />
-          {/*----- body ----- */}
-          <View style={styles.placeholder}>
-            <PrimaryText label="Placeholder" size={30} />
+
+          <View style={styles.playerCardsContainer}>
+            <GraphicalModePlayerCard
+              align="left"
+              player={graphicalRecordingMode.pairing.players[0]}
+            />
+            <GraphicalModePlayerCard
+              align="right"
+              player={graphicalRecordingMode.pairing.players[1]}
+            />
           </View>
+
           <View style={styles.boardButtonContainer}>
             <ActionBar actionButtons={actionButtons} />
             <ChessBoard
