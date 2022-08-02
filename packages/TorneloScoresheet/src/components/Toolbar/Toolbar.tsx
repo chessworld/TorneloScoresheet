@@ -38,6 +38,7 @@ const Toolbar: React.FC = () => {
   const appModeState = useAppModeState();
   const [showSheet, setShowSheet] = useState(false);
   const [showArbiterSheet, setShowArbiterSheet] = useState(false);
+  const [resetPin, setResetPin] = useState(0);
   const handleHelpPress = () => {
     setShowSheet(a => !a);
   };
@@ -71,6 +72,8 @@ const Toolbar: React.FC = () => {
       //pin is correct - move to arbiter mode
       setShowArbiterSheet(false);
       appModeArbiterTransition[appModeState.mode]();
+    } else {
+      setResetPin(resetPin + 1);
     }
   };
 
@@ -93,7 +96,7 @@ const Toolbar: React.FC = () => {
           weight={FontWeight.Bold}
           label={'Enter Pin'}
         />
-        <Pin onPress={handleVerify} />
+        <Pin onPress={handleVerify} resetPin={resetPin} />
       </Sheet>
       <View style={[styles.container, backgroundColorStyle(currentColour)]}>
         {showArbiterModeButton ? (
