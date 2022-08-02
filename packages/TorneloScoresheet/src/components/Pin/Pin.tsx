@@ -18,9 +18,10 @@ const CELL_COUNT = 4;
 
 export type PinProps = {
   onPress: (pinCorrect: boolean) => void;
+  resetPin: number;
 };
 
-const Pin: React.FC<PinProps> = ({ onPress }) => {
+const Pin: React.FC<PinProps> = ({ onPress, resetPin }) => {
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -33,6 +34,7 @@ const Pin: React.FC<PinProps> = ({ onPress }) => {
     <View>
       <SafeAreaView>
         <CodeField
+          key={resetPin}
           ref={ref}
           {...props}
           // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
@@ -80,6 +82,7 @@ const Pin: React.FC<PinProps> = ({ onPress }) => {
             //incorrect pin
             setValue('');
             showError('Invalid Pin - Please Try Again');
+            onPress(false);
           }
         }}
         label="Enter Arbiter Mode"
