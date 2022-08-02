@@ -6,14 +6,18 @@ import {
   Cursor,
   useBlurOnFulfill,
   useClearByFocusCell,
+  MaskSymbol,
+  isLastFilledCell,
 } from 'react-native-confirmation-code-field';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import PrimaryText from '../PrimaryText/PrimaryText';
+import { useError } from '../../context/ErrorContext';
+import { pinValid } from '../../util/arbiterPin';
 
 const CELL_COUNT = 4;
 
 export type PinProps = {
-  onPress: () => void;
+  onPress: (pinCorrect: boolean) => void;
 };
 
 const Pin: React.FC<PinProps> = ({ onPress }) => {
@@ -24,9 +28,10 @@ const Pin: React.FC<PinProps> = ({ onPress }) => {
     setValue,
   });
 
+  const [, showError] = useError();
   return (
     <View>
-      <SafeAreaView style={styles.root}>
+      <SafeAreaView>
         <CodeField
           ref={ref}
           {...props}
@@ -53,15 +58,32 @@ const Pin: React.FC<PinProps> = ({ onPress }) => {
               key={index}
               style={[styles.cell, isFocused && styles.focusCell]}>
               <PrimaryText style={styles.numbersInCells}>
-                {symbol || (isFocused ? <Cursor /> : null)}
+                {(symbol ? (
+                  <MaskSymbol
+                    maskSymbol="•"
+                    isLastFilledCell={isLastFilledCell({ index, value })}>
+                    {symbol}
+                  </MaskSymbol>
+                ) : null) || (isFocused ? <Cursor /> : null)}
               </PrimaryText>
             </View>
           )}
         />
       </SafeAreaView>
-      <View style={styles.verifyButtonArea}>
-        <PrimaryButton onPress={onPress} label="Verify" />
-      </View>
+      <PrimaryButton
+        style={styles.verifyButton}
+        onPress={() => {
+          if (pinValid(value)) {
+            //pin is correct - move to arbiter mode
+            onPress(true);
+          } else {
+            //incorrect pin
+            setValue('');
+            showError('Invalid Pin - Please Try Again');
+          }
+        }}
+        label="Enter Arbiter Mode"
+      />
     </View>
   );
 };
