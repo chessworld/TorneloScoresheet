@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Image, StatusBar, View } from 'react-native';
 import {
   useAppModeState,
+  useArbiterGraphicalRecordingState,
+  useArbiterResultDisplayState,
+  useArbiterTablePairingState,
   useGraphicalRecordingState,
   useResultDisplayState,
   useTablePairingState,
@@ -13,7 +16,11 @@ import {
   textColour,
 } from '../../style/colour';
 import { BLACK_LOGO_IMAGE, WHITE_LOGO_IMAGE } from '../../style/images';
-import { AppMode, isArbiterMode } from '../../types/AppModeState';
+import {
+  AppMode,
+  isArbiterFromPlayerMode,
+  isArbiterMode,
+} from '../../types/AppModeState';
 import IconButton from '../IconButton/IconButton';
 import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import Sheet from '../Sheet/Sheet';
@@ -38,14 +45,9 @@ const Toolbar: React.FC = () => {
   const appModeState = useAppModeState();
   const [showSheet, setShowSheet] = useState(false);
   const [showArbiterSheet, setShowArbiterSheet] = useState(false);
-  const handleHelpPress = () => {
-    setShowSheet(a => !a);
-  };
-  const handleArbiterPress = () => {
-    setShowArbiterSheet(a => !a);
-  };
   const currentColour = colourForMode(appModeState.mode);
   const showArbiterModeButton = !isArbiterMode(appModeState.mode);
+  const showPlayerModeButton = isArbiterFromPlayerMode(appModeState.mode);
   const currentTextColour = textColour(currentColour);
 
   const voidReturn: () => void = () => {
@@ -66,10 +68,35 @@ const Toolbar: React.FC = () => {
       useTablePairingState()?.[1].goToArbiterGameMode ?? voidReturn,
   };
 
-  const handleVerify = () => {
+  const appModePlayerTransition: Record<AppMode, () => void> = {
+    [AppMode.EnterPgn]: voidReturn,
+    [AppMode.PairingSelection]: voidReturn,
+    [AppMode.TablePairing]: voidReturn,
+    [AppMode.GraphicalRecording]: voidReturn,
+    [AppMode.ResultDisplay]: voidReturn,
+    [AppMode.ArbiterGraphicalRecording]:
+      useArbiterGraphicalRecordingState()?.[1].goToRecordingMode ?? voidReturn,
+    [AppMode.ArbiterTablePairing]:
+      useArbiterTablePairingState()?.[1].goToTablePairingMode ?? voidReturn,
+    [AppMode.ArbiterResultDisplay]:
+      useArbiterResultDisplayState()?.[1].goToResultDisplayMode ?? voidReturn,
+  };
+
+  const handleArbiterVerify = () => {
     //pin is correct - move to arbiter mode
     setShowArbiterSheet(false);
     appModeArbiterTransition[appModeState.mode]();
+  };
+
+  const handleHelpPress = () => {
+    setShowSheet(a => !a);
+  };
+  const handleArbiterPress = () => {
+    setShowArbiterSheet(a => !a);
+  };
+
+  const handlePlayerPress = () => {
+    appModePlayerTransition[appModeState.mode]();
   };
 
   return (
@@ -91,13 +118,22 @@ const Toolbar: React.FC = () => {
           weight={FontWeight.Bold}
           label={'Enter Pin'}
         />
-        <Pin onPress={handleVerify} />
+        <Pin onPress={handleArbiterVerify} />
       </Sheet>
       <View style={[styles.container, backgroundColorStyle(currentColour)]}>
         {showArbiterModeButton ? (
           <IconButton
             icon="lock"
             onPress={handleArbiterPress}
+            colour={currentTextColour}
+          />
+        ) : (
+          <View style={[styles.placeHolderButton]} />
+        )}
+        {showPlayerModeButton ? (
+          <IconButton
+            icon="lock"
+            onPress={handlePlayerPress}
             colour={currentTextColour}
           />
         ) : (
