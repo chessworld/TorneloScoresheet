@@ -25,6 +25,18 @@ export const isArbiterMode = (mode: AppMode): boolean =>
     [AppMode.ArbiterResultDisplay]: true,
   }[mode]);
 
+export const isArbiterFromPlayerMode = (mode: AppMode): boolean =>
+  ({
+    [AppMode.EnterPgn]: false,
+    [AppMode.PairingSelection]: false,
+    [AppMode.TablePairing]: false,
+    [AppMode.GraphicalRecording]: false,
+    [AppMode.ResultDisplay]: false,
+    [AppMode.ArbiterGraphicalRecording]: true,
+    [AppMode.ArbiterTablePairing]: true,
+    [AppMode.ArbiterResultDisplay]: true,
+  }[mode]);
+
 export type EnterPgnMode = {
   mode: AppMode.EnterPgn;
 };
