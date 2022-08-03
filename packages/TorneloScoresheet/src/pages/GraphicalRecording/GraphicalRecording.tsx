@@ -21,7 +21,13 @@ import {
   ROOK,
 } from '../../style/images';
 import { Player, PlayerColour } from '../../types/ChessGameInfo';
-import { PieceType, MoveSquares, ChessPly, Move } from '../../types/ChessMove';
+import {
+  PieceType,
+  MoveSquares,
+  ChessPly,
+  Move,
+  GameTime,
+} from '../../types/ChessMove';
 import { styles } from './style';
 import { fullName } from '../../util/player';
 import Signature from '../../components/Signature/Signature';
@@ -30,6 +36,7 @@ import { useError } from '../../context/ErrorContext';
 import { isError } from '../../types/Result';
 import PrimaryText from '../../components/PrimaryText/PrimaryText';
 import MoveOptionsSheet, { EditingMove } from './MoveOptionsSheet';
+import TimePickerSheet from '../../components/TimePickerSheet/TimePickerSheet';
 
 const GraphicalRecording: React.FC = () => {
   // app mode hook unpacking
@@ -38,6 +45,7 @@ const GraphicalRecording: React.FC = () => {
   const makeMove = graphicalRecordingState?.[1].move;
   const undoLastMove = graphicalRecordingState?.[1].undoLastMove;
   const isPawnPromotion = graphicalRecordingState?.[1].isPawnPromotion;
+  const setGameTime = graphicalRecordingState?.[1].setGameTime;
   const skipTurn = graphicalRecordingState?.[1].skipTurn;
   const isOtherPlayersPiece = graphicalRecordingState?.[1].isOtherPlayersPiece;
   const skipTurnAndProcessMove =
@@ -51,9 +59,16 @@ const GraphicalRecording: React.FC = () => {
   );
   const [showPromotion, setShowPromotion] = useState(false);
   const [pgn, setPgn] = useState('');
+  const [showTimeSheet, setShowTimeSheet] = useState(false);
   const [, showError] = useError();
   const [showEndGame, setShowEndGame] = useState(false);
   const [showSignature, setShowSignature] = useState(false);
+  const [moveGameTime, setMoveGameTime] = useState<GameTime>({
+    hours: 0,
+    minutes: 0,
+  });
+  const [moveGameTimeIndex, setMoveGameTimeIndex] = useState(0);
+
   const goToEndGame = graphicalRecordingState?.[1].goToEndGame;
   const [selectedWinner, setSelectedWinner] = useState<
     undefined | Player | null
@@ -97,7 +112,11 @@ const GraphicalRecording: React.FC = () => {
     {
       text: 'time',
       onPress: () => {
-        return;
+        if (graphicalRecordingState) {
+          showSelectGameTimeSheet(
+            graphicalRecordingState?.[0].moveHistory.length - 1,
+          );
+        }
       },
       icon: <ICON_CLOCK height={40} fill={colours.white} />,
     },
@@ -227,7 +246,6 @@ const GraphicalRecording: React.FC = () => {
       setShowEndGame(false);
       return;
     }
-    console.log(pgnResult.data);
     setPgn(pgnResult.data);
 
     // if pgn can be generated -> prompt user for signature
@@ -310,6 +328,52 @@ const GraphicalRecording: React.FC = () => {
 
   const handleDismissMoveOptions = () => setEditingMove(undefined);
 
+  /**
+   * Calculates the game time since the game started
+   * @returns the game time
+   */
+  const getCurrentGameTime = (): GameTime => {
+    if (graphicalRecordingState) {
+      const totalMiliseconds =
+        new Date().getTime() - graphicalRecordingState[0].startTime;
+      const totalMinutes = totalMiliseconds / (1000 * 60);
+
+      // calculate time since start
+      return {
+        hours: totalMinutes / 60,
+        minutes: totalMinutes % 60,
+      };
+    }
+
+    // should never reach this code since graphical state should not be numm
+    return { hours: 0, minutes: 0 };
+  };
+
+  const showSelectGameTimeSheet = (index: number): void => {
+    // store index, set the current game time for that move, then show sheet
+    setMoveGameTimeIndex(index);
+    setMoveGameTime(getMoveGameTime());
+    setShowTimeSheet(true);
+  };
+
+  /**
+   * Gets the game time associated with the move index stored
+   * Will return the time since the start of the game if the current move has no time
+   * @returns The game time
+   */
+  const getMoveGameTime = (): GameTime => {
+    if (graphicalRecordingState) {
+      const gameTime =
+        graphicalRecordingState[0].moveHistory[moveGameTimeIndex]?.gameTime;
+
+      // return gameTime associated with move if it exists else current game time
+      return gameTime ? gameTime : getCurrentGameTime();
+    }
+
+    // un reachable code, graphical state should never be null
+    return { hours: 0, minutes: 0 };
+  };
+
   useEffect(() => {
     scrollRef.current?.scrollToEnd();
   }, [graphicalRecordingMode?.moveHistory]);
@@ -333,6 +397,7 @@ const GraphicalRecording: React.FC = () => {
           />
           <MoveOptionsSheet
             editingMove={editingMove}
+            handleGameTime={showSelectGameTimeSheet}
             dismiss={handleDismissMoveOptions}
           />
           <Signature
@@ -348,6 +413,18 @@ const GraphicalRecording: React.FC = () => {
                 : fullName(graphicalRecordingMode.pairing.players[1])
             }
           />
+          <TimePickerSheet
+            dismiss={() => setShowTimeSheet(false)}
+            visible={showTimeSheet}
+            gameTime={moveGameTime}
+            setGameTime={(gameTime: GameTime | undefined) => {
+              if (setGameTime) {
+                setGameTime(moveGameTimeIndex, gameTime);
+              }
+              setShowTimeSheet(false);
+            }}
+          />
+
           {/*----- body ----- */}
           <View style={styles.placeholder}>
             <PrimaryText label="Placeholder" size={30} />

@@ -35,6 +35,11 @@ export enum PlyTypes {
   SkipPly,
 }
 
+export type GameTime = {
+  hours: number;
+  minutes: number;
+};
+
 // Information about a given ply
 export type PlyInfo = {
   moveNo: number;
@@ -42,6 +47,7 @@ export type PlyInfo = {
   player: PlayerColour;
   type: PlyTypes;
   drawOffer: boolean;
+  gameTime?: GameTime;
 };
 
 // A move ply is a recorded ply that involved

@@ -40,6 +40,7 @@ export const makeUseTablePairingState =
         pairing: appModeState.pairing,
         moveHistory: [],
         board,
+        startTime: new Date().getTime(),
         currentPlayer,
       });
     };
