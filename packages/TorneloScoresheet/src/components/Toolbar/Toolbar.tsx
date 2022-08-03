@@ -38,7 +38,6 @@ const Toolbar: React.FC = () => {
   const appModeState = useAppModeState();
   const [showSheet, setShowSheet] = useState(false);
   const [showArbiterSheet, setShowArbiterSheet] = useState(false);
-  const [resetPin, setResetPin] = useState(0);
   const handleHelpPress = () => {
     setShowSheet(a => !a);
   };
@@ -67,14 +66,10 @@ const Toolbar: React.FC = () => {
       useTablePairingState()?.[1].goToArbiterGameMode ?? voidReturn,
   };
 
-  const handleVerify = (pinValid: boolean) => {
-    if (pinValid) {
-      //pin is correct - move to arbiter mode
-      setShowArbiterSheet(false);
-      appModeArbiterTransition[appModeState.mode]();
-    } else {
-      setResetPin(resetPin + 1);
-    }
+  const handleVerify = () => {
+    //pin is correct - move to arbiter mode
+    setShowArbiterSheet(false);
+    appModeArbiterTransition[appModeState.mode]();
   };
 
   return (
@@ -96,7 +91,7 @@ const Toolbar: React.FC = () => {
           weight={FontWeight.Bold}
           label={'Enter Pin'}
         />
-        <Pin onPress={handleVerify} resetPin={resetPin} />
+        <Pin onPress={handleVerify} />
       </Sheet>
       <View style={[styles.container, backgroundColorStyle(currentColour)]}>
         {showArbiterModeButton ? (

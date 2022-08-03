@@ -17,12 +17,12 @@ import { pinValid } from '../../util/arbiterPin';
 const CELL_COUNT = 4;
 
 export type PinProps = {
-  onPress: (pinCorrect: boolean) => void;
-  resetPin: number;
+  onPress: () => void;
 };
 
-const Pin: React.FC<PinProps> = ({ onPress, resetPin }) => {
+const Pin: React.FC<PinProps> = ({ onPress }) => {
   const [value, setValue] = useState('');
+  const [resetPin, setResetPin] = useState(0);
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
@@ -77,12 +77,12 @@ const Pin: React.FC<PinProps> = ({ onPress, resetPin }) => {
         onPress={() => {
           if (pinValid(value)) {
             //pin is correct - move to arbiter mode
-            onPress(true);
+            onPress();
           } else {
             //incorrect pin
             setValue('');
             showError('Invalid Pin - Please Try Again');
-            onPress(false);
+            setResetPin(resetPin + 1);
           }
         }}
         label="Enter Arbiter Mode"
