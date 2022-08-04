@@ -23,6 +23,7 @@ import {
 import { chessEngine } from '../src/chessEngine/chessEngineInterface';
 import axios, { AxiosRequestConfig } from 'axios';
 import { PlayerColour } from '../src/types/ChessGameInfo';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const pgnSucess = `[Event "Skywalker Challenge - A"]
 [Site "Prague, Czechia"]
@@ -99,6 +100,8 @@ describe('useAppModeState', () => {
 
       // should not return an error
       expect(isError(actionResult)).toEqual(false);
+
+      expect(AsyncStorage.setItem).toBeCalledTimes(1);
 
       // should no longer be in pgn state
       expect(enterPgnState.current).toBeNull();
