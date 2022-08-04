@@ -4,7 +4,6 @@ import {
   AppModeState,
   ArbiterGraphicalRecordingMode,
 } from '../../types/AppModeState';
-import { chessEngine } from '../../chessEngine/chessEngineInterface';
 
 type arbiterGraphicalRecordingStateHookType = [
   ArbiterGraphicalRecordingMode,
@@ -26,14 +25,7 @@ export const makeUseArbiterGraphicalRecordingState =
     }
 
     const goToRecordingMode = (): void => {
-      const board = chessEngine.fenToBoardPositions(chessEngine.startingFen());
-      setAppModeState({
-        mode: AppMode.GraphicalRecording,
-        pairing: appModeState.pairing,
-        moveHistory: [],
-        board,
-        currentPlayer: appModeState.currentPlayer,
-      });
+      setAppModeState({ ...appModeState, mode: AppMode.GraphicalRecording });
     };
 
     return [appModeState, { goToRecordingMode }];

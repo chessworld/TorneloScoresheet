@@ -26,9 +26,8 @@ export const makeUseArbiterResultDisplayState =
 
     const goToResultDisplayMode = (): void => {
       setAppModeState({
+        ...appModeState,
         mode: AppMode.ResultDisplay,
-        pairing: appModeState.pairing,
-        result: appModeState.result,
       });
     };
 

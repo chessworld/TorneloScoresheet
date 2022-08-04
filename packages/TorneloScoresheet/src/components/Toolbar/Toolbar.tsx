@@ -135,14 +135,14 @@ const Toolbar: React.FC = () => {
       <View style={[styles.container, backgroundColorStyle(currentColour)]}>
         {showArbiterModeButton && (
           <IconButton
-            icon="lock"
+            icon="lock-open"
             onPress={handleArbiterPress}
             colour={currentTextColour}
           />
         )}
         {showPlayerModeButton && (
           <IconButton
-            icon="lock-open"
+            icon="lock"
             onPress={handlePlayerPress}
             colour={currentTextColour}
           />

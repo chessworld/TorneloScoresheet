@@ -26,8 +26,8 @@ export const makeUseArbiterTablePairingState =
 
     const goToTablePairingMode = (): void => {
       setAppModeState({
+        ...appModeState,
         mode: AppMode.TablePairing,
-        pairing: appModeState.pairing,
       });
     };
 
