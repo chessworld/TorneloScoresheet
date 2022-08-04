@@ -28,7 +28,7 @@ const TimePickerSheet: React.FC<TimePickerSheetProps> = ({
 
   // refresh game time whenever it changes
   useEffect(() => {
-    setDate(new Date(1, 1, 1, gameTime.hours + 1, gameTime.minutes, 0));
+    setDate(new Date(1, 1, 1, gameTime.hours, gameTime.minutes, 0));
   }, [gameTime]);
 
   return (
