@@ -3,7 +3,6 @@ import { colours } from '../../style/colour';
 
 export const styles = StyleSheet.create({
   signature: {
-    width: '100%',
     height: 150,
   },
 
@@ -21,25 +20,33 @@ export const styles = StyleSheet.create({
   },
   messageText: {
     textAlign: 'center',
-    minWidth: 500,
-  },
-
-  resultText: {
-    textAlign: 'center',
-    minWidth: 500,
-    marginTop: 25,
+    minWidth: 650,
   },
 
   signatureArea: {
-    marginTop: 15,
+    marginVertical: 25,
   },
 
   resultArea: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    height: 150,
     marginTop: 10,
+    paddingVertical: 10,
     backgroundColor: colours.primary20,
     borderRadius: 20,
   },
+  resultAreaColumn: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+  },
+  scoreAndColourRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  pieceOnRightOfScore: { marginLeft: 10 },
+  pieceOnLeftOfScore: { marginRight: 10 },
 });

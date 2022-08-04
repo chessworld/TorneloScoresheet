@@ -41,7 +41,7 @@ const Signature: React.FC<SignatureProps> = ({
   };
 
   const resultText = (winnerName: string | null, playerName: string | null) => {
-    return winnerName === null ? 1 : playerName === winnerName ? 1 : 0;
+    return winnerName === null ? '1' : playerName === winnerName ? '1' : '0';
   };
 
   return (
@@ -55,39 +55,56 @@ const Signature: React.FC<SignatureProps> = ({
           {'Confirm Result'}
         </PrimaryText>
         <View style={styles.resultArea}>
-          <PrimaryText
-            style={styles.resultText}
-            weight={FontWeight.Bold}
-            size={40}
-            colour={colours.darkenedElements}>
-            {`${fullName(white)} \n `}
-            {`${resultText(winnerName, fullName(white))}`}
-            <PieceAsset
-              piece={{ type: PieceType.King, player: white.color }}
+          <View style={styles.resultAreaColumn}>
+            <PrimaryText
+              weight={FontWeight.Bold}
               size={40}
+              colour={colours.darkenedElements}
+              label={fullName(white)}
             />
-          </PrimaryText>
-          <PrimaryText
-            style={styles.resultText}
-            weight={FontWeight.Bold}
-            size={40}
-            colour={colours.darkenedElements}>
-            {`${fullName(black)} \n`}
-            <PieceAsset
-              piece={{ type: PieceType.King, player: black.color }}
+            <View style={styles.scoreAndColourRow}>
+              <PrimaryText
+                weight={FontWeight.Bold}
+                size={40}
+                label={resultText(winnerName, fullName(white))}
+              />
+              <PieceAsset
+                piece={{ type: PieceType.King, player: white.color }}
+                size={40}
+                style={styles.pieceOnRightOfScore}
+              />
+            </View>
+          </View>
+          <View style={styles.resultAreaColumn}>
+            <PrimaryText
+              weight={FontWeight.Bold}
               size={40}
+              colour={colours.darkenedElements}
+              label={fullName(black)}
             />
-            {`${resultText(winnerName, fullName(black))}`}
-          </PrimaryText>
+            <View style={styles.scoreAndColourRow}>
+              <PieceAsset
+                piece={{ type: PieceType.King, player: black.color }}
+                size={40}
+                style={styles.pieceOnLeftOfScore}
+              />
+              <PrimaryText
+                weight={FontWeight.Bold}
+                size={40}
+                colour={colours.darkenedElements}
+                label={resultText(winnerName, fullName(black))}
+              />
+            </View>
+          </View>
         </View>
         <View style={styles.signatureArea}>
           <PrimaryText
             style={styles.messageText}
             weight={FontWeight.Bold}
             size={30}
-            colour={colours.darkenedElements}>
-            {`Signature of ${player}`}
-          </PrimaryText>
+            colour={colours.darkenedElements}
+            label={`Signature of ${player}`}
+          />
           <SignatureCapture
             onSaveEvent={handleSaveSignature}
             saveImageFileInExtStorage={false}
@@ -95,7 +112,7 @@ const Signature: React.FC<SignatureProps> = ({
             style={styles.signature}
             showNativeButtons={false}
             showTitleLabel={false}
-            viewMode={'portrait'}
+            viewMode="portrait"
           />
         </View>
         <View style={styles.buttonArea}>
