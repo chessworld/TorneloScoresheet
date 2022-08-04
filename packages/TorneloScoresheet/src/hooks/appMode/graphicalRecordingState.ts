@@ -16,6 +16,7 @@ import {
   SkipPly,
 } from '../../types/ChessMove';
 import { Result } from '../../types/Result';
+import { storeRecordingModeData } from '../../util/storage';
 
 type GraphicalRecordingStateHookType = [
   GraphicalRecordingMode,
@@ -135,6 +136,13 @@ export const makeUseGraphicalRecordingState =
     };
 
     const goToEndGame = (result: ChessGameResult): void => {
+      // store the move history array and current player to memory
+      storeRecordingModeData([
+        [...appModeState.moveHistory],
+        appModeState.currentPlayer,
+      ]);
+
+      // set state to results display
       setAppModeState({
         mode: AppMode.ResultDisplay,
         pairing: appModeState.pairing,
