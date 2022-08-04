@@ -50,6 +50,18 @@ const Toolbar: React.FC = () => {
   const showPlayerModeButton = isArbiterFromPlayerMode(appModeState.mode);
   const currentTextColour = textColour(currentColour);
 
+  const displayPlaceholder = (mode: AppMode): boolean =>
+    ({
+      [AppMode.EnterPgn]: true,
+      [AppMode.PairingSelection]: true,
+      [AppMode.TablePairing]: false,
+      [AppMode.GraphicalRecording]: false,
+      [AppMode.ResultDisplay]: false,
+      [AppMode.ArbiterGraphicalRecording]: false,
+      [AppMode.ArbiterTablePairing]: false,
+      [AppMode.ArbiterResultDisplay]: false,
+    }[mode]);
+
   const voidReturn: () => void = () => {
     return;
   };
@@ -121,23 +133,22 @@ const Toolbar: React.FC = () => {
         <Pin onPress={handleArbiterVerify} />
       </Sheet>
       <View style={[styles.container, backgroundColorStyle(currentColour)]}>
-        {showArbiterModeButton ? (
+        {showArbiterModeButton && (
           <IconButton
             icon="lock"
             onPress={handleArbiterPress}
             colour={currentTextColour}
           />
-        ) : (
-          <View style={[styles.placeHolderButton]} />
         )}
-        {showPlayerModeButton ? (
+        {showPlayerModeButton && (
           <IconButton
             icon="lock"
             onPress={handlePlayerPress}
             colour={currentTextColour}
           />
-        ) : (
-          <View style={[styles.placeHolderButton]} />
+        )}
+        {displayPlaceholder(appModeState.mode) && (
+          <View style={styles.placeHolderButton} />
         )}
         <View style={styles.logo}>
           <Image
