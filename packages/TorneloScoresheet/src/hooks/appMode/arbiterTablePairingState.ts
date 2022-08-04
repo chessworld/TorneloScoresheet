@@ -4,11 +4,15 @@ import {
   AppModeState,
   ArbiterTablePairingMode,
 } from '../../types/AppModeState';
+import { fail, Result, succ } from '../../types/Result';
+import { getStoredPairingList } from '../../util/storage';
 
 type arbiterTablePairingStateHookType = [
   ArbiterTablePairingMode,
   {
     goToTablePairingMode: () => void;
+    goBackToPairingSelectionMode: () => Promise<Result<string>>;
+    goBackToEnterPgn: () => void;
   },
 ];
 
@@ -31,5 +35,31 @@ export const makeUseArbiterTablePairingState =
       });
     };
 
-    return [appModeState, { goToTablePairingMode }];
+    const goBackToPairingSelectionMode = async (): Promise<Result<string>> => {
+      const pairings = await getStoredPairingList();
+
+      if (pairings == null) {
+        return fail(
+          'Error loading pairings, please go back to the PGN screen instead',
+        );
+      }
+
+      setAppModeState({
+        mode: AppMode.PairingSelection,
+        pairings,
+        games: pairings.length,
+      });
+      return succ('');
+    };
+
+    const goBackToEnterPgn = (): void => {
+      setAppModeState({
+        mode: AppMode.EnterPgn,
+      });
+    };
+
+    return [
+      appModeState,
+      { goToTablePairingMode, goBackToPairingSelectionMode, goBackToEnterPgn },
+    ];
   };
