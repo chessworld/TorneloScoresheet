@@ -31,6 +31,13 @@ import { isError } from '../../types/Result';
 import PrimaryText from '../../components/PrimaryText/PrimaryText';
 import MoveOptionsSheet, { EditingMove } from './MoveOptionsSheet';
 
+const otherPlayer = (player: PlayerColour | undefined) => {
+  if (player === undefined) return undefined;
+  return player === PlayerColour.Black
+    ? PlayerColour.White
+    : PlayerColour.Black;
+};
+
 const GraphicalRecording: React.FC = () => {
   // app mode hook unpacking
   const graphicalRecordingState = useGraphicalRecordingState();
@@ -58,12 +65,9 @@ const GraphicalRecording: React.FC = () => {
   const [selectedWinner, setSelectedWinner] = useState<
     undefined | Player | null
   >(undefined);
-  const signatureFromPlayer: Record<PlayerColour, string | undefined> = {
-    [PlayerColour.White]: undefined,
-    [PlayerColour.Black]: undefined,
-  };
-  const [playerSignatures, setPlayerSignatures] =
-    useState<Record<PlayerColour, string | undefined>>(signatureFromPlayer);
+
+  const currentPlayerSignature = useRef<string | undefined>(undefined);
+
   const [signingPlayer, setSigningPlayer] = useState(
     graphicalRecordingMode?.currentPlayer,
   );
@@ -182,38 +186,36 @@ const GraphicalRecording: React.FC = () => {
 
   // Button Functions
 
-  const handleConfirmWinner = (signatureInput: string) => {
+  const handleConfirmSignature = (signatureInput: string) => {
     if (!graphicalRecordingMode || !goToEndGame) {
       return;
-    } else {
-      signingPlayer == PlayerColour.White
-        ? setSigningPlayer(PlayerColour.Black)
-        : setSigningPlayer(PlayerColour.White);
-      const signatureRecord = { ...playerSignatures };
-      // if the current player is player 1 update the 0th index first, otherwise update index 1
-      graphicalRecordingMode.currentPlayer == PlayerColour.White
-        ? !signatureRecord[0]
-          ? (signatureRecord[0] = signatureInput)
-          : (signatureRecord[1] = signatureInput)
-        : !signatureRecord[1]
-        ? (signatureRecord[1] = signatureInput)
-        : (signatureRecord[0] = signatureInput);
-
-      setPlayerSignatures(signatureRecord);
-      if (signatureRecord[0] && signatureRecord[1]) {
-        //resetting the signature state to empty values
-        setPlayerSignatures(signatureFromPlayer);
-        setSigningPlayer(graphicalRecordingMode?.currentPlayer);
-        goToEndGame({
-          winner: selectedWinner?.color ?? null,
-          signature: {
-            [PlayerColour.White]: signatureRecord[PlayerColour.White] ?? '',
-            [PlayerColour.Black]: signatureRecord[PlayerColour.Black] ?? '',
-          },
-          gamePgn: pgn,
-        });
-      }
     }
+
+    // Time for the other player to sign
+    setSigningPlayer(otherPlayer);
+
+    // If the first player hasn't signed yet, we need to wait
+    // for the second signature, so shortcircuit
+    if (!currentPlayerSignature.current) {
+      currentPlayerSignature.current = signatureInput;
+      return;
+    }
+
+    // Otherwise both players have signed, and we can go to end game
+    goToEndGame({
+      winner: selectedWinner?.color ?? null,
+      signature: {
+        [PlayerColour.White]:
+          graphicalRecordingMode.currentPlayer === PlayerColour.White
+            ? currentPlayerSignature.current
+            : signatureInput,
+        [PlayerColour.Black]:
+          graphicalRecordingMode.currentPlayer === PlayerColour.Black
+            ? currentPlayerSignature.current
+            : signatureInput,
+      },
+      gamePgn: pgn,
+    });
   };
 
   const handleSelectWinner = (player: Player | null) => {
@@ -236,11 +238,13 @@ const GraphicalRecording: React.FC = () => {
     setSelectedWinner(player);
   };
 
+  // Catch all to cancel an action. Here, we reset the local
+  // state
   const handleCancelSelection = () => {
     setShowSignature(false);
     setShowEndGame(false);
     setSelectedWinner(undefined);
-    setPlayerSignatures(signatureFromPlayer);
+    currentPlayerSignature.current = undefined;
     setSigningPlayer(graphicalRecordingMode?.currentPlayer);
   };
 
@@ -339,7 +343,7 @@ const GraphicalRecording: React.FC = () => {
             visible={showSignature}
             onCancel={handleCancelSelection}
             winnerName={(selectedWinner && fullName(selectedWinner)) ?? null}
-            onConfirm={handleConfirmWinner}
+            onConfirm={handleConfirmSignature}
             white={graphicalRecordingMode.pairing.players[0]}
             black={graphicalRecordingMode.pairing.players[1]}
             currentPlayer={
