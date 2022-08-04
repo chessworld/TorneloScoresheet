@@ -28,4 +28,11 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     marginVertical: 30,
   },
+  arbiterButtonContainer: {
+    marginVertical: 30,
+
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
 });
