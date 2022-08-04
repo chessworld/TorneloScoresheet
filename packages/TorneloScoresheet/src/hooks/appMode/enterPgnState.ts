@@ -4,6 +4,7 @@ import { chessEngine } from '../../chessEngine/chessEngineInterface';
 import { AppModeState, AppMode, EnterPgnMode } from '../../types/AppModeState';
 import { ChessGameInfo } from '../../types/ChessGameInfo';
 import { isError, Result, succ, Success, fail } from '../../types/Result';
+import { storePairingList } from '../../util/storage';
 import { validUrl } from '../../util/url';
 
 /**
@@ -66,6 +67,9 @@ const makegoToTablePairingSelection =
       )
       .filter((p: Success<ChessGameInfo>) => p.data.result === '*')
       .map(({ data }) => data);
+
+    // Save the pairings to local storage
+    storePairingList(pairings);
 
     setAppMode({
       mode: AppMode.PairingSelection,
