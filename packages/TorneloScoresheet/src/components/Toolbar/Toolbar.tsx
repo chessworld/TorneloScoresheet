@@ -142,7 +142,7 @@ const Toolbar: React.FC = () => {
         )}
         {showPlayerModeButton && (
           <IconButton
-            icon="lock"
+            icon="lock-open"
             onPress={handlePlayerPress}
             colour={currentTextColour}
           />
