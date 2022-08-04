@@ -31,6 +31,11 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-around',
-    marginBottom: 100,
+    marginBottom: 50,
+  },
+  arbiterButtonsContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
 });
