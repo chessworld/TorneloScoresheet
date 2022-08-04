@@ -1,8 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ChessGameInfo } from '../types/ChessGameInfo';
+import { PlayerColour } from '../types/ChessGameInfo';
+import { ChessPly } from '../types/ChessMove';
 
 const PGN_API_URL = 'PGN_API_URL';
 const PAIRING_LIST = 'PARING_LIST';
+const RECORDING_MODE_DATA = 'RECORDING_MODE_DATA';
 
 export const storePgnUrl = async (pgnApiURl: string): Promise<void> => {
   await AsyncStorage.setItem(PGN_API_URL, pgnApiURl);
@@ -40,6 +43,37 @@ export const getStoredPairingList = async (): Promise<
     const pairingList: ChessGameInfo[] = JSON.parse(pairingListJson);
     return pairingList;
   } catch {
+    return null;
+  }
+};
+
+/* Stores the Recording Mode data to local storage
+ * @param data The Recording Mode data to store
+ */
+export const storeRecordingModeData = async (
+  data: [ChessPly[], PlayerColour],
+): Promise<void> => {
+  await AsyncStorage.setItem(RECORDING_MODE_DATA, JSON.stringify(data));
+};
+
+/**
+ * Retrieve the stored Recording Mode Move history array and player color
+ * @returns The data if found else null
+ */
+export const getStoredRecordingModeData = async (): Promise<
+  [ChessPly[], PlayerColour] | null
+> => {
+  const dataJson = await AsyncStorage.getItem(RECORDING_MODE_DATA);
+
+  // // if found, try parse and cast to chessPly[], playercolour else return null
+  if (dataJson) {
+    try {
+      const data: [ChessPly[], PlayerColour] = JSON.parse(dataJson);
+      return data;
+    } catch {
+      return null;
+    }
+  } else {
     return null;
   }
 };
