@@ -58,7 +58,8 @@ const Signature: React.FC<SignatureProps> = ({
           <View style={styles.resultAreaColumn}>
             <PrimaryText
               weight={FontWeight.Bold}
-              size={40}
+              size={30}
+              numberOfLines={1}
               colour={colours.darkenedElements}
               label={fullName(white)}
             />
@@ -66,6 +67,7 @@ const Signature: React.FC<SignatureProps> = ({
               <PrimaryText
                 weight={FontWeight.Bold}
                 size={40}
+                colour={colours.darkenedElements}
                 label={resultText(winnerName, fullName(white))}
               />
               <PieceAsset
@@ -78,7 +80,8 @@ const Signature: React.FC<SignatureProps> = ({
           <View style={styles.resultAreaColumn}>
             <PrimaryText
               weight={FontWeight.Bold}
-              size={40}
+              size={30}
+              numberOfLines={1}
               colour={colours.darkenedElements}
               label={fullName(black)}
             />
