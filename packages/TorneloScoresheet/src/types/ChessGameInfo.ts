@@ -32,7 +32,8 @@ export type Player = {
   color: PlayerColour;
   firstName: string;
   lastName: string;
-  elo: number;
-  country: string;
+  elo: number | undefined;
+  country: string | undefined;
+  teamName: string | undefined;
   fideId: number | undefined;
 };

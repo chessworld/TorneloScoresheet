@@ -323,14 +323,21 @@ const extractPlayer = (
   const parsedFideId = parseInt(headers[`${playerColorName}FideId`] ?? '', 10);
   const fideId = isNaN(parsedFideId) ? undefined : parsedFideId;
 
+  // elo
+  const parsedElo = parseInt(headers[`${playerColorName}Elo`] ?? '', 10);
+  const elo = isNaN(parsedElo) ? undefined : parsedElo;
+
+  const country = headers[`${playerColorName}Country`];
+  const teamName = headers[`${playerColorName}Team`];
+
   return succ({
     firstName,
     lastName,
     color,
     fideId,
-    elo: 0,
-    // TODO: When the tornelo server starts returning the country, return it
-    country: '',
+    elo,
+    country,
+    teamName,
   });
 };
 
