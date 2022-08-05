@@ -74,6 +74,24 @@ const pgnBoardRoundGame = `[Event "Skywalker Challenge - A"]
 *
 `;
 
+const pgnTeamCountryElo = `[Event "Test Teams Again"]
+[Site "Tornelo INT"]
+[Date "2022.06.30"]
+[Round "1.1.1"]
+[White "Sambuev, Bator"]
+[Black "Constantinou, Samuel Johannes"]
+[Result "*"]
+[BlackCountry "CYP"]
+[BlackElo "1751"]
+[BlackTeam "Chypre"]
+[WhiteCountry "CAN"]
+[WhiteElo "2497"]
+[WhiteTeam "Québec A"]
+[WhiteTitle "GM"]
+
+*
+`;
+
 describe('parseGameInfo', () => {
   const testCases = [
     {
@@ -94,17 +112,19 @@ describe('parseGameInfo', () => {
             color: 0,
             firstName: ' Anakin',
             lastName: 'Skywalker',
-            elo: 0,
-            country: '',
+            elo: undefined,
+            country: undefined,
+            teamName: undefined,
             fideId: 600000,
           },
           {
             color: 1,
             firstName: ' Master',
             lastName: 'Yoda',
-            elo: 0,
+            elo: undefined,
+            country: undefined,
+            teamName: undefined,
             fideId: 1000000,
-            country: '',
           },
         ],
       },
@@ -145,16 +165,18 @@ describe('parseGameInfo', () => {
             color: 0,
             firstName: ' Anakin',
             lastName: 'Skywalker',
-            elo: 0,
-            country: '',
+            elo: undefined,
+            country: undefined,
+            teamName: undefined,
             fideId: undefined,
           },
           {
             color: 1,
             firstName: ' Master',
             lastName: 'Yoda',
-            elo: 0,
-            country: '',
+            elo: undefined,
+            country: undefined,
+            teamName: undefined,
             fideId: undefined,
           },
         ],
@@ -177,16 +199,18 @@ describe('parseGameInfo', () => {
             color: 0,
             firstName: ' ?',
             lastName: 'Skywalker',
-            elo: 0,
-            country: '',
+            elo: undefined,
+            country: undefined,
+            teamName: undefined,
             fideId: 600000,
           },
           {
             color: 1,
             firstName: ' ?',
             lastName: 'Yoda',
-            elo: 0,
-            country: '',
+            elo: undefined,
+            country: undefined,
+            teamName: undefined,
             fideId: 1000000,
           },
         ],
@@ -209,16 +233,18 @@ describe('parseGameInfo', () => {
             color: 0,
             firstName: ' Anakin',
             lastName: 'Skywalker',
-            elo: 0,
-            country: '',
+            elo: undefined,
+            country: undefined,
+            teamName: undefined,
             fideId: 600000,
           },
           {
             color: 1,
             firstName: ' Master',
             lastName: 'Yoda',
-            elo: 0,
-            country: '',
+            elo: undefined,
+            country: undefined,
+            teamName: undefined,
             fideId: 1000000,
           },
         ],
@@ -242,17 +268,54 @@ describe('parseGameInfo', () => {
             color: 0,
             firstName: ' Anakin',
             lastName: 'Skywalker',
-            elo: 0,
-            country: '',
+            elo: undefined,
+            country: undefined,
+            teamName: undefined,
             fideId: 600000,
           },
           {
             color: 1,
             firstName: ' Master',
             lastName: 'Yoda',
-            elo: 0,
-            country: '',
+            elo: undefined,
+            country: undefined,
+            teamName: undefined,
             fideId: 1000000,
+          },
+        ],
+      },
+    },
+    {
+      name: 'Pgn team, elo and country',
+      shouldFail: false,
+      pgn: pgnTeamCountryElo,
+      expectedResult: {
+        name: 'Test Teams Again',
+        site: 'Tornelo INT',
+        board: 1,
+        game: 1,
+        round: 1,
+        result: '*',
+        date: moment('2022.06.30', 'YYYY.MM.DD'),
+        pgn: pgnTeamCountryElo,
+        players: [
+          {
+            color: 0,
+            firstName: ' Bator',
+            lastName: 'Sambuev',
+            elo: 2497,
+            country: 'CAN',
+            fideId: undefined,
+            teamName: 'Québec A',
+          },
+          {
+            color: 1,
+            firstName: ' Samuel Johannes',
+            lastName: 'Constantinou',
+            elo: 1751,
+            country: 'CYP',
+            fideId: undefined,
+            teamName: 'Chypre',
           },
         ],
       },
