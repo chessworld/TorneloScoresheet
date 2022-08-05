@@ -11,6 +11,9 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: colours.primary20,
   },
+  piece: {
+    marginLeft: 50,
+  },
   textSection: {
     marginTop: 40,
     display: 'flex',
@@ -19,9 +22,8 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardColumns: {
-    flex: 2,
+    flex: 1,
     paddingHorizontal: 20,
-    marginLeft: 50,
   },
   playerInfoAlign: {
     flexDirection: 'row',
@@ -31,7 +33,7 @@ export const styles = StyleSheet.create({
   },
   cardCentre: {
     alignItems: 'center',
-    flex: 3,
+    flex: 4,
   },
   primaryText: {
     textAlign: 'center',
@@ -40,13 +42,16 @@ export const styles = StyleSheet.create({
     fontSize: 130,
     color: colours.black,
   },
+  resultContainer: {
+    marginRight: 50,
+  },
   resultBox: {
     alignContent: 'flex-start',
     textAlign: 'left',
     alignSelf: 'flex-start',
   },
   flag: {
-    backgroundColor: 'yellow',
+    backgroundColor: colours.lightGrey,
     width: 70,
     height: 40,
     marginLeft: 20,
