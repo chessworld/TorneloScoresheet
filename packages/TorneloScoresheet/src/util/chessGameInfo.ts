@@ -8,7 +8,7 @@ export const chessGameIdentifier = (chessGame: ChessGameInfo): string => {
   if (!chessGame.round && !chessGame.game) {
     return chessGame.board.toString();
   }
-  if (chessGame.round || chessGame.game) {
+  if (!chessGame.round || !chessGame.game) {
     return `${chessGame.round ?? chessGame.game}.${chessGame.board}`;
   }
   return `${chessGame.round}.${chessGame.game}.${chessGame.board}`;

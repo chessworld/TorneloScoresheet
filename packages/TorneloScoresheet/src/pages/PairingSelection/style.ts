@@ -55,6 +55,8 @@ export const styles = StyleSheet.create({
   nameColumn: {
     display: 'flex',
     justifyContent: 'space-between',
+    width: 450,
+    paddingLeft: 10,
   },
   playerName: {
     textAlign: 'right',
