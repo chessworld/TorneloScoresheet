@@ -27,6 +27,7 @@ type PrimaryTextProps = {
   size?: number;
   style?: StyleProp<TextStyle>;
   align?: Align;
+  numberOfLines?: number;
 };
 
 const PrimaryText: React.FC<PrimaryTextProps> = ({
@@ -36,10 +37,12 @@ const PrimaryText: React.FC<PrimaryTextProps> = ({
   style,
   size,
   children,
+  numberOfLines,
   align,
 }) => {
   return (
     <Text
+      numberOfLines={numberOfLines}
       style={[
         {
           fontWeight: weight,
