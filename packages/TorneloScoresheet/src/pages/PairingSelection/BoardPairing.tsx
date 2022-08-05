@@ -33,12 +33,14 @@ const BoardPairing: React.FC<BoardPairingProps> = ({
           </PrimaryText>
           <View style={styles.nameColumn}>
             <PrimaryText
+              numberOfLines={1}
               style={styles.playerName}
               colour={textColour}
               size={38}>
               {board.players?.[0].firstName} {board.players?.[0].lastName}
             </PrimaryText>
             <PrimaryText
+              numberOfLines={1}
               style={styles.playerName}
               colour={textColour}
               size={38}>
