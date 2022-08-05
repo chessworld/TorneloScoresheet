@@ -37,8 +37,10 @@ export const styles = StyleSheet.create({
   },
   resultAreaColumn: {
     display: 'flex',
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-around',
+    alignItems: 'center',
     paddingVertical: 10,
   },
   scoreAndColourRow: {
