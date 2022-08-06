@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import PrimaryText, {
   Align,
   FontWeight,
 } from '../../components/PrimaryText/PrimaryText';
 import { ColourType, textColour } from '../../style/colour';
+import { styles } from './style';
 
 type MoveOptionProps = {
   icon: React.ReactNode;
@@ -13,30 +14,16 @@ type MoveOptionProps = {
   onPress: () => void;
 };
 
+const backgroundColour = (colour: ColourType): StyleProp<ViewStyle> => ({
+  backgroundColor: colour,
+});
+
 const MoveOption = ({ icon, label, colour, onPress }: MoveOptionProps) => {
   const currentTextColour = textColour(colour);
 
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          backgroundColor: colour,
-          justifyContent: 'center',
-          paddingVertical: 20,
-          alignItems: 'center',
-          paddingHorizontal: 30,
-          borderRadius: 5,
-          marginBottom: 25,
-          shadowColor: 'rgba(0,0,0,0.5)',
-          shadowOffset: {
-            width: 0,
-            height: 1,
-          },
-          shadowRadius: 4,
-          shadowOpacity: 0.8,
-        }}>
+      <View style={[backgroundColour(colour), styles.moveOption]}>
         {icon}
         <PrimaryText
           colour={currentTextColour}

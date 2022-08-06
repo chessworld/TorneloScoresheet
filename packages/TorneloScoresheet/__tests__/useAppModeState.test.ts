@@ -1466,7 +1466,6 @@ describe('Add Game time', () => {
     const gameTime: GameTime = { hours: 1, minutes: 1 };
 
     act(() => {
-      ``;
       graphicalStateHook.current?.[1].setGameTime(0, gameTime);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(typeof setContextMock.mock.calls[0][0]).toBe('function');

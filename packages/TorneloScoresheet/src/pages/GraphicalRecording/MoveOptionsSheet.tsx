@@ -30,8 +30,9 @@ const MoveOptionsSheet = ({
   const toggleDraw = actions?.toggleDraw;
 
   const handleDrawOffer = () => {
-    console.log(editingMove);
-    if (!toggleDraw || !editingMove) return;
+    if (!toggleDraw || !editingMove) {
+      return;
+    }
     toggleDraw(
       editingMove.moveIndex * 2 +
         (editingMove.colour === PlayerColour.Black ? 1 : 0),
