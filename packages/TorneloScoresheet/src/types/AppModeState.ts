@@ -1,6 +1,6 @@
 import { BoardPosition } from './ChessBoardPositions';
 import { ChessGameInfo, ChessGameResult, PlayerColour } from './ChessGameInfo';
-import { ChessPly, GameTime } from './ChessMove';
+import { ChessPly } from './ChessMove';
 
 export enum AppMode {
   EnterPgn,
