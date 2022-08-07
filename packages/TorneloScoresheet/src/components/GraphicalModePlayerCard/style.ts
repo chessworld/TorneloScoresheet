@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 10,
     padding: 10,
-    backgroundColor: colours.grey20,
+    backgroundColor: colours.grey10,
   },
   flag: {
     backgroundColor: 'yellow',
