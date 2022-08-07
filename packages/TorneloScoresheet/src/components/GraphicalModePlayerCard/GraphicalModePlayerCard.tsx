@@ -1,8 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
-import { colours } from '../../style/colour';
 import { Player } from '../../types/ChessGameInfo';
 import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
+import CardRowTextSection from './CardRowTextSection';
 import { styles } from './style';
 
 type recordingPlayerCardProps = {
@@ -17,15 +17,6 @@ const GraphicalModePlayerCard: React.FC<recordingPlayerCardProps> = ({
   const flexStyle = align == 'left' ? styles.flexRow : styles.flexRowReverse;
   const cardStyle = { ...styles.graphicalModePlayerCard, ...flexStyle };
 
-  const teamNameAndEloTextSection = (label: string) => (
-    <PrimaryText
-      size={15}
-      weight={FontWeight.Medium}
-      colour={colours.secondary70}
-      label={label}
-    />
-  );
-
   return (
     <View style={cardStyle}>
       <View style={styles.flexColumn}>
@@ -37,9 +28,9 @@ const GraphicalModePlayerCard: React.FC<recordingPlayerCardProps> = ({
         />
         <View style={flexStyle}>
           {/* TODO Populate team name here */}
-          {teamNameAndEloTextSection('render team here')}
-          {teamNameAndEloTextSection(' || ')}
-          {teamNameAndEloTextSection(player.elo.toString())}
+          <CardRowTextSection textContent="render team here" />
+          <CardRowTextSection textContent=" || " />
+          <CardRowTextSection textContent={player.elo.toString()} />
         </View>
       </View>
       <View style={styles.flag}>{/* TODO Populate player flag here */}</View>
