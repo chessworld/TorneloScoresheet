@@ -7,6 +7,7 @@ import GraphicalRecording from './GraphicalRecording/GraphicalRecording';
 import PairingSelection from './PairingSelection/PairingSelection';
 import ArbiterResultDisplay from './ResultDisplay/ArbiterResultDisplay';
 import ResultDisplay from './ResultDisplay/ResultDisplay';
+import ArbiterTablePairing from './TablePairing/ArbiterTablePairing';
 import TablePairing from './TablePairing/TablePairing';
 
 const Main: React.FC = () => {
@@ -25,12 +26,12 @@ const Main: React.FC = () => {
       return (
         <PrimaryText label="Arbiter Graphical Recording is unsupported app mode" />
       );
+    case AppMode.ArbiterTablePairing:
+      return <ArbiterTablePairing />;
     case AppMode.ArbiterResultDisplay:
       return <ArbiterResultDisplay />;
     case AppMode.ResultDisplay:
       return <ResultDisplay />;
-    default:
-      return <PrimaryText label="Unsupported app mode" />;
   }
 };
 
