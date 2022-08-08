@@ -35,6 +35,7 @@ export const generateGamePairingInfo = (pgn?: string): ChessGameInfo => {
     board: 1,
     players: [
       {
+        teamName: undefined,
         firstName: 'name',
         lastName: 'name',
         elo: 0,
@@ -43,6 +44,7 @@ export const generateGamePairingInfo = (pgn?: string): ChessGameInfo => {
         fideId: 0,
       },
       {
+        teamName: undefined,
         firstName: 'name',
         lastName: 'name',
         elo: 0,
@@ -66,6 +68,7 @@ export const generateGraphicalRecordingState = (
   pgn?: string,
 ): GraphicalRecordingMode => {
   return {
+    startTime: 0,
     mode: AppMode.GraphicalRecording,
     pairing: generateGamePairingInfo(pgn),
     moveHistory: moveHistory,
@@ -102,7 +105,7 @@ export const replaceResultHeaderFromPgn = (
   pgn: string,
   result: string,
 ): string => {
-  let newPgn = pgn.replace(`\n[Result "*"]`, '');
+  let newPgn = pgn.replace('\n[Result "*"]', '');
   newPgn += `[Result "${result}"]`;
   return newPgn;
 };

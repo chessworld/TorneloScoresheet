@@ -4,3 +4,7 @@ declare module '*.svg' {
   const content: React.FC<SvgProps>;
   export default content;
 }
+
+declare module 'country-iso-3-to-2' {
+  export default function (iso3: string): string | undefined;
+}
