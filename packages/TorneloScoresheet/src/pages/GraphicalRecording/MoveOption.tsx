@@ -30,7 +30,7 @@ const MoveOption = ({ icon, label, colour, onPress }: MoveOptionProps) => {
           weight={FontWeight.Bold}
           align={Align.Center}
           label={label}
-          style={{ marginLeft: 30 }}
+          style={styles.label}
           size={30}
         />
       </View>
