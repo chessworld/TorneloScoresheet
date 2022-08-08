@@ -9,8 +9,7 @@ export const styles = StyleSheet.create({
   verticalSeparator: {
     borderLeftColor: 'black',
     borderLeftWidth: 1,
-    marginLeft: 9,
-    marginRight: 10,
+    marginHorizontal: 20,
   },
   boardButtonContainer: {
     display: 'flex',
@@ -21,13 +20,12 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   playerCardsContainer: {
-    height: 110,
-    padding: 20,
-    width: '100%',
+    display: 'flex',
+    marginVertical: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginHorizontal: 10,
   },
-  placeholder: { height: 100, marginLeft: 10 },
   moveOption: {
     display: 'flex',
     flexDirection: 'row',
@@ -45,4 +43,5 @@ export const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOpacity: 0.8,
   },
+  label: { marginLeft: 30 },
 });
