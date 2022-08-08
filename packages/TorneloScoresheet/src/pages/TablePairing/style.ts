@@ -34,6 +34,7 @@ export const styles = StyleSheet.create({
     marginBottom: 50,
   },
   arbiterButtonsContainer: {
+    marginBottom: 30,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',

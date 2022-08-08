@@ -68,11 +68,7 @@ export type ResultDisplayMode = {
 
 export type ArbiterGraphicalRecordingMode = {
   mode: AppMode.ArbiterGraphicalRecording;
-  pairing: ChessGameInfo;
-  moveHistory: ChessPly[];
-  board: BoardPosition[];
-  currentPlayer: PlayerColour;
-};
+} & Omit<GraphicalRecordingMode, 'mode'>;
 
 export type ArbiterTablePairingMode = {
   mode: AppMode.ArbiterTablePairing;

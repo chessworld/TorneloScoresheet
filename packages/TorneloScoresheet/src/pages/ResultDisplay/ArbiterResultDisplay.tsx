@@ -6,9 +6,7 @@ import PrimaryButton from '../../components/PrimaryButton/PrimaryButton';
 import PrimaryText, {
   FontWeight,
 } from '../../components/PrimaryText/PrimaryText';
-import {
-  useArbiterResultDisplayState,
-} from '../../context/AppModeStateContext';
+import { useArbiterResultDisplayState } from '../../context/AppModeStateContext';
 import { useError } from '../../context/ErrorContext';
 import { colours } from '../../style/colour';
 import { isError } from '../../types/Result';
