@@ -6,6 +6,12 @@ export const styles = StyleSheet.create({
     display: 'flex',
     height: pageHeight,
   },
+  verticalSeparator: {
+    borderLeftColor: 'black',
+    borderLeftWidth: 1,
+    marginLeft: 9,
+    marginRight: 10,
+  },
   boardButtonContainer: {
     display: 'flex',
     flexDirection: 'row',
