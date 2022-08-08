@@ -6,10 +6,11 @@ export const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '49%',
     height: '100%',
+    width: 340,
     borderRadius: 5,
-    padding: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 25,
     backgroundColor: colours.grey5,
   },
   flag: {
@@ -21,4 +22,5 @@ export const styles = StyleSheet.create({
   flexRowReverse: { display: 'flex', flexDirection: 'row-reverse' },
   flexColumn: { display: 'flex', flexDirection: 'column' },
   flexColumnReverse: { display: 'flex', flexDirection: 'column-reverse' },
+  playerName: { maxWidth: 235 },
 });

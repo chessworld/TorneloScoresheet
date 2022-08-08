@@ -5,7 +5,7 @@ import { colours } from '../../style/colour';
 import { Player } from '../../types/ChessGameInfo';
 import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import { styles } from './style';
-const getCountryISO2 = require('country-iso-3-to-2');
+import getCountryISO2 from 'country-iso-3-to-2';
 
 type recordingPlayerCardProps = {
   player: Player;
@@ -16,7 +16,7 @@ const GraphicalModePlayerCard: React.FC<recordingPlayerCardProps> = ({
   player,
   align,
 }) => {
-  const flexStyle = align == 'left' ? styles.flexRow : styles.flexRowReverse;
+  const flexStyle = align === 'left' ? styles.flexRow : styles.flexRowReverse;
   const cardStyle = { ...styles.graphicalModePlayerCard, ...flexStyle };
   const playerCountry = player.country
     ? getCountryISO2(player.country)
@@ -30,7 +30,7 @@ const GraphicalModePlayerCard: React.FC<recordingPlayerCardProps> = ({
           numberOfLines={1}
           weight={FontWeight.Medium}
           colour={colours.black}
-          style={{ textAlign: align, maxWidth: 300 }}
+          style={[styles.playerName, { textAlign: align }]}
           label={`${player.lastName}, ${player.firstName}`}
         />
         <View style={flexStyle}>
