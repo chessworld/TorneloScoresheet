@@ -40,8 +40,8 @@ const Signature: React.FC<SignatureProps> = ({
     onConfirm(base64Image);
   };
 
-  const resultText = (winnerName: string | null, playerName: string | null) => {
-    return winnerName === null ? '1' : playerName === winnerName ? '1' : '0';
+  const resultText = (name: string | null, playerName: string | null) => {
+    return name === null ? '1' : playerName === name ? '1' : '0';
   };
 
   return (
