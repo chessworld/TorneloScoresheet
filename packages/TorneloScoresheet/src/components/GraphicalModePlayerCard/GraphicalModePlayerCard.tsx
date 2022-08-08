@@ -1,9 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
+import CountryFlag from 'react-native-country-flag';
+import { colours } from '../../style/colour';
 import { Player } from '../../types/ChessGameInfo';
 import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
-import CardRowTextSection from './CardRowTextSection';
 import { styles } from './style';
+const getCountryISO2 = require('country-iso-3-to-2');
 
 type recordingPlayerCardProps = {
   player: Player;
@@ -16,24 +18,50 @@ const GraphicalModePlayerCard: React.FC<recordingPlayerCardProps> = ({
 }) => {
   const flexStyle = align == 'left' ? styles.flexRow : styles.flexRowReverse;
   const cardStyle = { ...styles.graphicalModePlayerCard, ...flexStyle };
+  const playerCountry = player.country
+    ? getCountryISO2(player.country)
+    : undefined;
 
   return (
     <View style={cardStyle}>
       <View style={styles.flexColumn}>
         <PrimaryText
-          size={20}
-          weight={FontWeight.Bold}
-          style={{ textAlign: align }}
+          size={25}
+          numberOfLines={1}
+          weight={FontWeight.Medium}
+          colour={colours.black}
+          style={{ textAlign: align, maxWidth: 300 }}
           label={`${player.lastName}, ${player.firstName}`}
         />
         <View style={flexStyle}>
-          {/* TODO Populate team name here */}
-          <CardRowTextSection textContent="render team here" />
-          <CardRowTextSection textContent=" || " />
-          <CardRowTextSection textContent={player.elo.toString()} />
+          {player.teamName && (
+            <PrimaryText
+              size={20}
+              weight={FontWeight.Medium}
+              colour={colours.secondary70}
+              label={player.teamName}
+            />
+          )}
+          {/* Show divider if both team name and elo exists for player */}
+          {player.teamName && player.elo && (
+            <PrimaryText
+              size={20}
+              weight={FontWeight.Medium}
+              colour={colours.secondary70}
+              label=" || "
+            />
+          )}
+          {player.elo && (
+            <PrimaryText
+              size={20}
+              weight={FontWeight.Medium}
+              colour={colours.secondary70}
+              label={player.elo.toString()}
+            />
+          )}
         </View>
       </View>
-      <View style={styles.flag}>{/* TODO Populate player flag here */}</View>
+      {playerCountry && <CountryFlag isoCode={playerCountry} size={35} />}
     </View>
   );
 };

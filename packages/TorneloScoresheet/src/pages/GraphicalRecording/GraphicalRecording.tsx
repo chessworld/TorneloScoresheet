@@ -429,11 +429,14 @@ const GraphicalRecording: React.FC = () => {
             }}
           />
 
+          {/*----- body ----- */}
           <View style={styles.playerCardsContainer}>
             <GraphicalModePlayerCard
               align="left"
               player={graphicalRecordingMode.pairing.players[0]}
             />
+            <View style={styles.verticalSeparator} />
+
             <GraphicalModePlayerCard
               align="right"
               player={graphicalRecordingMode.pairing.players[1]}
