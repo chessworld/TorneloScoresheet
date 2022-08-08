@@ -19,8 +19,7 @@ export const colours = {
   darkenedElements: '#141414' as const,
   lightGrey: '#00000030' as const,
   grey: '#6B6A6E' as const,
-  grey10: 'rgba(26, 33, 54, 0.2)' as const,
-  grey5: 'rgba(26, 33, 54, 0.1)' as const,
+  grey10: 'rgba(26, 33, 54, 0.1)' as const,
   darkGrey: '#323232' as const,
   // Chess Board Colours
   darkBlue: '#A2CEE3' as const,
@@ -40,7 +39,6 @@ export const statusBarStyleForColor = (colour: ColourType): StatusBarStyle => {
     case colours.lightGrey:
     case colours.grey:
     case colours.grey10:
-    case colours.grey5:
     case colours.darkGrey:
       return 'light-content';
     case colours.primary20:
@@ -73,7 +71,6 @@ export const textColour = (colour: ColourType): string => {
     case colours.lightGrey:
     case colours.grey:
     case colours.grey10:
-    case colours.grey5:
     case colours.darkGrey:
       return 'white';
     case colours.secondary70:

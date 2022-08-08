@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 20,
     paddingVertical: 25,
-    backgroundColor: colours.grey5,
+    backgroundColor: colours.grey10,
   },
   flag: {
     backgroundColor: 'yellow',
