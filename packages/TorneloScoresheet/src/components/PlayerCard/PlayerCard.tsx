@@ -13,8 +13,7 @@ type playerCardProps = {
   player: Player;
   result?: number;
 } & TouchableOpacityProps;
-
-const getCountryISO2 = require('country-iso-3-to-2');
+import getCountryISO2 from 'country-iso-3-to-2';
 
 const PlayerCard: React.FC<playerCardProps> = ({
   player,
