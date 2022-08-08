@@ -47,11 +47,17 @@ export const getStoredPairingList = async (): Promise<
   }
 };
 
+type StoredRecordingModeData = {
+  startTime: number;
+  moveHistory: ChessPly[];
+  currentPlayer: PlayerColour;
+};
+
 /* Stores the Recording Mode data to local storage
  * @param data The Recording Mode data to store
  */
 export const storeRecordingModeData = async (
-  data: [ChessPly[], PlayerColour],
+  data: StoredRecordingModeData,
 ): Promise<void> => {
   await AsyncStorage.setItem(RECORDING_MODE_DATA, JSON.stringify(data));
 };
@@ -60,20 +66,18 @@ export const storeRecordingModeData = async (
  * Retrieve the stored Recording Mode Move history array and player color
  * @returns The data if found else null
  */
-export const getStoredRecordingModeData = async (): Promise<
-  [ChessPly[], PlayerColour] | null
-> => {
-  const dataJson = await AsyncStorage.getItem(RECORDING_MODE_DATA);
+export const getStoredRecordingModeData =
+  async (): Promise<StoredRecordingModeData | null> => {
+    const dataJson = await AsyncStorage.getItem(RECORDING_MODE_DATA);
 
-  // // if found, try parse and cast to chessPly[], playercolour else return null
-  if (dataJson) {
-    try {
-      const data: [ChessPly[], PlayerColour] = JSON.parse(dataJson);
-      return data;
-    } catch {
+    if (dataJson) {
+      try {
+        const data: StoredRecordingModeData = JSON.parse(dataJson);
+        return data;
+      } catch {
+        return null;
+      }
+    } else {
       return null;
     }
-  } else {
-    return null;
-  }
-};
+  };

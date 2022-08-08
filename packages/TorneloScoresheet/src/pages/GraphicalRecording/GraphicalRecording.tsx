@@ -39,7 +39,9 @@ import GraphicalModePlayerCard from '../../components/GraphicalModePlayerCard/Gr
 import TimePickerSheet from '../../components/TimePickerSheet/TimePickerSheet';
 
 const otherPlayer = (player: PlayerColour | undefined) => {
-  if (player === undefined) return undefined;
+  if (player === undefined) {
+    return undefined;
+  }
   return player === PlayerColour.Black
     ? PlayerColour.White
     : PlayerColour.Black;
@@ -436,7 +438,6 @@ const GraphicalRecording: React.FC = () => {
               player={graphicalRecordingMode.pairing.players[0]}
             />
             <View style={styles.verticalSeparator} />
-
             <GraphicalModePlayerCard
               align="right"
               player={graphicalRecordingMode.pairing.players[1]}
