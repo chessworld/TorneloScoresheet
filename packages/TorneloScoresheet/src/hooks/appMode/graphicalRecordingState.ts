@@ -137,10 +137,11 @@ export const makeUseGraphicalRecordingState =
 
     const goToEndGame = (result: ChessGameResult): void => {
       // store the move history array and current player to memory
-      storeRecordingModeData([
-        [...appModeState.moveHistory],
-        appModeState.currentPlayer,
-      ]);
+      storeRecordingModeData({
+        moveHistory: appModeState.moveHistory,
+        currentPlayer: appModeState.currentPlayer,
+        startTime: appModeState.startTime,
+      });
 
       // set state to results display
       setAppModeState({
@@ -158,6 +159,7 @@ export const makeUseGraphicalRecordingState =
         pairing: appModeState.pairing,
         moveHistory: appModeState.moveHistory,
         board: appModeState.board,
+        startTime: appModeState.startTime,
         currentPlayer: appModeState.currentPlayer,
       });
     };

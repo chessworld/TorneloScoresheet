@@ -45,7 +45,7 @@ export const makeUseArbiterResultDisplayState =
     const goBackToRecordingMode = async (): Promise<Result<string>> => {
       const data = await getStoredRecordingModeData();
       if (data) {
-        const [moveHistory, currentPlayer] = data;
+        const { moveHistory, currentPlayer, startTime } = data;
 
         // will default to starting fen if last element in move hisotry not found
         // this should never happen
@@ -55,9 +55,10 @@ export const makeUseArbiterResultDisplayState =
         setAppModeState({
           mode: AppMode.GraphicalRecording,
           currentPlayer,
+          startTime,
+          moveHistory,
           pairing: appModeState.pairing,
           board: chessEngine.fenToBoardPositions(lastFen),
-          moveHistory,
         });
         return succ('');
       } else {
