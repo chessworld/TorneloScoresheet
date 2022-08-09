@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { colours } from '../../style/colour';
+
 const TOP_PADDING = 30;
 const BOTTOM_PADDING = 14;
 const LOGO_HEIGHT = 44;
@@ -16,12 +16,14 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'space-between',
+    //flex: 1,
     height: TOOLBAR_HEIGHT,
   },
   logo: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
     // marginLeft: '5%',
     // marginRight: '5%',
   },
@@ -45,10 +47,9 @@ export const styles = StyleSheet.create({
   },
   logoTitle: { lineHeight: LOGO_HEIGHT },
   helpText: { marginBottom: 10 },
-  // toggleToTextEntryModeButton: {
-  //   backgroundColor: colours.white,
-  //   borderRadius: 16,
-  // },
+  toggleToTextEntryModeButton: {
+    marginRight: 20,
+  },
   // buttonText: {
   //   fontSize: 23,
   //   fontWeight: 'bold',
