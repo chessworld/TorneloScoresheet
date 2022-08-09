@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { colours } from '../../style/colour';
 const TOP_PADDING = 30;
 const BOTTOM_PADDING = 14;
 const LOGO_HEIGHT = 44;
@@ -13,7 +14,7 @@ export const styles = StyleSheet.create({
     paddingTop: TOP_PADDING,
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     justifyContent: 'space-between',
     height: TOOLBAR_HEIGHT,
   },
@@ -21,6 +22,8 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    marginLeft: '5%',
+    marginRight: '5%',
   },
   logoImage: {
     width: 40,
@@ -42,4 +45,32 @@ export const styles = StyleSheet.create({
   },
   logoTitle: { lineHeight: LOGO_HEIGHT },
   helpText: { marginBottom: 10 },
+  toggleToTextEntryModeButton: {
+    backgroundColor: colours.white,
+    borderRadius: 16,
+  },
+  buttonText: {
+    fontSize: 23,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: colours.primary,
+    marginLeft: '5%',
+    marginRight: '5%',
+  },
+  textModeButton: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginLeft: '-40%',
+    marginRight: '-50%',
+  },
+  logoName: {
+    display: 'flex',
+    flexDirection: 'row',
+    paddingEnd: '10%',
+  },
+  textButton: {
+    marginLeft: '5%',
+    marginRight: '5%',
+  },
 });
