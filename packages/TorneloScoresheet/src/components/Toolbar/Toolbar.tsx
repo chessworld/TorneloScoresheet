@@ -26,6 +26,9 @@ import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import Sheet from '../Sheet/Sheet';
 import { styles } from './style';
 import Pin from '../Pin/Pin';
+import PrimaryButton from '../PrimaryButton/PrimaryButton';
+import { color } from 'react-native-reanimated';
+import TextIconButton from '../TextIconButton/TextIconButton';
 
 /**
  * The App's toolbar.
@@ -56,6 +59,18 @@ const Toolbar: React.FC = () => {
       [AppMode.PairingSelection]: true,
       [AppMode.TablePairing]: false,
       [AppMode.GraphicalRecording]: false,
+      [AppMode.ResultDisplay]: false,
+      [AppMode.ArbiterGraphicalRecording]: false,
+      [AppMode.ArbiterTablePairing]: false,
+      [AppMode.ArbiterResultDisplay]: false,
+    }[mode]);
+
+  const displayRecordingModeToggle = (mode: AppMode): boolean =>
+    ({
+      [AppMode.EnterPgn]: false,
+      [AppMode.PairingSelection]: false,
+      [AppMode.TablePairing]: false,
+      [AppMode.GraphicalRecording]: true,
       [AppMode.ResultDisplay]: false,
       [AppMode.ArbiterGraphicalRecording]: false,
       [AppMode.ArbiterTablePairing]: false,
@@ -111,6 +126,12 @@ const Toolbar: React.FC = () => {
     appModePlayerTransition[appModeState.mode]();
   };
 
+  const handleRecordingModeTogglePress = () => {
+    //if in Graphic Game Mode, move to text recording mode
+    //if in Text Recording Mode, move to Graphic Game Mode
+    console.log('Hey there!');
+  };
+
   return (
     <>
       <StatusBar barStyle={statusBarStyleForColor(currentColour)} />
@@ -150,6 +171,9 @@ const Toolbar: React.FC = () => {
         {displayPlaceholder(appModeState.mode) && (
           <View style={styles.placeHolderButton} />
         )}
+        {displayRecordingModeToggle(appModeState.mode) && (
+          <View style={styles.placeHolderButton} />
+        )}
         <View style={styles.logo}>
           <Image
             style={styles.logoImage}
@@ -167,6 +191,15 @@ const Toolbar: React.FC = () => {
             style={styles.logoTitle}
           />
         </View>
+        {displayRecordingModeToggle(appModeState.mode) && (
+          <TextIconButton
+            text="Text Recording"
+            style={styles.toggleToTextEntryModeButton}
+            buttonTextStyle={styles.buttonText}
+            buttonHeight={50}
+            onPress={handleRecordingModeTogglePress}
+          />
+        )}
         <IconButton
           icon="help"
           onPress={handleHelpPress}
