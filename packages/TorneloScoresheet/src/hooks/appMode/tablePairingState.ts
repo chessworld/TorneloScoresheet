@@ -42,6 +42,7 @@ export const makeUseTablePairingState =
         board,
         startTime: new Date().getTime(),
         currentPlayer,
+        type: 'Recording',
       });
     };
 

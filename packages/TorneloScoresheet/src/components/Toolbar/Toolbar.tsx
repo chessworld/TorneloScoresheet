@@ -26,10 +26,6 @@ import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import Sheet from '../Sheet/Sheet';
 import { styles } from './style';
 import Pin from '../Pin/Pin';
-import PrimaryButton from '../PrimaryButton/PrimaryButton';
-import { color } from 'react-native-reanimated';
-import TextIconButton from '../TextIconButton/TextIconButton';
-
 /**
  * The App's toolbar.
  *
@@ -46,6 +42,7 @@ const backgroundColorStyle = (backgroundColor: string) => ({
 
 const Toolbar: React.FC = () => {
   const appModeState = useAppModeState();
+  const graphicalRecordingState = useRecordingState();
   const [showSheet, setShowSheet] = useState(false);
   const [showArbiterSheet, setShowArbiterSheet] = useState(false);
   const currentColour = colourForMode(appModeState.mode);
@@ -65,21 +62,20 @@ const Toolbar: React.FC = () => {
       [AppMode.ArbiterResultDisplay]: false,
     }[mode]);
 
-  const displayRecordingModeToggle = (mode: AppMode): boolean =>
-    ({
-      [AppMode.EnterPgn]: false,
-      [AppMode.PairingSelection]: false,
-      [AppMode.TablePairing]: false,
-      [AppMode.Recording]: true,
-      [AppMode.ResultDisplay]: false,
-      [AppMode.ArbiterRecording]: false,
-      [AppMode.ArbiterTablePairing]: false,
-      [AppMode.ArbiterResultDisplay]: false,
-    }[mode]);
+  const toggleToTextMode = () => {
+    if (appModeState.mode === AppMode.Recording) {
+      if (appModeState.type === 'Recording') {
+        return true;
+      }
+    }
+    return false;
+  };
 
   const voidReturn: () => void = () => {
     return;
   };
+  const toggleRecordingState =
+    graphicalRecordingState?.[1].toggleRecordingMode ?? voidReturn;
 
   const appModeArbiterTransition: Record<AppMode, () => void> = {
     [AppMode.ArbiterRecording]: voidReturn,
@@ -116,10 +112,10 @@ const Toolbar: React.FC = () => {
   };
 
   const handleHelpPress = () => {
-    setShowSheet(a => !a);
+    setShowSheet((a: any) => !a);
   };
   const handleArbiterPress = () => {
-    setShowArbiterSheet(a => !a);
+    setShowArbiterSheet((a: any) => !a);
   };
 
   const handlePlayerPress = () => {
@@ -129,7 +125,10 @@ const Toolbar: React.FC = () => {
   const handleRecordingModeTogglePress = () => {
     //if in Graphic Game Mode, move to text recording mode
     //if in Text Recording Mode, move to Graphic Game Mode
-    console.log('Hey there!');
+    if (!graphicalRecordingState) {
+      return;
+    }
+    toggleRecordingState();
   };
 
   return (
@@ -171,9 +170,6 @@ const Toolbar: React.FC = () => {
         {displayPlaceholder(appModeState.mode) && (
           <View style={styles.placeHolderButton} />
         )}
-        {displayRecordingModeToggle(appModeState.mode) && (
-          <View style={styles.placeHolderButton} />
-        )}
         <View style={styles.logo}>
           <Image
             style={styles.logoImage}
@@ -191,13 +187,18 @@ const Toolbar: React.FC = () => {
             style={styles.logoTitle}
           />
         </View>
-        {displayRecordingModeToggle(appModeState.mode) && (
-          <TextIconButton
-            text="Text Recording"
-            style={styles.toggleToTextEntryModeButton}
-            buttonTextStyle={styles.buttonText}
-            buttonHeight={50}
+        {toggleToTextMode() && (
+          <IconButton
+            icon="grid-off"
             onPress={handleRecordingModeTogglePress}
+            colour={colours.white}
+          />
+        )}
+        {!toggleToTextMode() && (
+          <IconButton
+            icon="grid-on"
+            onPress={handleRecordingModeTogglePress}
+            colour={colours.white}
           />
         )}
         <IconButton

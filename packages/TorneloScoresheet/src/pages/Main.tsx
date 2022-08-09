@@ -21,7 +21,12 @@ const Main: React.FC = () => {
     case AppMode.TablePairing:
       return <TablePairing />;
     case AppMode.Recording:
-      return <GraphicalRecording />;
+      return appMode.type === 'Recording' ? (
+        <GraphicalRecording />
+      ) : (
+        <PrimaryText label="Text Recording not currently supported" />
+      );
+
     case AppMode.ArbiterRecording:
       return (
         <PrimaryText label="Arbiter Graphical Recording is unsupported app mode" />
