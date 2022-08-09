@@ -33,6 +33,7 @@ type recordingStateHookType = [
     generatePgn: (winner: PlayerColour | null) => Result<string>;
     toggleDraw: (drawIndex: number) => void;
     setGameTime: (index: number, gameTime: GameTime | undefined) => void;
+    toggleRecordingMode: () => void;
   },
 ];
 
@@ -252,6 +253,13 @@ export const makeUseRecordingState =
       });
     };
 
+    const toggleRecordingMode = (): void => {
+      setAppModeState({
+        ...appModeState,
+        type: appModeState.type === 'Recording' ? 'Text' : 'Recording',
+      });
+    };
+
     return [
       appModeState,
       {
@@ -267,6 +275,7 @@ export const makeUseRecordingState =
         generatePgn,
         toggleDraw,
         setGameTime,
+        toggleRecordingMode,
       },
     ];
   };
