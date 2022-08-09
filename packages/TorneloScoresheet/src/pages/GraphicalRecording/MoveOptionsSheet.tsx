@@ -6,7 +6,7 @@ import { PlayerColour } from '../../types/ChessGameInfo';
 import MoveOption from './MoveOption';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import { useGraphicalRecordingState } from '../../context/AppModeStateContext';
+import { useRecordingState } from '../../context/AppModeStateContext';
 
 export type EditingMove = {
   colour: PlayerColour;
@@ -24,7 +24,7 @@ const MoveOptionsSheet = ({
   handleGameTime,
   dismiss,
 }: MoveOptionsSheetProps) => {
-  const recordingState = useGraphicalRecordingState();
+  const recordingState = useRecordingState();
   const actions = recordingState?.[1];
 
   const toggleDraw = actions?.toggleDraw;

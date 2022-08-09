@@ -6,7 +6,7 @@ import { AppModeStateContextProvider } from '../src/context/AppModeStateContext'
 import {
   AppMode,
   AppModeState,
-  GraphicalRecordingMode,
+  RecordingMode,
 } from '../src/types/AppModeState';
 import { ChessGameInfo, PlayerColour } from '../src/types/ChessGameInfo';
 import { ChessPly } from '../src/types/ChessMove';
@@ -66,10 +66,10 @@ export const generateGamePairingInfo = (pgn?: string): ChessGameInfo => {
 export const generateGraphicalRecordingState = (
   moveHistory: ChessPly[],
   pgn?: string,
-): GraphicalRecordingMode => {
+): RecordingMode => {
   return {
-    startTime: 0,
-    mode: AppMode.GraphicalRecording,
+    startTime: new Date().getTime(),
+    mode: AppMode.Recording,
     pairing: generateGamePairingInfo(pgn),
     moveHistory: moveHistory,
     board: chessEngine.fenToBoardPositions(

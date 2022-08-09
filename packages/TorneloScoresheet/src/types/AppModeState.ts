@@ -6,9 +6,9 @@ export enum AppMode {
   EnterPgn,
   PairingSelection,
   TablePairing,
-  GraphicalRecording,
+  Recording,
   ResultDisplay,
-  ArbiterGraphicalRecording,
+  ArbiterRecording,
   ArbiterTablePairing,
   ArbiterResultDisplay,
 }
@@ -18,9 +18,9 @@ export const isArbiterMode = (mode: AppMode): boolean =>
     [AppMode.EnterPgn]: true,
     [AppMode.PairingSelection]: true,
     [AppMode.TablePairing]: false,
-    [AppMode.GraphicalRecording]: false,
+    [AppMode.Recording]: false,
     [AppMode.ResultDisplay]: false,
-    [AppMode.ArbiterGraphicalRecording]: true,
+    [AppMode.ArbiterRecording]: true,
     [AppMode.ArbiterTablePairing]: true,
     [AppMode.ArbiterResultDisplay]: true,
   }[mode]);
@@ -30,9 +30,9 @@ export const isArbiterFromPlayerMode = (mode: AppMode): boolean =>
     [AppMode.EnterPgn]: false,
     [AppMode.PairingSelection]: false,
     [AppMode.TablePairing]: false,
-    [AppMode.GraphicalRecording]: false,
+    [AppMode.Recording]: false,
     [AppMode.ResultDisplay]: false,
-    [AppMode.ArbiterGraphicalRecording]: true,
+    [AppMode.ArbiterRecording]: true,
     [AppMode.ArbiterTablePairing]: true,
     [AppMode.ArbiterResultDisplay]: true,
   }[mode]);
@@ -51,8 +51,8 @@ export type TablePairingMode = {
   pairing: ChessGameInfo;
 };
 
-export type GraphicalRecordingMode = {
-  mode: AppMode.GraphicalRecording;
+export type RecordingMode = {
+  mode: AppMode.Recording;
   startTime: number;
   pairing: ChessGameInfo;
   moveHistory: ChessPly[];
@@ -66,9 +66,9 @@ export type ResultDisplayMode = {
   result: ChessGameResult;
 };
 
-export type ArbiterGraphicalRecordingMode = {
-  mode: AppMode.ArbiterGraphicalRecording;
-} & Omit<GraphicalRecordingMode, 'mode'>;
+export type ArbiterRecordingMode = {
+  mode: AppMode.ArbiterRecording;
+} & Omit<RecordingMode, 'mode'>;
 
 export type ArbiterTablePairingMode = {
   mode: AppMode.ArbiterTablePairing;
@@ -85,8 +85,8 @@ export type AppModeState =
   | EnterPgnMode
   | PairingSelectionMode
   | TablePairingMode
-  | GraphicalRecordingMode
+  | RecordingMode
   | ResultDisplayMode
-  | ArbiterGraphicalRecordingMode
+  | ArbiterRecordingMode
   | ArbiterResultDisplayMode
   | ArbiterTablePairingMode;

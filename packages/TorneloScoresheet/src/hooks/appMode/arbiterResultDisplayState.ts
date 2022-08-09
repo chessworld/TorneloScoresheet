@@ -53,7 +53,7 @@ export const makeUseArbiterResultDisplayState =
           moveHistory[moveHistory.length - 1]?.startingFen ??
           chessEngine.startingFen();
         setAppModeState({
-          mode: AppMode.GraphicalRecording,
+          mode: AppMode.Recording,
           currentPlayer,
           startTime,
           moveHistory,

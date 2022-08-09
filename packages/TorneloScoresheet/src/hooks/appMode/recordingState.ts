@@ -3,7 +3,7 @@ import { chessEngine } from '../../chessEngine/chessEngineInterface';
 import {
   AppMode,
   AppModeState,
-  GraphicalRecordingMode,
+  RecordingMode as recordingMode,
 } from '../../types/AppModeState';
 import { ChessGameResult, PlayerColour } from '../../types/ChessGameInfo';
 import {
@@ -18,8 +18,8 @@ import {
 import { Result } from '../../types/Result';
 import { storeRecordingModeData } from '../../util/storage';
 
-type GraphicalRecordingStateHookType = [
-  GraphicalRecordingMode,
+type recordingStateHookType = [
+  recordingMode,
   {
     goToEndGame: (result: ChessGameResult) => void;
     goToTextInput: () => void;
@@ -114,16 +114,16 @@ const processPlayerMove = (
     : [...moveHistory, nextPly];
 };
 
-export const makeUseGraphicalRecordingState =
+export const makeUseRecordingState =
   (
     context: React.Context<
       [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
     >,
-  ): (() => GraphicalRecordingStateHookType | null) =>
-  (): GraphicalRecordingStateHookType | null => {
+  ): (() => recordingStateHookType | null) =>
+  (): recordingStateHookType | null => {
     const [appModeState, setAppModeState] = useContext(context);
 
-    if (appModeState.mode !== AppMode.GraphicalRecording) {
+    if (appModeState.mode !== AppMode.Recording) {
       return null;
     }
     const updateBoard = (moveHistory: ChessPly[]): void => {
@@ -155,7 +155,7 @@ export const makeUseGraphicalRecordingState =
 
     const goToArbiterGameMode = (): void => {
       setAppModeState({
-        mode: AppMode.ArbiterGraphicalRecording,
+        mode: AppMode.ArbiterRecording,
         pairing: appModeState.pairing,
         moveHistory: appModeState.moveHistory,
         board: appModeState.board,
@@ -220,15 +220,15 @@ export const makeUseGraphicalRecordingState =
     };
 
     const toggleDraw = (drawIndex: number) => {
-      setAppModeState(graphicalRecordingState => {
-        // Do nothing if we aren't in graphical recording mode
-        if (graphicalRecordingState.mode !== AppMode.GraphicalRecording) {
-          return graphicalRecordingState;
+      setAppModeState(recordingState => {
+        // Do nothing if we aren't in recording mode
+        if (recordingState.mode !== AppMode.Recording) {
+          return recordingState;
         }
         // Otherwise, update the last move
         return {
-          ...graphicalRecordingState,
-          moveHistory: graphicalRecordingState.moveHistory.map((el, index) =>
+          ...recordingState,
+          moveHistory: recordingState.moveHistory.map((el, index) =>
             index === drawIndex ? { ...el, drawOffer: !el.drawOffer } : el,
           ),
         };
@@ -236,16 +236,16 @@ export const makeUseGraphicalRecordingState =
     };
 
     const setGameTime = (index: number, gameTime: GameTime | undefined) => {
-      setAppModeState(graphicalRecordingState => {
-        // Do nothing if we aren't in graphical recording mode
-        if (graphicalRecordingState.mode !== AppMode.GraphicalRecording) {
-          return graphicalRecordingState;
+      setAppModeState(recordingState => {
+        // Do nothing if we aren't in recording mode
+        if (recordingState.mode !== AppMode.Recording) {
+          return recordingState;
         }
 
         // Otherwise, set the game time of the desired move
         return {
-          ...graphicalRecordingState,
-          moveHistory: graphicalRecordingState.moveHistory.map((el, i) =>
+          ...recordingState,
+          moveHistory: recordingState.moveHistory.map((el, i) =>
             i === index ? { ...el, gameTime } : el,
           ),
         };

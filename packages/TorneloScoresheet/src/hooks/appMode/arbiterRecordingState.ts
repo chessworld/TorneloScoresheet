@@ -2,30 +2,30 @@ import { useContext } from 'react';
 import {
   AppMode,
   AppModeState,
-  ArbiterGraphicalRecordingMode,
+  ArbiterRecordingMode as ArbiterRecordingMode,
 } from '../../types/AppModeState';
 
-type arbiterGraphicalRecordingStateHookType = [
-  ArbiterGraphicalRecordingMode,
+type arbiterRecordingStateHookType = [
+  ArbiterRecordingMode,
   {
     goToRecordingMode: () => void;
   },
 ];
 
-export const makeUseArbiterGraphicalRecordingState =
+export const makeUseArbiterRecordingState =
   (
     context: React.Context<
       [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
     >,
-  ): (() => arbiterGraphicalRecordingStateHookType | null) =>
-  (): arbiterGraphicalRecordingStateHookType | null => {
+  ): (() => arbiterRecordingStateHookType | null) =>
+  (): arbiterRecordingStateHookType | null => {
     const [appModeState, setAppModeState] = useContext(context);
-    if (appModeState.mode !== AppMode.ArbiterGraphicalRecording) {
+    if (appModeState.mode !== AppMode.ArbiterRecording) {
       return null;
     }
 
     const goToRecordingMode = (): void => {
-      setAppModeState({ ...appModeState, mode: AppMode.GraphicalRecording });
+      setAppModeState({ ...appModeState, mode: AppMode.Recording });
     };
 
     return [appModeState, { goToRecordingMode }];

@@ -2,7 +2,7 @@ import {
   AppModeStateContextProvider,
   useAppModeState,
   useEnterPgnState,
-  useGraphicalRecordingState,
+  useRecordingState,
 } from '../src/context/AppModeStateContext';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { AppMode } from '../src/types/AppModeState';
@@ -119,7 +119,7 @@ describe('graphical recording moving', () => {
 
     const graphicalState = generateGraphicalRecordingState([]);
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
       graphicalStateHook.current?.[1].move(move as MoveSquares);
@@ -160,7 +160,7 @@ describe('graphical recording moving', () => {
 
     const graphicalState = generateGraphicalRecordingState(moveHistory);
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
       graphicalStateHook.current?.[1].move(move as MoveSquares);
@@ -197,7 +197,7 @@ describe('undoing last move', () => {
   test('undo with empty move history', () => {
     const graphicalState = generateGraphicalRecordingState([]);
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
       graphicalStateHook.current?.[1].undoLastMove();
@@ -222,7 +222,7 @@ describe('undoing last move', () => {
     ];
     const graphicalState = generateGraphicalRecordingState(moveHistory);
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
       graphicalStateHook.current?.[1].undoLastMove();
@@ -255,7 +255,7 @@ describe('undoing last move', () => {
     ];
     const graphicalState = generateGraphicalRecordingState(moveHistory);
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
       graphicalStateHook.current?.[1].undoLastMove();
@@ -285,7 +285,7 @@ describe('Skipping player turn', () => {
   test("Skip White's turn", () => {
     const graphicalState = generateGraphicalRecordingState([]);
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
     const startingFen =
       'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
     const resultingFen =
@@ -322,7 +322,7 @@ describe('Skipping player turn', () => {
     ];
     const graphicalState = generateGraphicalRecordingState(moveHistory);
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
     const startingFen =
       'rnbqkbnr/pppppppp/8/R7/8/8/PPPPPPPP/1NBQKBNR b Kkq - 1 1';
     const resultingFen =
@@ -353,7 +353,7 @@ describe('Auto Skip player turn', () => {
   test("Auto Skip White's turn", () => {
     const graphicalState = generateGraphicalRecordingState([]);
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
     const move = {
       from: 'h8',
       to: 'h5',
@@ -411,7 +411,7 @@ describe('Auto Skip player turn', () => {
     const move = { from: 'a5', to: 'a6' } as MoveSquares;
     const graphicalState = generateGraphicalRecordingState(moveHistory);
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
       graphicalStateHook.current?.[1].skipTurnAndProcessMove(move);
@@ -444,7 +444,7 @@ describe('Auto Skip player turn', () => {
   test("Auto Skip White's turn with impossible move", () => {
     const graphicalState = generateGraphicalRecordingState([]);
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
     const move = {
       from: 'h5',
       to: 'h6',
@@ -492,7 +492,7 @@ describe('Auto Skip player turn', () => {
     const move = { from: 'a5', to: 'b1' } as MoveSquares;
     const graphicalState = generateGraphicalRecordingState(moveHistory);
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
       graphicalStateHook.current?.[1].skipTurnAndProcessMove(move);
@@ -534,7 +534,7 @@ describe('Auto Skip player turn', () => {
     const move = { from: 'a2', to: 'a8' } as MoveSquares;
     const graphicalState = generateGraphicalRecordingState(moveHistory);
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
       graphicalStateHook.current?.[1].skipTurnAndProcessMove(
@@ -698,7 +698,7 @@ describe('Generate pgn', () => {
       pgnSucess,
     );
     mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
     act(() => {
       const pgnResult = graphicalStateHook.current?.[1].generatePgn(
         PlayerColour.Black,
@@ -836,7 +836,7 @@ describe('Generate pgn', () => {
     );
     mockAppModeContext(graphicalState);
 
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
     act(() => {
       const pgnResult = graphicalStateHook.current?.[1].generatePgn(
         PlayerColour.Black,
@@ -968,7 +968,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
     graphicalState.pairing.pgn = pgnSucess;
 
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
     const result = {
       winner: PlayerColour.White,
       signature: { 0: 'base 64 image', 1: 'base 64 image' },
@@ -1105,7 +1105,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
     graphicalState.pairing.pgn = pgnSucess;
 
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
     const result = {
       winner: PlayerColour.Black,
       signature: { 0: 'base 64 image', 1: 'base 64 image' },
@@ -1242,7 +1242,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
     graphicalState.pairing.pgn = pgnSucess;
 
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
     const result = {
       winner: null,
       signature: { 0: 'base 64 image', 1: 'base 64 image' },
@@ -1275,7 +1275,7 @@ describe('Toggle Draw Offer', () => {
     ];
     const graphicalState = generateGraphicalRecordingState(moveHistory);
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
       graphicalStateHook.current?.[1].toggleDraw(0);
@@ -1311,7 +1311,7 @@ describe('Toggle Draw Offer', () => {
     ];
     const graphicalState = generateGraphicalRecordingState(moveHistory);
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
       graphicalStateHook.current?.[1].toggleDraw(0);
@@ -1355,7 +1355,7 @@ describe('Toggle Draw Offer', () => {
     ];
     const graphicalState = generateGraphicalRecordingState(moveHistory);
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
       graphicalStateHook.current?.[1].toggleDraw(1);
@@ -1411,7 +1411,7 @@ describe('Toggle Draw Offer', () => {
     ];
     const graphicalState = generateGraphicalRecordingState(moveHistory);
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
       graphicalStateHook.current?.[1].toggleDraw(1);
@@ -1461,7 +1461,7 @@ describe('Add Game time', () => {
     ];
     const graphicalState = generateGraphicalRecordingState(moveHistory);
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
 
     const gameTime: GameTime = { hours: 1, minutes: 1 };
 
@@ -1501,7 +1501,7 @@ describe('Add Game time', () => {
     ];
     const graphicalState = generateGraphicalRecordingState(moveHistory);
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
       graphicalStateHook.current?.[1].setGameTime(0, undefined);
@@ -1546,7 +1546,7 @@ describe('Add Game time', () => {
     ];
     const graphicalState = generateGraphicalRecordingState(moveHistory);
     const setContextMock = mockAppModeContext(graphicalState);
-    const graphicalStateHook = renderCustomHook(useGraphicalRecordingState);
+    const graphicalStateHook = renderCustomHook(useRecordingState);
     const newGameTime = { hours: 2, minutes: 2 };
     act(() => {
       graphicalStateHook.current?.[1].setGameTime(0, newGameTime);

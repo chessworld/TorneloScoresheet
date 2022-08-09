@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Image, StatusBar, View } from 'react-native';
 import {
   useAppModeState,
-  useArbiterGraphicalRecordingState,
+  useArbiterRecordingState,
   useArbiterResultDisplayState,
   useArbiterTablePairingState,
-  useGraphicalRecordingState,
+  useRecordingState,
   useResultDisplayState,
   useTablePairingState,
 } from '../../context/AppModeStateContext';
@@ -58,9 +58,9 @@ const Toolbar: React.FC = () => {
       [AppMode.EnterPgn]: true,
       [AppMode.PairingSelection]: true,
       [AppMode.TablePairing]: false,
-      [AppMode.GraphicalRecording]: false,
+      [AppMode.Recording]: false,
       [AppMode.ResultDisplay]: false,
-      [AppMode.ArbiterGraphicalRecording]: false,
+      [AppMode.ArbiterRecording]: false,
       [AppMode.ArbiterTablePairing]: false,
       [AppMode.ArbiterResultDisplay]: false,
     }[mode]);
@@ -70,9 +70,9 @@ const Toolbar: React.FC = () => {
       [AppMode.EnterPgn]: false,
       [AppMode.PairingSelection]: false,
       [AppMode.TablePairing]: false,
-      [AppMode.GraphicalRecording]: true,
+      [AppMode.Recording]: true,
       [AppMode.ResultDisplay]: false,
-      [AppMode.ArbiterGraphicalRecording]: false,
+      [AppMode.ArbiterRecording]: false,
       [AppMode.ArbiterTablePairing]: false,
       [AppMode.ArbiterResultDisplay]: false,
     }[mode]);
@@ -82,12 +82,12 @@ const Toolbar: React.FC = () => {
   };
 
   const appModeArbiterTransition: Record<AppMode, () => void> = {
-    [AppMode.ArbiterGraphicalRecording]: voidReturn,
+    [AppMode.ArbiterRecording]: voidReturn,
     [AppMode.ArbiterTablePairing]: voidReturn,
     [AppMode.ArbiterResultDisplay]: voidReturn,
     [AppMode.EnterPgn]: voidReturn,
-    [AppMode.GraphicalRecording]:
-      useGraphicalRecordingState()?.[1].goToArbiterGameMode ?? voidReturn,
+    [AppMode.Recording]:
+      useRecordingState()?.[1].goToArbiterGameMode ?? voidReturn,
     [AppMode.PairingSelection]: voidReturn,
     [AppMode.ResultDisplay]:
       useResultDisplayState()?.[1].goToArbiterMode ?? voidReturn,
@@ -99,10 +99,10 @@ const Toolbar: React.FC = () => {
     [AppMode.EnterPgn]: voidReturn,
     [AppMode.PairingSelection]: voidReturn,
     [AppMode.TablePairing]: voidReturn,
-    [AppMode.GraphicalRecording]: voidReturn,
+    [AppMode.Recording]: voidReturn,
     [AppMode.ResultDisplay]: voidReturn,
-    [AppMode.ArbiterGraphicalRecording]:
-      useArbiterGraphicalRecordingState()?.[1].goToRecordingMode ?? voidReturn,
+    [AppMode.ArbiterRecording]:
+      useArbiterRecordingState()?.[1].goToRecordingMode ?? voidReturn,
     [AppMode.ArbiterTablePairing]:
       useArbiterTablePairingState()?.[1].goToTablePairingMode ?? voidReturn,
     [AppMode.ArbiterResultDisplay]:
