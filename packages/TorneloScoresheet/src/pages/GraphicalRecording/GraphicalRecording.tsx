@@ -6,7 +6,7 @@ import { ActionButtonProps } from '../../components/ActionButton/ActionButton';
 import ChessBoard from '../../components/ChessBoard/ChessBoard';
 import MoveCard from '../../components/MoveCard/MoveCard';
 import OptionSheet from '../../components/OptionSheet/OptionSheet';
-import { useGraphicalRecordingState } from '../../context/AppModeStateContext';
+import { useRecordingState } from '../../context/AppModeStateContext';
 import {
   BISHOP,
   ICON_CLOCK,
@@ -49,7 +49,7 @@ const otherPlayer = (player: PlayerColour | undefined) => {
 
 const GraphicalRecording: React.FC = () => {
   // app mode hook unpacking
-  const graphicalRecordingState = useGraphicalRecordingState();
+  const graphicalRecordingState = useRecordingState();
   const graphicalRecordingMode = graphicalRecordingState?.[0];
   const makeMove = graphicalRecordingState?.[1].move;
   const undoLastMove = graphicalRecordingState?.[1].undoLastMove;

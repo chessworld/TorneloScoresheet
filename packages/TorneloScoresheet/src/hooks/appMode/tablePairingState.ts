@@ -36,7 +36,7 @@ export const makeUseTablePairingState =
     const goToRecording = (currentPlayer: PlayerColour): void => {
       const board = chessEngine.fenToBoardPositions(chessEngine.startingFen());
       setAppModeState({
-        mode: AppMode.GraphicalRecording,
+        mode: AppMode.Recording,
         pairing: appModeState.pairing,
         moveHistory: [],
         board,

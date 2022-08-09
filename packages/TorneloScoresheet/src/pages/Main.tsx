@@ -20,9 +20,9 @@ const Main: React.FC = () => {
       return <PairingSelection />;
     case AppMode.TablePairing:
       return <TablePairing />;
-    case AppMode.GraphicalRecording:
+    case AppMode.Recording:
       return <GraphicalRecording />;
-    case AppMode.ArbiterGraphicalRecording:
+    case AppMode.ArbiterRecording:
       return (
         <PrimaryText label="Arbiter Graphical Recording is unsupported app mode" />
       );

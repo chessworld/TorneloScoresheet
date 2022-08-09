@@ -2,10 +2,10 @@ import React, { useContext, useState } from 'react';
 import { makeUseEnterPgnState } from '../hooks/appMode/enterPgnState';
 import { makeUsePairingSelectionState } from '../hooks/appMode/pairingSelectionState';
 import { makeUseTablePairingState } from '../hooks/appMode/tablePairingState';
-import { makeUseGraphicalRecordingState } from '../hooks/appMode/graphicalRecordingState';
+import { makeUseRecordingState } from '../hooks/appMode/recordingState';
 import { AppModeState, AppMode } from '../types/AppModeState';
 import { makeUseResultDisplayState } from '../hooks/appMode/resultDisplayState';
-import { makeUseArbiterGraphicalRecordingState } from '../hooks/appMode/arbiterGraphicalRecordingState';
+import { makeUseArbiterRecordingState } from '../hooks/appMode/arbiterRecordingState';
 import { makeUseArbiterTablePairingState } from '../hooks/appMode/arbiterTablePairingState';
 import { makeUseArbiterResultDisplayState } from '../hooks/appMode/arbiterResultDisplayState';
 
@@ -42,14 +42,13 @@ export const usePairingSelectionState =
 export const useTablePairingState =
   makeUseTablePairingState(AppModeStateContext);
 
-export const useGraphicalRecordingState =
-  makeUseGraphicalRecordingState(AppModeStateContext);
+export const useRecordingState = makeUseRecordingState(AppModeStateContext);
 
 export const useResultDisplayState =
   makeUseResultDisplayState(AppModeStateContext);
 
-export const useArbiterGraphicalRecordingState =
-  makeUseArbiterGraphicalRecordingState(AppModeStateContext);
+export const useArbiterRecordingState =
+  makeUseArbiterRecordingState(AppModeStateContext);
 
 export const useArbiterTablePairingState =
   makeUseArbiterTablePairingState(AppModeStateContext);
