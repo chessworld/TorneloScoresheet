@@ -62,13 +62,14 @@ const Toolbar: React.FC = () => {
       [AppMode.ArbiterResultDisplay]: false,
     }[mode]);
 
-  const toggleToTextMode = () => {
+  const toggleRecordingModeIconDisplay = () => {
     if (appModeState.mode === AppMode.Recording) {
       if (appModeState.type === 'Recording') {
-        return true;
+        return 'Recording';
       }
+      return 'Text';
     }
-    return false;
+    return '';
   };
 
   const voidReturn: () => void = () => {
@@ -153,23 +154,25 @@ const Toolbar: React.FC = () => {
         <Pin onPress={handleArbiterVerify} />
       </Sheet>
       <View style={[styles.container, backgroundColorStyle(currentColour)]}>
-        {showArbiterModeButton && (
-          <IconButton
-            icon="lock-open"
-            onPress={handleArbiterPress}
-            colour={currentTextColour}
-          />
-        )}
-        {showPlayerModeButton && (
-          <IconButton
-            icon="lock"
-            onPress={handlePlayerPress}
-            colour={currentTextColour}
-          />
-        )}
-        {displayPlaceholder(appModeState.mode) && (
-          <View style={styles.placeHolderButton} />
-        )}
+        <View style={[{ flex: 1 }]}>
+          {showArbiterModeButton && (
+            <IconButton
+              icon="lock-open"
+              onPress={handleArbiterPress}
+              colour={currentTextColour}
+            />
+          )}
+          {showPlayerModeButton && (
+            <IconButton
+              icon="lock"
+              onPress={handlePlayerPress}
+              colour={currentTextColour}
+            />
+          )}
+          {displayPlaceholder(appModeState.mode) && (
+            <View style={styles.placeHolderButton} />
+          )}
+        </View>
         <View style={styles.logo}>
           <Image
             style={styles.logoImage}
@@ -187,20 +190,22 @@ const Toolbar: React.FC = () => {
             style={styles.logoTitle}
           />
         </View>
-        {toggleToTextMode() && (
-          <IconButton
-            icon="grid-off"
-            onPress={handleRecordingModeTogglePress}
-            colour={colours.white}
-          />
-        )}
-        {!toggleToTextMode() && (
-          <IconButton
-            icon="grid-on"
-            onPress={handleRecordingModeTogglePress}
-            colour={colours.white}
-          />
-        )}
+        <View style={styles.toggleToTextEntryModeButton}>
+          {toggleRecordingModeIconDisplay() === 'Recording' && (
+            <IconButton
+              icon="grid-off"
+              onPress={handleRecordingModeTogglePress}
+              colour={colours.white}
+            />
+          )}
+          {toggleRecordingModeIconDisplay() === 'Text' && (
+            <IconButton
+              icon="grid-on"
+              onPress={handleRecordingModeTogglePress}
+              colour={colours.white}
+            />
+          )}
+        </View>
         <IconButton
           icon="help"
           onPress={handleHelpPress}
