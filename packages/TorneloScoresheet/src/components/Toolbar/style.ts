@@ -16,7 +16,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'space-between',
-    //flex: 1,
     height: TOOLBAR_HEIGHT,
   },
   logo: {
@@ -24,8 +23,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
-    // marginLeft: '5%',
-    // marginRight: '5%',
   },
   logoImage: {
     width: 40,
@@ -42,34 +39,13 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    // marginLeft: 10,
-    // marginRight: -10,
   },
   logoTitle: { lineHeight: LOGO_HEIGHT },
   helpText: { marginBottom: 10 },
   toggleToTextEntryModeButton: {
     marginRight: 20,
   },
-  // buttonText: {
-  //   fontSize: 23,
-  //   fontWeight: 'bold',
-  //   letterSpacing: 0.25,
-  //   color: colours.primary,
-  // },
-  // textModeButton: {
-  //   display: 'flex',
-  //   flexDirection: 'column',
-  //   alignItems: 'center',
-  //   marginLeft: '-40%',
-  //   marginRight: '-50%',
-  // },
-  // logoName: {
-  //   display: 'flex',
-  //   flexDirection: 'row',
-  //   paddingEnd: '10%',
-  // },
-  // textButton: {
-  //   marginLeft: '5%',
-  //   marginRight: '5%',
-  // },
+  arbiterLock: {
+    flex: 1,
+  },
 });

@@ -46,21 +46,7 @@ const Toolbar: React.FC = () => {
   const [showSheet, setShowSheet] = useState(false);
   const [showArbiterSheet, setShowArbiterSheet] = useState(false);
   const currentColour = colourForMode(appModeState.mode);
-  const showArbiterModeButton = !isArbiterMode(appModeState.mode);
-  const showPlayerModeButton = isArbiterFromPlayerMode(appModeState.mode);
   const currentTextColour = textColour(currentColour);
-
-  const displayPlaceholder = (mode: AppMode): boolean =>
-    ({
-      [AppMode.EnterPgn]: true,
-      [AppMode.PairingSelection]: true,
-      [AppMode.TablePairing]: false,
-      [AppMode.Recording]: false,
-      [AppMode.ResultDisplay]: false,
-      [AppMode.ArbiterRecording]: false,
-      [AppMode.ArbiterTablePairing]: false,
-      [AppMode.ArbiterResultDisplay]: false,
-    }[mode]);
 
   const toggleRecordingModeIconDisplay = () => {
     if (appModeState.mode === AppMode.Recording) {
@@ -69,7 +55,16 @@ const Toolbar: React.FC = () => {
       }
       return 'Text';
     }
-    return '';
+    return 'Placeholder';
+  };
+
+  const arbiterModeLockDisplay = () => {
+    if (isArbiterFromPlayerMode(appModeState.mode)) {
+      return 'Arbiter';
+    } else if (!isArbiterMode(appModeState.mode)) {
+      return 'Player';
+    }
+    return 'Placeholder';
   };
 
   const voidReturn: () => void = () => {
@@ -154,22 +149,22 @@ const Toolbar: React.FC = () => {
         <Pin onPress={handleArbiterVerify} />
       </Sheet>
       <View style={[styles.container, backgroundColorStyle(currentColour)]}>
-        <View style={[{ flex: 1 }]}>
-          {showArbiterModeButton && (
+        <View style={styles.arbiterLock}>
+          {arbiterModeLockDisplay() === 'Player' && (
             <IconButton
               icon="lock-open"
               onPress={handleArbiterPress}
               colour={currentTextColour}
             />
           )}
-          {showPlayerModeButton && (
+          {arbiterModeLockDisplay() === 'Arbiter' && (
             <IconButton
               icon="lock"
               onPress={handlePlayerPress}
               colour={currentTextColour}
             />
           )}
-          {displayPlaceholder(appModeState.mode) && (
+          {arbiterModeLockDisplay() === 'Placeholder' && (
             <View style={styles.placeHolderButton} />
           )}
         </View>
@@ -193,17 +188,20 @@ const Toolbar: React.FC = () => {
         <View style={styles.toggleToTextEntryModeButton}>
           {toggleRecordingModeIconDisplay() === 'Recording' && (
             <IconButton
-              icon="grid-off"
+              icon="keyboard"
               onPress={handleRecordingModeTogglePress}
               colour={colours.white}
             />
           )}
           {toggleRecordingModeIconDisplay() === 'Text' && (
             <IconButton
-              icon="grid-on"
+              icon="grid-view"
               onPress={handleRecordingModeTogglePress}
               colour={colours.white}
             />
+          )}
+          {toggleRecordingModeIconDisplay() === 'Placeholder' && (
+            <View style={styles.placeHolderButton} />
           )}
         </View>
         <IconButton
