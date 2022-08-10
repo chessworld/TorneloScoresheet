@@ -59,9 +59,9 @@ export const generateGamePairingInfo = (pgn?: string): ChessGameInfo => {
 };
 
 /**
- * Genrates a fake graphicalRecordingState object
+ * Genrates a fake RecordingState object
  * @param moveHistory the move history to set in the state
- * @returns Graphical recording state object
+ * @returns recording state object
  */
 export const generateGraphicalRecordingState = (
   moveHistory: ChessPly[],
@@ -76,6 +76,8 @@ export const generateGraphicalRecordingState = (
       moveHistory.at(-1)?.startingFen ?? chessEngine.startingFen(),
     ),
     currentPlayer: PlayerColour.White,
+    startTime: 0,
+    type: 'Recording',
   };
 };
 
