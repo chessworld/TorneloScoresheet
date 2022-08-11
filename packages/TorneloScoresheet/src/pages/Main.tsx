@@ -9,6 +9,7 @@ import ArbiterResultDisplay from './ResultDisplay/ArbiterResultDisplay';
 import ResultDisplay from './ResultDisplay/ResultDisplay';
 import ArbiterTablePairing from './TablePairing/ArbiterTablePairing';
 import TablePairing from './TablePairing/TablePairing';
+import TextRecording from './TextRecording/TextRecording';
 
 const Main: React.FC = () => {
   const appMode = useAppModeState();
@@ -21,10 +22,10 @@ const Main: React.FC = () => {
     case AppMode.TablePairing:
       return <TablePairing />;
     case AppMode.Recording:
-      return appMode.type === 'Recording' ? (
+      return appMode.type === 'Graphical' ? (
         <GraphicalRecording />
       ) : (
-        <PrimaryText label="Text Recording not currently supported" />
+        <TextRecording />
       );
 
     case AppMode.ArbiterRecording:

@@ -58,7 +58,7 @@ export type RecordingMode = {
   moveHistory: ChessPly[];
   board: BoardPosition[];
   currentPlayer: PlayerColour;
-  type: 'Recording' | 'Text';
+  type: 'Graphical' | 'Text';
 };
 
 export type ResultDisplayMode = {

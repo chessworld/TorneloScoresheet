@@ -59,6 +59,7 @@ export const makeUseArbiterResultDisplayState =
           moveHistory,
           pairing: appModeState.pairing,
           board: chessEngine.fenToBoardPositions(lastFen),
+          type: 'Graphical',
         });
         return succ('');
       } else {
