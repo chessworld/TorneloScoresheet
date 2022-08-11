@@ -42,7 +42,7 @@ const backgroundColorStyle = (backgroundColor: string) => ({
 
 const Toolbar: React.FC = () => {
   const appModeState = useAppModeState();
-  const graphicalRecordingState = useRecordingState();
+  const recordingState = useRecordingState();
   const [showSheet, setShowSheet] = useState(false);
   const [showArbiterSheet, setShowArbiterSheet] = useState(false);
   const currentColour = colourForMode(appModeState.mode);
@@ -50,8 +50,8 @@ const Toolbar: React.FC = () => {
 
   const toggleRecordingModeIconDisplay = () => {
     if (appModeState.mode === AppMode.Recording) {
-      if (appModeState.type === 'Recording') {
-        return 'Recording';
+      if (appModeState.type === 'Graphical') {
+        return 'Graphical';
       }
       return 'Text';
     }
@@ -71,7 +71,7 @@ const Toolbar: React.FC = () => {
     return;
   };
   const toggleRecordingState =
-    graphicalRecordingState?.[1].toggleRecordingMode ?? voidReturn;
+    recordingState?.[1].toggleRecordingMode ?? voidReturn;
 
   const appModeArbiterTransition: Record<AppMode, () => void> = {
     [AppMode.ArbiterRecording]: voidReturn,
@@ -121,7 +121,7 @@ const Toolbar: React.FC = () => {
   const handleRecordingModeTogglePress = () => {
     //if in Graphic Game Mode, move to text recording mode
     //if in Text Recording Mode, move to Graphic Game Mode
-    if (!graphicalRecordingState) {
+    if (!recordingState) {
       return;
     }
     toggleRecordingState();
@@ -186,7 +186,7 @@ const Toolbar: React.FC = () => {
           />
         </View>
         <View style={styles.toggleToTextEntryModeButton}>
-          {toggleRecordingModeIconDisplay() === 'Recording' && (
+          {toggleRecordingModeIconDisplay() === 'Graphical' && (
             <IconButton
               icon="keyboard"
               onPress={handleRecordingModeTogglePress}

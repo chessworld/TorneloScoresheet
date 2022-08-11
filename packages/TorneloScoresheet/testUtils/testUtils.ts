@@ -63,7 +63,7 @@ export const generateGamePairingInfo = (pgn?: string): ChessGameInfo => {
  * @param moveHistory the move history to set in the state
  * @returns recording state object
  */
-export const generateGraphicalRecordingState = (
+export const generateRecordingState = (
   moveHistory: ChessPly[],
   pgn?: string,
 ): RecordingMode => {
@@ -76,8 +76,7 @@ export const generateGraphicalRecordingState = (
       moveHistory.at(-1)?.startingFen ?? chessEngine.startingFen(),
     ),
     currentPlayer: PlayerColour.White,
-    startTime: 0,
-    type: 'Recording',
+    type: 'Graphical',
   };
 };
 

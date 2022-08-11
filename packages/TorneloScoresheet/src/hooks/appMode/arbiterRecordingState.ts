@@ -25,7 +25,12 @@ export const makeUseArbiterRecordingState =
     }
 
     const goToRecordingMode = (): void => {
-      setAppModeState({ ...appModeState, mode: AppMode.Recording });
+      setAppModeState({
+        ...appModeState,
+        mode: AppMode.Recording,
+        type: 'Graphical',
+        startTime: new Date().getTime(),
+      });
     };
 
     return [appModeState, { goToRecordingMode }];

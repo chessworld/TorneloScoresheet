@@ -256,7 +256,7 @@ export const makeUseRecordingState =
     const toggleRecordingMode = (): void => {
       setAppModeState({
         ...appModeState,
-        type: appModeState.type === 'Recording' ? 'Text' : 'Recording',
+        type: appModeState.type === 'Graphical' ? 'Text' : 'Graphical',
       });
     };
 
