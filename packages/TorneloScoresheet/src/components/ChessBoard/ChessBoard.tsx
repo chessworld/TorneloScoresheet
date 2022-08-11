@@ -17,12 +17,8 @@ import { styles } from './style';
 export type ChessBoardProps = {
   positions: BoardPosition[];
   flipBoard?: boolean;
+  highlightedMove?: MoveSquares;
   onMove: (moveSquares: MoveSquares) => Promise<void>;
-};
-
-const squareColour = (position: Position) => {
-  const [col, row] = boardPositionToIndex(position);
-  return (col + row) % 2 === 0 ? colours.darkBlue : colours.lightBlue;
 };
 
 const positionStyle = (position: Position, flipBoard: boolean) => {
@@ -68,8 +64,21 @@ const reverseRowOrder = (board: BoardPosition[]) => {
 const ChessBoard: React.FC<ChessBoardProps> = ({
   positions,
   flipBoard,
+  highlightedMove,
   onMove,
 }) => {
+  const squareColour = (position: Position) => {
+    if (position === highlightedMove?.from) {
+      return colours.lightGreen;
+    }
+    if (position === highlightedMove?.to) {
+      return colours.lightOrange;
+    }
+
+    const [col, row] = boardPositionToIndex(position);
+    return (col + row) % 2 === 0 ? colours.darkBlue : colours.lightBlue;
+  };
+
   return (
     <DragAndDropContextProvider>
       <RoundedView style={styles.board}>
