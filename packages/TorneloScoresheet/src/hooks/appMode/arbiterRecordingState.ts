@@ -28,7 +28,6 @@ export const makeUseArbiterRecordingState =
       setAppModeState({
         ...appModeState,
         mode: AppMode.Recording,
-        startTime: new Date().getTime(),
       });
     };
 
