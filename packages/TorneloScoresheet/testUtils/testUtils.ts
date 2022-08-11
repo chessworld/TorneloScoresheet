@@ -65,6 +65,7 @@ export const generateGamePairingInfo = (pgn?: string): ChessGameInfo => {
  */
 export const generateRecordingState = (
   moveHistory: ChessPly[],
+  recordingModeType: 'Graphical' | 'Text',
   pgn?: string,
 ): RecordingMode => {
   return {
@@ -76,7 +77,7 @@ export const generateRecordingState = (
       moveHistory.at(-1)?.startingFen ?? chessEngine.startingFen(),
     ),
     currentPlayer: PlayerColour.White,
-    type: 'Graphical',
+    type: recordingModeType,
   };
 };
 
