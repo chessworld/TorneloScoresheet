@@ -34,6 +34,7 @@ type recordingStateHookType = [
     toggleDraw: (drawIndex: number) => void;
     setGameTime: (index: number, gameTime: GameTime | undefined) => void;
     toggleRecordingMode: () => void;
+    goToEditMove: (index: number) => void;
   },
 ];
 
@@ -133,6 +134,27 @@ export const makeUseRecordingState =
         ...appModeState,
         board,
         moveHistory,
+      });
+    };
+
+    const goToEditMove = (index: number): void => {
+      // store the move history array and current player to memory
+      storeRecordingModeData({
+        moveHistory: appModeState.moveHistory,
+        currentPlayer: appModeState.currentPlayer,
+        startTime: appModeState.startTime,
+      });
+
+      setAppModeState({
+        mode: AppMode.EditMove,
+        pairing: appModeState.pairing,
+        moveHistory: appModeState.moveHistory,
+        editingIndex: index,
+        currentPlayer: appModeState.currentPlayer,
+        board: chessEngine.fenToBoardPositions(
+          appModeState.moveHistory[index]?.startingFen ??
+            chessEngine.startingFen(),
+        ),
       });
     };
 
@@ -272,6 +294,7 @@ export const makeUseRecordingState =
         toggleDraw,
         setGameTime,
         toggleRecordingMode,
+        goToEditMove,
       },
     ];
   };
