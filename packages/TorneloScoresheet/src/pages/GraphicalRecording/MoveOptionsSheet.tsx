@@ -66,7 +66,14 @@ const MoveOptionsSheet = ({
         label="Draw offer"
       />
       <MoveOption
-        onPress={() => undefined}
+        onPress={() => {
+          if (editingMove) {
+            actions?.goToEditMove(
+              editingMove.moveIndex * 2 +
+                (editingMove.colour === PlayerColour.Black ? 1 : 0),
+            );
+          }
+        }}
         colour={colours.primary}
         icon={<Icon name="edit" size={35} color={colours.white} />}
         label="Edit move"
