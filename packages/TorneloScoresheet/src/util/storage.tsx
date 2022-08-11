@@ -47,7 +47,7 @@ export const getStoredPairingList = async (): Promise<
   }
 };
 
-type StoredRecordingModeData = {
+export type StoredRecordingModeData = {
   startTime: number;
   moveHistory: ChessPly[];
   currentPlayer: PlayerColour;
