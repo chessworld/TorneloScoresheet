@@ -156,12 +156,8 @@ export const makeUseRecordingState =
 
     const goToArbiterGameMode = (): void => {
       setAppModeState({
+        ...appModeState,
         mode: AppMode.ArbiterRecording,
-        pairing: appModeState.pairing,
-        moveHistory: appModeState.moveHistory,
-        board: appModeState.board,
-        startTime: appModeState.startTime,
-        currentPlayer: appModeState.currentPlayer,
       });
     };
 
