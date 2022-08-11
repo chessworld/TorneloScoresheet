@@ -11,6 +11,7 @@ export enum AppMode {
   ArbiterRecording,
   ArbiterTablePairing,
   ArbiterResultDisplay,
+  EditMove,
 }
 
 export const isArbiterMode = (mode: AppMode): boolean =>
@@ -23,6 +24,7 @@ export const isArbiterMode = (mode: AppMode): boolean =>
     [AppMode.ArbiterRecording]: true,
     [AppMode.ArbiterTablePairing]: true,
     [AppMode.ArbiterResultDisplay]: true,
+    [AppMode.EditMove]: false,
   }[mode]);
 
 export const isArbiterFromPlayerMode = (mode: AppMode): boolean =>
@@ -35,11 +37,13 @@ export const isArbiterFromPlayerMode = (mode: AppMode): boolean =>
     [AppMode.ArbiterRecording]: true,
     [AppMode.ArbiterTablePairing]: true,
     [AppMode.ArbiterResultDisplay]: true,
+    [AppMode.EditMove]: false,
   }[mode]);
 
 export type EnterPgnMode = {
   mode: AppMode.EnterPgn;
 };
+
 export type PairingSelectionMode = {
   mode: AppMode.PairingSelection;
   games?: number;
@@ -59,6 +63,15 @@ export type RecordingMode = {
   board: BoardPosition[];
   currentPlayer: PlayerColour;
   type: 'Graphical' | 'Text';
+};
+
+export type EditingMoveMode = {
+  currentPlayer: PlayerColour;
+  mode: AppMode.EditMove;
+  pairing: ChessGameInfo;
+  moveHistory: ChessPly[];
+  board: BoardPosition[];
+  editingIndex: number;
 };
 
 export type ResultDisplayMode = {
@@ -90,4 +103,5 @@ export type AppModeState =
   | ResultDisplayMode
   | ArbiterRecordingMode
   | ArbiterResultDisplayMode
-  | ArbiterTablePairingMode;
+  | ArbiterTablePairingMode
+  | EditingMoveMode;

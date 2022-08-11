@@ -8,6 +8,7 @@ import { makeUseResultDisplayState } from '../hooks/appMode/resultDisplayState';
 import { makeUseArbiterRecordingState } from '../hooks/appMode/arbiterRecordingState';
 import { makeUseArbiterTablePairingState } from '../hooks/appMode/arbiterTablePairingState';
 import { makeUseArbiterResultDisplayState } from '../hooks/appMode/arbiterResultDisplayState';
+import { makeUseEditMoveState } from '../hooks/appMode/editMoveState';
 
 // The global state for the app
 // This is not exported so the setAppModeState is never leaked
@@ -57,3 +58,5 @@ export const useArbiterResultDisplayState =
   makeUseArbiterResultDisplayState(AppModeStateContext);
 
 export const useCurrentAppMode = () => useContext(AppModeStateContext)[0].mode;
+
+export const useEditMoveState = makeUseEditMoveState(AppModeStateContext);

@@ -5,6 +5,7 @@ import {
   useArbiterRecordingState,
   useArbiterResultDisplayState,
   useArbiterTablePairingState,
+  useEditMoveState,
   useRecordingState,
   useResultDisplayState,
   useTablePairingState,
@@ -45,6 +46,7 @@ const ArbiterAndPlayerModeDisplay: React.FC<
       useResultDisplayState()?.[1].goToArbiterMode ?? voidReturn,
     [AppMode.TablePairing]:
       useTablePairingState()?.[1].goToArbiterGameMode ?? voidReturn,
+    [AppMode.EditMove]: useEditMoveState()?.[1].goToArbiterMode ?? voidReturn,
   };
 
   const appModePlayerTransition: Record<AppMode, () => void> = {
@@ -53,6 +55,7 @@ const ArbiterAndPlayerModeDisplay: React.FC<
     [AppMode.TablePairing]: voidReturn,
     [AppMode.Recording]: voidReturn,
     [AppMode.ResultDisplay]: voidReturn,
+    [AppMode.EditMove]: voidReturn,
     [AppMode.ArbiterRecording]:
       useArbiterRecordingState()?.[1].goToRecordingMode ?? voidReturn,
     [AppMode.ArbiterTablePairing]:

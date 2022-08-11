@@ -6,10 +6,12 @@ import { AppModeStateContextProvider } from '../src/context/AppModeStateContext'
 import {
   AppMode,
   AppModeState,
+  EditingMoveMode,
   RecordingMode,
 } from '../src/types/AppModeState';
 import { ChessGameInfo, PlayerColour } from '../src/types/ChessGameInfo';
 import { ChessPly } from '../src/types/ChessMove';
+import * as Storage from '../src/util/storage';
 
 /**
  * Mocks a hook for testing
@@ -82,6 +84,27 @@ export const generateRecordingState = (
 };
 
 /**
+ * Genrates a fake EditingMoveState object
+ * @param moveHistory the move history to set in the state
+ * @returns editing move state object
+ */
+export const generateEditMoveState = (
+  moveHistory: ChessPly[],
+  moveIndex: number,
+): EditingMoveMode => {
+  return {
+    mode: AppMode.EditMove,
+    moveHistory,
+    editingIndex: moveIndex,
+    pairing: generateGamePairingInfo(),
+    board: chessEngine.fenToBoardPositions(
+      moveHistory.at(-1)?.startingFen ?? chessEngine.startingFen(),
+    ),
+    currentPlayer: PlayerColour.White,
+  };
+};
+
+/**
  * Mocks the appmodeContext
  * useContext(appmodecontext) will return the fake state passed as and argument
  * and a mock function to set the context which is returned from this function
@@ -95,6 +118,31 @@ export const mockAppModeContext = (
   const useContextSpy = jest.spyOn(React, 'useContext');
   useContextSpy.mockImplementation(_ => [state, setContextMock]);
   return setContextMock;
+};
+
+/**
+ * mocks the getStoredRecordingModeData of storage
+ * @param startTime the start time
+ * @param moveHistory the move history array
+ * @param currentPlayer the current player
+ */
+export const mockGetRecordingModeData = (
+  startTime?: number,
+  moveHistory?: ChessPly[],
+  currentPlayer?: PlayerColour,
+) => {
+  const getRecordingStorageSpy = jest.spyOn(
+    Storage,
+    'getStoredRecordingModeData',
+  );
+  const data: Storage.StoredRecordingModeData = {
+    startTime: startTime ?? 0,
+    moveHistory: moveHistory ?? [],
+    currentPlayer: currentPlayer ?? PlayerColour.White,
+  };
+  getRecordingStorageSpy.mockImplementation(
+    (): Promise<Storage.StoredRecordingModeData> => Promise.resolve(data),
+  );
 };
 
 /**
