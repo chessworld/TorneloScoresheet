@@ -49,22 +49,21 @@ const otherPlayer = (player: PlayerColour | undefined) => {
 
 const GraphicalRecording: React.FC = () => {
   // app mode hook unpacking
-  const graphicalRecordingState = useRecordingState();
-  const graphicalRecordingMode = graphicalRecordingState?.[0];
-  const makeMove = graphicalRecordingState?.[1].move;
-  const undoLastMove = graphicalRecordingState?.[1].undoLastMove;
-  const isPawnPromotion = graphicalRecordingState?.[1].isPawnPromotion;
-  const setGameTime = graphicalRecordingState?.[1].setGameTime;
-  const skipTurn = graphicalRecordingState?.[1].skipTurn;
-  const isOtherPlayersPiece = graphicalRecordingState?.[1].isOtherPlayersPiece;
-  const skipTurnAndProcessMove =
-    graphicalRecordingState?.[1].skipTurnAndProcessMove;
-  const generatePgn = graphicalRecordingState?.[1].generatePgn;
-  const toggleDraw = graphicalRecordingState?.[1].toggleDraw;
+  const recordingState = useRecordingState();
+  const recordingMode = recordingState?.[0];
+  const makeMove = recordingState?.[1].move;
+  const undoLastMove = recordingState?.[1].undoLastMove;
+  const isPawnPromotion = recordingState?.[1].isPawnPromotion;
+  const setGameTime = recordingState?.[1].setGameTime;
+  const skipTurn = recordingState?.[1].skipTurn;
+  const isOtherPlayersPiece = recordingState?.[1].isOtherPlayersPiece;
+  const skipTurnAndProcessMove = recordingState?.[1].skipTurnAndProcessMove;
+  const generatePgn = recordingState?.[1].generatePgn;
+  const toggleDraw = recordingState?.[1].toggleDraw;
 
   // states
   const [flipBoard, setFlipBoard] = useState(
-    graphicalRecordingMode?.currentPlayer === PlayerColour.Black,
+    recordingMode?.currentPlayer === PlayerColour.Black,
   );
   const [showPromotion, setShowPromotion] = useState(false);
   const [pgn, setPgn] = useState('');
@@ -78,7 +77,7 @@ const GraphicalRecording: React.FC = () => {
   });
   const [moveGameTimeIndex, setMoveGameTimeIndex] = useState(0);
 
-  const goToEndGame = graphicalRecordingState?.[1].goToEndGame;
+  const goToEndGame = recordingState?.[1].goToEndGame;
   const [selectedWinner, setSelectedWinner] = useState<
     undefined | Player | null
   >(undefined);
@@ -86,7 +85,7 @@ const GraphicalRecording: React.FC = () => {
   const currentPlayerSignature = useRef<string | undefined>(undefined);
 
   const [signingPlayer, setSigningPlayer] = useState(
-    graphicalRecordingMode?.currentPlayer,
+    recordingMode?.currentPlayer,
   );
 
   // Scroll view ref
@@ -118,10 +117,8 @@ const GraphicalRecording: React.FC = () => {
     {
       text: 'time',
       onPress: () => {
-        if (graphicalRecordingState) {
-          showSelectGameTimeSheet(
-            graphicalRecordingState?.[0].moveHistory.length - 1,
-          );
+        if (recordingState) {
+          showSelectGameTimeSheet(recordingState?.[0].moveHistory.length - 1);
         }
       },
       icon: <ICON_CLOCK height={40} fill={colours.white} />,
@@ -129,12 +126,12 @@ const GraphicalRecording: React.FC = () => {
     {
       text: 'draw',
       onPress: () => {
-        if (!toggleDraw || !graphicalRecordingMode) {
+        if (!toggleDraw || !recordingMode) {
           return;
         }
         //TODO: In the future this should be changed to the index of the selected move.
         // Currently it is the most recent move.
-        handleToggleDraw(graphicalRecordingMode.moveHistory.length - 1);
+        handleToggleDraw(recordingMode.moveHistory.length - 1);
       },
       icon: <ICON_HALF height={40} fill={colours.white} />,
     },
@@ -177,20 +174,18 @@ const GraphicalRecording: React.FC = () => {
       onPress: () => handleSelectPromotion(PieceType.Bishop),
     },
   ];
-  const endGameOptions = graphicalRecordingMode
+  const endGameOptions = recordingMode
     ? [
         {
-          text: fullName(graphicalRecordingMode.pairing.players[0]),
-          onPress: () =>
-            handleSelectWinner(graphicalRecordingMode.pairing.players[0]),
+          text: fullName(recordingMode.pairing.players[0]),
+          onPress: () => handleSelectWinner(recordingMode.pairing.players[0]),
           style: {
             width: '100%',
           },
         },
         {
-          text: fullName(graphicalRecordingMode.pairing.players[1]),
-          onPress: () =>
-            handleSelectWinner(graphicalRecordingMode.pairing.players[1]),
+          text: fullName(recordingMode.pairing.players[1]),
+          onPress: () => handleSelectWinner(recordingMode.pairing.players[1]),
           style: {
             width: '100%',
           },
@@ -208,7 +203,7 @@ const GraphicalRecording: React.FC = () => {
   // Button Functions
 
   const handleConfirmSignature = (signatureInput: string) => {
-    if (!graphicalRecordingMode || !goToEndGame) {
+    if (!recordingMode || !goToEndGame) {
       return;
     }
 
@@ -227,11 +222,11 @@ const GraphicalRecording: React.FC = () => {
       winner: selectedWinner?.color ?? null,
       signature: {
         [PlayerColour.White]:
-          graphicalRecordingMode.currentPlayer === PlayerColour.White
+          recordingMode.currentPlayer === PlayerColour.White
             ? currentPlayerSignature.current
             : signatureInput,
         [PlayerColour.Black]:
-          graphicalRecordingMode.currentPlayer === PlayerColour.Black
+          recordingMode.currentPlayer === PlayerColour.Black
             ? currentPlayerSignature.current
             : signatureInput,
       },
@@ -265,7 +260,7 @@ const GraphicalRecording: React.FC = () => {
     setShowEndGame(false);
     setSelectedWinner(undefined);
     currentPlayerSignature.current = undefined;
-    setSigningPlayer(graphicalRecordingMode?.currentPlayer);
+    setSigningPlayer(recordingMode?.currentPlayer);
   };
 
   const handleToggleDraw = (drawIndex: number) => {
@@ -339,9 +334,9 @@ const GraphicalRecording: React.FC = () => {
    * @returns the game time
    */
   const getCurrentGameTime = (): GameTime => {
-    if (graphicalRecordingState) {
+    if (recordingState) {
       const totalMiliseconds =
-        new Date().getTime() - graphicalRecordingState[0].startTime;
+        new Date().getTime() - recordingState[0].startTime;
       const totalMinutes = totalMiliseconds / (1000 * 60);
 
       // calculate time since start
@@ -368,9 +363,9 @@ const GraphicalRecording: React.FC = () => {
    * @returns The game time
    */
   const getMoveGameTime = (): GameTime => {
-    if (graphicalRecordingState) {
+    if (recordingState) {
       const gameTime =
-        graphicalRecordingState[0].moveHistory[moveGameTimeIndex]?.gameTime;
+        recordingState[0].moveHistory[moveGameTimeIndex]?.gameTime;
 
       // return gameTime associated with move if it exists else current game time
       return gameTime ? gameTime : getCurrentGameTime();
@@ -382,11 +377,11 @@ const GraphicalRecording: React.FC = () => {
 
   useEffect(() => {
     scrollRef.current?.scrollToEnd();
-  }, [graphicalRecordingMode?.moveHistory]);
+  }, [recordingMode?.moveHistory]);
 
   return (
     <>
-      {graphicalRecordingMode && (
+      {recordingMode && (
         <View style={styles.mainContainer}>
           {/*----- Popups -----*/}
           <OptionSheet
@@ -411,12 +406,12 @@ const GraphicalRecording: React.FC = () => {
             onCancel={handleCancelSelection}
             winnerName={(selectedWinner && fullName(selectedWinner)) ?? null}
             onConfirm={handleConfirmSignature}
-            white={graphicalRecordingMode.pairing.players[0]}
-            black={graphicalRecordingMode.pairing.players[1]}
+            white={recordingMode.pairing.players[0]}
+            black={recordingMode.pairing.players[1]}
             currentPlayer={
               signingPlayer === PlayerColour.White
-                ? fullName(graphicalRecordingMode.pairing.players[0])
-                : fullName(graphicalRecordingMode.pairing.players[1])
+                ? fullName(recordingMode.pairing.players[0])
+                : fullName(recordingMode.pairing.players[1])
             }
           />
           <TimePickerSheet
@@ -435,19 +430,19 @@ const GraphicalRecording: React.FC = () => {
           <View style={styles.playerCardsContainer}>
             <GraphicalModePlayerCard
               align="left"
-              player={graphicalRecordingMode.pairing.players[0]}
+              player={recordingMode.pairing.players[0]}
             />
             <View style={styles.verticalSeparator} />
             <GraphicalModePlayerCard
               align="right"
-              player={graphicalRecordingMode.pairing.players[1]}
+              player={recordingMode.pairing.players[1]}
             />
           </View>
 
           <View style={styles.boardButtonContainer}>
             <ActionBar actionButtons={actionButtons} />
             <ChessBoard
-              positions={graphicalRecordingMode.board}
+              positions={recordingMode.board}
               onMove={handleMove}
               flipBoard={flipBoard}
             />
@@ -456,7 +451,7 @@ const GraphicalRecording: React.FC = () => {
             ref={scrollRef}
             horizontal
             style={styles.moveCardContainer}>
-            {moves(graphicalRecordingMode.moveHistory).map((move, index) => (
+            {moves(recordingMode.moveHistory).map((move, index) => (
               <MoveCard
                 key={index}
                 move={move}
