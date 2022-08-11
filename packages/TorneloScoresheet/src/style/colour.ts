@@ -8,6 +8,8 @@ export const colours = {
   negative: '#fa3e2d' as const,
   white: '#ffffff' as const,
   black: '#000000' as const,
+  lightGreen: 'rgba(5, 168, 111, 0.5)' as const,
+  lightOrange: 'rgba(166, 101, 31, 0.5)' as const,
   // Brand Colours
   primary: '#00aeef' as const,
   primary20: 'rgba(0, 174, 239, 0.2)' as const,
@@ -47,6 +49,8 @@ export const statusBarStyleForColor = (colour: ColourType): StatusBarStyle => {
     case colours.tertiary:
     case colours.white:
     case colours.lightBlue:
+    case colours.lightOrange:
+    case colours.lightGreen:
     case colours.darkBlue:
       return 'dark-content';
   }
@@ -70,6 +74,8 @@ export const textColour = (colour: ColourType): string => {
     case colours.darkBlue:
     case colours.lightGrey:
     case colours.grey:
+    case colours.lightGreen:
+    case colours.lightOrange:
     case colours.grey10:
     case colours.darkGrey:
       return 'white';

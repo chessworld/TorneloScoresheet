@@ -9,10 +9,15 @@ import { styles } from './style';
 
 type MoveCardProps = {
   move: Move;
-  onRequestEditMove: (colour: PlayerColour) => void;
+  plyBeingEdited?: PlayerColour;
+  onRequestEditMove?: (colour: PlayerColour) => void;
 };
 
-const MoveCard: React.FC<MoveCardProps> = ({ move, onRequestEditMove }) => {
+const MoveCard: React.FC<MoveCardProps> = ({
+  move,
+  onRequestEditMove,
+  plyBeingEdited,
+}) => {
   return (
     <View style={styles.container}>
       <View style={styles.moveNumberContainer}>
@@ -20,14 +25,23 @@ const MoveCard: React.FC<MoveCardProps> = ({ move, onRequestEditMove }) => {
           # {move.white.moveNo}
         </PrimaryText>
       </View>
-      <View style={[styles.plyContainer, styles.whitePlyContainer]}>
+      <View
+        style={[
+          styles.plyContainer,
+          styles.whitePlyContainer,
+          plyBeingEdited === PlayerColour.White
+            ? { backgroundColor: colours.lightGreen }
+            : {},
+        ]}>
         <TouchableOpacity
           style={styles.touchableOpacity}
-          onLongPress={() => onRequestEditMove(PlayerColour.White)}>
+          onLongPress={() =>
+            onRequestEditMove && onRequestEditMove(PlayerColour.White)
+          }>
           {move.white.drawOffer && <DrawOfferIcon />}
           {move.white.gameTime && <GameTimeIcon />}
           <PrimaryText size={18} align={Align.Center} weight={FontWeight.Bold}>
-            {moveString(move.white)}
+            {moveString(move.white, plyBeingEdited === PlayerColour.White)}
           </PrimaryText>
         </TouchableOpacity>
       </View>
@@ -36,16 +50,23 @@ const MoveCard: React.FC<MoveCardProps> = ({ move, onRequestEditMove }) => {
         style={[
           styles.plyContainer,
           styles.blackPlyContainer,
-          blackPlyBackgroundColour(move.black),
+          plyBeingEdited === PlayerColour.Black
+            ? { backgroundColor: colours.lightGreen }
+            : blackPlyBackgroundColour(move.black),
+          ,
         ]}>
         <TouchableOpacity
           style={styles.touchableOpacity}
           disabled={!move.black}
-          onLongPress={() => onRequestEditMove(PlayerColour.Black)}>
+          onLongPress={() =>
+            onRequestEditMove && onRequestEditMove(PlayerColour.Black)
+          }>
           {move.black?.drawOffer && <DrawOfferIcon />}
           {move.black?.gameTime && <GameTimeIcon />}
           <PrimaryText size={18} align={Align.Center} weight={FontWeight.Bold}>
-            {move.black ? moveString(move.black) : ' '}
+            {move.black
+              ? moveString(move.black, plyBeingEdited === PlayerColour.Black)
+              : ' '}
           </PrimaryText>
         </TouchableOpacity>
       </View>
@@ -53,7 +74,10 @@ const MoveCard: React.FC<MoveCardProps> = ({ move, onRequestEditMove }) => {
   );
 };
 
-const moveString = (ply: ChessPly): string => {
+const moveString = (ply: ChessPly, isEditing: boolean): string => {
+  if (isEditing) {
+    return '____';
+  }
   if (ply.type === PlyTypes.SkipPly) {
     return '-';
   }
@@ -62,7 +86,7 @@ const moveString = (ply: ChessPly): string => {
 };
 
 const blackPlyBackgroundColour = (ply: ChessPly | undefined) => ({
-  backgroundColor: ply ? colours.darkBlue : colours.tertiary,
+  backgroundColor: ply ? colours.darkBlue : colours.lightGrey,
 });
 
 const iconBackground = (size: number) =>
