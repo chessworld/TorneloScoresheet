@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     textTransform: 'uppercase',
-    fontSize: 18,
+    fontSize: 16,
     color: colours.white,
     alignSelf: 'center',
   },
