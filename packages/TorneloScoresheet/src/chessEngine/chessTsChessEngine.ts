@@ -16,6 +16,7 @@ import {
   MoveSquares,
   ChessPly,
   PlyTypes,
+  MovePly,
 } from '../types/ChessMove';
 import { Result, succ, fail, isError } from '../types/Result';
 import { ChessEngineInterface } from './chessEngineInterface';
@@ -167,6 +168,32 @@ const isOtherPlayersPiece = (fen: string, move: MoveSquares): boolean => {
   return game.isOtherPlayersPiece(move);
 };
 
+const addComments = (game: Chess, move: MovePly): void => {
+  if (game.getComment()) {
+  }
+  if (move.drawOffer) {
+    game.getComment()
+      ? game.setComment(game.getComment() + ' , Draw Offer')
+      : game.setComment('Draw Offer');
+  }
+  if (move.gameTime) {
+    game.getComment()
+      ? game.setComment(
+          game.getComment() +
+            ', Time Recorded Hours: ' +
+            move.gameTime.hours.toString() +
+            ' Minutes ' +
+            move.gameTime.minutes.toString(),
+        )
+      : game.setComment(
+          'Time recorded Hours: ' +
+            move.gameTime.hours.toString() +
+            ' Minutes: ' +
+            move.gameTime.minutes.toString(),
+        );
+  }
+};
+
 /**
  * Generates the PGN of the game
  * @param originPgn the pgn of the event with the headers
@@ -211,6 +238,7 @@ const generatePgn = (
       ) {
         return 'Error processing move, an impossible move has been recorded';
       }
+      addComments(game, move);
       return '';
     })
     .find(errorMessage => errorMessage !== '');
@@ -218,11 +246,9 @@ const generatePgn = (
   if (error) {
     return fail(error);
   }
-
   // add result to headers
   game.removeHeader('Result');
   game.addHeader('Result', getResultString());
-
   return succ(game.pgn());
 };
 
