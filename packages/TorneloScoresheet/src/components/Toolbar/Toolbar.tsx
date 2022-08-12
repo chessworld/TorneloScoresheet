@@ -1,31 +1,20 @@
 import React, { useState } from 'react';
 import { Image, StatusBar, View } from 'react-native';
 import {
-  useAppModeState,
-  useArbiterRecordingState,
-  useArbiterResultDisplayState,
-  useArbiterTablePairingState,
-  useRecordingState,
-  useResultDisplayState,
-  useTablePairingState,
-} from '../../context/AppModeStateContext';
-import {
   colours,
   ColourType,
   statusBarStyleForColor,
   textColour,
 } from '../../style/colour';
 import { BLACK_LOGO_IMAGE, WHITE_LOGO_IMAGE } from '../../style/images';
-import {
-  AppMode,
-  isArbiterFromPlayerMode,
-  isArbiterMode,
-} from '../../types/AppModeState';
+import { AppMode, isArbiterMode } from '../../types/AppModeState';
 import IconButton from '../IconButton/IconButton';
 import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import Sheet from '../Sheet/Sheet';
 import { styles } from './style';
-import Pin from '../Pin/Pin';
+import ToggleRecordingMode from './ToggleRecordingMode';
+import { useAppModeState } from '../../context/AppModeStateContext';
+import ArbiterAndPlayerModeDisplay from './ArbiterAndPlayerModeDisplay';
 /**
  * The App's toolbar.
  *
@@ -42,89 +31,12 @@ const backgroundColorStyle = (backgroundColor: string) => ({
 
 const Toolbar: React.FC = () => {
   const appModeState = useAppModeState();
-  const recordingState = useRecordingState();
   const [showSheet, setShowSheet] = useState(false);
-  const [showArbiterSheet, setShowArbiterSheet] = useState(false);
   const currentColour = colourForMode(appModeState.mode);
   const currentTextColour = textColour(currentColour);
 
-  const toggleRecordingModeIconDisplay = () => {
-    if (appModeState.mode === AppMode.Recording) {
-      if (appModeState.type === 'Graphical') {
-        return 'Graphical';
-      }
-      return 'Text';
-    }
-    return 'Placeholder';
-  };
-
-  const arbiterModeLockDisplay = () => {
-    if (isArbiterFromPlayerMode(appModeState.mode)) {
-      return 'Arbiter';
-    } else if (!isArbiterMode(appModeState.mode)) {
-      return 'Player';
-    }
-    return 'Placeholder';
-  };
-
-  const voidReturn: () => void = () => {
-    return;
-  };
-  const toggleRecordingState =
-    recordingState?.[1].toggleRecordingMode ?? voidReturn;
-
-  const appModeArbiterTransition: Record<AppMode, () => void> = {
-    [AppMode.ArbiterRecording]: voidReturn,
-    [AppMode.ArbiterTablePairing]: voidReturn,
-    [AppMode.ArbiterResultDisplay]: voidReturn,
-    [AppMode.EnterPgn]: voidReturn,
-    [AppMode.Recording]:
-      useRecordingState()?.[1].goToArbiterGameMode ?? voidReturn,
-    [AppMode.PairingSelection]: voidReturn,
-    [AppMode.ResultDisplay]:
-      useResultDisplayState()?.[1].goToArbiterMode ?? voidReturn,
-    [AppMode.TablePairing]:
-      useTablePairingState()?.[1].goToArbiterGameMode ?? voidReturn,
-  };
-
-  const appModePlayerTransition: Record<AppMode, () => void> = {
-    [AppMode.EnterPgn]: voidReturn,
-    [AppMode.PairingSelection]: voidReturn,
-    [AppMode.TablePairing]: voidReturn,
-    [AppMode.Recording]: voidReturn,
-    [AppMode.ResultDisplay]: voidReturn,
-    [AppMode.ArbiterRecording]:
-      useArbiterRecordingState()?.[1].goToRecordingMode ?? voidReturn,
-    [AppMode.ArbiterTablePairing]:
-      useArbiterTablePairingState()?.[1].goToTablePairingMode ?? voidReturn,
-    [AppMode.ArbiterResultDisplay]:
-      useArbiterResultDisplayState()?.[1].goToResultDisplayMode ?? voidReturn,
-  };
-
-  const handleArbiterVerify = () => {
-    //pin is correct - move to arbiter mode
-    setShowArbiterSheet(false);
-    appModeArbiterTransition[appModeState.mode]();
-  };
-
   const handleHelpPress = () => {
     setShowSheet((a: any) => !a);
-  };
-  const handleArbiterPress = () => {
-    setShowArbiterSheet((a: any) => !a);
-  };
-
-  const handlePlayerPress = () => {
-    appModePlayerTransition[appModeState.mode]();
-  };
-
-  const handleRecordingModeTogglePress = () => {
-    //if in Graphic Game Mode, move to text recording mode
-    //if in Text Recording Mode, move to Graphic Game Mode
-    if (!recordingState) {
-      return;
-    }
-    toggleRecordingState();
   };
 
   return (
@@ -136,37 +48,9 @@ const Toolbar: React.FC = () => {
         visible={showSheet}>
         <PrimaryText style={styles.helpText}>Put help here!</PrimaryText>
       </Sheet>
-      <Sheet
-        title="Arbiter Mode"
-        dismiss={() => setShowArbiterSheet(false)}
-        visible={showArbiterSheet}>
-        <PrimaryText
-          style={styles.enterPinText}
-          size={40}
-          weight={FontWeight.Bold}
-          label={'Enter Pin'}
-        />
-        <Pin onPress={handleArbiterVerify} />
-      </Sheet>
       <View style={[styles.container, backgroundColorStyle(currentColour)]}>
         <View style={styles.arbiterLock}>
-          {arbiterModeLockDisplay() === 'Player' && (
-            <IconButton
-              icon="lock-open"
-              onPress={handleArbiterPress}
-              colour={currentTextColour}
-            />
-          )}
-          {arbiterModeLockDisplay() === 'Arbiter' && (
-            <IconButton
-              icon="lock"
-              onPress={handlePlayerPress}
-              colour={currentTextColour}
-            />
-          )}
-          {arbiterModeLockDisplay() === 'Placeholder' && (
-            <View style={styles.placeHolderButton} />
-          )}
+          <ArbiterAndPlayerModeDisplay currentTextColour={currentTextColour} />
         </View>
         <View style={styles.logo}>
           <Image
@@ -186,23 +70,7 @@ const Toolbar: React.FC = () => {
           />
         </View>
         <View style={styles.toggleToTextEntryModeButton}>
-          {toggleRecordingModeIconDisplay() === 'Graphical' && (
-            <IconButton
-              icon="keyboard"
-              onPress={handleRecordingModeTogglePress}
-              colour={colours.white}
-            />
-          )}
-          {toggleRecordingModeIconDisplay() === 'Text' && (
-            <IconButton
-              icon="grid-view"
-              onPress={handleRecordingModeTogglePress}
-              colour={colours.white}
-            />
-          )}
-          {toggleRecordingModeIconDisplay() === 'Placeholder' && (
-            <View style={styles.placeHolderButton} />
-          )}
+          <ToggleRecordingMode />
         </View>
         <IconButton
           icon="help"
