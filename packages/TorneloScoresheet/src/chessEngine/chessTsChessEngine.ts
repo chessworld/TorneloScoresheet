@@ -173,23 +173,25 @@ const addComments = (game: Chess, move: MovePly): void => {
   }
   if (move.drawOffer) {
     game.getComment()
-      ? game.setComment(game.getComment() + ' , Draw Offer')
-      : game.setComment('Draw Offer');
+      ? game.setComment(game.getComment() + '=')
+      : game.setComment('=');
   }
   if (move.gameTime) {
     game.getComment()
       ? game.setComment(
           game.getComment() +
-            ', Time Recorded Hours: ' +
+            '[%clk ' +
             move.gameTime.hours.toString() +
-            ' Minutes ' +
-            move.gameTime.minutes.toString(),
+            ':' +
+            move.gameTime.minutes.toString() +
+            ']',
         )
       : game.setComment(
-          'Time recorded Hours: ' +
+          '[%clk ' +
             move.gameTime.hours.toString() +
-            ' Minutes: ' +
-            move.gameTime.minutes.toString(),
+            ':' +
+            move.gameTime.minutes.toString() +
+            ']',
         );
   }
 };
@@ -249,6 +251,7 @@ const generatePgn = (
   // add result to headers
   game.removeHeader('Result');
   game.addHeader('Result', getResultString());
+  console.log(game.pgn());
   return succ(game.pgn());
 };
 
