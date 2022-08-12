@@ -169,30 +169,32 @@ const isOtherPlayersPiece = (fen: string, move: MoveSquares): boolean => {
 };
 
 const addComments = (game: Chess, move: MovePly): void => {
-  if (game.getComment()) {
-  }
   if (move.drawOffer) {
-    game.getComment()
-      ? game.setComment(game.getComment() + '=')
-      : game.setComment('=');
+    if (game.getComment()) {
+      game.setComment(game.getComment() + '=');
+    } else {
+      game.setComment('=');
+    }
   }
   if (move.gameTime) {
-    game.getComment()
-      ? game.setComment(
-          game.getComment() +
-            '[%clk ' +
-            move.gameTime.hours.toString() +
-            ':' +
-            move.gameTime.minutes.toString() +
-            ']',
-        )
-      : game.setComment(
+    if (game.getComment()) {
+      game.setComment(
+        game.getComment() +
           '[%clk ' +
-            move.gameTime.hours.toString() +
-            ':' +
-            move.gameTime.minutes.toString() +
-            ']',
-        );
+          move.gameTime.hours.toString() +
+          ':' +
+          move.gameTime.minutes.toString() +
+          ']',
+      );
+    } else {
+      game.setComment(
+        '[%clk ' +
+          move.gameTime.hours.toString() +
+          ':' +
+          move.gameTime.minutes.toString() +
+          ']',
+      );
+    }
   }
 };
 
@@ -251,7 +253,6 @@ const generatePgn = (
   // add result to headers
   game.removeHeader('Result');
   game.addHeader('Result', getResultString());
-  console.log(game.pgn());
   return succ(game.pgn());
 };
 
