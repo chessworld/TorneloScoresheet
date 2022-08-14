@@ -1,26 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import ActionBar from '../../components/ActionBar/ActionBar';
-import { ActionButtonProps } from '../../components/ActionButton/ActionButton';
 import ChessBoard from '../../components/ChessBoard/ChessBoard';
 import MoveCard from '../../components/MoveCard/MoveCard';
-import OptionSheet from '../../components/OptionSheet/OptionSheet';
 import { useRecordingState } from '../../context/AppModeStateContext';
-import {
-  BISHOP,
-  ICON_CLOCK,
-  ICON_FLIP,
-  ICON_HALF,
-  ICON_HASTAG,
-  ICON_SKIP,
-  ICON_UNDO,
-  KNIGHT,
-  PAWN,
-  QUEEN,
-  ROOK,
-} from '../../style/images';
-import { Player, PlayerColour } from '../../types/ChessGameInfo';
+import { PlayerColour } from '../../types/ChessGameInfo';
 import {
   PieceType,
   MoveSquares,
@@ -29,262 +13,47 @@ import {
   GameTime,
 } from '../../types/ChessMove';
 import { styles } from './style';
-import { fullName } from '../../util/player';
-import Signature from '../../components/Signature/Signature';
-import { colours } from '../../style/colour';
-import { useError } from '../../context/ErrorContext';
-import { isError } from '../../types/Result';
 import MoveOptionsSheet, { EditingMove } from './MoveOptionsSheet';
 import GraphicalModePlayerCard from '../../components/GraphicalModePlayerCard/GraphicalModePlayerCard';
 import TimePickerSheet from '../../components/TimePickerSheet/TimePickerSheet';
-
-const otherPlayer = (player: PlayerColour | undefined) => {
-  if (player === undefined) {
-    return undefined;
-  }
-  return player === PlayerColour.Black
-    ? PlayerColour.White
-    : PlayerColour.Black;
-};
+import Actions from './Actions';
+import PromotionSheet from './PromotionSheet';
+import EndGameSheet from './EndGameSheet';
+import { RecordingMode } from '../../types/AppModeState';
 
 const GraphicalRecording: React.FC = () => {
   // app mode hook unpacking
   const recordingState = useRecordingState();
   const recordingMode = recordingState?.[0];
   const makeMove = recordingState?.[1].move;
-  const undoLastMove = recordingState?.[1].undoLastMove;
   const isPawnPromotion = recordingState?.[1].isPawnPromotion;
   const setGameTime = recordingState?.[1].setGameTime;
-  const skipTurn = recordingState?.[1].skipTurn;
   const isOtherPlayersPiece = recordingState?.[1].isOtherPlayersPiece;
   const skipTurnAndProcessMove = recordingState?.[1].skipTurnAndProcessMove;
-  const generatePgn = recordingState?.[1].generatePgn;
-  const toggleDraw = recordingState?.[1].toggleDraw;
 
   // states
   const [flipBoard, setFlipBoard] = useState(
     recordingMode?.currentPlayer === PlayerColour.Black,
   );
   const [showPromotion, setShowPromotion] = useState(false);
-  const [pgn, setPgn] = useState('');
   const [showTimeSheet, setShowTimeSheet] = useState(false);
-  const [, showError] = useError();
   const [showEndGame, setShowEndGame] = useState(false);
-  const [showSignature, setShowSignature] = useState(false);
   const [moveGameTime, setMoveGameTime] = useState<GameTime>({
     hours: 0,
     minutes: 0,
   });
   const [moveGameTimeIndex, setMoveGameTimeIndex] = useState(0);
 
-  const goToEndGame = recordingState?.[1].goToEndGame;
-  const [selectedWinner, setSelectedWinner] = useState<
-    undefined | Player | null
-  >(undefined);
-
-  const currentPlayerSignature = useRef<string | undefined>(undefined);
-
-  const [signingPlayer, setSigningPlayer] = useState(
-    recordingMode?.currentPlayer,
-  );
-
   // Scroll view ref
   const scrollRef = useRef<ScrollView>(null);
 
   // when the promotion popup opens, the app will await untill a promise is resolved
   // this ref stores this resolve function (it will be called once the user selects a promotion)
-  const promotionSelectedFunc = useRef<
+  const resolvePromotion = useRef<
     ((value: PieceType | PromiseLike<PieceType>) => void) | null
   >(null);
 
-  // Button parameters
-  const actionButtons: ActionButtonProps[] = [
-    {
-      text: 'flip',
-      onPress: () => {
-        setFlipBoard(!flipBoard);
-      },
-      icon: <ICON_FLIP height={40} fill={colours.white} />,
-    },
-    {
-      text: 'end',
-      onPress: () => {
-        setShowEndGame(true);
-      },
-      icon: <ICON_HASTAG height={40} fill={colours.white} />,
-      style: { height: 136 },
-    },
-    {
-      text: 'time',
-      onPress: () => {
-        if (recordingState) {
-          showSelectGameTimeSheet(recordingState?.[0].moveHistory.length - 1);
-        }
-      },
-      icon: <ICON_CLOCK height={40} fill={colours.white} />,
-    },
-    {
-      text: 'draw',
-      onPress: () => {
-        if (!toggleDraw || !recordingMode) {
-          return;
-        }
-        //TODO: In the future this should be changed to the index of the selected move.
-        // Currently it is the most recent move.
-        handleToggleDraw(recordingMode.moveHistory.length - 1);
-      },
-      icon: <ICON_HALF height={40} fill={colours.white} />,
-    },
-    {
-      text: 'skip',
-      onPress: () => {
-        if (!skipTurn) {
-          return;
-        }
-        skipTurn();
-      },
-      icon: <ICON_SKIP height={40} fill={colours.white} />,
-      style: { height: 136 },
-    },
-    {
-      text: 'undo',
-      onPress: () => {
-        if (!undoLastMove) {
-          return;
-        }
-        undoLastMove();
-      },
-      icon: <ICON_UNDO height={40} fill={colours.white} />,
-    },
-  ];
-
-  const promotionButtons = [
-    {
-      icon: QUEEN,
-      onPress: () => handleSelectPromotion(PieceType.Queen),
-    },
-    { icon: ROOK, onPress: () => handleSelectPromotion(PieceType.Rook) },
-    { icon: PAWN, onPress: () => handleSelectPromotion(PieceType.Pawn) },
-    {
-      icon: KNIGHT,
-      onPress: () => handleSelectPromotion(PieceType.Knight),
-    },
-    {
-      icon: BISHOP,
-      onPress: () => handleSelectPromotion(PieceType.Bishop),
-    },
-  ];
-  const endGameOptions = recordingMode
-    ? [
-        {
-          text: fullName(recordingMode.pairing.players[0]),
-          onPress: () => handleSelectWinner(recordingMode.pairing.players[0]),
-          style: {
-            width: '100%',
-          },
-        },
-        {
-          text: fullName(recordingMode.pairing.players[1]),
-          onPress: () => handleSelectWinner(recordingMode.pairing.players[1]),
-          style: {
-            width: '100%',
-          },
-        },
-        {
-          text: 'Draw',
-          onPress: () => handleSelectWinner(null),
-          style: {
-            width: '100%',
-          },
-        },
-      ]
-    : [];
-
   // Button Functions
-
-  const handleConfirmSignature = (signatureInput: string) => {
-    if (!recordingMode || !goToEndGame) {
-      return;
-    }
-
-    // Time for the other player to sign
-    setSigningPlayer(otherPlayer);
-
-    // If the first player hasn't signed yet, we need to wait
-    // for the second signature, so shortcircuit
-    if (!currentPlayerSignature.current) {
-      currentPlayerSignature.current = signatureInput;
-      return;
-    }
-
-    // Otherwise both players have signed, and we can go to end game
-    goToEndGame({
-      winner: selectedWinner?.color ?? null,
-      signature: {
-        [PlayerColour.White]:
-          recordingMode.currentPlayer === PlayerColour.White
-            ? currentPlayerSignature.current
-            : signatureInput,
-        [PlayerColour.Black]:
-          recordingMode.currentPlayer === PlayerColour.Black
-            ? currentPlayerSignature.current
-            : signatureInput,
-      },
-      gamePgn: pgn,
-    });
-  };
-
-  const handleSelectWinner = (player: Player | null) => {
-    // generate pgn first to ensure no errors present
-    if (!generatePgn) {
-      return;
-    }
-    const pgnResult = generatePgn(player?.color ?? null);
-    if (isError(pgnResult)) {
-      showError(pgnResult.error);
-      setShowEndGame(false);
-      return;
-    }
-    setPgn(pgnResult.data);
-
-    // if pgn can be generated -> prompt user for signature
-    setShowSignature(true);
-    setShowEndGame(false);
-    setSelectedWinner(player);
-  };
-
-  // Catch all to cancel an action. Here, we reset the local
-  // state
-  const handleCancelSelection = () => {
-    setShowSignature(false);
-    setShowEndGame(false);
-    setSelectedWinner(undefined);
-    currentPlayerSignature.current = undefined;
-    setSigningPlayer(recordingMode?.currentPlayer);
-  };
-
-  const handleToggleDraw = (drawIndex: number) => {
-    if (!toggleDraw) {
-      return;
-    }
-    toggleDraw(drawIndex);
-  };
-
-  /**
-   * function called once the user has selected their promotion from the pop up
-   * @param promotion the promotion piece the user has selected
-   */
-  const handleSelectPromotion = (promotion: PieceType) => {
-    // hide the popup
-    setShowPromotion(false);
-
-    // call the promise's resolve function
-    // this will end the await and result in the move being executed
-    if (promotionSelectedFunc.current !== null) {
-      promotionSelectedFunc.current(promotion);
-    }
-  };
-
   /**
    * this will prompt user to select a promotion piece and will not return until they do
    */
@@ -294,7 +63,7 @@ const GraphicalRecording: React.FC = () => {
 
     // create a promise, store the resolve function in the ref
     // this promise will not return until the resolve function is called by handleSelectPromotion()
-    return new Promise<PieceType>(r => (promotionSelectedFunc.current = r));
+    return new Promise<PieceType>(r => (resolvePromotion.current = r));
   };
 
   const handleMove = async (moveSquares: MoveSquares): Promise<void> => {
@@ -329,50 +98,11 @@ const GraphicalRecording: React.FC = () => {
 
   const handleDismissMoveOptions = () => setEditingMove(undefined);
 
-  /**
-   * Calculates the game time since the game started
-   * @returns the game time
-   */
-  const getCurrentGameTime = (): GameTime => {
-    if (recordingState) {
-      const totalMiliseconds =
-        new Date().getTime() - recordingState[0].startTime;
-      const totalMinutes = totalMiliseconds / (1000 * 60);
-
-      // calculate time since start
-      return {
-        hours: totalMinutes / 60,
-        minutes: totalMinutes % 60,
-      };
-    }
-
-    // should never reach this code since graphical state should not be numm
-    return { hours: 0, minutes: 0 };
-  };
-
   const showSelectGameTimeSheet = (index: number): void => {
     // store index, set the current game time for that move, then show sheet
     setMoveGameTimeIndex(index);
-    setMoveGameTime(getMoveGameTime());
+    setMoveGameTime(getMoveGameTime(recordingMode, index));
     setShowTimeSheet(true);
-  };
-
-  /**
-   * Gets the game time associated with the move index stored
-   * Will return the time since the start of the game if the current move has no time
-   * @returns The game time
-   */
-  const getMoveGameTime = (): GameTime => {
-    if (recordingState) {
-      const gameTime =
-        recordingState[0].moveHistory[moveGameTimeIndex]?.gameTime;
-
-      // return gameTime associated with move if it exists else current game time
-      return gameTime ? gameTime : getCurrentGameTime();
-    }
-
-    // un reachable code, graphical state should never be null
-    return { hours: 0, minutes: 0 };
   };
 
   useEffect(() => {
@@ -384,35 +114,23 @@ const GraphicalRecording: React.FC = () => {
       {recordingMode && (
         <View style={styles.mainContainer}>
           {/*----- Popups -----*/}
-          <OptionSheet
-            visible={showPromotion}
-            onCancel={() => setShowPromotion(false)}
-            message="Select Promotion Piece"
-            options={promotionButtons}
+          <PromotionSheet
+            show={showPromotion}
+            dismiss={() => setShowPromotion(false)}
+            makeSelection={promotion => {
+              // call the promise's resolve function
+              // this will end the await and result in the move being executed
+              resolvePromotion.current && resolvePromotion.current(promotion);
+            }}
           />
-          <OptionSheet
-            message="Please Select the Winner"
-            options={endGameOptions}
-            visible={showEndGame}
-            onCancel={handleCancelSelection}
+          <EndGameSheet
+            show={showEndGame}
+            dismiss={() => setShowEndGame(false)}
           />
           <MoveOptionsSheet
             editingMove={editingMove}
             handleGameTime={showSelectGameTimeSheet}
             dismiss={handleDismissMoveOptions}
-          />
-          <Signature
-            visible={showSignature}
-            onCancel={handleCancelSelection}
-            winnerName={(selectedWinner && fullName(selectedWinner)) ?? null}
-            onConfirm={handleConfirmSignature}
-            white={recordingMode.pairing.players[0]}
-            black={recordingMode.pairing.players[1]}
-            currentPlayer={
-              signingPlayer === PlayerColour.White
-                ? fullName(recordingMode.pairing.players[0])
-                : fullName(recordingMode.pairing.players[1])
-            }
           />
           <TimePickerSheet
             dismiss={() => setShowTimeSheet(false)}
@@ -425,7 +143,6 @@ const GraphicalRecording: React.FC = () => {
               setShowTimeSheet(false);
             }}
           />
-
           {/*----- body ----- */}
           <View style={styles.playerCardsContainer}>
             <GraphicalModePlayerCard
@@ -440,7 +157,16 @@ const GraphicalRecording: React.FC = () => {
           </View>
 
           <View style={styles.boardButtonContainer}>
-            <ActionBar actionButtons={actionButtons} />
+            <Actions
+              flipBoard={() => setFlipBoard(v => !v)}
+              recordTime={() =>
+                recordingState &&
+                showSelectGameTimeSheet(
+                  recordingState?.[0].moveHistory.length - 1,
+                )
+              }
+              endGame={() => setShowEndGame(true)}
+            />
             <ChessBoard
               positions={recordingMode.board}
               onMove={handleMove}
@@ -477,5 +203,41 @@ const moves = (ply: ChessPly[]): Move[] =>
       .slice(0, -1)
       .concat({ white: acc[acc.length - 1]!.white, black: el });
   }, [] as Move[]);
+
+/**
+ * Gets the game time associated with the move index stored
+ * Will return the time since the start of the game if the current move has no time
+ * @param currentState - the current game state
+ * @param moveIndex - the index of the move to get the game time for
+ * @returns The game time
+ */
+const getMoveGameTime = (
+  currentState: RecordingMode | undefined,
+  moveIndex: number,
+): GameTime => {
+  if (!currentState) {
+    // un reachable code, graphical state should never be null
+    return { hours: 0, minutes: 0 };
+  }
+  const gameTime = currentState.moveHistory[moveIndex]?.gameTime;
+
+  // return gameTime associated with move if it exists else current game time
+  return gameTime ? gameTime : getCurrentGameTime(currentState);
+};
+
+/**
+ * Calculates the game time since the game started
+ * @returns the game time
+ */
+const getCurrentGameTime = (currentState: RecordingMode): GameTime => {
+  const totalMiliseconds = new Date().getTime() - currentState.startTime;
+  const totalMinutes = totalMiliseconds / (1000 * 60);
+
+  // calculate time since start
+  return {
+    hours: totalMinutes / 60,
+    minutes: totalMinutes % 60,
+  };
+};
 
 export default GraphicalRecording;
