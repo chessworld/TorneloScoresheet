@@ -5,6 +5,7 @@ import {
   AppModeState,
   ArbiterResultDisplayMode,
 } from '../../types/AppModeState';
+import { ChessPly, PlyTypes } from '../../types/ChessMove';
 import { fail, Result, succ } from '../../types/Result';
 import { getStoredRecordingModeData } from '../../util/storage';
 
@@ -42,23 +43,37 @@ export const makeUseArbiterResultDisplayState =
       });
     };
 
+    const getLastFen = (moveHistory: ChessPly[]): string | null => {
+      // find last move
+      const lastMove = moveHistory[moveHistory.length - 1];
+      if (!lastMove) {
+        return null;
+      }
+
+      // get next move's starting fen based on the last move
+      return lastMove.type == PlyTypes.MovePly
+        ? chessEngine.makeMove(
+            lastMove.startingFen,
+            lastMove.move,
+            lastMove.promotion,
+          )
+        : chessEngine.skipTurn(lastMove.startingFen);
+    };
+
     const goBackToRecordingMode = async (): Promise<Result<string>> => {
       const data = await getStoredRecordingModeData();
       if (data) {
         const { moveHistory, currentPlayer, startTime } = data;
 
-        // will default to starting fen if last element in move hisotry not found
-        // this should never happen
-        const lastFen =
-          moveHistory[moveHistory.length - 1]?.startingFen ??
-          chessEngine.startingFen();
         setAppModeState({
           mode: AppMode.Recording,
           currentPlayer,
           startTime,
           moveHistory,
           pairing: appModeState.pairing,
-          board: chessEngine.fenToBoardPositions(lastFen),
+          board: chessEngine.fenToBoardPositions(
+            getLastFen(moveHistory) ?? chessEngine.startingFen(),
+          ),
           type: 'Graphical',
         });
         return succ('');
