@@ -200,11 +200,15 @@ export const makeUseEditMoveState =
       const data = await getStoredRecordingModeData();
       if (data) {
         const { moveHistory, currentPlayer, startTime } = data;
+        const lastMove = moveHistory[moveHistory.length - 1];
+        if (!lastMove) {
+          return;
+        }
+
         setAppModeState({
           mode: AppMode.ArbiterRecording,
           board: chessEngine.fenToBoardPositions(
-            moveHistory[moveHistory.length - 1]?.startingFen ??
-              chessEngine.startingFen(),
+            getStartingFen(lastMove) ?? chessEngine.startingFen(),
           ),
           startTime,
           moveHistory,
