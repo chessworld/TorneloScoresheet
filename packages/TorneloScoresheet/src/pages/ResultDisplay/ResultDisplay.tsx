@@ -9,6 +9,7 @@ import { useResultDisplayState } from '../../context/AppModeStateContext';
 import { colours } from '../../style/colour';
 import { chessGameIdentifier } from '../../util/chessGameInfo';
 import { styles } from './style';
+import { sendEmail } from './SendEmail';
 
 const ResultDisplay: React.FC = () => {
   const resultDisplayState = useResultDisplayState();
@@ -21,8 +22,16 @@ const ResultDisplay: React.FC = () => {
   }`;
 
   const handleEmailGame = (): void => {
-    // TODO: Implement email logic
     console.log('email game button pressed');
+    const subject =
+      'Tornello Game Results ' +
+      infoString +
+      ':' +
+      resultDisplayMode?.pairing.players[0].firstName +
+      ' vs' +
+      resultDisplayMode?.pairing.players[1].firstName;
+    const body = '' + resultDisplayMode?.pairing.pgn;
+    sendEmail('', subject, body); //option to add arbiter 'To' address in the future
   };
 
   return (
