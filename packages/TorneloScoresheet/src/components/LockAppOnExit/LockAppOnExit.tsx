@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AppState, View } from 'react-native';
 import { useCurrentAppMode } from '../../context/AppModeStateContext';
-import { isArbiterMode } from '../../types/AppModeState';
+import { AppMode, isArbiterMode } from '../../types/AppModeState';
 import Pin from '../Pin/Pin';
 import Sheet from '../Sheet/Sheet';
 
@@ -19,7 +19,8 @@ const LockAppOnExit = ({ children }: LockAppOnExitProps) => {
       if (
         nextAppState.match(/inactive|background/) &&
         appState.current === 'active' &&
-        !isArbiterMode(currentAppMode)
+        !isArbiterMode(currentAppMode) &&
+        currentAppMode !== AppMode.ResultDisplay
       ) {
         setLocked(true);
       }
