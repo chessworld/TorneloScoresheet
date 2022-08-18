@@ -8,6 +8,8 @@ import {
   MoveSquares,
   PlyTypes,
   ChessPly,
+  GameTime,
+  MovePly,
 } from '../src/types/ChessMove';
 import { isError, succ } from '../src/types/Result';
 import { stripStarAndReplaceResultFromPgn } from '../testUtils/testUtils';
@@ -1160,6 +1162,88 @@ describe("is other player's piece", () => {
         testCase.move as MoveSquares,
       );
       expect(result).toStrictEqual(testCase.isOtherPlayersPiece);
+    });
+  });
+});
+
+// ---- chessEngine.addComments() ----
+describe('Adding Comments', () => {
+  const gameTime: GameTime = { hours: 1, minutes: 1 };
+  const testCases = [
+    {
+      name: 'Adding game time comment',
+      pgn: pgnSuccess,
+      moves: [
+        {
+          moveNo: 1,
+          startingFen: chessEngine.startingFen(),
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e2',
+            to: 'e4',
+          },
+          gameTime: gameTime,
+        },
+      ] as ChessPly[],
+      winner: PlayerColour.White,
+      expectedPgn:
+        stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') +
+        '1. e4 {[%clk 1:1]} 1-0',
+    },
+    {
+      name: 'Adding draw offer comment',
+      pgn: pgnSuccess,
+      moves: [
+        {
+          moveNo: 1,
+          startingFen: chessEngine.startingFen(),
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e2',
+            to: 'e4',
+          },
+          drawOffer: true,
+        },
+      ] as ChessPly[],
+      winner: PlayerColour.White,
+      expectedPgn:
+        stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') + '1. e4 {=} 1-0',
+    },
+    {
+      name: 'Adding game time and draw offer comments',
+      pgn: pgnSuccess,
+      moves: [
+        {
+          moveNo: 1,
+          startingFen: chessEngine.startingFen(),
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e2',
+            to: 'e4',
+          },
+          gameTime: gameTime,
+          drawOffer: true,
+        },
+      ] as ChessPly[],
+      winner: PlayerColour.White,
+      expectedPgn:
+        stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') +
+        '1. e4 {=[%clk 1:1]} 1-0',
+    },
+  ];
+  testCases.forEach(testCase => {
+    it(testCase.name, () => {
+      const result = chessEngine.generatePgn(
+        testCase.pgn,
+        testCase.moves,
+        testCase.winner,
+      );
+      if (!isError(result)) {
+        expect(result.data).toStrictEqual(testCase.expectedPgn);
+      }
     });
   });
 });

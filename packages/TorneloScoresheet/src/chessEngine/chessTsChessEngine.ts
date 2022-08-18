@@ -169,32 +169,14 @@ const isOtherPlayersPiece = (fen: string, move: MoveSquares): boolean => {
 };
 
 const addComments = (game: Chess, move: MovePly): void => {
-  if (move.drawOffer) {
-    if (game.getComment()) {
-      game.setComment(game.getComment() + '=');
-    } else {
-      game.setComment('=');
-    }
-  }
-  if (move.gameTime) {
-    if (game.getComment()) {
-      game.setComment(
-        game.getComment() +
-          '[%clk ' +
-          move.gameTime.hours.toString() +
-          ':' +
-          move.gameTime.minutes.toString() +
-          ']',
-      );
-    } else {
-      game.setComment(
-        '[%clk ' +
-          move.gameTime.hours.toString() +
-          ':' +
-          move.gameTime.minutes.toString() +
-          ']',
-      );
-    }
+  if (move.drawOffer || move.gameTime) {
+    game.setComment(
+      `${move.drawOffer ? '=' : ''}${
+        move.gameTime
+          ? `[%clk ${move.gameTime.hours.toString()}:${move.gameTime.minutes.toString()}]`
+          : ''
+      }`,
+    );
   }
 };
 
