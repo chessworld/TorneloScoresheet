@@ -1,7 +1,6 @@
-import { Chess } from 'chess.ts';
 import { BoardPosition } from '../types/ChessBoardPositions';
 import { ChessGameInfo, PlayerColour } from '../types/ChessGameInfo';
-import { PieceType, MoveSquares, ChessPly, MovePly } from '../types/ChessMove';
+import { PieceType, MoveSquares, ChessPly } from '../types/ChessMove';
 import { Result } from '../types/Result';
 import { chessTsChessEngine } from './chessTsChessEngine';
 

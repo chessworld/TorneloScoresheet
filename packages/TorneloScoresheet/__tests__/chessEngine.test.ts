@@ -9,7 +9,6 @@ import {
   PlyTypes,
   ChessPly,
   GameTime,
-  MovePly,
 } from '../src/types/ChessMove';
 import { isError, succ } from '../src/types/Result';
 import { stripStarAndReplaceResultFromPgn } from '../testUtils/testUtils';
