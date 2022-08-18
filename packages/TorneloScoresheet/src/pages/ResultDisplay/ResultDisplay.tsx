@@ -22,7 +22,6 @@ const ResultDisplay: React.FC = () => {
   }`;
 
   const handleEmailGame = (): void => {
-    console.log('email game button pressed');
     const subject =
       'Tornello Game Results ' +
       infoString +
@@ -30,7 +29,17 @@ const ResultDisplay: React.FC = () => {
       resultDisplayMode?.pairing.players[0].firstName +
       ' vs' +
       resultDisplayMode?.pairing.players[1].firstName;
-    const body = '' + resultDisplayMode?.pairing.pgn;
+    const body =
+      'Tornello Game Results ' +
+      infoString +
+      '\n\nPlayer 1: ' +
+      resultDisplayMode?.pairing.players[0].firstName +
+      resultDisplayMode?.pairing.players[0].lastName +
+      '\nPlayer 2: ' +
+      resultDisplayMode?.pairing.players[1].firstName +
+      resultDisplayMode?.pairing.players[1].lastName +
+      '\n\nFull Game PGN:\n' +
+      resultDisplayMode?.result.gamePgn;
     sendEmail('', subject, body); //option to add arbiter 'To' address in the future
   };
 
