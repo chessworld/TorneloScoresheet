@@ -119,6 +119,22 @@ Stories should be moved from the backlog into the current sprint during sprint p
 
 As the developer works on the story, they should move the ticket through the 'Current Sprint', 'Doing', 'In Review' and 'Done' colums and add comments as needed. When a code review is completed, the ticket should be updated to indicate who performed the review and the outcome. Stories should only be moved into the current sprint section during sprint planning.
 
+## Releases
+
+There will be 2 branches in the git repository used for releasing:
+
+- RELEASE_BETA - will release the app to Apple's Test Flight system for internal testing
+- RELEASE_PROD - will release the app to the Apple App Store as a production app
+
+Each branch will have Github action pipelines that will perform the following operations when pushed to:
+
+- Run the unit tests
+- Compile the code
+- Build the app
+- Download pod dependencies
+- Sign the certificate
+- Release the app to the App Store
+
 ## Artifacts
 
 The following artifacts will be produced over the course of the year:
