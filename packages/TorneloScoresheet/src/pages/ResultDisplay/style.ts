@@ -35,4 +35,11 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
+  input: {
+    height: 60,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    fontSize: 25,
+  },
 });

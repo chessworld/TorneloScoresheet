@@ -1,5 +1,5 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { useState } from 'react';
+import { TextInput, View } from 'react-native';
 import PlayerCard from '../../components/PlayerCard/PlayerCard';
 import PrimaryButton from '../../components/PrimaryButton/PrimaryButton';
 import PrimaryText, {
@@ -12,25 +12,30 @@ import { styles } from './style';
 import { sendEmail } from '../../util/emailUtils';
 import { isError } from '../../types/Result';
 import { useError } from '../../context/ErrorContext';
+import Sheet from '../../components/Sheet/Sheet';
 
 const ResultDisplay: React.FC = () => {
   const resultDisplayState = useResultDisplayState();
   const resultDisplayMode = resultDisplayState?.[0];
   const [, showError] = useError();
+  const [email, onChangeEmail] = React.useState('');
+  const [showEmailSheet, setShowEmailSheet] = useState(false);
+  Sheet;
   const infoString = `Board ${
     resultDisplayMode?.pairing
       ? chessGameIdentifier(resultDisplayMode?.pairing)
       : '[Unknown Game]'
   }`;
 
-  const handleEmailGame = async (): Promise<void> => {
+  const sendEmailToInputAddress = async (): Promise<void> => {
     if (resultDisplayMode?.pairing) {
       const result = await sendEmail(
-        '',
+        email,
         resultDisplayMode?.pairing,
         resultDisplayMode?.result,
       );
-
+      onChangeEmail('');
+      setShowEmailSheet(false);
       if (!result) {
         return;
       }
@@ -38,6 +43,10 @@ const ResultDisplay: React.FC = () => {
         showError(result.error);
       }
     }
+  };
+
+  const handleEmailGame = (): void => {
+    setShowEmailSheet(true);
   };
 
   return (
@@ -51,6 +60,26 @@ const ResultDisplay: React.FC = () => {
             label={infoString}
             colour={colours.darkenedElements}
           />
+          <Sheet
+            title="Enter Email"
+            dismiss={() => {
+              setShowEmailSheet(false);
+              onChangeEmail('');
+            }}
+            visible={showEmailSheet}>
+            <TextInput
+              style={styles.input}
+              onChangeText={onChangeEmail}
+              value={email}
+              autoFocus={true}
+              placeholder="email@example.com"
+            />
+            <PrimaryButton
+              label={'Send Email'}
+              onPress={sendEmailToInputAddress}
+              style={styles.emailButton}
+            />
+          </Sheet>
           <View>
             <PlayerCard
               player={resultDisplayMode.pairing.players[0]}
