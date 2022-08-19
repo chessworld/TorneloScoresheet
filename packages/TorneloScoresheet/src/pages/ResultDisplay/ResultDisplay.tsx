@@ -9,38 +9,35 @@ import { useResultDisplayState } from '../../context/AppModeStateContext';
 import { colours } from '../../style/colour';
 import { chessGameIdentifier } from '../../util/chessGameInfo';
 import { styles } from './style';
-import { sendEmail } from './SendEmail';
+import { sendEmail } from '../../util/emailUtils';
+import { isError } from '../../types/Result';
+import { useError } from '../../context/ErrorContext';
 
 const ResultDisplay: React.FC = () => {
   const resultDisplayState = useResultDisplayState();
   const resultDisplayMode = resultDisplayState?.[0];
-
+  const [, showError] = useError();
   const infoString = `Board ${
     resultDisplayMode?.pairing
       ? chessGameIdentifier(resultDisplayMode?.pairing)
       : '[Unknown Game]'
   }`;
 
-  const handleEmailGame = (): void => {
-    const subject =
-      'Tornello Game Results ' +
-      infoString +
-      ':' +
-      resultDisplayMode?.pairing.players[0].firstName +
-      ' vs' +
-      resultDisplayMode?.pairing.players[1].firstName;
-    const body =
-      'Tornello Game Results ' +
-      infoString +
-      '\n\nPlayer 1: ' +
-      resultDisplayMode?.pairing.players[0].firstName +
-      resultDisplayMode?.pairing.players[0].lastName +
-      '\nPlayer 2: ' +
-      resultDisplayMode?.pairing.players[1].firstName +
-      resultDisplayMode?.pairing.players[1].lastName +
-      '\n\nFull Game PGN:\n' +
-      resultDisplayMode?.result.gamePgn;
-    sendEmail('', subject, body); //option to add arbiter 'To' address in the future
+  const handleEmailGame = async (): Promise<void> => {
+    if (resultDisplayMode?.pairing) {
+      const result = await sendEmail(
+        '',
+        resultDisplayMode?.pairing,
+        resultDisplayMode?.result,
+      );
+
+      if (!result) {
+        return;
+      }
+      if (isError(result)) {
+        showError(result.error);
+      }
+    }
   };
 
   return (
