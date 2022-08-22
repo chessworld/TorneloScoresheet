@@ -24,6 +24,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
+    position: 'absolute',
+    left: 0.5 * pageWidth - 100,
+    bottom: 18,
   },
   logoImage: {
     width: 40,
@@ -49,4 +52,5 @@ export const styles = StyleSheet.create({
   arbiterLock: {
     flex: 1,
   },
+  versionContainer: { marginLeft: 6, marginTop: 6 },
 });
