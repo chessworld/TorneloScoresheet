@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native';
-
-const TOP_PADDING = 30;
-const BOTTOM_PADDING = 14;
-const LOGO_HEIGHT = 44;
-
-export const TOOLBAR_HEIGHT = TOP_PADDING + LOGO_HEIGHT + BOTTOM_PADDING;
+import { pageWidth } from '../../util/pageSize';
+import {
+  BOTTOM_PADDING,
+  TOP_PADDING,
+  TOOLBAR_HEIGHT,
+  LOGO_HEIGHT,
+} from './constants';
 
 export const styles = StyleSheet.create({
   container: {
