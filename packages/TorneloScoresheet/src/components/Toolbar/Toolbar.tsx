@@ -15,6 +15,7 @@ import { styles } from './style';
 import ToggleRecordingMode from './ToggleRecordingMode';
 import { useAppModeState } from '../../context/AppModeStateContext';
 import ArbiterAndPlayerModeDisplay from './ArbiterAndPlayerModeDisplay';
+import packageJson from '../../../package.json';
 /**
  * The App's toolbar.
  *
@@ -68,6 +69,14 @@ const Toolbar: React.FC = () => {
             label="Tornelo"
             style={styles.logoTitle}
           />
+          <View style={styles.versionContainer}>
+            <PrimaryText
+              weight={FontWeight.Bold}
+              label={`(v${packageJson.version})`}
+              size={16}
+              colour={currentTextColour}
+            />
+          </View>
         </View>
         <View style={styles.toggleToTextEntryModeButton}>
           <ToggleRecordingMode />
