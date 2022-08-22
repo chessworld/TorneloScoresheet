@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
 import {
   useAppModeState,
   useArbiterRecordingState,
@@ -114,9 +113,6 @@ const ArbiterAndPlayerModeDisplay: React.FC<
           onPress={handlePlayerPress}
           colour={currentTextColour}
         />
-      )}
-      {arbiterModeLockDisplay() === 'Placeholder' && (
-        <View style={styles.placeHolderButton} />
       )}
     </>
   );
