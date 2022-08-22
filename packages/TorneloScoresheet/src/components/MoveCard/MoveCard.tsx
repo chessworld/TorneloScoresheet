@@ -6,6 +6,7 @@ import { ChessPly, Move, PlyTypes } from '../../types/ChessMove';
 import PrimaryText, { Align, FontWeight } from '../PrimaryText/PrimaryText';
 import { PlayerColour } from '../../types/ChessGameInfo';
 import { styles } from './style';
+import { moveString } from '../../util/moves';
 
 type MoveCardProps = {
   move: Move;
@@ -53,7 +54,6 @@ const MoveCard: React.FC<MoveCardProps> = ({
           plyBeingEdited === PlayerColour.Black
             ? { backgroundColor: colours.lightGreen }
             : blackPlyBackgroundColour(move.black),
-          ,
         ]}>
         <TouchableOpacity
           style={styles.touchableOpacity}
@@ -72,17 +72,6 @@ const MoveCard: React.FC<MoveCardProps> = ({
       </View>
     </View>
   );
-};
-
-const moveString = (ply: ChessPly, isEditing: boolean): string => {
-  if (isEditing) {
-    return '____';
-  }
-  if (ply.type === PlyTypes.SkipPly) {
-    return '-';
-  }
-
-  return `${ply.move.from}->${ply.move.to}`;
 };
 
 const blackPlyBackgroundColour = (ply: ChessPly | undefined) => ({
