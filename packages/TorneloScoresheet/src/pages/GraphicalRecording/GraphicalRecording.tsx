@@ -5,13 +5,7 @@ import ChessBoard from '../../components/ChessBoard/ChessBoard';
 import MoveCard from '../../components/MoveCard/MoveCard';
 import { useRecordingState } from '../../context/AppModeStateContext';
 import { PlayerColour } from '../../types/ChessGameInfo';
-import {
-  PieceType,
-  MoveSquares,
-  ChessPly,
-  Move,
-  GameTime,
-} from '../../types/ChessMove';
+import { PieceType, MoveSquares, GameTime } from '../../types/ChessMove';
 import { styles } from './style';
 import MoveOptionsSheet, { EditingMove } from './MoveOptionsSheet';
 import GraphicalModePlayerCard from '../../components/GraphicalModePlayerCard/GraphicalModePlayerCard';
@@ -20,6 +14,7 @@ import Actions from './Actions';
 import PromotionSheet from './PromotionSheet';
 import EndGameSheet from './EndGameSheet';
 import { RecordingMode } from '../../types/AppModeState';
+import { moves } from '../../util/moves';
 
 const GraphicalRecording: React.FC = () => {
   // app mode hook unpacking
@@ -192,17 +187,6 @@ const GraphicalRecording: React.FC = () => {
     </>
   );
 };
-
-// Utility function to take a list of ply, and return a list of moves
-const moves = (ply: ChessPly[]): Move[] =>
-  ply.reduce((acc, el) => {
-    if (el.player === PlayerColour.White) {
-      return [...acc, { white: el, black: undefined }];
-    }
-    return acc
-      .slice(0, -1)
-      .concat({ white: acc[acc.length - 1]!.white, black: el });
-  }, [] as Move[]);
 
 /**
  * Gets the game time associated with the move index stored

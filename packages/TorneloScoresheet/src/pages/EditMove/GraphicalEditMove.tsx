@@ -17,14 +17,9 @@ import {
   QUEEN,
   ROOK,
 } from '../../style/images';
+import { moves } from '../../util/moves';
 import { PlayerColour } from '../../types/ChessGameInfo';
-import {
-  PieceType,
-  MoveSquares,
-  ChessPly,
-  Move,
-  PlyTypes,
-} from '../../types/ChessMove';
+import { PieceType, MoveSquares, PlyTypes } from '../../types/ChessMove';
 import { colours } from '../../style/colour';
 import { useError } from '../../context/ErrorContext';
 import GraphicalModePlayerCard from '../../components/GraphicalModePlayerCard/GraphicalModePlayerCard';
@@ -243,16 +238,5 @@ const GraphicalEditMove: React.FC = () => {
     </>
   );
 };
-
-// Utility function to take a list of ply, and return a list of moves
-const moves = (ply: ChessPly[]): Move[] =>
-  ply.reduce((acc, el) => {
-    if (el.player === PlayerColour.White) {
-      return [...acc, { white: el, black: undefined }];
-    }
-    return acc
-      .slice(0, -1)
-      .concat({ white: acc[acc.length - 1]!.white, black: el });
-  }, [] as Move[]);
 
 export default GraphicalEditMove;

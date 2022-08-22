@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
   },
   playerCardsContainer: {
     display: 'flex',
-    marginVertical: 20,
+    marginVertical: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 10,
