@@ -3,11 +3,13 @@ import { FlatList, View } from 'react-native';
 import { ChessGameInfo } from '../../types/ChessGameInfo';
 import { styles } from './style';
 import { usePairingSelectionState } from '../../context/AppModeStateContext';
-import BoardPairing from './BoardPairing';
 import PrimaryButton from '../../components/PrimaryButton/PrimaryButton';
 import PrimaryText, {
   FontWeight,
 } from '../../components/PrimaryText/PrimaryText';
+import BoardPairing from '../../components/BoardPairing/BoardPairing';
+import OptionSheet from '../../components/OptionSheet/OptionSheet';
+import { chessGameIdentifier } from '../../util/chessGameInfo';
 
 const PairingSelection: React.FC = () => {
   const [showConfirm, setShowConfirm] = useState(true);
@@ -19,13 +21,8 @@ const PairingSelection: React.FC = () => {
   const goToTablePairing = pairingSelectionState?.[1]?.goToTablePairing;
 
   const handleSelectPairing = (pairing: ChessGameInfo) => {
-    if (selectedPairing === pairing) {
-      setSelected(null);
-      setShowConfirm(false);
-    } else {
-      setSelected(pairing);
-      setShowConfirm(true);
-    }
+    setSelected(pairing);
+    setShowConfirm(true);
   };
 
   const handleConfirm = () => {
@@ -35,10 +32,28 @@ const PairingSelection: React.FC = () => {
     goToTablePairing(selectedPairing);
   };
 
+  const handleCancel = () => {
+    setShowConfirm(false);
+    setSelected(null);
+  };
+
   return (
     <>
       {pairingSelectionMode?.pairings && (
         <View style={styles.pairingSelection}>
+          {selectedPairing && (
+            <OptionSheet
+              message={`Select board ${chessGameIdentifier(selectedPairing)}`}
+              onCancel={handleCancel}
+              options={[
+                {
+                  text: 'Confirm',
+                  onPress: handleConfirm,
+                },
+              ]}
+              visible={showConfirm}
+            />
+          )}
           <View style={styles.headerRow}>
             <PrimaryButton
               style={styles.actionButton}
@@ -50,15 +65,7 @@ const PairingSelection: React.FC = () => {
               weight={FontWeight.SemiBold}
               label="Boards"
             />
-            {showConfirm && selectedPairing !== null ? (
-              <PrimaryButton
-                style={styles.actionButton}
-                onPress={handleConfirm}
-                label="Confirm"
-              />
-            ) : (
-              <View style={styles.noConfirmButton} />
-            )}
+            <PrimaryText style={styles.actionButton}></PrimaryText>
           </View>
 
           <PrimaryText
@@ -74,11 +81,6 @@ const PairingSelection: React.FC = () => {
                 onPress={() => handleSelectPairing(item)}
                 style={styles.boardPairingContainer}
                 board={item}
-                selected={
-                  item.round === selectedPairing?.round &&
-                  item.board === selectedPairing?.board &&
-                  item.game === selectedPairing?.game
-                }
               />
             )}
           />
