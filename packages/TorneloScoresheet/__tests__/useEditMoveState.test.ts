@@ -23,6 +23,7 @@ describe('Edit Move With Skip Ply', () => {
         type: PlyTypes.MovePly,
         move: { from: 'a1', to: 'a5' } as MoveSquares,
         drawOffer: false,
+        san: 'a1a5',
       },
       {
         moveNo: 1,
@@ -31,6 +32,7 @@ describe('Edit Move With Skip Ply', () => {
         move: { from: 'h8', to: 'h5' } as MoveSquares,
         type: PlyTypes.MovePly,
         drawOffer: false,
+        san: 'Rh8h5',
       },
     ];
     const editMoveState = generateEditMoveState(moveHistory, 0);
@@ -81,6 +83,7 @@ describe('Edit Move With Skip Ply', () => {
         type: PlyTypes.MovePly,
         move: { from: 'a1', to: 'a5' } as MoveSquares,
         drawOffer: false,
+        san: 'a1a5',
       },
       {
         moveNo: 1,
@@ -89,6 +92,7 @@ describe('Edit Move With Skip Ply', () => {
         move: { from: 'h8', to: 'h5' } as MoveSquares,
         type: PlyTypes.MovePly,
         drawOffer: false,
+        san: 'Rh8h5',
       },
       // if move 1 is skipped, this move wont be possible
       {
@@ -98,6 +102,7 @@ describe('Edit Move With Skip Ply', () => {
         type: PlyTypes.MovePly,
         move: { from: 'a5', to: 'a6' } as MoveSquares,
         drawOffer: false,
+        san: 'a6',
       },
     ];
     const editMoveState = generateEditMoveState(moveHistory, 0);
@@ -114,7 +119,9 @@ describe('Edit Move With Skip Ply', () => {
       expect(isError(result)).toBe(true);
     });
   });
+});
 
+describe('Edit move with Move Ply', () => {
   test('Edit move moveply sucess', async () => {
     const moveHistory = [
       {
@@ -125,6 +132,7 @@ describe('Edit Move With Skip Ply', () => {
         move: { from: 'a1', to: 'a5' } as MoveSquares,
         promotion: undefined,
         drawOffer: false,
+        san: 'a1a5',
       },
       {
         moveNo: 1,
@@ -133,6 +141,7 @@ describe('Edit Move With Skip Ply', () => {
         move: { from: 'h8', to: 'h5' } as MoveSquares,
         type: PlyTypes.MovePly,
         drawOffer: false,
+        san: 'Rh8h5',
       },
     ];
     const editMoveState = generateEditMoveState(moveHistory, 0);
@@ -168,6 +177,8 @@ describe('Edit Move With Skip Ply', () => {
             type: PlyTypes.MovePly,
             move: { from: 'a1', to: 'a4' } as MoveSquares,
             drawOffer: false,
+            san: 'Ra1a4',
+            promotion: undefined,
           },
           {
             ...editMoveState.moveHistory[1],
@@ -189,6 +200,7 @@ describe('Edit Move With Skip Ply', () => {
         move: { from: 'a1', to: 'a5' } as MoveSquares,
         promotion: undefined,
         drawOffer: false,
+        san: 'a1a5',
       },
       {
         moveNo: 1,
@@ -197,6 +209,7 @@ describe('Edit Move With Skip Ply', () => {
         move: { from: 'h8', to: 'h5' } as MoveSquares,
         type: PlyTypes.MovePly,
         drawOffer: false,
+        san: 'Rh8h5',
       },
     ];
     const editMoveState = generateEditMoveState(moveHistory, 0);
@@ -226,6 +239,7 @@ describe('Edit Move With Skip Ply', () => {
         type: PlyTypes.MovePly,
         move: { from: 'a1', to: 'a5' } as MoveSquares,
         drawOffer: false,
+        san: 'a1a5',
       },
       {
         moveNo: 1,
@@ -234,6 +248,7 @@ describe('Edit Move With Skip Ply', () => {
         move: { from: 'h8', to: 'h5' } as MoveSquares,
         type: PlyTypes.MovePly,
         drawOffer: false,
+        san: 'Rh8h5',
       },
       // if move 1 is does not land on a5, this move wont be possible
       {
@@ -243,6 +258,7 @@ describe('Edit Move With Skip Ply', () => {
         type: PlyTypes.MovePly,
         move: { from: 'a5', to: 'a6' } as MoveSquares,
         drawOffer: false,
+        san: 'a6',
       },
     ];
     const editMoveState = generateEditMoveState(moveHistory, 0);
@@ -273,6 +289,7 @@ describe('Edit Move With Skip Ply', () => {
         move: { from: 'a1', to: 'a5' } as MoveSquares,
         promotion: undefined,
         drawOffer: false,
+        san: 'a1a5',
       },
       {
         moveNo: 1,
@@ -281,6 +298,7 @@ describe('Edit Move With Skip Ply', () => {
         move: { from: 'h8', to: 'h5' } as MoveSquares,
         type: PlyTypes.MovePly,
         drawOffer: false,
+        san: 'Rh8h5',
       },
     ];
     const editMoveState = generateEditMoveState(moveHistory, 0);
