@@ -100,16 +100,23 @@ const fenToBoardPositions = (fen: string): BoardPosition[] => {
   return gameToPeiceArray(game);
 };
 
+export enum MoveReturnType {
+  NEXT_STARTING_FEN,
+  MOVE_SAN,
+}
+
 /**
  * Processes a move given the starting fen and to and from positions
  * @param fromFen the fen of the game state before the move
  * @param moveSquares the to and from positions of the move
- * @returns the next fen if move is possible else null
+ * @param returnType the return of this function, either the starting fen or the move's SAN
+ * @returns the next fen / move SAN if move is possible else null
  */
 const makeMove = (
   fromFen: string,
   moveSquares: MoveSquares,
   promotion?: PieceType,
+  returnType: MoveReturnType = MoveReturnType.NEXT_STARTING_FEN,
 ): string | null => {
   const game = new Chess(fromFen);
   const result = game.forceMove(
@@ -119,11 +126,19 @@ const makeMove = (
         promotion !== undefined ? chessTsPieceMap[promotion] : undefined,
     },
   );
+
+  // if move impossible return null
   if (result === null) {
     return null;
   }
 
-  return game.fen();
+  // if move is possible -> return next starting fen or the SAN of the move
+  switch (returnType) {
+    case MoveReturnType.NEXT_STARTING_FEN:
+      return game.fen();
+    case MoveReturnType.MOVE_SAN:
+      return result.san;
+  }
 };
 
 /**

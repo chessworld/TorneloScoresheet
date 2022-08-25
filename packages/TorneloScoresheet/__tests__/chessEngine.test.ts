@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { chessEngine } from '../src/chessEngine/chessEngineInterface';
+import { MoveReturnType } from '../src/chessEngine/chessTsChessEngine';
 import { BoardPosition, Position } from '../src/types/ChessBoardPositions';
 import { PlayerColour } from '../src/types/ChessGameInfo';
 import {
@@ -813,6 +814,7 @@ describe('makeMove', () => {
         type: PieceType.Pawn,
         player: PlayerColour.White,
       },
+      san: 'e4',
     },
     {
       name: 'normal illegal move',
@@ -827,6 +829,7 @@ describe('makeMove', () => {
         type: PieceType.Pawn,
         player: PlayerColour.White,
       },
+      san: 'e2e5',
     },
     {
       name: 'en passant capture',
@@ -842,6 +845,7 @@ describe('makeMove', () => {
         player: PlayerColour.White,
       },
       captured: 'p',
+      san: 'fxe6',
     },
     {
       name: 'checkmate',
@@ -856,6 +860,7 @@ describe('makeMove', () => {
         type: PieceType.Rook,
         player: PlayerColour.White,
       },
+      san: 'Rd8#',
     },
     {
       name: 'en passant capture',
@@ -871,6 +876,7 @@ describe('makeMove', () => {
         type: PieceType.Pawn,
         player: PlayerColour.Black,
       },
+      san: 'fxe3',
     },
     {
       name: 'regular move',
@@ -885,6 +891,7 @@ describe('makeMove', () => {
         type: PieceType.Knight,
         player: PlayerColour.Black,
       },
+      san: 'Ne7',
     },
     {
       name: 'capture',
@@ -900,6 +907,7 @@ describe('makeMove', () => {
         type: PieceType.Knight,
         player: PlayerColour.White,
       },
+      san: 'Nxg5',
     },
     {
       name: 'illegal move',
@@ -915,6 +923,7 @@ describe('makeMove', () => {
         type: PieceType.Knight,
         player: PlayerColour.White,
       },
+      san: 'Nb1xb7',
     },
     {
       name: 'impossible move -> from is not our piece',
@@ -929,6 +938,7 @@ describe('makeMove', () => {
         type: PieceType.Knight,
         player: PlayerColour.White,
       },
+      san: 'b7',
     },
     {
       name: 'impossible move -> to is our piece',
@@ -943,6 +953,7 @@ describe('makeMove', () => {
         type: PieceType.Knight,
         player: PlayerColour.White,
       },
+      san: 'c1',
     },
     {
       name: ' impossible move -> from is not on board',
@@ -957,6 +968,7 @@ describe('makeMove', () => {
         type: PieceType.Knight,
         player: PlayerColour.White,
       },
+      san: 'c1',
     },
     {
       name: 'impossible move -> to is not on board',
@@ -971,6 +983,7 @@ describe('makeMove', () => {
         type: PieceType.Knight,
         player: PlayerColour.White,
       },
+      san: 'p1',
     },
   ];
   const boardCorrect = (
@@ -995,16 +1008,16 @@ describe('makeMove', () => {
   };
   positions.forEach(function (position) {
     it(position.name, function () {
-      const result = chessEngine.makeMove(position.fen, {
+      const nextFenResult = chessEngine.makeMove(position.fen, {
         from: position.move.from as Position,
         to: position.move.to as Position,
       });
       if (position.possible) {
-        if (result !== null) {
-          const board = chessEngine.fenToBoardPositions(result);
+        if (nextFenResult !== null) {
+          const board = chessEngine.fenToBoardPositions(nextFenResult);
           expect(
-            result &&
-              result === position.next &&
+            nextFenResult &&
+              nextFenResult === position.next &&
               boardCorrect(
                 board,
                 {
@@ -1016,9 +1029,26 @@ describe('makeMove', () => {
           ).toBe(true);
         }
       } else {
-        expect(result).toBeNull();
+        expect(nextFenResult).toBeNull();
       }
     });
+
+    const moveSanResult = chessEngine.makeMove(
+      position.fen,
+      {
+        from: position.move.from as Position,
+        to: position.move.to as Position,
+      },
+      undefined,
+      MoveReturnType.MOVE_SAN,
+    );
+    if (position.possible) {
+      if (moveSanResult !== null) {
+        expect(moveSanResult).toEqual(position.san);
+      }
+    } else {
+      expect(moveSanResult).toBeNull();
+    }
   });
 });
 

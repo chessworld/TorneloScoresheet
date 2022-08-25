@@ -2,7 +2,7 @@ import { BoardPosition } from '../types/ChessBoardPositions';
 import { ChessGameInfo, PlayerColour } from '../types/ChessGameInfo';
 import { PieceType, MoveSquares, ChessPly } from '../types/ChessMove';
 import { Result } from '../types/Result';
-import { chessTsChessEngine } from './chessTsChessEngine';
+import { chessTsChessEngine, MoveReturnType } from './chessTsChessEngine';
 
 /**
  * The interface for the chess engine wrapper, this type is used all
@@ -27,12 +27,14 @@ export type ChessEngineInterface = {
    * @param startingFen the fen of the game state before the move
    * @param moveSquares the to and from positions of the move
    * @param promotion the to and from positions of the move
-   * @returns the next fen if move is possible else null
+   * @param returnType the return of this function, either the starting fen or the move's SAN
+   * @returns the next fen / move SAN if move is possible else null
    */
   makeMove: (
     startingFen: string,
     moveSquares: MoveSquares,
     promotion?: PieceType,
+    returnType?: MoveReturnType,
   ) => string | null;
 
   /**
