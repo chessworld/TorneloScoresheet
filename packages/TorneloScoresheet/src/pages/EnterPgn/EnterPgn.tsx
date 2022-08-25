@@ -20,6 +20,7 @@ import PrimaryText, {
 
 const EnterPgn: React.FC = () => {
   const state = useEnterPgnState();
+  const viewPastGames = state?.[1].viewPastGames;
   const [loading, setLoading] = useState(false);
   const goToPairingSelection = state?.[1]?.goToPairingSelection;
   const appMode = state?.[0];
@@ -91,13 +92,21 @@ const EnterPgn: React.FC = () => {
                 placeholder="Tournament Link"
               />
             </View>
-            <PrimaryButton
-              style={styles.startButton}
-              labelStyle={styles.startButtonLabel}
-              onPress={handleNextClick}
-              label="Start"
-              loading={loading}
-            />
+            <View style={styles.buttonBox}>
+              <PrimaryButton
+                style={styles.startButton}
+                labelStyle={styles.startButtonLabel}
+                onPress={viewPastGames}
+                label="Past Games"
+              />
+              <PrimaryButton
+                style={styles.startButton}
+                labelStyle={styles.startButtonLabel}
+                onPress={handleNextClick}
+                label="Start"
+                loading={loading}
+              />
+            </View>
           </View>
         </KeyboardAvoidingView>
       )}

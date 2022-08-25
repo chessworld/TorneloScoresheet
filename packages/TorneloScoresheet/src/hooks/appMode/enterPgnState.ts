@@ -1,7 +1,12 @@
 import axios, { AxiosResponse } from 'axios';
 import React, { useContext } from 'react';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
-import { AppModeState, AppMode, EnterPgnMode } from '../../types/AppModeState';
+import {
+  AppModeState,
+  AppMode,
+  EnterPgnMode,
+  EnterPgnViews,
+} from '../../types/AppModeState';
 import { ChessGameInfo } from '../../types/ChessGameInfo';
 import { isError, Result, succ, Success, fail } from '../../types/Result';
 import { storePairingList } from '../../util/storage';
@@ -101,8 +106,11 @@ type EnterPgnStateHookType = [
   EnterPgnMode,
   {
     goToPairingSelection: (liveLinkUrl: string) => Promise<Result<undefined>>;
+    viewPastGames: () => void;
+    viewEnterPgnScreen: () => void;
   },
 ];
+
 export const makeUseEnterPgnState =
   (
     context: React.Context<
@@ -114,8 +122,18 @@ export const makeUseEnterPgnState =
     if (appModeState.mode !== AppMode.EnterPgn) {
       return null;
     }
+    const viewPastGames = () => {
+      setAppModeState({ ...appModeState, view: EnterPgnViews.VIEW_PAST_GAMES });
+    };
+
+    const viewEnterPgnScreen = () => {
+      setAppModeState({ ...appModeState, view: EnterPgnViews.ENTER_PGN });
+    };
 
     const goToPairingSelection = makegoToTablePairingSelection(setAppModeState);
 
-    return [appModeState, { goToPairingSelection }];
+    return [
+      appModeState,
+      { goToPairingSelection, viewPastGames, viewEnterPgnScreen },
+    ];
   };
