@@ -20,22 +20,6 @@ export const styles = StyleSheet.create({
   boardPairingContainer: {
     marginBottom: 20,
   },
-  boardPairing: {
-    backgroundColor: colours.primary20,
-    color: textColour(colours.primary20),
-  },
-  boardPairingRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 20,
-  },
-  selectedBoardPairingBoardTitle: {
-    color: textColour(colours.secondary),
-  },
-  selectedBoardPairing: {
-    backgroundColor: colours.secondary,
-  },
   actionButton: {
     width: ACTION_BUTTON_WIDTH,
     paddingLeft: ACTION_BUTTON_HORIZONTAL_PADDING,
@@ -51,14 +35,5 @@ export const styles = StyleSheet.create({
     marginTop: 45,
     marginBottom: 45,
     width: '100%',
-  },
-  nameColumn: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: 450,
-    paddingLeft: 10,
-  },
-  playerName: {
-    textAlign: 'right',
   },
 });
