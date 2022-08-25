@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
+import { MoveReturnType } from '../../chessEngine/chessTsChessEngine';
 import {
   AppMode,
   AppModeState,
@@ -76,11 +77,30 @@ const rebuildHistory = (
       return null;
     }
 
-    // ammend starting fen of the move
-    previousPly = {
-      ...move,
-      startingFen: nextMovesFen,
-    };
+    // if move ply ammend starting fen and san
+    if (move.type === PlyTypes.MovePly) {
+      previousPly = {
+        ...move,
+        startingFen: nextMovesFen,
+        type: move.type,
+        san:
+          chessEngine.makeMove(
+            nextMovesFen,
+            move.move,
+            move.promotion,
+            MoveReturnType.MOVE_SAN,
+          ) ?? '',
+      };
+    }
+
+    // if skip ply only ammend starting fen
+    if (move.type === PlyTypes.SkipPly) {
+      previousPly = {
+        ...move,
+        startingFen: nextMovesFen,
+        type: move.type,
+      };
+    }
 
     return previousPly;
   });
@@ -239,6 +259,13 @@ export const makeUseEditMoveState =
         ...oldMove,
         type: PlyTypes.MovePly,
         move: moveSquares,
+        san:
+          chessEngine.makeMove(
+            oldMove.startingFen,
+            moveSquares,
+            promotion,
+            MoveReturnType.MOVE_SAN,
+          ) ?? '',
         promotion,
       };
 
@@ -264,9 +291,9 @@ export const makeUseEditMoveState =
         type: PlyTypes.SkipPly,
       };
 
-      // if old move was a movePly -> delete the move property
+      // if old move was a movePly -> delete the move and san properties
       if (oldMove.type == PlyTypes.MovePly) {
-        const { move, ...oldMoveWithoutMove } = oldMove;
+        const { move, san, ...oldMoveWithoutMove } = oldMove;
         newMove = {
           ...oldMoveWithoutMove,
           type: PlyTypes.SkipPly,
