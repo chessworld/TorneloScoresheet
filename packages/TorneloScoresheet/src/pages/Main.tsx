@@ -1,7 +1,7 @@
 import React from 'react';
 import PrimaryText from '../components/PrimaryText/PrimaryText';
 import { useAppModeState } from '../context/AppModeStateContext';
-import { AppMode } from '../types/AppModeState';
+import { AppMode, EnterPgnViews } from '../types/AppModeState';
 import GraphicalEditMove from './EditMove/GraphicalEditMove';
 import EnterPgn from './EnterPgn/EnterPgn';
 import GraphicalRecording from './GraphicalRecording/GraphicalRecording';
@@ -11,13 +11,19 @@ import ResultDisplay from './ResultDisplay/ResultDisplay';
 import ArbiterTablePairing from './TablePairing/ArbiterTablePairing';
 import TablePairing from './TablePairing/TablePairing';
 import TextRecording from './TextRecording/TextRecording';
+import ViewPastGames from './ViewPastGames/ViewPastGames';
 
 const Main: React.FC = () => {
   const appMode = useAppModeState();
 
   switch (appMode.mode) {
     case AppMode.EnterPgn:
-      return <EnterPgn />;
+      switch (appMode.view) {
+        case EnterPgnViews.ENTER_PGN:
+          return <EnterPgn />;
+        case EnterPgnViews.VIEW_PAST_GAMES:
+          return <ViewPastGames />;
+      }
     case AppMode.PairingSelection:
       return <PairingSelection />;
     case AppMode.TablePairing:
