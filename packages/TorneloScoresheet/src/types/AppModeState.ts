@@ -40,8 +40,13 @@ export const isArbiterFromPlayerMode = (mode: AppMode): boolean =>
     [AppMode.EditMove]: false,
   }[mode]);
 
+export enum EnterPgnViews {
+  ENTER_PGN,
+  VIEW_PAST_GAMES,
+}
 export type EnterPgnMode = {
   mode: AppMode.EnterPgn;
+  view: EnterPgnViews;
 };
 
 export type PairingSelectionMode = {

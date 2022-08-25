@@ -1,13 +1,19 @@
 import { useContext } from 'react';
+import { Platform } from 'react-native';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
 import {
   AppMode,
   AppModeState,
   ArbiterResultDisplayMode,
+  EnterPgnViews,
 } from '../../types/AppModeState';
+import { PlayerColour } from '../../types/ChessGameInfo';
 import { ChessPly, PlyTypes } from '../../types/ChessMove';
 import { fail, Result, succ } from '../../types/Result';
-import { getStoredRecordingModeData } from '../../util/storage';
+import {
+  getStoredRecordingModeData,
+  storeGameHistory,
+} from '../../util/storage';
 
 type arbiterResultDisplayStateHookType = [
   ArbiterResultDisplayMode,
@@ -37,9 +43,20 @@ export const makeUseArbiterResultDisplayState =
       });
     };
 
-    const goBackToEnterPgn = (): void => {
+    const goBackToEnterPgn = async (): Promise<void> => {
+      // store signatures and pgn
+      storeGameHistory({
+        pgn: appModeState.result.gamePgn ?? '',
+        whiteSign: appModeState.result.signature[PlayerColour.White],
+        blackSign: appModeState.result.signature[PlayerColour.Black],
+        pairing: appModeState.pairing,
+        winner: appModeState.result.winner,
+      });
+
+      // set mode to enter pgn
       setAppModeState({
         mode: AppMode.EnterPgn,
+        view: EnterPgnViews.ENTER_PGN,
       });
     };
 

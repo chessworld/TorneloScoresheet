@@ -3,7 +3,7 @@ import { makeUseEnterPgnState } from '../hooks/appMode/enterPgnState';
 import { makeUsePairingSelectionState } from '../hooks/appMode/pairingSelectionState';
 import { makeUseTablePairingState } from '../hooks/appMode/tablePairingState';
 import { makeUseRecordingState } from '../hooks/appMode/recordingState';
-import { AppModeState, AppMode } from '../types/AppModeState';
+import { AppModeState, AppMode, EnterPgnViews } from '../types/AppModeState';
 import { makeUseResultDisplayState } from '../hooks/appMode/resultDisplayState';
 import { makeUseArbiterRecordingState } from '../hooks/appMode/arbiterRecordingState';
 import { makeUseArbiterTablePairingState } from '../hooks/appMode/arbiterTablePairingState';
@@ -14,7 +14,7 @@ import { makeUseEditMoveState } from '../hooks/appMode/editMoveState';
 // This is not exported so the setAppModeState is never leaked
 const AppModeStateContext = React.createContext<
   [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
->([{ mode: AppMode.EnterPgn }, () => undefined]);
+>([{ mode: AppMode.EnterPgn, view: EnterPgnViews.ENTER_PGN }, () => undefined]);
 
 export const useAppModeState = (): AppModeState => {
   const [appModeState] = useContext(AppModeStateContext);
@@ -25,6 +25,7 @@ export const useAppModeState = (): AppModeState => {
 export const AppModeStateContextProvider: React.FC = ({ children }) => {
   const appModeState = useState({
     mode: AppMode.EnterPgn,
+    view: EnterPgnViews.ENTER_PGN,
   } as AppModeState);
 
   return (

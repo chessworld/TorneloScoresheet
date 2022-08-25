@@ -14,6 +14,12 @@ export const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
+  buttonBox: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignContent: 'center',
+    alignItems: 'center',
+  },
   informationAndInputBoxContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -44,8 +50,9 @@ export const styles = StyleSheet.create({
     marginBottom: 30,
     paddingLeft: 60,
     paddingRight: 60,
+    marginHorizontal: 20,
   },
   startButtonLabel: {
-    fontSize: 40,
+    fontSize: 30,
   },
 });

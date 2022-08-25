@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import {
   AppMode,
   AppModeState,
+  EnterPgnViews,
   PairingSelectionMode,
 } from '../../types/AppModeState';
 import { ChessGameInfo } from '../../types/ChessGameInfo';
@@ -30,6 +31,7 @@ export const makeUsePairingSelectionState =
     const goToEnterPgn = (): void => {
       setAppModeState({
         mode: AppMode.EnterPgn,
+        view: EnterPgnViews.ENTER_PGN,
       });
     };
 
