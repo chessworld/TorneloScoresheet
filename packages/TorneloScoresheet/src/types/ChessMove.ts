@@ -56,6 +56,7 @@ export type MovePly = {
   move: MoveSquares;
   type: PlyTypes.MovePly;
   promotion?: PieceType;
+  san: string;
 } & PlyInfo;
 
 // A skip ply is a recorded ply that has been
