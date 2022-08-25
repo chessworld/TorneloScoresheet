@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
+import { MoveReturnType } from '../../chessEngine/chessTsChessEngine';
 import {
   AppMode,
   AppModeState,
@@ -98,8 +99,24 @@ const processPlayerMove = (
   moveHistory: ChessPly[],
   promotion?: PieceType,
 ): ChessPly[] | null => {
+  const startingFen = getCurrentFen(moveHistory);
+
+  // process move
+  const moveSAN = chessEngine.makeMove(
+    startingFen,
+    moveSquares,
+    promotion,
+    MoveReturnType.MOVE_SAN,
+  );
+
+  // return null if move is impossible
+  if (!moveSAN) {
+    return null;
+  }
+
+  // build next play and return new history
   const nextPly: MovePly = {
-    startingFen: getCurrentFen(moveHistory),
+    startingFen,
     move: moveSquares,
     type: PlyTypes.MovePly,
     moveNo: Math.floor(moveHistory.length / 2) + 1,
@@ -107,13 +124,10 @@ const processPlayerMove = (
       moveHistory.length % 2 === 0 ? PlayerColour.White : PlayerColour.Black,
     promotion,
     drawOffer: false,
+    san: moveSAN,
   };
 
-  // return history array or null if move is not legal
-  return chessEngine.makeMove(nextPly.startingFen, nextPly.move, promotion) ===
-    null
-    ? null
-    : [...moveHistory, nextPly];
+  return [...moveHistory, nextPly];
 };
 
 export const makeUseRecordingState =
