@@ -82,7 +82,7 @@ const moveString = (ply: ChessPly, isEditing: boolean): string => {
     return '-';
   }
 
-  return `${ply.move.from}->${ply.move.to}`;
+  return ply.san;
 };
 
 const blackPlyBackgroundColour = (ply: ChessPly | undefined) => ({
