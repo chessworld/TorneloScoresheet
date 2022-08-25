@@ -59,6 +59,7 @@ describe('recording moving', () => {
             type: PlyTypes.MovePly,
             player: PlayerColour.White,
             drawOffer: false,
+            san: 'e4',
           },
         ],
       });
@@ -78,6 +79,7 @@ describe('recording moving', () => {
         move: { from: 'a1', to: 'a5' } as MoveSquares,
         type: PlyTypes.MovePly,
         drawOffer: false,
+        san: 'a1a5',
       },
     ];
 
@@ -101,6 +103,7 @@ describe('recording moving', () => {
               'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
             move: { from: 'a1', to: 'a5' } as MoveSquares,
             drawOffer: false,
+            san: 'a1a5',
           },
           {
             moveNo: 1,
@@ -109,6 +112,7 @@ describe('recording moving', () => {
             startingFen: originFen,
             move,
             drawOffer: false,
+            san: 'Rh8h5',
           },
         ],
       });
@@ -141,6 +145,7 @@ describe('undoing last move', () => {
         type: PlyTypes.MovePly,
         move: { from: 'a1', to: 'a5' } as MoveSquares,
         drawOffer: false,
+        san: 'a1a5',
       },
     ];
     const graphicalState = generateRecordingState(moveHistory, 'Graphical');
@@ -166,6 +171,7 @@ describe('undoing last move', () => {
         startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
         move: { from: 'a1', to: 'a5' } as MoveSquares,
         drawOffer: false,
+        san: 'a1a5',
       },
       {
         moveNo: 1,
@@ -174,6 +180,7 @@ describe('undoing last move', () => {
         move: { from: 'h8', to: 'h5' } as MoveSquares,
         type: PlyTypes.MovePly,
         drawOffer: false,
+        san: 'Rh8h5',
       },
     ];
     const graphicalState = generateRecordingState(moveHistory, 'Graphical');
@@ -197,6 +204,7 @@ describe('undoing last move', () => {
               'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
             move: { from: 'a1', to: 'a5' } as MoveSquares,
             drawOffer: false,
+            san: 'a1a5',
           },
         ],
       });
@@ -241,6 +249,7 @@ describe('Skipping player turn', () => {
         type: PlyTypes.MovePly,
         move: { from: 'a1', to: 'a5' } as MoveSquares,
         drawOffer: false,
+        san: 'a1a5',
       },
     ];
     const graphicalState = generateRecordingState(moveHistory, 'Graphical');
@@ -307,6 +316,7 @@ describe('Auto Skip player turn', () => {
             type: PlyTypes.MovePly,
             move,
             drawOffer: false,
+            san: 'Rh8h5',
           },
         ],
         board: chessEngine.fenToBoardPositions(afterMoveResultingFen),
@@ -329,6 +339,7 @@ describe('Auto Skip player turn', () => {
         type: PlyTypes.MovePly,
         move: { from: 'a1', to: 'a5' } as MoveSquares,
         drawOffer: false,
+        san: 'a1a5',
       },
     ];
     const move = { from: 'a5', to: 'a6' } as MoveSquares;
@@ -356,6 +367,8 @@ describe('Auto Skip player turn', () => {
             type: PlyTypes.MovePly,
             move,
             startingFen: afterSkipResultingFen,
+            san: 'Ra6',
+            promotion: undefined,
             drawOffer: false,
           },
         ],
@@ -452,6 +465,7 @@ describe('Auto Skip player turn', () => {
         type: PlyTypes.MovePly,
         move: { from: 'a1', to: 'a5' } as MoveSquares,
         drawOffer: false,
+        san: 'a1a5',
       },
     ];
     const move = { from: 'a2', to: 'a8' } as MoveSquares;
@@ -484,6 +498,7 @@ describe('Auto Skip player turn', () => {
             promotion: PieceType.Queen,
             startingFen: afterSkipResultingFen,
             drawOffer: false,
+            san: 'a2axa8=Q',
           },
         ],
         board: chessEngine.fenToBoardPositions(afterMoveResultingFen),
@@ -505,6 +520,7 @@ describe('Generate pgn', () => {
             from: 'e2',
             to: 'e4',
           },
+          san: 'e4',
         },
         {
           moveNo: 2,
@@ -516,6 +532,7 @@ describe('Generate pgn', () => {
             from: 'd7',
             to: 'd5',
           },
+          san: '',
         },
         {
           moveNo: 3,
@@ -527,6 +544,7 @@ describe('Generate pgn', () => {
             from: 'e4',
             to: 'd5',
           },
+          san: '',
         },
         {
           moveNo: 4,
@@ -538,6 +556,7 @@ describe('Generate pgn', () => {
             from: 'd8',
             to: 'd7',
           },
+          san: '',
         },
         {
           moveNo: 5,
@@ -549,6 +568,7 @@ describe('Generate pgn', () => {
             from: 'd5',
             to: 'd6',
           },
+          san: '',
         },
         {
           moveNo: 6,
@@ -560,6 +580,7 @@ describe('Generate pgn', () => {
             from: 'd7',
             to: 'f5',
           },
+          san: '',
         },
         {
           moveNo: 7,
@@ -571,6 +592,7 @@ describe('Generate pgn', () => {
             from: 'd6',
             to: 'd7',
           },
+          san: '',
         },
         {
           moveNo: 8,
@@ -582,6 +604,7 @@ describe('Generate pgn', () => {
             from: 'f5',
             to: 'f4',
           },
+          san: '',
         },
         {
           moveNo: 9,
@@ -593,6 +616,7 @@ describe('Generate pgn', () => {
             from: 'd7',
             to: 'd8',
           },
+          san: '',
           promotion: PieceType.Queen,
         },
         {
@@ -605,6 +629,7 @@ describe('Generate pgn', () => {
             from: 'f4',
             to: 'f5',
           },
+          san: '',
         },
         {
           moveNo: 11,
@@ -616,6 +641,7 @@ describe('Generate pgn', () => {
             from: 'd2',
             to: 'e2',
           },
+          san: '',
         },
       ] as ChessPly[],
       'Graphical',
@@ -651,6 +677,7 @@ describe('Generate pgn', () => {
             from: 'e2',
             to: 'e4',
           },
+          san: '',
         },
         {
           moveNo: 2,
@@ -662,6 +689,7 @@ describe('Generate pgn', () => {
             from: 'd7',
             to: 'd5',
           },
+          san: '',
         },
         {
           moveNo: 3,
@@ -680,6 +708,7 @@ describe('Generate pgn', () => {
             from: 'd8',
             to: 'd7',
           },
+          san: '',
         },
         {
           moveNo: 5,
@@ -691,6 +720,7 @@ describe('Generate pgn', () => {
             from: 'd5',
             to: 'd6',
           },
+          san: '',
         },
         {
           moveNo: 6,
@@ -709,6 +739,7 @@ describe('Generate pgn', () => {
             from: 'd6',
             to: 'd7',
           },
+          san: '',
         },
         {
           moveNo: 8,
@@ -720,6 +751,7 @@ describe('Generate pgn', () => {
             from: 'f5',
             to: 'f4',
           },
+          san: '',
         },
         {
           moveNo: 9,
@@ -731,6 +763,7 @@ describe('Generate pgn', () => {
             from: 'd7',
             to: 'd8',
           },
+          san: '',
           promotion: PieceType.Queen,
         },
         {
@@ -743,6 +776,7 @@ describe('Generate pgn', () => {
             from: 'f4',
             to: 'f5',
           },
+          san: '',
         },
         {
           moveNo: 11,
@@ -754,6 +788,7 @@ describe('Generate pgn', () => {
             from: 'd2',
             to: 'e2',
           },
+          san: '',
         },
       ] as ChessPly[],
       'Graphical',
@@ -786,6 +821,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'e2',
             to: 'e4',
           },
+          san: '',
         },
         {
           moveNo: 2,
@@ -797,6 +833,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'd7',
             to: 'd5',
           },
+          san: '',
         },
         {
           moveNo: 3,
@@ -815,6 +852,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'd8',
             to: 'd7',
           },
+          san: '',
         },
         {
           moveNo: 5,
@@ -826,6 +864,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'd5',
             to: 'd6',
           },
+          san: '',
         },
         {
           moveNo: 6,
@@ -844,6 +883,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'd6',
             to: 'd7',
           },
+          san: '',
         },
         {
           moveNo: 8,
@@ -855,6 +895,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'f5',
             to: 'f4',
           },
+          san: '',
         },
         {
           moveNo: 9,
@@ -866,6 +907,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'd7',
             to: 'd8',
           },
+          san: '',
           promotion: PieceType.Queen,
         },
         {
@@ -878,6 +920,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'f4',
             to: 'f5',
           },
+          san: '',
         },
         {
           moveNo: 11,
@@ -889,6 +932,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'd2',
             to: 'e2',
           },
+          san: '',
         },
       ] as ChessPly[],
       'Graphical',
@@ -926,6 +970,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'e2',
             to: 'e4',
           },
+          san: '',
         },
         {
           moveNo: 2,
@@ -937,6 +982,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'd7',
             to: 'd5',
           },
+          san: '',
         },
         {
           moveNo: 3,
@@ -955,6 +1001,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'd8',
             to: 'd7',
           },
+          san: '',
         },
         {
           moveNo: 5,
@@ -966,6 +1013,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'd5',
             to: 'd6',
           },
+          san: '',
         },
         {
           moveNo: 6,
@@ -984,6 +1032,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'd6',
             to: 'd7',
           },
+          san: '',
         },
         {
           moveNo: 8,
@@ -995,6 +1044,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'f5',
             to: 'f4',
           },
+          san: '',
         },
         {
           moveNo: 9,
@@ -1007,6 +1057,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             to: 'd8',
           },
           promotion: PieceType.Queen,
+          san: '',
         },
         {
           moveNo: 10,
@@ -1018,6 +1069,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'f4',
             to: 'f5',
           },
+          san: '',
         },
         {
           moveNo: 11,
@@ -1029,6 +1081,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'd2',
             to: 'e2',
           },
+          san: '',
         },
       ] as ChessPly[],
       'Graphical',
@@ -1066,6 +1119,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'e2',
             to: 'e4',
           },
+          san: '',
         },
         {
           moveNo: 2,
@@ -1077,6 +1131,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'd7',
             to: 'd5',
           },
+          san: '',
         },
         {
           moveNo: 3,
@@ -1095,6 +1150,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'd8',
             to: 'd7',
           },
+          san: '',
         },
         {
           moveNo: 5,
@@ -1106,6 +1162,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'd5',
             to: 'd6',
           },
+          san: '',
         },
         {
           moveNo: 6,
@@ -1124,6 +1181,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'd6',
             to: 'd7',
           },
+          san: '',
         },
         {
           moveNo: 8,
@@ -1135,6 +1193,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'f5',
             to: 'f4',
           },
+          san: '',
         },
         {
           moveNo: 9,
@@ -1147,6 +1206,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             to: 'd8',
           },
           promotion: PieceType.Queen,
+          san: '',
         },
         {
           moveNo: 10,
@@ -1158,6 +1218,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'f4',
             to: 'f5',
           },
+          san: '',
         },
         {
           moveNo: 11,
@@ -1169,6 +1230,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
             from: 'd2',
             to: 'e2',
           },
+          san: '',
         },
       ] as ChessPly[],
       'Graphical',
@@ -1205,6 +1267,7 @@ describe('Toggle Draw Offer', () => {
         type: PlyTypes.MovePly,
         move: { from: 'a1', to: 'a5' } as MoveSquares,
         drawOffer: false,
+        san: 'a1a5',
       },
     ];
     const graphicalState = generateRecordingState(moveHistory, 'Graphical');
@@ -1226,6 +1289,7 @@ describe('Toggle Draw Offer', () => {
             type: PlyTypes.MovePly,
             move: { from: 'a1', to: 'a5' } as MoveSquares,
             drawOffer: true,
+            san: 'a1a5',
           },
         ],
       });
@@ -1241,6 +1305,7 @@ describe('Toggle Draw Offer', () => {
         type: PlyTypes.MovePly,
         move: { from: 'a1', to: 'a5' } as MoveSquares,
         drawOffer: true,
+        san: 'a1a5',
       },
     ];
     const graphicalState = generateRecordingState(moveHistory, 'Graphical');
@@ -1262,6 +1327,7 @@ describe('Toggle Draw Offer', () => {
             type: PlyTypes.MovePly,
             move: { from: 'a1', to: 'a5' } as MoveSquares,
             drawOffer: false,
+            san: 'a1a5',
           },
         ],
       });
@@ -1277,6 +1343,7 @@ describe('Toggle Draw Offer', () => {
         startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
         move: { from: 'a1', to: 'a5' } as MoveSquares,
         drawOffer: false,
+        san: 'a1a5',
       },
       {
         moveNo: 1,
@@ -1285,6 +1352,7 @@ describe('Toggle Draw Offer', () => {
         move: { from: 'h8', to: 'h5' } as MoveSquares,
         type: PlyTypes.MovePly,
         drawOffer: false,
+        san: 'Rh8h5',
       },
     ];
     const graphicalState = generateRecordingState(moveHistory, 'Graphical');
@@ -1309,6 +1377,7 @@ describe('Toggle Draw Offer', () => {
               'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
             move: { from: 'a1', to: 'a5' } as MoveSquares,
             drawOffer: false,
+            san: 'a1a5',
           },
           {
             moveNo: 1,
@@ -1318,6 +1387,7 @@ describe('Toggle Draw Offer', () => {
             move: { from: 'h8', to: 'h5' } as MoveSquares,
             type: PlyTypes.MovePly,
             drawOffer: true,
+            san: 'Rh8h5',
           },
         ],
       });
@@ -1333,6 +1403,7 @@ describe('Toggle Draw Offer', () => {
         startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
         move: { from: 'a1', to: 'a5' } as MoveSquares,
         drawOffer: false,
+        san: 'a1a5',
       },
       {
         moveNo: 1,
@@ -1341,6 +1412,7 @@ describe('Toggle Draw Offer', () => {
         move: { from: 'h8', to: 'h5' } as MoveSquares,
         type: PlyTypes.MovePly,
         drawOffer: true,
+        san: 'Rh8h5',
       },
     ];
     const graphicalState = generateRecordingState(moveHistory, 'Graphical');
@@ -1365,6 +1437,7 @@ describe('Toggle Draw Offer', () => {
               'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
             move: { from: 'a1', to: 'a5' } as MoveSquares,
             drawOffer: false,
+            san: 'a1a5',
           },
           {
             moveNo: 1,
@@ -1374,6 +1447,7 @@ describe('Toggle Draw Offer', () => {
             move: { from: 'h8', to: 'h5' } as MoveSquares,
             type: PlyTypes.MovePly,
             drawOffer: false,
+            san: 'Rh8h5',
           },
         ],
       });
@@ -1391,6 +1465,7 @@ describe('Add Game time', () => {
         type: PlyTypes.MovePly,
         move: { from: 'a1', to: 'a5' } as MoveSquares,
         drawOffer: false,
+        san: 'a1a5',
       },
     ];
     const graphicalState = generateRecordingState(moveHistory, 'Graphical');
@@ -1415,6 +1490,7 @@ describe('Add Game time', () => {
             move: { from: 'a1', to: 'a5' } as MoveSquares,
             drawOffer: false,
             gameTime,
+            san: 'a1a5',
           },
         ],
       });
@@ -1430,6 +1506,7 @@ describe('Add Game time', () => {
         type: PlyTypes.MovePly,
         move: { from: 'a1', to: 'a5' } as MoveSquares,
         drawOffer: true,
+        san: 'a1a5',
         gameTime: { hours: 1, minutes: 1 },
       },
     ];
@@ -1452,6 +1529,7 @@ describe('Add Game time', () => {
             type: PlyTypes.MovePly,
             move: { from: 'a1', to: 'a5' } as MoveSquares,
             drawOffer: true,
+            san: 'a1a5',
           },
         ],
       });
@@ -1467,6 +1545,7 @@ describe('Add Game time', () => {
         startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
         move: { from: 'a1', to: 'a5' } as MoveSquares,
         drawOffer: false,
+        san: 'a1a5',
         gameTime: { hours: 1, minutes: 1 },
       },
       {
@@ -1476,6 +1555,7 @@ describe('Add Game time', () => {
         move: { from: 'h8', to: 'h5' } as MoveSquares,
         type: PlyTypes.MovePly,
         drawOffer: false,
+        san: 'Rh8h5',
       },
     ];
     const graphicalState = generateRecordingState(moveHistory, 'Graphical');
@@ -1501,6 +1581,7 @@ describe('Add Game time', () => {
             move: { from: 'a1', to: 'a5' } as MoveSquares,
             drawOffer: false,
             gameTime: newGameTime,
+            san: 'a1a5',
           },
           {
             moveNo: 1,
@@ -1510,6 +1591,7 @@ describe('Add Game time', () => {
             move: { from: 'h8', to: 'h5' } as MoveSquares,
             type: PlyTypes.MovePly,
             drawOffer: false,
+            san: 'Rh8h5',
           },
         ],
       });
