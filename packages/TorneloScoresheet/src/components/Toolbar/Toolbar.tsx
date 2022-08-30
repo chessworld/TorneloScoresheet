@@ -16,6 +16,7 @@ import ToggleRecordingMode from './ToggleRecordingMode';
 import { useAppModeState } from '../../context/AppModeStateContext';
 import ArbiterAndPlayerModeDisplay from './ArbiterAndPlayerModeDisplay';
 import packageJson from '../../../package.json';
+import Help from '../Help/Help';
 /**
  * The App's toolbar.
  *
@@ -47,7 +48,7 @@ const Toolbar: React.FC = () => {
         title="Help"
         dismiss={() => setShowSheet(false)}
         visible={showSheet}>
-        <PrimaryText style={styles.helpText}>Put help here!</PrimaryText>
+        <Help onDone={() => setShowSheet(false)} />
       </Sheet>
       <View style={[styles.container, backgroundColorStyle(currentColour)]}>
         <View style={styles.arbiterLock}>
