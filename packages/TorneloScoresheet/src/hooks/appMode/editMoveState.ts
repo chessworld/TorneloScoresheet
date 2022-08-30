@@ -38,10 +38,10 @@ type editMoveStateHookType = [
  */
 const getStartingFen = (ply: ChessPly): string | null => {
   // check if move is possible and get starting fen
-  if (ply.type == PlyTypes.SkipPly) {
+  if (ply.type === PlyTypes.SkipPly) {
     return chessEngine.skipTurn(ply.startingFen);
   }
-  if (ply.type == PlyTypes.MovePly) {
+  if (ply.type === PlyTypes.MovePly) {
     return chessEngine.makeMove(ply.startingFen, ply.move, ply.promotion);
   }
   return null;
@@ -73,7 +73,7 @@ const rebuildHistory = (
     const nextMovesFen = getStartingFen(previousPly);
 
     // return null if move impossible
-    if (nextMovesFen == null) {
+    if (nextMovesFen === null) {
       return null;
     }
 
@@ -291,9 +291,9 @@ export const makeUseEditMoveState =
         type: PlyTypes.SkipPly,
       };
 
-      // if old move was a movePly -> delete the move and san properties
-      if (oldMove.type == PlyTypes.MovePly) {
-        const { move, san, ...oldMoveWithoutMove } = oldMove;
+      // if old move was a movePly -> delete the move property
+      if (oldMove.type === PlyTypes.MovePly) {
+        const { move, san, ...oldMoveWithoutMove } = oldMove; // eslint-disable-line @typescript-eslint/no-unused-vars
         newMove = {
           ...oldMoveWithoutMove,
           type: PlyTypes.SkipPly,

@@ -53,7 +53,6 @@ const MoveCard: React.FC<MoveCardProps> = ({
           plyBeingEdited === PlayerColour.Black
             ? { backgroundColor: colours.lightGreen }
             : blackPlyBackgroundColour(move.black),
-          ,
         ]}>
         <TouchableOpacity
           style={styles.touchableOpacity}

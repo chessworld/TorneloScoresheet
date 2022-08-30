@@ -1648,7 +1648,7 @@ describe('Go to edit move', () => {
         moveHistory: graphicalState.moveHistory,
         currentPlayer: graphicalState.currentPlayer,
       });
-      const { startTime, type, ...restOfState } = graphicalState;
+      const { startTime, type, ...restOfState } = graphicalState; // eslint-disable-line @typescript-eslint/no-unused-vars
       expect(setContextMock).toHaveBeenCalledWith({
         ...restOfState,
         mode: AppMode.EditMove,
