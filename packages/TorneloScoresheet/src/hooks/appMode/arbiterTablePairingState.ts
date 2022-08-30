@@ -39,7 +39,7 @@ export const makeUseArbiterTablePairingState =
     const goBackToPairingSelectionMode = async (): Promise<Result<string>> => {
       const pairings = await getStoredPairingList();
 
-      if (pairings == null) {
+      if (pairings === null) {
         return fail(
           'Error loading pairings, please go back to the PGN screen instead',
         );

@@ -230,7 +230,7 @@ const GraphicalEditMove: React.FC = () => {
                 move={move}
                 plyBeingEdited={
                   Math.floor(editMoveState.editingIndex / 2) === index
-                    ? editMoveState.editingIndex % 2 == 0
+                    ? editMoveState.editingIndex % 2 === 0
                       ? PlayerColour.White
                       : PlayerColour.Black
                     : undefined

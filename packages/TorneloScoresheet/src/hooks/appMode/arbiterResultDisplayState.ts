@@ -68,7 +68,7 @@ export const makeUseArbiterResultDisplayState =
       }
 
       // get next move's starting fen based on the last move
-      return lastMove.type == PlyTypes.MovePly
+      return lastMove.type === PlyTypes.MovePly
         ? chessEngine.makeMove(
             lastMove.startingFen,
             lastMove.move,
