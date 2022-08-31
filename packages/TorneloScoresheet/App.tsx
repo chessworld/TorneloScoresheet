@@ -10,9 +10,15 @@ import Main from './src/pages/Main';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import LockAppOnExit from './src/components/LockAppOnExit/LockAppOnExit';
 import { ModalStackContextProvider } from './src/context/ModalStackContext';
+import SplashScreen from 'react-native-splash-screen';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
+
+  // Hide Splash screen on app load.
+  React.useEffect(() => {
+    SplashScreen.hide();
+  });
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
