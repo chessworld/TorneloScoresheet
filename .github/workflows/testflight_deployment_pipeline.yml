@@ -1,0 +1,14 @@
+name: Testflight Deployment
+
+on:
+  push:
+    tags:
+      - v*
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: cd ./packages/TorneloScoresheet/ios && fastlane beta
+        env:
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
