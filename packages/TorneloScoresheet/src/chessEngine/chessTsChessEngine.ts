@@ -119,13 +119,11 @@ const makeMove = (
   returnType: MoveReturnType = MoveReturnType.NEXT_STARTING_FEN,
 ): string | null => {
   const game = new Chess(fromFen);
-  const result = game.forceMove(
-    { from: moveSquares.from, to: moveSquares.to },
-    {
-      promotion:
-        promotion !== undefined ? chessTsPieceMap[promotion] : undefined,
-    },
-  );
+  const result = game.move({
+    from: moveSquares.from,
+    to: moveSquares.to,
+    promotion: promotion !== undefined ? chessTsPieceMap[promotion] : undefined,
+  });
 
   // if move impossible return null
   if (result === null) {
