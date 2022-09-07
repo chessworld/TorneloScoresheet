@@ -205,6 +205,21 @@ export const makeUseRecordingState =
       );
       if (moveHistory !== null) {
         updateBoard(moveHistory);
+
+        const key = moveHistory[moveHistory.length - 1]!.startingFen.split(' ')
+          .slice(0, 4)
+          .join(' ');
+
+        if (!appModeState.pairing.positionOccurances) {
+          appModeState.pairing.positionOccurances = {};
+        }
+
+        appModeState.pairing.positionOccurances[key] =
+          key in appModeState.pairing.positionOccurances
+            ? (appModeState.pairing.positionOccurances[key] || 0) + 1
+            : 1;
+
+        console.log(appModeState.pairing.positionOccurances);
       }
     };
     const isPawnPromotion = (moveSquares: MoveSquares): boolean => {
@@ -213,6 +228,20 @@ export const makeUseRecordingState =
     };
 
     const undoLastMove = (): void => {
+      if (appModeState.moveHistory.length > 0) {
+        const key = appModeState.moveHistory[
+          appModeState.moveHistory.length - 1
+        ]!.startingFen.split(' ')
+          .slice(0, 4)
+          .join(' ');
+        appModeState.pairing.positionOccurances[key] =
+          key in appModeState.pairing.positionOccurances
+            ? (appModeState.pairing.positionOccurances[key] || 0) - 1
+            : 0;
+      } else {
+        //game reset to start - clear position memory
+        appModeState.pairing.positionOccurances = {};
+      }
       updateBoard(appModeState.moveHistory.slice(0, -1));
     };
 
