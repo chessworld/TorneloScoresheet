@@ -75,6 +75,7 @@ const parseGameInfo = (pgn: string): Result<ChessGameInfo> => {
       result: game.header().Result ?? '',
       players: [whitePlayer, blackPlayer],
       pgn: pgn,
+      positionOccurances: {},
     });
   } catch (error) {
     return PARSING_FAILURE;
