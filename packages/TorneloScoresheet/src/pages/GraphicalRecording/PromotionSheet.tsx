@@ -1,6 +1,6 @@
 import React from 'react';
 import OptionSheet from '../../components/OptionSheet/OptionSheet';
-import { QUEEN, ROOK, PAWN, KNIGHT, BISHOP } from '../../style/images';
+import { QUEEN, ROOK, KNIGHT, BISHOP } from '../../style/images';
 import { PieceType } from '../../types/ChessMove';
 
 export type PromotionSheetProps = {

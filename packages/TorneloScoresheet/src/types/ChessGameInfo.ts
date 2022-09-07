@@ -10,6 +10,7 @@ export type ChessGameInfo = {
   result: string;
   players: [Player, Player];
   pgn: string;
+  positionOccurances: Record<string, number>;
 };
 
 export type ChessGameResult = {
