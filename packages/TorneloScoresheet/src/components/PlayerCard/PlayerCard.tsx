@@ -14,6 +14,7 @@ type playerCardProps = {
   result?: number;
 } & TouchableOpacityProps;
 import getCountryISO2 from 'country-iso-3-to-2';
+import ConditionalWrapper from '../ConditionalWrapper/ConditionalWrapper';
 
 const PlayerCard: React.FC<playerCardProps> = ({
   player,
@@ -23,9 +24,18 @@ const PlayerCard: React.FC<playerCardProps> = ({
   const playerCountry = player.country
     ? getCountryISO2(player.country)
     : undefined;
+  const isClickable = touchableOpacityProps.onPress !== undefined;
   return (
-    <TouchableOpacity style={styles.player} {...touchableOpacityProps}>
-      <View style={styles.textSection}>
+    <ConditionalWrapper
+      condition={isClickable}
+      wrap={children => {
+        return (
+          <TouchableOpacity {...touchableOpacityProps}>
+            {children}
+          </TouchableOpacity>
+        );
+      }}>
+      <View style={[styles.textSection, styles.player]}>
         <View style={[styles.cardColumns, styles.piece]}>
           <PieceAsset
             piece={{ type: PieceType.King, player: player.color }}
@@ -70,7 +80,7 @@ const PlayerCard: React.FC<playerCardProps> = ({
           </View>
         </View>
       </View>
-    </TouchableOpacity>
+    </ConditionalWrapper>
   );
 };
 
