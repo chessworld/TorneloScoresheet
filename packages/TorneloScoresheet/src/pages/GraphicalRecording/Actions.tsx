@@ -28,6 +28,8 @@ const Actions: React.FC<ActionsProps> = ({
   const undoLastMove = recordingState?.[1].undoLastMove;
   const skipTurn = recordingState?.[1].skipTurn;
   const toggleDraw = recordingState?.[1].toggleDraw;
+  const isFirstMove = (recordingMode?.moveHistory.length ?? 0) === 0;
+
   const actionButtons: ActionButtonProps[] = [
     {
       text: 'flip',
@@ -44,6 +46,7 @@ const Actions: React.FC<ActionsProps> = ({
       text: 'time',
       onPress: recordTime,
       icon: <ICON_CLOCK height={40} fill={colours.white} />,
+      disabled: isFirstMove,
     },
     {
       text: 'draw',
@@ -52,6 +55,7 @@ const Actions: React.FC<ActionsProps> = ({
         recordingMode &&
         toggleDraw(recordingMode.moveHistory.length - 1),
       icon: <ICON_HALF height={40} fill={colours.white} />,
+      disabled: isFirstMove,
     },
     {
       text: 'skip',
@@ -63,6 +67,7 @@ const Actions: React.FC<ActionsProps> = ({
       text: 'undo',
       onPress: () => undoLastMove && undoLastMove(),
       icon: <ICON_UNDO height={40} fill={colours.white} />,
+      disabled: isFirstMove,
     },
   ];
   return <ActionBar actionButtons={actionButtons} />;
