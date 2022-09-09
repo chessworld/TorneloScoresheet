@@ -5,6 +5,7 @@ import RoundedView from '../RoundedView/RoundedView';
 import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { styles } from './style';
+import ConditionalWrapper from '../ConditionalWrapper/ConditionalWrapper';
 
 export type ActionButtonProps = {
   icon: React.ReactNode;
@@ -12,6 +13,7 @@ export type ActionButtonProps = {
   text: string;
   invertColours?: boolean;
   notShown?: boolean;
+  disabled?: boolean;
   style?: StyleProp<ViewStyle>;
 };
 
@@ -24,12 +26,21 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   notShown,
   onPress,
   style,
+  disabled,
 }) => {
   if (notShown) {
     return null;
   }
   return (
-    <TouchableOpacity onPress={() => onPress()} style={{}}>
+    <ConditionalWrapper
+      condition={!(disabled ?? false)}
+      wrap={children => {
+        return (
+          <TouchableOpacity onPress={() => onPress()}>
+            {children}
+          </TouchableOpacity>
+        );
+      }}>
       <RoundedView
         style={[
           styles.buttonContainer,
@@ -37,6 +48,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
             width: SINGLE_UNIT_HEIGHT,
             borderColor: invertColours ? colours.white : colours.primary,
             backgroundColor: invertColours ? colours.white : colours.primary,
+            opacity: disabled ? 0.5 : 1,
           },
           style,
         ]}>
@@ -50,7 +62,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
           {text}
         </PrimaryText>
       </RoundedView>
-    </TouchableOpacity>
+    </ConditionalWrapper>
   );
 };
 
