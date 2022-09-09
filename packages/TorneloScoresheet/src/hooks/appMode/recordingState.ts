@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
 import { MoveReturnType } from '../../chessEngine/chessTsChessEngine';
+import { useError } from '../../context/ErrorContext';
 import {
   AppMode,
   AppModeState,
@@ -82,6 +83,7 @@ export const makeUseRecordingState =
     >,
   ): (() => recordingStateHookType | null) =>
   (): recordingStateHookType | null => {
+    const [, showError] = useError();
     const [appModeState, setAppModeState] = useContext(context);
 
     if (appModeState.mode !== AppMode.Recording) {
@@ -248,6 +250,36 @@ export const makeUseRecordingState =
         pairing: appModeState.pairing,
         result,
       });
+    };
+
+    const inThreeFoldRepetition = (fen: string): boolean => {
+      if (appModeState.pairing.positionOccurances[fen]) {
+        if ((appModeState.pairing.positionOccurances[fen] || 0) > 2) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    const moveInFiveFoldRepetition = (fen: string): boolean => {
+      if (appModeState.pairing.positionOccurances[fen]) {
+        if ((appModeState.pairing.positionOccurances[fen] || 0) > 4) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    const gameInFiveFoldRepetition = (): boolean => {
+      let gameInRepetition = false;
+      if (appModeState.pairing.positionOccurances) {
+        for (let key in appModeState.pairing.positionOccurances) {
+          if (moveInFiveFoldRepetition(key)) {
+            gameInRepetition = true;
+          }
+        }
+      }
+      return gameInRepetition;
     };
 
     const goToTextInput = (): void => {};
