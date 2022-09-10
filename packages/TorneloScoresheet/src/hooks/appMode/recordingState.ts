@@ -19,6 +19,7 @@ import {
 } from '../../types/ChessMove';
 import { Result } from '../../types/Result';
 import { storeRecordingModeData } from '../../util/storage';
+import { MoveLegality } from '../../types/MoveLegality';
 
 type recordingStateHookType = [
   recordingMode,
@@ -82,6 +83,51 @@ export const makeUseRecordingState =
     if (appModeState.mode !== AppMode.Recording) {
       return null;
     }
+    const inThreeFoldRepetition = (fen: string): boolean => {
+      const newFen = fen.split('-')[0]?.concat('-');
+      if (newFen && appModeState.pairing.positionOccurances[newFen]) {
+        console.log(appModeState.pairing.positionOccurances[newFen]);
+        if ((appModeState.pairing.positionOccurances[newFen] || 0) > 2) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    const checkMoveLegality = (fen: string, index: number) => {
+      let moveLegality: MoveLegality = {};
+      moveLegality.inThreefoldRepetition = inThreeFoldRepetition(fen);
+      moveLegality.inCheck = chessEngine.inCheck(fen);
+      moveLegality.inDraw = chessEngine.inDraw(fen);
+      moveLegality.inCheckmate = chessEngine.inCheckmate(fen);
+      moveLegality.insufficientMaterial = chessEngine.insufficientMaterial(fen);
+      moveLegality.inStalemate = chessEngine.inStalemate(fen);
+      if (appModeState.moveHistory[index]) {
+        appModeState.moveHistory[index]!.legality = moveLegality;
+        console.log(appModeState.moveHistory[index]!.legality);
+      }
+    };
+
+    const moveInFiveFoldRepetition = (fen: string): boolean => {
+      if (appModeState.pairing.positionOccurances[fen]) {
+        if ((appModeState.pairing.positionOccurances[fen] || 0) > 4) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    const gameInFiveFoldRepetition = (): boolean => {
+      let gameInRepetition = false;
+      if (appModeState.pairing.positionOccurances) {
+        for (let key in appModeState.pairing.positionOccurances) {
+          if (moveInFiveFoldRepetition(key)) {
+            gameInRepetition = true;
+          }
+        }
+      }
+      return gameInRepetition;
+    };
 
     /**
      * Processes a player's move given to and from positons
@@ -106,8 +152,15 @@ export const makeUseRecordingState =
         MoveReturnType.MOVE_SAN,
       );
 
+      const moveFEN = chessEngine.makeMove(
+        startingFen,
+        moveSquares,
+        promotion,
+        MoveReturnType.NEXT_STARTING_FEN,
+      );
+
       // return null if move is impossible
-      if (!moveSAN) {
+      if (!moveSAN || !moveFEN) {
         return null;
       }
 
@@ -115,6 +168,8 @@ export const makeUseRecordingState =
         showError('Illegal move');
         return null;
       }
+
+      checkMoveLegality(moveFEN, moveHistory.length - 1);
 
       // build next play and return new history
       const nextPly: MovePly = {
@@ -202,36 +257,6 @@ export const makeUseRecordingState =
         pairing: appModeState.pairing,
         result,
       });
-    };
-
-    const inThreeFoldRepetition = (fen: string): boolean => {
-      if (appModeState.pairing.positionOccurances[fen]) {
-        if ((appModeState.pairing.positionOccurances[fen] || 0) > 2) {
-          return true;
-        }
-      }
-      return false;
-    };
-
-    const moveInFiveFoldRepetition = (fen: string): boolean => {
-      if (appModeState.pairing.positionOccurances[fen]) {
-        if ((appModeState.pairing.positionOccurances[fen] || 0) > 4) {
-          return true;
-        }
-      }
-      return false;
-    };
-
-    const gameInFiveFoldRepetition = (): boolean => {
-      let gameInRepetition = false;
-      if (appModeState.pairing.positionOccurances) {
-        for (let key in appModeState.pairing.positionOccurances) {
-          if (moveInFiveFoldRepetition(key)) {
-            gameInRepetition = true;
-          }
-        }
-      }
-      return gameInRepetition;
     };
 
     const goToTextInput = (): void => {};

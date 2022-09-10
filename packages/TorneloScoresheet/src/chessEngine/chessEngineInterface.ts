@@ -60,6 +60,12 @@ export type ChessEngineInterface = {
    */
   skipTurn: (fen: string) => string;
 
+  inCheck: (fen: string) => boolean;
+  inDraw: (fen: string) => boolean;
+  inCheckmate: (fen: string) => boolean;
+  insufficientMaterial: (fen: string) => boolean;
+  inStalemate: (fen: string) => boolean;
+
   /**
    * Determins if the move is attempting to move the opposite player's piece
    * This can be used to determine if the player is intending to auto skip a turn
