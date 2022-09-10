@@ -1,6 +1,6 @@
 import React from 'react';
 import OptionSheet from '../../components/OptionSheet/OptionSheet';
-import { QUEEN, ROOK, PAWN, KNIGHT, BISHOP } from '../../style/images';
+import { QUEEN, ROOK, KNIGHT, BISHOP } from '../../style/images';
 import { PieceType } from '../../types/ChessMove';
 
 export type PromotionSheetProps = {
@@ -20,7 +20,6 @@ const PromotionSheet: React.FC<PromotionSheetProps> = ({
       onPress: () => handleSelectPromotion(PieceType.Queen),
     },
     { icon: ROOK, onPress: () => handleSelectPromotion(PieceType.Rook) },
-    { icon: PAWN, onPress: () => handleSelectPromotion(PieceType.Pawn) },
     {
       icon: KNIGHT,
       onPress: () => handleSelectPromotion(PieceType.Knight),
