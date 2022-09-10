@@ -163,6 +163,8 @@ export const makeUseRecordingState =
         return null;
       }
 
+      checkMoveLegality(moveFEN, moveHistory.length - 1);
+
       // build next play and return new history
       const nextPly: MovePly = {
         startingFen,
@@ -250,36 +252,6 @@ export const makeUseRecordingState =
         pairing: appModeState.pairing,
         result,
       });
-    };
-
-    const inThreeFoldRepetition = (fen: string): boolean => {
-      if (appModeState.pairing.positionOccurances[fen]) {
-        if ((appModeState.pairing.positionOccurances[fen] || 0) > 2) {
-          return true;
-        }
-      }
-      return false;
-    };
-
-    const moveInFiveFoldRepetition = (fen: string): boolean => {
-      if (appModeState.pairing.positionOccurances[fen]) {
-        if ((appModeState.pairing.positionOccurances[fen] || 0) > 4) {
-          return true;
-        }
-      }
-      return false;
-    };
-
-    const gameInFiveFoldRepetition = (): boolean => {
-      let gameInRepetition = false;
-      if (appModeState.pairing.positionOccurances) {
-        for (let key in appModeState.pairing.positionOccurances) {
-          if (moveInFiveFoldRepetition(key)) {
-            gameInRepetition = true;
-          }
-        }
-      }
-      return gameInRepetition;
     };
 
     const goToTextInput = (): void => {};
