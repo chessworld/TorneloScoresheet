@@ -155,7 +155,7 @@ export const makeUseRecordingState =
         MoveReturnType.NEXT_STARTING_FEN,
       );
       // return null if move is impossible
-      if (!moveSAN || !moveFEN) {
+      if (!moveSAN) {
         return null;
       }
 
@@ -163,7 +163,7 @@ export const makeUseRecordingState =
         return null;
       }
 
-      checkMoveLegality(moveFEN, moveHistory.length - 1);
+      checkMoveLegality(startingFen, moveHistory.length - 1);
 
       // build next play and return new history
       const nextPly: MovePly = {
