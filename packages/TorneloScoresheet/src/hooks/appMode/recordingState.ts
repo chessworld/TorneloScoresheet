@@ -87,7 +87,7 @@ export const makeUseRecordingState =
       const newFen = fen.split('-')[0]?.concat('-');
       if (newFen && appModeState.pairing.positionOccurances[newFen]) {
         console.log(appModeState.pairing.positionOccurances[newFen]);
-        if ((appModeState.pairing.positionOccurances[newFen] || 0) > 2) {
+        if ((appModeState.pairing.positionOccurances[newFen] || 0) >= 2) {
           return true;
         }
       }
@@ -152,15 +152,8 @@ export const makeUseRecordingState =
         MoveReturnType.MOVE_SAN,
       );
 
-      const moveFEN = chessEngine.makeMove(
-        startingFen,
-        moveSquares,
-        promotion,
-        MoveReturnType.NEXT_STARTING_FEN,
-      );
-
       // return null if move is impossible
-      if (!moveSAN || !moveFEN) {
+      if (!moveSAN) {
         return null;
       }
 
@@ -169,7 +162,7 @@ export const makeUseRecordingState =
         return null;
       }
 
-      checkMoveLegality(moveFEN, moveHistory.length - 1);
+      checkMoveLegality(startingFen, moveHistory.length - 1);
 
       // build next play and return new history
       const nextPly: MovePly = {
