@@ -169,6 +169,31 @@ const skipTurn = (fen: string): string => {
   return game.fen();
 };
 
+const inCheck = (fen: string): boolean => {
+  const game = new Chess(fen);
+  return game.inCheck();
+};
+
+const inDraw = (fen: string): boolean => {
+  const game = new Chess(fen);
+  return game.inDraw();
+};
+
+const inCheckmate = (fen: string): boolean => {
+  const game = new Chess(fen);
+  return game.inCheckmate();
+};
+
+const insufficientMaterial = (fen: string): boolean => {
+  const game = new Chess(fen);
+  return game.insufficientMaterial();
+};
+
+const inStalemate = (fen: string): boolean => {
+  const game = new Chess(fen);
+  return game.inStalemate();
+};
+
 /**
  * Determins if the move is attempting to move the opposite player's piece
  * This can be used to determine if the player is intending to auto skip a turn
@@ -249,6 +274,7 @@ const generatePgn = (
   // add result to headers
   game.removeHeader('Result');
   game.addHeader('Result', getResultString());
+
   return succ(game.pgn());
 };
 
@@ -262,6 +288,11 @@ export const chessTsChessEngine: ChessEngineInterface = {
   fenToBoardPositions,
   isPawnPromotion,
   skipTurn,
+  inCheck,
+  inDraw,
+  inCheckmate,
+  insufficientMaterial,
+  inStalemate,
   isOtherPlayersPiece,
   generatePgn,
 };

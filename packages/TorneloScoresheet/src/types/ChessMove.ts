@@ -1,5 +1,6 @@
 import { Position } from './ChessBoardPositions';
 import { PlayerColour } from './ChessGameInfo';
+import { MoveLegality } from './MoveLegality';
 
 export enum PieceType {
   Pawn,
@@ -47,6 +48,7 @@ export type PlyInfo = {
   player: PlayerColour;
   type: PlyTypes;
   drawOffer: boolean;
+  legality?: MoveLegality;
   gameTime?: GameTime;
 };
 
