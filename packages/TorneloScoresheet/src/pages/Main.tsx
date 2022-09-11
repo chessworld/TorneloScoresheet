@@ -4,6 +4,7 @@ import { useAppModeState } from '../context/AppModeStateContext';
 import { AppMode, EnterPgnViews } from '../types/AppModeState';
 import GraphicalEditMove from './EditMove/GraphicalEditMove';
 import EnterPgn from './EnterPgn/EnterPgn';
+import ArbiterRecording from './GraphicalRecording/ArbiterRecording';
 import GraphicalRecording from './GraphicalRecording/GraphicalRecording';
 import PairingSelection from './PairingSelection/PairingSelection';
 import ArbiterResultDisplay from './ResultDisplay/ArbiterResultDisplay';
@@ -36,9 +37,7 @@ const Main: React.FC = () => {
       );
 
     case AppMode.ArbiterRecording:
-      return (
-        <PrimaryText label="Arbiter Graphical Recording is unsupported app mode" />
-      );
+      return <ArbiterRecording />;
     case AppMode.ArbiterTablePairing:
       return <ArbiterTablePairing />;
     case AppMode.ArbiterResultDisplay:
