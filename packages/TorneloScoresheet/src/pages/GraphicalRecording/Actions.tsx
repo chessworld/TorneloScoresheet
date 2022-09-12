@@ -25,7 +25,7 @@ const Actions: React.FC<ActionsProps> = ({
 }) => {
   const recordingState = useRecordingState();
   const recordingMode = recordingState?.[0];
-  const undoLastMove = recordingState?.[1].undoLastMove;
+  const undoLastAction = recordingState?.[1].undoLastMove;
   const skipTurn = recordingState?.[1].skipTurn;
   const toggleDraw = recordingState?.[1].toggleDraw;
   const isFirstMove = (recordingMode?.moveHistory.length ?? 0) === 0;
@@ -65,7 +65,7 @@ const Actions: React.FC<ActionsProps> = ({
     },
     {
       text: 'undo',
-      onPress: () => undoLastMove && undoLastMove(),
+      onPress: () => undoLastAction && undoLastAction(),
       icon: <ICON_UNDO height={40} fill={colours.white} />,
       disabled: isFirstMove,
     },
