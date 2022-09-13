@@ -451,28 +451,91 @@ describe('Auto Skip player turn', () => {
   });
 
   test("auto skip Black's turn with promotion", () => {
-    const startingFen =
-      'rnbqkbnr/pppppppp/8/R7/8/8/PPPPPPPP/1NBQKBNR b Kkq - 1 1';
-    const afterSkipResultingFen =
-      'rnbqkbnr/pppppppp/8/R7/8/8/PPPPPPPP/1NBQKBNR w Kkq - 2 2';
-    const afterMoveResultingFen =
-      'Qnbqkbnr/pppppppp/8/R7/8/8/1PPPPPPP/1NBQKBNR b Kk - 2 2';
     const moveHistory = [
       {
         moveNo: 1,
         player: PlayerColour.White,
         startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
         type: PlyTypes.MovePly,
-        move: { from: 'a1', to: 'a5' } as MoveSquares,
+        move: { from: 'a2', to: 'a4' } as MoveSquares,
         drawOffer: false,
-        san: 'a1a5',
+        san: 'a2a4',
+      },
+      {
+        moveNo: 1,
+        player: PlayerColour.Black,
+        startingFen:
+          'rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq a3 - 0 1',
+        type: PlyTypes.MovePly,
+        move: { from: 'h7', to: 'h6' } as MoveSquares,
+        drawOffer: false,
+        san: 'h7h6',
+      },
+      {
+        moveNo: 2,
+        player: PlayerColour.White,
+        startingFen:
+          'rnbqkbnr/ppppppp1/7p/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 2',
+        type: PlyTypes.MovePly,
+        move: { from: 'a4', to: 'a5' } as MoveSquares,
+        drawOffer: false,
+        san: 'a4a5',
+      },
+      {
+        moveNo: 2,
+        player: PlayerColour.Black,
+        startingFen:
+          'rnbqkbnr/ppppppp1/7p/P7/8/8/1PPPPPPP/RNBQKBNR b KQkq - 0 2',
+        type: PlyTypes.MovePly,
+        move: { from: 'h6', to: 'h5' } as MoveSquares,
+        drawOffer: false,
+        san: 'h6h5',
+      },
+      {
+        moveNo: 3,
+        player: PlayerColour.White,
+        startingFen:
+          'rnbqkbnr/ppppppp1/8/P6p/8/8/1PPPPPPP/RNBQKBNR w KQkq - 0 3',
+        type: PlyTypes.MovePly,
+        move: { from: 'a5', to: 'a6' } as MoveSquares,
+        drawOffer: false,
+        san: 'a5a6',
+      },
+      {
+        moveNo: 3,
+        player: PlayerColour.Black,
+        startingFen:
+          'rnbqkbnr/ppppppp1/P7/7p/8/8/1PPPPPPP/RNBQKBNR b KQkq - 0 3',
+        type: PlyTypes.MovePly,
+        move: { from: 'h5', to: 'h4' } as MoveSquares,
+        drawOffer: false,
+        san: 'h5h4',
+      },
+      {
+        moveNo: 4,
+        player: PlayerColour.White,
+        startingFen:
+          'rnbqkbnr/ppppppp1/P7/8/7p/8/1PPPPPPP/RNBQKBNR w KQkq - 0 4',
+        type: PlyTypes.MovePly,
+        move: { from: 'a6', to: 'b7' } as MoveSquares,
+        drawOffer: false,
+        san: 'axb7',
       },
     ];
-    const move = { from: 'a2', to: 'a8' } as MoveSquares;
+    const move = { from: 'b7', to: 'a8' } as MoveSquares;
     const graphicalState = generateRecordingState(moveHistory, 'Graphical');
     const setContextMock = mockAppModeContext(graphicalState);
     const graphicalStateHook = renderCustomHook(useRecordingState);
 
+    graphicalState.pairing.positionOccurances = {
+      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1': 1,
+      'rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq a3 - 0 1': 1,
+      'rnbqkbnr/ppppppp1/7p/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 0 2': 1,
+      'rnbqkbnr/ppppppp1/7p/P7/8/8/1PPPPPPP/RNBQKBNR b KQkq - 0 2': 1,
+      'rnbqkbnr/ppppppp1/8/P6p/8/8/1PPPPPPP/RNBQKBNR w KQkq - 0 3': 1,
+      'rnbqkbnr/ppppppp1/P7/7p/8/8/1PPPPPPP/RNBQKBNR b KQkq - 0 3': 1,
+      'rnbqkbnr/ppppppp1/P7/8/7p/8/1PPPPPPP/RNBQKBNR w KQkq - 0 4': 1,
+    };
     act(() => {
       graphicalStateHook.current?.[1].skipTurnAndProcessMove(
         move,
@@ -484,24 +547,28 @@ describe('Auto Skip player turn', () => {
         moveHistory: [
           ...moveHistory,
           {
-            moveNo: 1,
+            moveNo: 4,
             player: PlayerColour.Black,
-            startingFen,
+            startingFen:
+              'rnbqkbnr/pPppppp1/8/8/7p/8/1PPPPPPP/RNBQKBNR b KQkq - 0 4',
             type: PlyTypes.SkipPly,
             drawOffer: false,
           },
           {
-            moveNo: 2,
+            moveNo: 5,
             player: PlayerColour.White,
             type: PlyTypes.MovePly,
             move,
             promotion: PieceType.Queen,
-            startingFen: afterSkipResultingFen,
+            startingFen:
+              'rnbqkbnr/pPppppp1/8/8/7p/8/1PPPPPPP/RNBQKBNR w KQkq - 1 5',
             drawOffer: false,
-            san: 'a2axa8=Q',
+            san: 'bxa8=Q',
           },
         ],
-        board: chessEngine.fenToBoardPositions(afterMoveResultingFen),
+        board: chessEngine.fenToBoardPositions(
+          'Qnbqkbnr/p1ppppp1/8/8/7p/8/1PPPPPPP/RNBQKBNR b KQk - 0 5',
+        ),
       });
     });
   });
