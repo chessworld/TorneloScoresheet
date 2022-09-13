@@ -57,6 +57,7 @@ export const generateGamePairingInfo = (pgn?: string): ChessGameInfo => {
     ],
     result: '',
     pgn: pgn ?? '',
+    positionOccurances: {},
   };
 };
 
