@@ -1884,13 +1884,8 @@ describe('Move Legality Checking', () => {
         type: 0,
       },
     ] as ChessPly[];
-    //const pgn =
-    //  '[Event "Skywalker Challenge - A"]\n[Site "Prague, Czechia"]\n[Date "2021.09.12"]\n[Round "1.1"]\n[White "Maul, Darth"]\n[Black "Yoda, Master"]\n[Result "*"]\n[BlackFideId "1000000"]\n[WhiteFideId "400000"]\n\n1. Nf3 Nf6 2. Ng1 Ng8 3. Nf3 Nf6 4. Ng1 Ng8';
-    const recordingState = generateRecordingState(
-      moveHistory,
-      'Graphical',
-      // pgn,
-    );
+
+    const recordingState = generateRecordingState(moveHistory, 'Graphical');
     recordingState.pairing.positionOccurances = {
       'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': 2,
       'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq -': 2,
@@ -2083,10 +2078,354 @@ describe('Move Legality Checking', () => {
       });
     });
   });
+
+  test('inFivefoldRepetition', () => {
+    const moveHistory = [
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
+        move: { from: 'g1', to: 'f3' },
+        moveNo: 1,
+        player: 0,
+        promotion: undefined,
+        san: 'Nf3',
+        startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
+        move: { from: 'g8', to: 'f6' },
+        moveNo: 1,
+        player: 1,
+        promotion: undefined,
+        san: 'Nf6',
+        startingFen:
+          'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
+        move: { from: 'f3', to: 'g1' },
+        moveNo: 2,
+        player: 0,
+        promotion: undefined,
+        san: 'Ng1',
+        startingFen:
+          'rnbqkb1r/pppppppp/5n2/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 2 2',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
+        move: { from: 'f6', to: 'g8' },
+        moveNo: 2,
+        player: 1,
+        promotion: undefined,
+        san: 'Ng8',
+        startingFen:
+          'rnbqkb1r/pppppppp/5n2/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 3 2',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
+        move: { from: 'g1', to: 'f3' },
+        moveNo: 3,
+        player: 0,
+        promotion: undefined,
+        san: 'Nf3',
+        startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 4 3',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
+        move: { from: 'g8', to: 'f6' },
+        moveNo: 3,
+        player: 1,
+        promotion: undefined,
+        san: 'Nf6',
+        startingFen:
+          'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 5 3',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
+        move: { from: 'f3', to: 'g1' },
+        moveNo: 4,
+        player: 0,
+        promotion: undefined,
+        san: 'Ng1',
+        startingFen:
+          'rnbqkb1r/pppppppp/5n2/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 6 4',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: true,
+          insufficientMaterial: false,
+        },
+        move: { from: 'f6', to: 'g8' },
+        moveNo: 4,
+        player: 1,
+        promotion: undefined,
+        san: 'Ng8',
+        startingFen:
+          'rnbqkb1r/pppppppp/5n2/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 7 4',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: true,
+          insufficientMaterial: false,
+        },
+        move: { from: 'g1', to: 'f3' },
+        moveNo: 5,
+        player: 0,
+        promotion: undefined,
+        san: 'Nf3',
+        startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 8 5',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: true,
+          insufficientMaterial: false,
+        },
+        move: { from: 'g8', to: 'f6' },
+        moveNo: 5,
+        player: 1,
+        promotion: undefined,
+        san: 'Nf6',
+        startingFen:
+          'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 9 5',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: true,
+          insufficientMaterial: false,
+        },
+        move: { from: 'f3', to: 'g1' },
+        moveNo: 6,
+        player: 0,
+        promotion: undefined,
+        san: 'Ng1',
+        startingFen:
+          'rnbqkb1r/pppppppp/5n2/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 10 6',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: true,
+          insufficientMaterial: false,
+        },
+        move: { from: 'f6', to: 'g8' },
+        moveNo: 6,
+        player: 1,
+        promotion: undefined,
+        san: 'Ng8',
+        startingFen:
+          'rnbqkb1r/pppppppp/5n2/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 11 6',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: true,
+          insufficientMaterial: false,
+        },
+        move: { from: 'g1', to: 'f3' },
+        moveNo: 7,
+        player: 0,
+        promotion: undefined,
+        san: 'Nf3',
+        startingFen:
+          'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 12 7',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: true,
+          insufficientMaterial: false,
+        },
+        move: { from: 'g8', to: 'f6' },
+        moveNo: 7,
+        player: 1,
+        promotion: undefined,
+        san: 'Nf6',
+        startingFen:
+          'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 13 7',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: true,
+          insufficientMaterial: false,
+        },
+        move: { from: 'f3', to: 'g1' },
+        moveNo: 8,
+        player: 0,
+        promotion: undefined,
+        san: 'Ng1',
+        startingFen:
+          'rnbqkb1r/pppppppp/5n2/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 14 8',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: true,
+          insufficientMaterial: false,
+        },
+        move: { from: 'f6', to: 'g8' },
+        moveNo: 8,
+        player: 1,
+        promotion: undefined,
+        san: 'Ng8',
+        startingFen:
+          'rnbqkb1r/pppppppp/5n2/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 15 8',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: true,
+          insufficientMaterial: false,
+        },
+        move: { from: 'g1', to: 'f3' },
+        moveNo: 9,
+        player: 0,
+        promotion: undefined,
+        san: 'Nf3',
+        startingFen:
+          'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 16 9',
+        type: 0,
+      },
+    ] as ChessPly[];
+    const recordingState = generateRecordingState(moveHistory, 'Graphical');
+    recordingState.pairing.positionOccurances = {
+      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': 5,
+      'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq -': 4,
+      'rnbqkb1r/pppppppp/5n2/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq -': 4,
+      'rnbqkb1r/pppppppp/5n2/8/8/8/PPPPPPPP/RNBQKBNR b KQkq -': 4,
+    };
+    const setContextMock = mockAppModeContext(recordingState);
+    const move = { from: 'g8', to: 'f6' };
+    const recordingStateHook = renderCustomHook(useRecordingState);
+    act(() => {
+      const illegalMove = recordingStateHook.current?.[1].move(
+        move as MoveSquares,
+      );
+      if (!illegalMove) return;
+      expect(setContextMock).toHaveBeenCalledTimes(0);
+
+      expect(isError(illegalMove)).toBe(true);
+    });
+  });
+
   test('inCheck', () => {
     const resultingFen =
       'rnbqk1nr/pppp1ppp/4p3/3P4/1b6/8/PPP1PPPP/RNBQKBNR w KQkq - 1 3';
-    //const game = new Chess(resultingFen);
     const moveHistory = [
       {
         moveNo: 1,
@@ -2156,6 +2495,233 @@ describe('Move Legality Checking', () => {
             promotion: undefined,
             drawOffer: false,
             san: 'Bb4+',
+          },
+        ],
+      });
+    });
+  });
+  test('inCheckMate', () => {
+    const resultingFen =
+      'rnb1kbnr/pppp1ppp/4p3/8/6Pq/5P2/PPPPP2P/RNBQKBNR w KQkq - 1 3';
+    const moveHistory = [
+      {
+        moveNo: 1,
+        startingFen:
+          'rnbqkbnr/pppp1ppp/4p3/8/8/5P2/PPPPP1PP/RNBQKBNR w KQkq - 0 2',
+        move: { from: 'g2', to: 'g4' } as MoveSquares,
+        type: PlyTypes.MovePly,
+        player: PlayerColour.White,
+        drawOffer: false,
+        san: 'g4',
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
+      },
+    ];
+    const recordingState = generateRecordingState(moveHistory, 'Graphical');
+    recordingState.pairing.positionOccurances = {};
+    const setContextMock = mockAppModeContext(recordingState);
+    const recordingStateHook = renderCustomHook(useRecordingState);
+    const move = { from: 'd8', to: 'h4' };
+
+    act(() => {
+      recordingStateHook.current?.[1].move(move as MoveSquares);
+      expect(setContextMock).toHaveBeenCalledTimes(1);
+      expect(setContextMock).toHaveBeenCalledWith({
+        ...recordingState,
+        board: chessEngine.fenToBoardPositions(resultingFen),
+        moveHistory: [
+          {
+            moveNo: 1,
+            startingFen:
+              'rnbqkbnr/pppp1ppp/4p3/8/8/5P2/PPPPP1PP/RNBQKBNR w KQkq - 0 2',
+            move: { from: 'g2', to: 'g4' } as MoveSquares,
+            type: PlyTypes.MovePly,
+            player: PlayerColour.White,
+            drawOffer: false,
+            san: 'g4',
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
+          },
+          {
+            moveNo: 1,
+            startingFen:
+              'rnbqkbnr/pppp1ppp/4p3/8/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq g3 0 2',
+            move: { from: 'd8', to: 'h4' } as MoveSquares,
+            legality: {
+              inCheck: true,
+              inCheckmate: true,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
+            type: PlyTypes.MovePly,
+            player: PlayerColour.Black,
+            promotion: undefined,
+            drawOffer: false,
+            san: 'Qh4#',
+          },
+        ],
+      });
+    });
+  });
+  test('inStalemate', () => {
+    const moveHistory = [
+      {
+        moveNo: 1,
+        startingFen: '2Q2bnr/4pkpq/5p1r/7p/7P/4P3/PPPP1PP1/RNB1KBNR b KQ - 0 9',
+        move: { from: 'f7', to: 'g6' } as MoveSquares,
+        type: PlyTypes.MovePly,
+        player: PlayerColour.White,
+        drawOffer: false,
+        san: 'Kg6',
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
+      },
+    ];
+    const recordingState = generateRecordingState(moveHistory, 'Graphical');
+    recordingState.pairing.positionOccurances = {};
+    const setContextMock = mockAppModeContext(recordingState);
+    const recordingStateHook = renderCustomHook(useRecordingState);
+    const move = { from: 'c8', to: 'e6' };
+
+    act(() => {
+      recordingStateHook.current?.[1].move(move as MoveSquares);
+      expect(setContextMock).toHaveBeenCalledTimes(1);
+      expect(setContextMock).toHaveBeenCalledWith({
+        ...recordingState,
+        board: chessEngine.fenToBoardPositions(
+          '5bnr/4p1pq/4Qpkr/7p/7P/4P3/PPPP1PP1/RNB1KBNR b KQ - 2 10',
+        ),
+        moveHistory: [
+          {
+            moveNo: 1,
+            startingFen:
+              '2Q2bnr/4pkpq/5p1r/7p/7P/4P3/PPPP1PP1/RNB1KBNR b KQ - 0 9',
+            move: { from: 'f7', to: 'g6' } as MoveSquares,
+            type: PlyTypes.MovePly,
+            player: PlayerColour.White,
+            drawOffer: false,
+            san: 'Kg6',
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
+          },
+          {
+            moveNo: 1,
+            startingFen:
+              '2Q2bnr/4p1pq/5pkr/7p/7P/4P3/PPPP1PP1/RNB1KBNR w KQ - 1 10',
+            move: { from: 'c8', to: 'e6' } as MoveSquares,
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inDraw: true,
+              inStalemate: true,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
+            type: PlyTypes.MovePly,
+            player: PlayerColour.Black,
+            promotion: undefined,
+            drawOffer: false,
+            san: 'Qe6',
+          },
+        ],
+      });
+    });
+  });
+  test('insufficientMaterial', () => {
+    const moveHistory = [
+      {
+        moveNo: 1,
+        startingFen: 'Q2k4/8/8/8/8/8/8/3K4 w - - 1 34',
+        move: { from: 'a8', to: 'c8' } as MoveSquares,
+        type: PlyTypes.MovePly,
+        player: PlayerColour.White,
+        drawOffer: false,
+        san: 'Qc8+',
+        legality: {
+          inCheck: true,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
+      },
+    ];
+    const recordingState = generateRecordingState(moveHistory, 'Graphical');
+    recordingState.pairing.positionOccurances = {};
+    const setContextMock = mockAppModeContext(recordingState);
+    const recordingStateHook = renderCustomHook(useRecordingState);
+    const move = { from: 'd8', to: 'c8' };
+
+    act(() => {
+      recordingStateHook.current?.[1].move(move as MoveSquares);
+      expect(setContextMock).toHaveBeenCalledTimes(1);
+      expect(setContextMock).toHaveBeenCalledWith({
+        ...recordingState,
+        board: chessEngine.fenToBoardPositions(
+          '2k5/8/8/8/8/8/8/3K4 w - - 0 35',
+        ),
+        moveHistory: [
+          {
+            moveNo: 1,
+            startingFen: 'Q2k4/8/8/8/8/8/8/3K4 w - - 1 34',
+            move: { from: 'a8', to: 'c8' } as MoveSquares,
+            type: PlyTypes.MovePly,
+            player: PlayerColour.White,
+            drawOffer: false,
+            san: 'Qc8+',
+            legality: {
+              inCheck: true,
+              inCheckmate: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
+          },
+          {
+            moveNo: 1,
+            startingFen: '2Qk4/8/8/8/8/8/8/3K4 b - - 2 34',
+            move: { from: 'd8', to: 'c8' } as MoveSquares,
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inDraw: true,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: true,
+            },
+            type: PlyTypes.MovePly,
+            player: PlayerColour.Black,
+            promotion: undefined,
+            drawOffer: false,
+            san: 'Kxc8',
           },
         ],
       });
