@@ -422,7 +422,7 @@ describe('Auto Skip player turn', () => {
         type: PlyTypes.MovePly,
         move: { from: 'a2', to: 'a4' } as MoveSquares,
         drawOffer: false,
-        san: 'a1a5',
+        san: 'a2a4',
       },
     ];
     const move = { from: 'a1', to: 'b1' } as MoveSquares;
