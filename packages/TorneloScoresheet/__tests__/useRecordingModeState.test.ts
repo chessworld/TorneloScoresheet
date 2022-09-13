@@ -286,16 +286,11 @@ describe('Auto Skip player turn', () => {
     const graphicalState = generateRecordingState([], 'Graphical');
     const setContextMock = mockAppModeContext(graphicalState);
     const graphicalStateHook = renderCustomHook(useRecordingState);
+    graphicalState.pairing.positionOccurances = {};
     const move = {
-      from: 'h8',
-      to: 'h5',
+      from: 'h7',
+      to: 'h6',
     } as MoveSquares;
-    const startingFen =
-      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
-    const afterSkipResultingFen =
-      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 1 1';
-    const afterMoveResultingFen =
-      'rnbqkbn1/pppppppp/8/7r/8/8/PPPPPPPP/RNBQKBNR w KQq - 1 1';
     act(() => {
       graphicalStateHook.current?.[1].skipTurnAndProcessMove(move);
       expect(setContextMock).toHaveBeenCalledTimes(1);
@@ -305,48 +300,47 @@ describe('Auto Skip player turn', () => {
           {
             moveNo: 1,
             player: PlayerColour.White,
-            startingFen,
+            startingFen:
+              'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
             type: PlyTypes.SkipPly,
             drawOffer: false,
           },
           {
             moveNo: 1,
             player: PlayerColour.Black,
-            startingFen: afterSkipResultingFen,
+            startingFen:
+              'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 1 1',
             type: PlyTypes.MovePly,
             move,
             drawOffer: false,
-            san: 'Rh8h5',
+            promotion: undefined,
+            san: 'h6',
           },
         ],
-        board: chessEngine.fenToBoardPositions(afterMoveResultingFen),
+        board: chessEngine.fenToBoardPositions(
+          'rnbqkbnr/ppppppp1/7p/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 2',
+        ),
       });
     });
   });
 
   test("auto skip Black's turn", () => {
-    const startingFen =
-      'rnbqkbnr/pppppppp/8/R7/8/8/PPPPPPPP/1NBQKBNR b Kkq - 1 1';
-    const afterSkipResultingFen =
-      'rnbqkbnr/pppppppp/8/R7/8/8/PPPPPPPP/1NBQKBNR w Kkq - 2 2';
-    const afterMoveResultingFen =
-      'rnbqkbnr/pppppppp/R7/8/8/8/PPPPPPPP/1NBQKBNR b Kkq - 2 2';
     const moveHistory = [
       {
         moveNo: 1,
         player: PlayerColour.White,
         startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
         type: PlyTypes.MovePly,
-        move: { from: 'a1', to: 'a5' } as MoveSquares,
+        move: { from: 'a2', to: 'a4' } as MoveSquares,
         drawOffer: false,
-        san: 'a1a5',
+        san: 'a2a4',
       },
     ];
-    const move = { from: 'a5', to: 'a6' } as MoveSquares;
+    const move = { from: 'a4', to: 'a5' } as MoveSquares;
     const graphicalState = generateRecordingState(moveHistory, 'Graphical');
     const setContextMock = mockAppModeContext(graphicalState);
     const graphicalStateHook = renderCustomHook(useRecordingState);
-
+    graphicalState.pairing.positionOccurances = {};
     act(() => {
       graphicalStateHook.current?.[1].skipTurnAndProcessMove(move);
       expect(setContextMock).toHaveBeenCalledTimes(1);
@@ -357,7 +351,8 @@ describe('Auto Skip player turn', () => {
           {
             moveNo: 1,
             player: PlayerColour.Black,
-            startingFen,
+            startingFen:
+              'rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq a3 0 1',
             type: PlyTypes.SkipPly,
             drawOffer: false,
           },
@@ -366,13 +361,16 @@ describe('Auto Skip player turn', () => {
             player: PlayerColour.White,
             type: PlyTypes.MovePly,
             move,
-            startingFen: afterSkipResultingFen,
-            san: 'Ra6',
+            startingFen:
+              'rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 1 2',
+            san: 'a5',
             promotion: undefined,
             drawOffer: false,
           },
         ],
-        board: chessEngine.fenToBoardPositions(afterMoveResultingFen),
+        board: chessEngine.fenToBoardPositions(
+          'rnbqkbnr/pppppppp/8/P7/8/8/1PPPPPPP/RNBQKBNR b KQkq - 0 2',
+        ),
       });
     });
   });
@@ -410,26 +408,24 @@ describe('Auto Skip player turn', () => {
   });
 
   test("auto skip Black's turn with impossible move", () => {
-    const startingFen =
-      'rnbqkbnr/pppppppp/8/R7/8/8/PPPPPPPP/1NBQKBNR b Kkq - 1 1';
-    const afterSkipResultingFen =
-      'rnbqkbnr/pppppppp/8/R7/8/8/PPPPPPPP/1NBQKBNR w Kkq - 2 2';
-
     const moveHistory = [
       {
         moveNo: 1,
         player: PlayerColour.White,
         startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
         type: PlyTypes.MovePly,
-        move: { from: 'a1', to: 'a5' } as MoveSquares,
+        move: { from: 'a2', to: 'a4' } as MoveSquares,
         drawOffer: false,
+        san: 'a2a4',
       },
     ];
-    const move = { from: 'a5', to: 'b1' } as MoveSquares;
+    const move = { from: 'a1', to: 'b1' } as MoveSquares;
     const graphicalState = generateRecordingState(moveHistory, 'Graphical');
     const setContextMock = mockAppModeContext(graphicalState);
     const graphicalStateHook = renderCustomHook(useRecordingState);
-
+    graphicalState.pairing.positionOccurances = {
+      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1': 1,
+    };
     act(() => {
       graphicalStateHook.current?.[1].skipTurnAndProcessMove(move);
       expect(setContextMock).toHaveBeenCalledTimes(1);
@@ -440,12 +436,15 @@ describe('Auto Skip player turn', () => {
           {
             moveNo: 1,
             player: PlayerColour.Black,
-            startingFen,
+            startingFen:
+              'rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq a3 0 1',
             type: PlyTypes.SkipPly,
             drawOffer: false,
           },
         ],
-        board: chessEngine.fenToBoardPositions(afterSkipResultingFen),
+        board: chessEngine.fenToBoardPositions(
+          'rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 1 2',
+        ),
       });
     });
   });
