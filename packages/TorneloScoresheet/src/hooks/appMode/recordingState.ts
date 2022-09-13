@@ -44,6 +44,11 @@ type recordingStateHookType = [
     setGameTime: (index: number, gameTime: GameTime | undefined) => void;
     toggleRecordingMode: () => void;
     goToEditMove: (index: number) => void;
+    checkMoveLegality: (
+      fen: string,
+      moveHistory: ChessPly[],
+      index: number,
+    ) => ChessPly[] | undefined;
   },
 ];
 
@@ -162,8 +167,6 @@ export const makeUseRecordingState =
       if (gameInFiveFoldRepetition()) {
         return null;
       }
-
-      checkMoveLegality(startingFen, moveHistory.length - 1);
 
       // build next play and return new history
       const nextPly: MovePly = {
@@ -426,6 +429,7 @@ export const makeUseRecordingState =
         setGameTime,
         toggleRecordingMode,
         goToEditMove,
+        checkMoveLegality,
       },
     ];
   };
