@@ -59,6 +59,15 @@ describe('recording moving', () => {
             player: PlayerColour.White,
             drawOffer: false,
             san: 'a4',
+            promotion: undefined,
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
           },
         ],
       });
@@ -102,6 +111,14 @@ describe('recording moving', () => {
             promotion: undefined,
             drawOffer: false,
             san: 'h6',
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
           },
         ],
       });
