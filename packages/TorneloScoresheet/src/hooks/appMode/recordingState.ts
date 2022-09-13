@@ -38,6 +38,11 @@ type recordingStateHookType = [
     setGameTime: (index: number, gameTime: GameTime | undefined) => void;
     toggleRecordingMode: () => void;
     goToEditMove: (index: number) => void;
+    checkMoveLegality: (
+      fen: string,
+      moveHistory: ChessPly[],
+      index: number,
+    ) => ChessPly[] | undefined;
   },
 ];
 
@@ -86,7 +91,6 @@ export const makeUseRecordingState =
     const inThreeFoldRepetition = (fen: string): boolean => {
       const newFen = fen.split('-')[0]?.concat('-');
       if (newFen && appModeState.pairing.positionOccurances[newFen]) {
-        console.log(appModeState.pairing.positionOccurances[newFen]);
         if ((appModeState.pairing.positionOccurances[newFen] || 0) >= 2) {
           return true;
         }
@@ -94,7 +98,11 @@ export const makeUseRecordingState =
       return false;
     };
 
-    const checkMoveLegality = (fen: string, index: number) => {
+    const checkMoveLegality = (
+      fen: string,
+      moveHistory: ChessPly[],
+      index: number,
+    ): ChessPly[] | undefined => {
       let moveLegality: MoveLegality = {};
       moveLegality.inThreefoldRepetition = inThreeFoldRepetition(fen);
       moveLegality.inCheck = chessEngine.inCheck(fen);
@@ -102,10 +110,11 @@ export const makeUseRecordingState =
       moveLegality.inCheckmate = chessEngine.inCheckmate(fen);
       moveLegality.insufficientMaterial = chessEngine.insufficientMaterial(fen);
       moveLegality.inStalemate = chessEngine.inStalemate(fen);
-      if (appModeState.moveHistory[index]) {
-        appModeState.moveHistory[index]!.legality = moveLegality;
-        console.log(appModeState.moveHistory[index]!.legality);
+      if (moveHistory[index]) {
+        moveHistory[index]!.legality = moveLegality;
+        return moveHistory;
       }
+      return;
     };
 
     const moveInFiveFoldRepetition = (fen: string): boolean => {
@@ -143,7 +152,6 @@ export const makeUseRecordingState =
       promotion?: PieceType,
     ): ChessPly[] | null => {
       const startingFen = getCurrentFen(moveHistory);
-
       // process move
       const moveSAN = chessEngine.makeMove(
         startingFen,
@@ -161,8 +169,6 @@ export const makeUseRecordingState =
         showError('Illegal move');
         return null;
       }
-
-      checkMoveLegality(startingFen, moveHistory.length - 1);
 
       // build next play and return new history
       const nextPly: MovePly = {
@@ -296,9 +302,20 @@ export const makeUseRecordingState =
         appModeState.moveHistory,
         promotion,
       );
+
       if (moveHistory !== null) {
-        incrementPositionOccurance(moveHistory, moveHistory.length - 1);
-        updateBoard(moveHistory);
+        const startingFen = getCurrentFen(moveHistory);
+        const moveHistoryWithLegality = checkMoveLegality(
+          startingFen,
+          moveHistory,
+          moveHistory.length - 1,
+        );
+        if (!moveHistoryWithLegality) return;
+        incrementPositionOccurance(
+          moveHistoryWithLegality,
+          moveHistoryWithLegality.length - 1,
+        );
+        updateBoard(moveHistoryWithLegality);
       }
     };
     const isPawnPromotion = (moveSquares: MoveSquares): boolean => {
@@ -416,6 +433,7 @@ export const makeUseRecordingState =
         setGameTime,
         toggleRecordingMode,
         goToEditMove,
+        checkMoveLegality,
       },
     ];
   };
