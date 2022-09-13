@@ -423,6 +423,7 @@ describe('Auto Skip player turn', () => {
         type: PlyTypes.MovePly,
         move: { from: 'a1', to: 'a5' } as MoveSquares,
         drawOffer: false,
+        san: 'a1a5',
       },
     ];
     const move = { from: 'a5', to: 'b1' } as MoveSquares;
@@ -1654,6 +1655,336 @@ describe('Go to edit move', () => {
         mode: AppMode.EditMove,
         editingIndex: 1,
       });
+    });
+  });
+});
+
+describe('Move Legality Checking', () => {
+  test('inThreefoldRepetition', () => {
+    const moveHistory = [
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
+        move: { from: 'g1', to: 'f3' } as MoveSquares,
+        moveNo: 1,
+        player: 0,
+        promotion: undefined,
+        san: 'Nf3',
+        startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
+        move: { from: 'g8', to: 'f6' } as MoveSquares,
+        moveNo: 1,
+        player: 1,
+        promotion: undefined,
+        san: 'Nf6',
+        startingFen:
+          'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
+        move: { from: 'f3', to: 'g1' } as MoveSquares,
+        moveNo: 2,
+        player: 0,
+        promotion: undefined,
+        san: 'Ng1',
+        startingFen:
+          'rnbqkb1r/pppppppp/5n2/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 2 2',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
+        move: { from: 'f6', to: 'g8' } as MoveSquares,
+        moveNo: 2,
+        player: 1,
+        promotion: undefined,
+        san: 'Ng8',
+        startingFen:
+          'rnbqkb1r/pppppppp/5n2/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 3 2',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
+        move: { from: 'g1', to: 'f3' } as MoveSquares,
+        moveNo: 3,
+        player: 0,
+        promotion: undefined,
+        san: 'Nf3',
+        startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 4 3',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
+        move: { from: 'g8', to: 'f6' } as MoveSquares,
+        moveNo: 3,
+        player: 1,
+        promotion: undefined,
+        san: 'Nf6',
+        startingFen:
+          'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 5 3',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
+        move: { from: 'f3', to: 'g1' } as MoveSquares,
+        moveNo: 4,
+        player: 0,
+        promotion: undefined,
+        san: 'Ng1',
+        startingFen:
+          'rnbqkb1r/pppppppp/5n2/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 6 4',
+        type: 0,
+      },
+      {
+        drawOffer: false,
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
+        move: { from: 'f6', to: 'g8' } as MoveSquares,
+        moveNo: 4,
+        player: 1,
+        promotion: undefined,
+        san: 'Ng8',
+        startingFen:
+          'rnbqkb1r/pppppppp/5n2/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 7 4',
+        type: 0,
+      },
+    ] as ChessPly[];
+    const pgn =
+      '[Event "Skywalker Challenge - A"]\n[Site "Prague, Czechia"]\n[Date "2021.09.12"]\n[Round "1.1"]\n[White "Maul, Darth"]\n[Black "Yoda, Master"]\n[Result "*"]\n[BlackFideId "1000000"]\n[WhiteFideId "400000"]\n\n1. Nf3 Nf6 2. Ng1 Ng8 3. Nf3 Nf6 4. Ng1 Ng8';
+    const recordingState = generateRecordingState(
+      moveHistory,
+      'Graphical',
+      pgn,
+    );
+    recordingState.pairing.positionOccurances = {
+      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': 2,
+      'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq -': 2,
+      'rnbqkb1r/pppppppp/5n2/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq -': 2,
+      'rnbqkb1r/pppppppp/5n2/8/8/8/PPPPPPPP/RNBQKBNR b KQkq -': 2,
+    };
+    mockAppModeContext(recordingState);
+    const move = { from: 'g1', to: 'f3' };
+    const recordingStateHook = renderCustomHook(useRecordingState);
+    act(() => {
+      recordingStateHook.current?.[1].move(move as MoveSquares);
+      expect(moveHistory).toStrictEqual([
+        {
+          drawOffer: false,
+          legality: {
+            inCheck: false,
+            inCheckmate: false,
+            inDraw: false,
+            inStalemate: false,
+            inThreefoldRepetition: false,
+            insufficientMaterial: false,
+          },
+          move: { from: 'g1', to: 'f3' } as MoveSquares,
+          moveNo: 1,
+          player: 0,
+          promotion: undefined,
+          san: 'Nf3',
+          startingFen:
+            'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+          type: 0,
+        },
+        {
+          drawOffer: false,
+          legality: {
+            inCheck: false,
+            inCheckmate: false,
+            inDraw: false,
+            inStalemate: false,
+            inThreefoldRepetition: false,
+            insufficientMaterial: false,
+          },
+          move: { from: 'g8', to: 'f6' } as MoveSquares,
+          moveNo: 1,
+          player: 1,
+          promotion: undefined,
+          san: 'Nf6',
+          startingFen:
+            'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1',
+          type: 0,
+        },
+        {
+          drawOffer: false,
+          legality: {
+            inCheck: false,
+            inCheckmate: false,
+            inDraw: false,
+            inStalemate: false,
+            inThreefoldRepetition: false,
+            insufficientMaterial: false,
+          },
+          move: { from: 'f3', to: 'g1' } as MoveSquares,
+          moveNo: 2,
+          player: 0,
+          promotion: undefined,
+          san: 'Ng1',
+          startingFen:
+            'rnbqkb1r/pppppppp/5n2/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 2 2',
+          type: 0,
+        },
+        {
+          drawOffer: false,
+          legality: {
+            inCheck: false,
+            inCheckmate: false,
+            inDraw: false,
+            inStalemate: false,
+            inThreefoldRepetition: false,
+            insufficientMaterial: false,
+          },
+          move: { from: 'f6', to: 'g8' } as MoveSquares,
+          moveNo: 2,
+          player: 1,
+          promotion: undefined,
+          san: 'Ng8',
+          startingFen:
+            'rnbqkb1r/pppppppp/5n2/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 3 2',
+          type: 0,
+        },
+        {
+          drawOffer: false,
+          legality: {
+            inCheck: false,
+            inCheckmate: false,
+            inDraw: false,
+            inStalemate: false,
+            inThreefoldRepetition: false,
+            insufficientMaterial: false,
+          },
+          move: { from: 'g1', to: 'f3' } as MoveSquares,
+          moveNo: 3,
+          player: 0,
+          promotion: undefined,
+          san: 'Nf3',
+          startingFen:
+            'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 4 3',
+          type: 0,
+        },
+        {
+          drawOffer: false,
+          legality: {
+            inCheck: false,
+            inCheckmate: false,
+            inDraw: false,
+            inStalemate: false,
+            inThreefoldRepetition: false,
+            insufficientMaterial: false,
+          },
+          move: { from: 'g8', to: 'f6' } as MoveSquares,
+          moveNo: 3,
+          player: 1,
+          promotion: undefined,
+          san: 'Nf6',
+          startingFen:
+            'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 5 3',
+          type: 0,
+        },
+        {
+          drawOffer: false,
+          legality: {
+            inCheck: false,
+            inCheckmate: false,
+            inDraw: false,
+            inStalemate: false,
+            inThreefoldRepetition: false,
+            insufficientMaterial: false,
+          },
+          move: { from: 'f3', to: 'g1' } as MoveSquares,
+          moveNo: 4,
+          player: 0,
+          promotion: undefined,
+          san: 'Ng1',
+          startingFen:
+            'rnbqkb1r/pppppppp/5n2/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 6 4',
+          type: 0,
+        },
+        {
+          drawOffer: false,
+          legality: {
+            inCheck: false,
+            inCheckmate: false,
+            inDraw: false,
+            inStalemate: false,
+            inThreefoldRepetition: true,
+            insufficientMaterial: false,
+          },
+          move: { from: 'f6', to: 'g8' } as MoveSquares,
+          moveNo: 4,
+          player: 1,
+          promotion: undefined,
+          san: 'Ng8',
+          startingFen:
+            'rnbqkb1r/pppppppp/5n2/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 7 4',
+          type: 0,
+        },
+      ]);
     });
   });
 });
