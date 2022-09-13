@@ -1880,12 +1880,12 @@ describe('Move Legality Checking', () => {
         type: 0,
       },
     ] as ChessPly[];
-    const pgn =
-      '[Event "Skywalker Challenge - A"]\n[Site "Prague, Czechia"]\n[Date "2021.09.12"]\n[Round "1.1"]\n[White "Maul, Darth"]\n[Black "Yoda, Master"]\n[Result "*"]\n[BlackFideId "1000000"]\n[WhiteFideId "400000"]\n\n1. Nf3 Nf6 2. Ng1 Ng8 3. Nf3 Nf6 4. Ng1 Ng8';
+    //const pgn =
+    //  '[Event "Skywalker Challenge - A"]\n[Site "Prague, Czechia"]\n[Date "2021.09.12"]\n[Round "1.1"]\n[White "Maul, Darth"]\n[Black "Yoda, Master"]\n[Result "*"]\n[BlackFideId "1000000"]\n[WhiteFideId "400000"]\n\n1. Nf3 Nf6 2. Ng1 Ng8 3. Nf3 Nf6 4. Ng1 Ng8';
     const recordingState = generateRecordingState(
       moveHistory,
       'Graphical',
-      pgn,
+      // pgn,
     );
     recordingState.pairing.positionOccurances = {
       'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': 2,
@@ -1893,165 +1893,268 @@ describe('Move Legality Checking', () => {
       'rnbqkb1r/pppppppp/5n2/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq -': 2,
       'rnbqkb1r/pppppppp/5n2/8/8/8/PPPPPPPP/RNBQKBNR b KQkq -': 2,
     };
-    mockAppModeContext(recordingState);
+    const setContextMock = mockAppModeContext(recordingState);
     const move = { from: 'g1', to: 'f3' };
     const recordingStateHook = renderCustomHook(useRecordingState);
     act(() => {
       recordingStateHook.current?.[1].move(move as MoveSquares);
-      expect(moveHistory).toStrictEqual([
-        {
-          drawOffer: false,
-          legality: {
-            inCheck: false,
-            inCheckmate: false,
-            inDraw: false,
-            inStalemate: false,
-            inThreefoldRepetition: false,
-            insufficientMaterial: false,
+      expect(setContextMock).toHaveBeenCalledWith({
+        ...recordingState,
+        board: chessEngine.fenToBoardPositions(
+          'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 9 5',
+        ),
+        moveHistory: [
+          {
+            drawOffer: false,
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
+            move: { from: 'g1', to: 'f3' } as MoveSquares,
+            moveNo: 1,
+            player: 0,
+            promotion: undefined,
+            san: 'Nf3',
+            startingFen:
+              'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+            type: 0,
           },
-          move: { from: 'g1', to: 'f3' } as MoveSquares,
-          moveNo: 1,
-          player: 0,
-          promotion: undefined,
-          san: 'Nf3',
-          startingFen:
-            'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
-          type: 0,
-        },
-        {
-          drawOffer: false,
-          legality: {
-            inCheck: false,
-            inCheckmate: false,
-            inDraw: false,
-            inStalemate: false,
-            inThreefoldRepetition: false,
-            insufficientMaterial: false,
+          {
+            drawOffer: false,
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
+            move: { from: 'g8', to: 'f6' } as MoveSquares,
+            moveNo: 1,
+            player: 1,
+            promotion: undefined,
+            san: 'Nf6',
+            startingFen:
+              'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1',
+            type: 0,
           },
-          move: { from: 'g8', to: 'f6' } as MoveSquares,
-          moveNo: 1,
-          player: 1,
-          promotion: undefined,
-          san: 'Nf6',
-          startingFen:
-            'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1',
-          type: 0,
-        },
-        {
-          drawOffer: false,
-          legality: {
-            inCheck: false,
-            inCheckmate: false,
-            inDraw: false,
-            inStalemate: false,
-            inThreefoldRepetition: false,
-            insufficientMaterial: false,
+          {
+            drawOffer: false,
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
+            move: { from: 'f3', to: 'g1' } as MoveSquares,
+            moveNo: 2,
+            player: 0,
+            promotion: undefined,
+            san: 'Ng1',
+            startingFen:
+              'rnbqkb1r/pppppppp/5n2/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 2 2',
+            type: 0,
           },
-          move: { from: 'f3', to: 'g1' } as MoveSquares,
-          moveNo: 2,
-          player: 0,
-          promotion: undefined,
-          san: 'Ng1',
-          startingFen:
-            'rnbqkb1r/pppppppp/5n2/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 2 2',
-          type: 0,
-        },
-        {
-          drawOffer: false,
-          legality: {
-            inCheck: false,
-            inCheckmate: false,
-            inDraw: false,
-            inStalemate: false,
-            inThreefoldRepetition: false,
-            insufficientMaterial: false,
+          {
+            drawOffer: false,
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
+            move: { from: 'f6', to: 'g8' } as MoveSquares,
+            moveNo: 2,
+            player: 1,
+            promotion: undefined,
+            san: 'Ng8',
+            startingFen:
+              'rnbqkb1r/pppppppp/5n2/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 3 2',
+            type: 0,
           },
-          move: { from: 'f6', to: 'g8' } as MoveSquares,
-          moveNo: 2,
-          player: 1,
-          promotion: undefined,
-          san: 'Ng8',
-          startingFen:
-            'rnbqkb1r/pppppppp/5n2/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 3 2',
-          type: 0,
-        },
-        {
-          drawOffer: false,
-          legality: {
-            inCheck: false,
-            inCheckmate: false,
-            inDraw: false,
-            inStalemate: false,
-            inThreefoldRepetition: false,
-            insufficientMaterial: false,
+          {
+            drawOffer: false,
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
+            move: { from: 'g1', to: 'f3' } as MoveSquares,
+            moveNo: 3,
+            player: 0,
+            promotion: undefined,
+            san: 'Nf3',
+            startingFen:
+              'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 4 3',
+            type: 0,
           },
-          move: { from: 'g1', to: 'f3' } as MoveSquares,
-          moveNo: 3,
-          player: 0,
-          promotion: undefined,
-          san: 'Nf3',
-          startingFen:
-            'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 4 3',
-          type: 0,
-        },
-        {
-          drawOffer: false,
-          legality: {
-            inCheck: false,
-            inCheckmate: false,
-            inDraw: false,
-            inStalemate: false,
-            inThreefoldRepetition: false,
-            insufficientMaterial: false,
+          {
+            drawOffer: false,
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
+            move: { from: 'g8', to: 'f6' } as MoveSquares,
+            moveNo: 3,
+            player: 1,
+            promotion: undefined,
+            san: 'Nf6',
+            startingFen:
+              'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 5 3',
+            type: 0,
           },
-          move: { from: 'g8', to: 'f6' } as MoveSquares,
-          moveNo: 3,
-          player: 1,
-          promotion: undefined,
-          san: 'Nf6',
-          startingFen:
-            'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 5 3',
-          type: 0,
-        },
-        {
-          drawOffer: false,
-          legality: {
-            inCheck: false,
-            inCheckmate: false,
-            inDraw: false,
-            inStalemate: false,
-            inThreefoldRepetition: false,
-            insufficientMaterial: false,
+          {
+            drawOffer: false,
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
+            move: { from: 'f3', to: 'g1' } as MoveSquares,
+            moveNo: 4,
+            player: 0,
+            promotion: undefined,
+            san: 'Ng1',
+            startingFen:
+              'rnbqkb1r/pppppppp/5n2/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 6 4',
+            type: 0,
           },
-          move: { from: 'f3', to: 'g1' } as MoveSquares,
-          moveNo: 4,
-          player: 0,
-          promotion: undefined,
-          san: 'Ng1',
-          startingFen:
-            'rnbqkb1r/pppppppp/5n2/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq - 6 4',
-          type: 0,
-        },
-        {
-          drawOffer: false,
-          legality: {
-            inCheck: false,
-            inCheckmate: false,
-            inDraw: false,
-            inStalemate: false,
-            inThreefoldRepetition: true,
-            insufficientMaterial: false,
+          {
+            drawOffer: false,
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
+            move: { from: 'f6', to: 'g8' } as MoveSquares,
+            moveNo: 4,
+            player: 1,
+            promotion: undefined,
+            san: 'Ng8',
+            startingFen:
+              'rnbqkb1r/pppppppp/5n2/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 7 4',
+            type: 0,
           },
-          move: { from: 'f6', to: 'g8' } as MoveSquares,
-          moveNo: 4,
-          player: 1,
-          promotion: undefined,
-          san: 'Ng8',
-          startingFen:
-            'rnbqkb1r/pppppppp/5n2/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 7 4',
-          type: 0,
+          {
+            drawOffer: false,
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: true,
+              insufficientMaterial: false,
+            },
+            move: { from: 'g1', to: 'f3' } as MoveSquares,
+            moveNo: 5,
+            player: 0,
+            promotion: undefined,
+            san: 'Nf3',
+            startingFen:
+              'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 8 5',
+            type: 0,
+          },
+        ],
+      });
+    });
+  });
+  test('inCheck', () => {
+    const resultingFen =
+      'rnbqk1nr/pppp1ppp/4p3/3P4/1b6/8/PPP1PPPP/RNBQKBNR w KQkq - 1 3';
+    //const game = new Chess(resultingFen);
+    const moveHistory = [
+      {
+        moveNo: 1,
+        startingFen:
+          'rnbqkbnr/pppp1ppp/4p3/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2',
+        move: { from: 'd4', to: 'd5' } as MoveSquares,
+        type: PlyTypes.MovePly,
+        player: PlayerColour.White,
+        drawOffer: false,
+        san: 'd5',
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
         },
-      ]);
+      },
+    ];
+    const recordingState = generateRecordingState(moveHistory, 'Graphical');
+    recordingState.pairing.positionOccurances = {};
+    const setContextMock = mockAppModeContext(recordingState);
+    const recordingStateHook = renderCustomHook(useRecordingState);
+    const move = { from: 'f8', to: 'b4' };
+
+    act(() => {
+      recordingStateHook.current?.[1].move(move as MoveSquares);
+      expect(setContextMock).toHaveBeenCalledTimes(1);
+      expect(setContextMock).toHaveBeenCalledWith({
+        ...recordingState,
+        board: chessEngine.fenToBoardPositions(resultingFen),
+        moveHistory: [
+          {
+            moveNo: 1,
+            startingFen:
+              'rnbqkbnr/pppp1ppp/4p3/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2',
+            move: { from: 'd4', to: 'd5' } as MoveSquares,
+            type: PlyTypes.MovePly,
+            player: PlayerColour.White,
+            drawOffer: false,
+            san: 'd5',
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
+          },
+          {
+            moveNo: 1,
+            startingFen:
+              'rnbqkbnr/pppp1ppp/4p3/3P4/8/8/PPP1PPPP/RNBQKBNR b KQkq - 0 2',
+            move: { from: 'f8', to: 'b4' } as MoveSquares,
+            legality: {
+              inCheck: true,
+              inCheckmate: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
+            type: PlyTypes.MovePly,
+            player: PlayerColour.Black,
+            promotion: undefined,
+            drawOffer: false,
+            san: 'Bb4+',
+          },
+        ],
+      });
     });
   });
 });
