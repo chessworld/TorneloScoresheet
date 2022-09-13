@@ -19,25 +19,27 @@ describe('Edit Move With Skip Ply', () => {
       {
         moveNo: 1,
         player: PlayerColour.White,
-        startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
         type: PlyTypes.MovePly,
-        move: { from: 'a1', to: 'a5' } as MoveSquares,
+        startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+        move: { from: 'a2', to: 'a4' } as MoveSquares,
         drawOffer: false,
-        san: 'a1a5',
+        san: 'a2a4',
       },
       {
         moveNo: 1,
         player: PlayerColour.Black,
-        startingFen: 'rnbqkbnr/pppppppp/8/R7/8/8/PPPPPPPP/1NBQKBNR b Kkq - 1 1',
-        move: { from: 'h8', to: 'h5' } as MoveSquares,
+        startingFen:
+          'rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq a3 0 1',
+        move: { from: 'h7', to: 'h6' } as MoveSquares,
         type: PlyTypes.MovePly,
         drawOffer: false,
-        san: 'Rh8h5',
+        san: 'h6',
       },
     ];
     const editMoveState = generateEditMoveState(moveHistory, 0);
     const setContextMock = mockAppModeContext(editMoveState);
     const editMoveStateHook = renderCustomHook(useEditMoveState);
+    editMoveState.pairing.positionOccurances = {};
     mockGetRecordingModeData();
 
     await act(async () => {
@@ -51,7 +53,7 @@ describe('Edit Move With Skip Ply', () => {
         mode: AppMode.Recording,
         pairing: editMoveState.pairing,
         board: chessEngine.fenToBoardPositions(
-          'rnbqkbn1/pppppppp/8/7r/8/8/PPPPPPPP/RNBQKBNR w KQq - 0 1',
+          'rnbqkbnr/ppppppp1/7p/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 2',
         ),
         startTime: 0,
         type: 'Graphical',
@@ -66,9 +68,14 @@ describe('Edit Move With Skip Ply', () => {
             drawOffer: false,
           },
           {
-            ...editMoveState.moveHistory[1],
+            moveNo: 1,
+            player: PlayerColour.Black,
             startingFen:
               'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 1 1',
+            move: { from: 'h7', to: 'h6' } as MoveSquares,
+            type: PlyTypes.MovePly,
+            drawOffer: false,
+            san: 'h6',
           },
         ],
       });
@@ -127,32 +134,33 @@ describe('Edit move with Move Ply', () => {
       {
         moveNo: 1,
         player: PlayerColour.White,
-        startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
         type: PlyTypes.MovePly,
-        move: { from: 'a1', to: 'a5' } as MoveSquares,
-        promotion: undefined,
+        startingFen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+        move: { from: 'a2', to: 'a4' } as MoveSquares,
         drawOffer: false,
-        san: 'a1a5',
+        san: 'a2a4',
       },
       {
         moveNo: 1,
         player: PlayerColour.Black,
-        startingFen: 'rnbqkbnr/pppppppp/8/R7/8/8/PPPPPPPP/1NBQKBNR b Kkq - 1 1',
-        move: { from: 'h8', to: 'h5' } as MoveSquares,
+        startingFen:
+          'rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq a3 0 1',
+        move: { from: 'h7', to: 'h6' } as MoveSquares,
         type: PlyTypes.MovePly,
         drawOffer: false,
-        san: 'Rh8h5',
+        san: 'h6',
       },
     ];
     const editMoveState = generateEditMoveState(moveHistory, 0);
     const setContextMock = mockAppModeContext(editMoveState);
     const editMoveStateHook = renderCustomHook(useEditMoveState);
+    editMoveState.pairing.positionOccurances = {};
     mockGetRecordingModeData();
 
     await act(async () => {
       const result = await editMoveStateHook.current?.[1].editMove({
-        from: 'a1',
-        to: 'a4',
+        from: 'a2',
+        to: 'a3',
       });
       if (!result) {
         return;
@@ -163,7 +171,7 @@ describe('Edit move with Move Ply', () => {
         mode: AppMode.Recording,
         pairing: editMoveState.pairing,
         board: chessEngine.fenToBoardPositions(
-          'rnbqkbn1/pppppppp/8/7r/R7/8/PPPPPPPP/1NBQKBNR w Kq - 0 1',
+          'rnbqkbnr/ppppppp1/7p/8/8/P7/1PPPPPPP/RNBQKBNR w KQkq - 0 2',
         ),
         startTime: 0,
         type: 'Graphical',
@@ -175,15 +183,20 @@ describe('Edit move with Move Ply', () => {
             startingFen:
               'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
             type: PlyTypes.MovePly,
-            move: { from: 'a1', to: 'a4' } as MoveSquares,
+            move: { from: 'a2', to: 'a3' } as MoveSquares,
             drawOffer: false,
-            san: 'Ra1a4',
+            san: 'a3',
             promotion: undefined,
           },
           {
-            ...editMoveState.moveHistory[1],
+            moveNo: 1,
+            player: PlayerColour.Black,
             startingFen:
-              'rnbqkbnr/pppppppp/8/8/R7/8/PPPPPPPP/1NBQKBNR b Kkq - 1 1',
+              'rnbqkbnr/pppppppp/8/8/8/P7/1PPPPPPP/RNBQKBNR b KQkq - 0 1',
+            move: { from: 'h7', to: 'h6' } as MoveSquares,
+            type: PlyTypes.MovePly,
+            drawOffer: false,
+            san: 'h6',
           },
         ],
       });
