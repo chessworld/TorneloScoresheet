@@ -1,5 +1,4 @@
 import React from 'react';
-import PrimaryText from '../components/PrimaryText/PrimaryText';
 import { useAppModeState } from '../context/AppModeStateContext';
 import { AppMode, EnterPgnViews } from '../types/AppModeState';
 import GraphicalEditMove from './EditMove/GraphicalEditMove';
