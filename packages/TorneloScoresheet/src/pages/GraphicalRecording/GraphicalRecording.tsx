@@ -38,6 +38,7 @@ const GraphicalRecording: React.FC = () => {
     minutes: 0,
   });
   const [moveGameTimeIndex, setMoveGameTimeIndex] = useState(0);
+  const [, showError] = useError();
 
   // Scroll view ref
   const scrollRef = useRef<ScrollView>(null);
@@ -78,10 +79,16 @@ const GraphicalRecording: React.FC = () => {
       promotion = await promptUserForPromotionChoice();
     }
 
-    // auto skip turn + move or regular move
-    isOtherPlayersPiece(moveSquares)
-      ? skipTurnAndProcessMove(moveSquares, promotion)
-      : makeMove(moveSquares, promotion);
+    // If the user is moving the piece of the player who's turn it ISN'T,
+    // automatically insert a skip for them
+    const moveFunction = isOtherPlayersPiece(moveSquares)
+      ? skipTurnAndProcessMove
+      : makeMove;
+
+    const resultOfMove = moveFunction(moveSquares, promotion);
+    if (isError(resultOfMove)) {
+      showError(resultOfMove.error);
+    }
   };
 
   const [editingMove, setEditingMove] = useState<undefined | EditingMove>(
