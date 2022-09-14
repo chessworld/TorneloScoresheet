@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
 import { MoveReturnType } from '../../chessEngine/chessTsChessEngine';
-import { useError } from '../../context/ErrorContext';
 import {
   AppMode,
   AppModeState,
@@ -17,7 +16,7 @@ import {
   PlyTypes,
   SkipPly,
 } from '../../types/ChessMove';
-import { Result } from '../../types/Result';
+import { Result, succ, fail, isError } from '../../types/Result';
 import { storeRecordingModeData } from '../../util/storage';
 import { MoveLegality } from '../../types/MoveLegality';
 
@@ -27,12 +26,18 @@ type recordingStateHookType = [
     goToEndGame: (result: ChessGameResult) => void;
     goToTextInput: () => void;
     goToArbiterGameMode: () => void;
-    move: (moveSquares: MoveSquares, promotion?: PieceType) => void;
+    move: (
+      moveSquares: MoveSquares,
+      promotion?: PieceType,
+    ) => Result<undefined>;
     undoLastMove: () => void;
     isPawnPromotion: (moveSquares: MoveSquares) => boolean;
-    skipTurn: () => void;
+    skipTurn: () => Result<undefined>;
     isOtherPlayersPiece: (move: MoveSquares) => boolean;
-    skipTurnAndProcessMove: (move: MoveSquares, promotion?: PieceType) => void;
+    skipTurnAndProcessMove: (
+      move: MoveSquares,
+      promotion?: PieceType,
+    ) => Result<undefined>;
     generatePgn: (winner: PlayerColour | null) => Result<string>;
     toggleDraw: (drawIndex: number) => void;
     setGameTime: (index: number, gameTime: GameTime | undefined) => void;
@@ -82,7 +87,6 @@ export const makeUseRecordingState =
     >,
   ): (() => recordingStateHookType | null) =>
   (): recordingStateHookType | null => {
-    const [, showError] = useError();
     const [appModeState, setAppModeState] = useContext(context);
 
     if (appModeState.mode !== AppMode.Recording) {
@@ -118,12 +122,7 @@ export const makeUseRecordingState =
     };
 
     const moveInFiveFoldRepetition = (fen: string): boolean => {
-      if (appModeState.pairing.positionOccurances[fen]) {
-        if ((appModeState.pairing.positionOccurances[fen] || 0) > 4) {
-          return true;
-        }
-      }
-      return false;
+      return (appModeState.pairing.positionOccurances[fen] ?? 0) > 4;
     };
 
     const gameInFiveFoldRepetition = (): boolean => {
@@ -166,7 +165,6 @@ export const makeUseRecordingState =
       }
 
       if (gameInFiveFoldRepetition()) {
-        showError('Illegal move');
         return null;
       }
 
@@ -194,10 +192,9 @@ export const makeUseRecordingState =
      * @param moveHistory ChessPly array of past moves
      * @returns new moveHistory array
      */
-    const skipPlayerTurn = (moveHistory: ChessPly[]): ChessPly[] | null => {
+    const skipPlayerTurn = (moveHistory: ChessPly[]): Result<ChessPly[]> => {
       if (gameInFiveFoldRepetition()) {
-        showError('Illegal move');
-        return null;
+        return fail('Illegal Move');
       }
       const nextPly: SkipPly = {
         startingFen: getCurrentFen(moveHistory),
@@ -209,7 +206,7 @@ export const makeUseRecordingState =
             : PlayerColour.Black,
         drawOffer: false,
       };
-      return [...moveHistory, nextPly];
+      return succ([...moveHistory, nextPly]);
     };
 
     const updateBoard = (moveHistory: ChessPly[]): void => {
@@ -296,27 +293,34 @@ export const makeUseRecordingState =
           : 0;
     };
 
-    const move = (moveSquares: MoveSquares, promotion?: PieceType): void => {
+    const move = (
+      moveSquares: MoveSquares,
+      promotion?: PieceType,
+    ): Result<undefined> => {
       const moveHistory = processPlayerMove(
         moveSquares,
         appModeState.moveHistory,
         promotion,
       );
 
-      if (moveHistory !== null) {
-        const startingFen = getCurrentFen(moveHistory);
-        const moveHistoryWithLegality = checkMoveLegality(
-          startingFen,
-          moveHistory,
-          moveHistory.length - 1,
-        );
-        if (!moveHistoryWithLegality) return;
-        incrementPositionOccurance(
-          moveHistoryWithLegality,
-          moveHistoryWithLegality.length - 1,
-        );
-        updateBoard(moveHistoryWithLegality);
+      if (moveHistory === null) {
+        return fail('Illegal Move');
       }
+
+      const startingFen = getCurrentFen(moveHistory);
+      const moveHistoryWithLegality = checkMoveLegality(
+        startingFen,
+        moveHistory,
+        moveHistory.length - 1,
+      );
+      if (!moveHistoryWithLegality) return fail('Illegal Move');
+      incrementPositionOccurance(
+        moveHistoryWithLegality,
+        moveHistoryWithLegality.length - 1,
+      );
+      updateBoard(moveHistoryWithLegality);
+
+      return succ(undefined);
     };
     const isPawnPromotion = (moveSquares: MoveSquares): boolean => {
       const fen = getCurrentFen(appModeState.moveHistory);
@@ -333,11 +337,13 @@ export const makeUseRecordingState =
       updateBoard(appModeState.moveHistory.slice(0, -1));
     };
 
-    const skipTurn = (): void => {
-      let chessMove = skipPlayerTurn(appModeState.moveHistory);
-      if (chessMove) {
-        updateBoard(chessMove);
+    const skipTurn = (): Result<undefined> => {
+      let chessMoveResult = skipPlayerTurn(appModeState.moveHistory);
+      if (isError(chessMoveResult)) {
+        return chessMoveResult;
       }
+      updateBoard(chessMoveResult.data);
+      return succ(undefined);
     };
 
     const isOtherPlayersPiece = (moveSquares: MoveSquares): boolean => {
@@ -350,22 +356,26 @@ export const makeUseRecordingState =
     const skipTurnAndProcessMove = (
       moveSquares: MoveSquares,
       promotion?: PieceType,
-    ): void => {
+    ): Result<undefined> => {
       let historyAfterSkip = skipPlayerTurn(appModeState.moveHistory);
-      if (!historyAfterSkip) {
-        return;
+      if (isError(historyAfterSkip)) {
+        return historyAfterSkip;
       }
       const historyAfterSkipAndMove = processPlayerMove(
         moveSquares,
-        historyAfterSkip,
+        historyAfterSkip.data,
         promotion,
       );
-      incrementPositionOccurance(historyAfterSkip, historyAfterSkip.length - 1);
+      incrementPositionOccurance(
+        historyAfterSkip.data,
+        historyAfterSkip.data.length - 1,
+      );
       if (historyAfterSkipAndMove !== null) {
         updateBoard(historyAfterSkipAndMove);
       } else {
-        updateBoard(historyAfterSkip);
+        updateBoard(historyAfterSkip.data);
       }
+      return succ(undefined);
     };
 
     const generatePgn = (winner: PlayerColour | null): Result<string> => {
