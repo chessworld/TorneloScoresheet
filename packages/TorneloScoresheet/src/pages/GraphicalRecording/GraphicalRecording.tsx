@@ -14,6 +14,8 @@ import Actions from './Actions';
 import PromotionSheet from './PromotionSheet';
 import EndGameSheet from './EndGameSheet';
 import { RecordingMode } from '../../types/AppModeState';
+import { isError } from '../../types/Result';
+import { useError } from '../../context/ErrorContext';
 import { plysToMoves } from '../../util/moves';
 
 const GraphicalRecording: React.FC = () => {

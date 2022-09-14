@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
 import { MoveReturnType } from '../../chessEngine/chessTsChessEngine';
-import { useError } from '../../context/ErrorContext';
 import {
   AppMode,
   AppModeState,
@@ -88,7 +87,6 @@ export const makeUseRecordingState =
     >,
   ): (() => recordingStateHookType | null) =>
   (): recordingStateHookType | null => {
-    const [, showError] = useError();
     const [appModeState, setAppModeState] = useContext(context);
 
     if (appModeState.mode !== AppMode.Recording) {
