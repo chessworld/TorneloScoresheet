@@ -12,24 +12,42 @@ import {
   ICON_SKIP,
   ICON_UNDO,
 } from '../../style/images';
+import {
+  ReversibleAction,
+  ReversibleActionType,
+} from '../../types/ReversibleAction';
 
 export type ActionsProps = {
   flipBoard: () => void | undefined;
   recordTime: () => void | undefined;
   endGame: () => void;
+  undo: (() => void) | undefined;
+  pushUndoAction: (action: ReversibleAction) => void;
 };
 
 const Actions: React.FC<ActionsProps> = ({
   flipBoard,
   recordTime,
   endGame,
+  undo,
+  pushUndoAction,
 }) => {
   const recordingState = useRecordingState();
-  const recordingMode = recordingState?.state;
-  const undoLastAction = recordingState?.undoLastMove;
+  const state = recordingState?.state;
   const skipTurn = recordingState?.skipTurn;
   const toggleDraw = recordingState?.toggleDraw;
-  const isFirstMove = (recordingMode?.moveHistory.length ?? 0) === 0;
+  const isFirstMove = (state?.moveHistory.length ?? 0) === 0;
+
+  const handleToggleDraw = () => {
+    if (!toggleDraw || !state) {
+      return;
+    }
+    pushUndoAction({
+      type: ReversibleActionType.ToggleDrawOffer,
+      indexOfPlyInHistory: state.moveHistory.length - 1,
+    });
+    toggleDraw(state.moveHistory.length - 1);
+  };
 
   const actionButtons: ActionButtonProps[] = [
     {
@@ -51,10 +69,7 @@ const Actions: React.FC<ActionsProps> = ({
     },
     {
       text: 'draw',
-      onPress: () =>
-        toggleDraw &&
-        recordingMode &&
-        toggleDraw(recordingMode.moveHistory.length - 1),
+      onPress: handleToggleDraw,
       icon: <ICON_HALF height={40} fill={colours.white} />,
       disabled: isFirstMove,
     },
@@ -65,9 +80,9 @@ const Actions: React.FC<ActionsProps> = ({
     },
     {
       text: 'undo',
-      onPress: () => undoLastAction && undoLastAction(),
+      onPress: () => undo && undo(),
       icon: <ICON_UNDO height={40} fill={colours.white} />,
-      disabled: isFirstMove,
+      disabled: undo === undefined,
     },
     {
       text: 'redo',
