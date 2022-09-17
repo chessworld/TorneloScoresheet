@@ -321,6 +321,14 @@ describe('Auto Skip player turn', () => {
             drawOffer: false,
             promotion: undefined,
             san: 'h6',
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
           },
         ],
         board: chessEngine.fenToBoardPositions(
@@ -372,6 +380,14 @@ describe('Auto Skip player turn', () => {
             san: 'a5',
             promotion: undefined,
             drawOffer: false,
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
           },
         ],
         board: chessEngine.fenToBoardPositions(
@@ -535,6 +551,14 @@ describe('Auto Skip player turn', () => {
               'rnbqkbnr/pPppppp1/8/8/7p/8/1PPPPPPP/RNBQKBNR w KQkq - 1 5',
             drawOffer: false,
             san: 'bxa8=Q',
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
           },
         ],
         board: chessEngine.fenToBoardPositions(
@@ -570,7 +594,7 @@ describe('Generate pgn', () => {
             from: 'd7',
             to: 'd5',
           },
-          san: '',
+          san: 'd5',
         },
         {
           moveNo: 3,
@@ -582,7 +606,7 @@ describe('Generate pgn', () => {
             from: 'e4',
             to: 'd5',
           },
-          san: '',
+          san: 'exd5',
         },
         {
           moveNo: 4,
@@ -594,7 +618,7 @@ describe('Generate pgn', () => {
             from: 'd8',
             to: 'd7',
           },
-          san: '',
+          san: 'Qd7',
         },
         {
           moveNo: 5,
@@ -606,7 +630,7 @@ describe('Generate pgn', () => {
             from: 'd5',
             to: 'd6',
           },
-          san: '',
+          san: 'd6',
         },
         {
           moveNo: 6,
@@ -618,7 +642,7 @@ describe('Generate pgn', () => {
             from: 'd7',
             to: 'f5',
           },
-          san: '',
+          san: 'Qf5',
         },
         {
           moveNo: 7,
@@ -630,56 +654,7 @@ describe('Generate pgn', () => {
             from: 'd6',
             to: 'd7',
           },
-          san: '',
-        },
-        {
-          moveNo: 8,
-          startingFen:
-            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
-          player: PlayerColour.Black,
-          type: PlyTypes.MovePly,
-          move: {
-            from: 'f5',
-            to: 'f4',
-          },
-          san: '',
-        },
-        {
-          moveNo: 9,
-          startingFen:
-            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
-          player: PlayerColour.White,
-          type: PlyTypes.MovePly,
-          move: {
-            from: 'd7',
-            to: 'd8',
-          },
-          san: '',
-          promotion: PieceType.Queen,
-        },
-        {
-          moveNo: 10,
-          startingFen:
-            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
-          player: PlayerColour.Black,
-          type: PlyTypes.MovePly,
-          move: {
-            from: 'f4',
-            to: 'f5',
-          },
-          san: '',
-        },
-        {
-          moveNo: 11,
-          startingFen:
-            'rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1',
-          player: PlayerColour.White,
-          type: PlyTypes.MovePly,
-          move: {
-            from: 'd2',
-            to: 'e2',
-          },
-          san: '',
+          san: 'd7+',
         },
       ] as ChessPly[],
       'Graphical',
@@ -696,7 +671,7 @@ describe('Generate pgn', () => {
         if (!isError(pgnResult)) {
           expect(pgnResult.data).toStrictEqual(
             stripStarAndReplaceResultFromPgn(pgnSucess, '0-1') +
-              '1. e4 d5 2. exd5 Qd7 3. d6 Qf5 4. d7+ Qf5f4 5. d8=Q+ Qf4f5 6. d2e2# 0-1',
+              '1. e4 d5 2. exd5 Qd7 3. d6 Qf5 4. d7+ 0-1',
           );
         }
       }
