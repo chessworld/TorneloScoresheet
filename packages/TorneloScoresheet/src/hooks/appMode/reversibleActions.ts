@@ -23,6 +23,10 @@ export const handleUndoAction = (
       );
       return;
     }
+    case ReversibleActionType.Move: {
+      recordingModeState.undoLastMove();
+      return;
+    }
     default: {
       console.log(
         'handleUndoAction: Got unsupported ReversibleAction: ',

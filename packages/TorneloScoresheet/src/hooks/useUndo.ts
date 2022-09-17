@@ -52,14 +52,26 @@ export const useUndo = (): UndoStateModifiers => {
   ) => {
     switch (action.type) {
       case ReversibleActionType.EditTimeForMove: {
-        newStackSetter(redoStackState =>
-          redoStackState.concat([
+        newStackSetter(stackState =>
+          stackState.concat([
             {
               type: ReversibleActionType.EditTimeForMove,
               previousGameTime:
                 recordingMode?.state?.moveHistory?.[action.indexOfPlyInHistory]
                   ?.gameTime,
               indexOfPlyInHistory: action.indexOfPlyInHistory,
+            },
+          ]),
+        );
+        return;
+      }
+      case ReversibleActionType.Move: {
+        newStackSetter(stackState =>
+          stackState.concat([
+            {
+              type: ReversibleActionType.Move,
+              moveSquares: action.moveSquares,
+              promotion: action.promotion,
             },
           ]),
         );
