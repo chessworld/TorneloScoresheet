@@ -13,7 +13,7 @@ import Sheet from '../../components/Sheet/Sheet';
 
 const ViewPastGames: React.FC = () => {
   const pgnState = useEnterPgnState();
-  const viewEnterPgn = pgnState?.[1].viewEnterPgnScreen;
+  const viewEnterPgn = pgnState?.viewEnterPgnScreen;
 
   const [showDetails, setShowDetails] = useState(true);
   const [selectedPairing, setSelected] = useState<StoredGameHistory | null>(
@@ -82,7 +82,7 @@ const ViewPastGames: React.FC = () => {
               weight={FontWeight.SemiBold}
               label="Past Games"
             />
-            <PrimaryText style={styles.actionButton}></PrimaryText>
+            <PrimaryText style={styles.actionButton} />
           </View>
           <PrimaryText
             style={styles.explanationText}

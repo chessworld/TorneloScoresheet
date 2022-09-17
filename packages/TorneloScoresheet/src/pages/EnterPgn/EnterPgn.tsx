@@ -20,10 +20,10 @@ import PrimaryText, {
 
 const EnterPgn: React.FC = () => {
   const state = useEnterPgnState();
-  const viewPastGames = state?.[1].viewPastGames;
+  const viewPastGames = state?.viewPastGames;
   const [loading, setLoading] = useState(false);
-  const goToPairingSelection = state?.[1]?.goToPairingSelection;
-  const appMode = state?.[0];
+  const goToPairingSelection = state?.goToPairingSelection;
+  const appMode = state?.state;
 
   const [url, setUrl] = useState('');
   const [, showError] = useError();

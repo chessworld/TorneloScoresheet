@@ -65,7 +65,7 @@ const PairingSelection: React.FC = () => {
               weight={FontWeight.SemiBold}
               label="Boards"
             />
-            <PrimaryText style={styles.actionButton}></PrimaryText>
+            <PrimaryText style={styles.actionButton} />
           </View>
 
           <PrimaryText
