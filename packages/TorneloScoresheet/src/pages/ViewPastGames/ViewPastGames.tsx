@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, Image, View } from 'react-native';
 import { styles } from './style';
 import { useEnterPgnState } from '../../context/AppModeStateContext';
-import PrimaryButton from '../../components/PrimaryButton/PrimaryButton';
 import PrimaryText, {
   FontWeight,
 } from '../../components/PrimaryText/PrimaryText';
@@ -13,7 +12,6 @@ import Sheet from '../../components/Sheet/Sheet';
 
 const ViewPastGames: React.FC = () => {
   const pgnState = useEnterPgnState();
-  const viewEnterPgn = pgnState?.viewEnterPgnScreen;
 
   const [showDetails, setShowDetails] = useState(true);
   const [selectedPairing, setSelected] = useState<StoredGameHistory | null>(
@@ -43,6 +41,7 @@ const ViewPastGames: React.FC = () => {
     setSelected(null);
     setShowDetails(false);
   };
+
   return (
     <>
       {pgnState && (
@@ -72,23 +71,31 @@ const ViewPastGames: React.FC = () => {
             </Sheet>
           )}
           <View style={styles.headerRow}>
-            <PrimaryButton
-              style={styles.actionButton}
-              onPress={viewEnterPgn}
-              label="back"
-            />
             <PrimaryText
               size={50}
               weight={FontWeight.SemiBold}
               label="Past Games"
             />
-            <PrimaryText style={styles.actionButton} />
           </View>
           <PrimaryText
             style={styles.explanationText}
             size={24}
             label="These are past games that were recorded on this device."
           />
+          {pastGames.length === 0 ? (
+            <View style={styles.emptyHistoryList}>
+              <PrimaryText
+                size={30}
+                label="No game history"
+                weight={FontWeight.Medium}
+              />
+              <PrimaryText
+                size={22}
+                style={styles.emptyHistoryListSubtitle}
+                label="When you record a game it will appear here"
+              />
+            </View>
+          ) : null}
           <FlatList
             scrollEnabled={true}
             data={pastGames}

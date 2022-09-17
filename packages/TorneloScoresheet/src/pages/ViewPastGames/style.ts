@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
   headerRow: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'flex-end',
     width: '100%',
   },
@@ -45,5 +45,14 @@ export const styles = StyleSheet.create({
     marginTop: 45,
     marginBottom: 45,
     width: '100%',
+  },
+  emptyHistoryList: {
+    width: '100%',
+    height: 700,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyHistoryListSubtitle: {
+    marginTop: 20,
   },
 });
