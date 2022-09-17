@@ -1,4 +1,3 @@
-import { colours, textColour } from '../../style/colour';
 import { StyleSheet } from 'react-native';
 import { pageHeight } from '../../util/pageSize';
 

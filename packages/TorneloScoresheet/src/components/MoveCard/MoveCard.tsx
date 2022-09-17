@@ -2,10 +2,11 @@ import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import { colours } from '../../style/colour';
-import { ChessPly, Move, PlyTypes } from '../../types/ChessMove';
+import { ChessPly, Move } from '../../types/ChessMove';
 import PrimaryText, { Align, FontWeight } from '../PrimaryText/PrimaryText';
 import { PlayerColour } from '../../types/ChessGameInfo';
 import { styles } from './style';
+import { moveString } from '../../util/moves';
 
 type MoveCardProps = {
   move: Move;
@@ -71,17 +72,6 @@ const MoveCard: React.FC<MoveCardProps> = ({
       </View>
     </View>
   );
-};
-
-const moveString = (ply: ChessPly, isEditing: boolean): string => {
-  if (isEditing) {
-    return '____';
-  }
-  if (ply.type === PlyTypes.SkipPly) {
-    return '-';
-  }
-
-  return ply.san;
 };
 
 const blackPlyBackgroundColour = (ply: ChessPly | undefined) => ({

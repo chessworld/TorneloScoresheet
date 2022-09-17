@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     minWidth: 100,
     height: 145,
     alignItems: 'center',
-    marginVertical: 20,
+    marginVertical: 10,
     marginHorizontal: 5,
   },
   moveNumberContainer: {

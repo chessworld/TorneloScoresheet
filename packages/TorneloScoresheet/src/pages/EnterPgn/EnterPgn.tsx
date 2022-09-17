@@ -57,7 +57,7 @@ const EnterPgn: React.FC = () => {
   return (
     <>
       {appMode && (
-        <KeyboardAvoidingView behavior="position">
+        <KeyboardAvoidingView behavior="padding">
           <View style={styles.container}>
             <View style={styles.informationAndInputBoxContainer}>
               <PieceAsset

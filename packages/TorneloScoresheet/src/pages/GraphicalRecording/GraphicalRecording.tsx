@@ -5,13 +5,7 @@ import ChessBoard from '../../components/ChessBoard/ChessBoard';
 import MoveCard from '../../components/MoveCard/MoveCard';
 import { useRecordingState } from '../../context/AppModeStateContext';
 import { PlayerColour } from '../../types/ChessGameInfo';
-import {
-  PieceType,
-  MoveSquares,
-  ChessPly,
-  Move,
-  GameTime,
-} from '../../types/ChessMove';
+import { PieceType, MoveSquares, GameTime } from '../../types/ChessMove';
 import { styles } from './style';
 import MoveOptionsSheet, { EditingMove } from './MoveOptionsSheet';
 import GraphicalModePlayerCard from '../../components/GraphicalModePlayerCard/GraphicalModePlayerCard';
@@ -22,6 +16,7 @@ import EndGameSheet from './EndGameSheet';
 import { RecordingMode } from '../../types/AppModeState';
 import { isError } from '../../types/Result';
 import { useError } from '../../context/ErrorContext';
+import { plysToMoves } from '../../util/moves';
 
 const GraphicalRecording: React.FC = () => {
   // app mode hook unpacking
@@ -95,6 +90,7 @@ const GraphicalRecording: React.FC = () => {
     const resultOfMove = moveFunction(moveSquares, promotion);
     if (isError(resultOfMove)) {
       showError(resultOfMove.error);
+      return;
     }
   };
 
@@ -186,7 +182,7 @@ const GraphicalRecording: React.FC = () => {
             ref={scrollRef}
             horizontal
             style={styles.moveCardContainer}>
-            {moves(recordingMode.moveHistory).map((move, index) => (
+            {plysToMoves(recordingMode.moveHistory).map((move, index) => (
               <MoveCard
                 key={index}
                 move={move}
@@ -201,17 +197,6 @@ const GraphicalRecording: React.FC = () => {
     </>
   );
 };
-
-// Utility function to take a list of ply, and return a list of moves
-const moves = (ply: ChessPly[]): Move[] =>
-  ply.reduce((acc, el) => {
-    if (el.player === PlayerColour.White) {
-      return [...acc, { white: el, black: undefined }];
-    }
-    return acc
-      .slice(0, -1)
-      .concat({ white: acc[acc.length - 1]!.white, black: el });
-  }, [] as Move[]);
 
 /**
  * Gets the game time associated with the move index stored

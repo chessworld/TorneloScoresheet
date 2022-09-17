@@ -344,16 +344,16 @@ export const makeUseRecordingState =
         historyAfterSkip.data,
         promotion,
       );
+      if (historyAfterSkipAndMove === null) {
+        return fail('Illegal Move');
+      }
+
       changePositionOccurance(
         historyAfterSkip.data,
         historyAfterSkip.data.length - 1,
         1,
       );
-      if (historyAfterSkipAndMove !== null) {
-        updateBoard(historyAfterSkipAndMove);
-      } else {
-        updateBoard(historyAfterSkip.data);
-      }
+      updateBoard(historyAfterSkipAndMove);
       return succ(undefined);
     };
 

@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import { Platform } from 'react-native';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
 import {
   AppMode,
