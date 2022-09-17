@@ -22,6 +22,7 @@ export type ActionsProps = {
   recordTime: () => void | undefined;
   endGame: () => void;
   undo: (() => void) | undefined;
+  redo: (() => void) | undefined;
   pushUndoAction: (action: ReversibleAction) => void;
 };
 
@@ -30,6 +31,7 @@ const Actions: React.FC<ActionsProps> = ({
   recordTime,
   endGame,
   undo,
+  redo,
   pushUndoAction,
 }) => {
   const recordingState = useRecordingState();
@@ -86,9 +88,9 @@ const Actions: React.FC<ActionsProps> = ({
     },
     {
       text: 'redo',
-      onPress: () => undefined,
+      onPress: () => redo && redo(),
       icon: <ICON_REDO height={40} fill={colours.white} />,
-      disabled: true,
+      disabled: redo === undefined,
     },
   ];
   return <ActionBar actionButtons={actionButtons} />;
