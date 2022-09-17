@@ -90,6 +90,7 @@ const GraphicalRecording: React.FC = () => {
     const resultOfMove = moveFunction(moveSquares, promotion);
     if (isError(resultOfMove)) {
       showError(resultOfMove.error);
+      return;
     }
   };
 
