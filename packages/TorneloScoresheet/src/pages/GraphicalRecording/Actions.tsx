@@ -8,6 +8,7 @@ import {
   ICON_FLIP,
   ICON_HALF,
   ICON_HASTAG,
+  ICON_REDO,
   ICON_SKIP,
   ICON_UNDO,
 } from '../../style/images';
@@ -40,7 +41,7 @@ const Actions: React.FC<ActionsProps> = ({
       text: 'end',
       onPress: endGame,
       icon: <ICON_HASTAG height={40} fill={colours.white} />,
-      style: { height: 136 },
+      style: { height: 116 },
     },
     {
       text: 'time',
@@ -61,13 +62,18 @@ const Actions: React.FC<ActionsProps> = ({
       text: 'skip',
       onPress: () => skipTurn && skipTurn(),
       icon: <ICON_SKIP height={40} fill={colours.white} />,
-      style: { height: 136 },
     },
     {
       text: 'undo',
       onPress: () => undoLastAction && undoLastAction(),
       icon: <ICON_UNDO height={40} fill={colours.white} />,
       disabled: isFirstMove,
+    },
+    {
+      text: 'redo',
+      onPress: () => undefined,
+      icon: <ICON_REDO height={40} fill={colours.white} />,
+      disabled: true,
     },
   ];
   return <ActionBar actionButtons={actionButtons} />;
