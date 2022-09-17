@@ -8,6 +8,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { useRecordingState } from '../../context/AppModeStateContext';
 import OptionSheet from '../../components/OptionSheet/OptionSheet';
+import {
+  ReversibleAction,
+  ReversibleActionType,
+} from '../../types/ReversibleAction';
 
 export type EditingMove = {
   colour: PlayerColour;
@@ -18,12 +22,14 @@ type MoveOptionsSheetProps = {
   editingMove: EditingMove | undefined;
   handleGameTime: (index: number) => void;
   dismiss: () => void;
+  pushUndoAction: (action: ReversibleAction) => void;
 };
 
 const MoveOptionsSheet = ({
   editingMove,
   handleGameTime,
   dismiss,
+  pushUndoAction,
 }: MoveOptionsSheetProps) => {
   const recordingState = useRecordingState();
   const [displaySkipMoves, setDisplaySkipMoves] = useState(false);
@@ -34,10 +40,14 @@ const MoveOptionsSheet = ({
     if (!toggleDraw || !editingMove) {
       return;
     }
-    toggleDraw(
+    const indexOfPlyInHistory =
       editingMove.moveIndex * 2 +
-        (editingMove.colour === PlayerColour.Black ? 1 : 0),
-    );
+      (editingMove.colour === PlayerColour.Black ? 1 : 0);
+    pushUndoAction({
+      type: ReversibleActionType.ToggleDrawOffer,
+      indexOfPlyInHistory,
+    });
+    toggleDraw(indexOfPlyInHistory);
     dismiss();
   };
   const handleConfirmSkips = () => {

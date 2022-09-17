@@ -135,6 +135,7 @@ const GraphicalRecording: React.FC = () => {
             dismiss={() => setShowEndGame(false)}
           />
           <MoveOptionsSheet
+            pushUndoAction={pushUndoAction}
             editingMove={editingMove}
             handleGameTime={showSelectGameTimeSheet}
             dismiss={handleDismissMoveOptions}
