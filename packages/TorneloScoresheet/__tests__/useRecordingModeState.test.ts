@@ -389,27 +389,10 @@ describe('Auto Skip player turn', () => {
       from: 'h5',
       to: 'h6',
     } as MoveSquares;
-    const startingFen =
-      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
-    const afterSkipResultingFen =
-      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 1 1';
 
     act(() => {
       graphicalStateHook.current?.[1].skipTurnAndProcessMove(move);
-      expect(setContextMock).toHaveBeenCalledTimes(1);
-      expect(setContextMock).toHaveBeenCalledWith({
-        ...graphicalState,
-        moveHistory: [
-          {
-            moveNo: 1,
-            player: PlayerColour.White,
-            startingFen,
-            type: PlyTypes.SkipPly,
-            drawOffer: false,
-          },
-        ],
-        board: chessEngine.fenToBoardPositions(afterSkipResultingFen),
-      });
+      expect(setContextMock).toHaveBeenCalledTimes(0);
     });
   });
 
@@ -434,24 +417,7 @@ describe('Auto Skip player turn', () => {
     };
     act(() => {
       graphicalStateHook.current?.[1].skipTurnAndProcessMove(move);
-      expect(setContextMock).toHaveBeenCalledTimes(1);
-      expect(setContextMock).toHaveBeenCalledWith({
-        ...graphicalState,
-        moveHistory: [
-          ...moveHistory,
-          {
-            moveNo: 1,
-            player: PlayerColour.Black,
-            startingFen:
-              'rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR b KQkq a3 0 1',
-            type: PlyTypes.SkipPly,
-            drawOffer: false,
-          },
-        ],
-        board: chessEngine.fenToBoardPositions(
-          'rnbqkbnr/pppppppp/8/8/P7/8/1PPPPPPP/RNBQKBNR w KQkq - 1 2',
-        ),
-      });
+      expect(setContextMock).toHaveBeenCalledTimes(0);
     });
   });
 

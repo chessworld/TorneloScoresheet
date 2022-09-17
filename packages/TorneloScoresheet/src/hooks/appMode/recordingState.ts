@@ -354,11 +354,7 @@ export const makeUseRecordingState =
         historyAfterSkip.data.length - 1,
         1,
       );
-      if (historyAfterSkipAndMove !== null) {
-        updateBoard(historyAfterSkipAndMove);
-      } else {
-        updateBoard(historyAfterSkip.data);
-      }
+      updateBoard(historyAfterSkipAndMove);
       return succ(undefined);
     };
 
