@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleProp, TextStyle, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
+import { styles } from './styles';
 
 /**
  * This component is a clickable Icon.
@@ -14,6 +16,7 @@ type IconButtonProps = {
   colour: string;
   style?: StyleProp<TextStyle>;
   size?: number;
+  label?: string;
 };
 
 const IconButton: React.FC<IconButtonProps> = ({
@@ -22,10 +25,17 @@ const IconButton: React.FC<IconButtonProps> = ({
   colour,
   style,
   size,
+  label,
 }) => {
   return (
-    <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
+    <TouchableOpacity
+      style={styles.container}
+      activeOpacity={0.8}
+      onPress={onPress}>
       <Icon style={style} size={size ?? 40} color={colour} name={icon} />
+      {label ? (
+        <PrimaryText size={20} weight={FontWeight.Medium} label={label} />
+      ) : null}
     </TouchableOpacity>
   );
 };
