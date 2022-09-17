@@ -43,11 +43,6 @@ type recordingStateHookType = [
     setGameTime: (index: number, gameTime: GameTime | undefined) => void;
     toggleRecordingMode: () => void;
     goToEditMove: (index: number) => void;
-    checkMoveLegality: (
-      fen: string,
-      moveHistory: ChessPly[],
-      index: number,
-    ) => ChessPly[] | undefined;
   },
 ];
 
@@ -76,8 +71,8 @@ const getCurrentFen = (moveHistory: ChessPly[]): string => {
       lastPly.startingFen,
       lastPly.move,
       lastPly.promotion,
-    ) ?? '' // all move in history are legal, -> should never return undef
-  );
+    ) ?? ''
+  ); // all move in history are legal, -> should never return undef
 };
 
 export const makeUseRecordingState =
@@ -102,11 +97,7 @@ export const makeUseRecordingState =
       return false;
     };
 
-    const checkMoveLegality = (
-      fen: string,
-      moveHistory: ChessPly[],
-      index: number,
-    ): ChessPly[] | undefined => {
+    const checkMoveLegality = (fen: string): MoveLegality => {
       let moveLegality: MoveLegality = {};
       moveLegality.inThreefoldRepetition = inThreeFoldRepetition(fen);
       moveLegality.inCheck = chessEngine.inCheck(fen);
@@ -114,11 +105,7 @@ export const makeUseRecordingState =
       moveLegality.inCheckmate = chessEngine.inCheckmate(fen);
       moveLegality.insufficientMaterial = chessEngine.insufficientMaterial(fen);
       moveLegality.inStalemate = chessEngine.inStalemate(fen);
-      if (moveHistory[index]) {
-        moveHistory[index]!.legality = moveLegality;
-        return moveHistory;
-      }
-      return;
+      return moveLegality;
     };
 
     const moveInFiveFoldRepetition = (fen: string): boolean => {
@@ -159,8 +146,14 @@ export const makeUseRecordingState =
         MoveReturnType.MOVE_SAN,
       );
 
+      const moveFEN = chessEngine.makeMove(
+        startingFen,
+        moveSquares,
+        promotion,
+        MoveReturnType.NEXT_STARTING_FEN,
+      );
       // return null if move is impossible
-      if (!moveSAN) {
+      if (!moveSAN || !moveFEN) {
         return null;
       }
 
@@ -183,6 +176,8 @@ export const makeUseRecordingState =
         san: moveSAN,
       };
 
+      const moveLegality = checkMoveLegality(moveFEN);
+      nextPly.legality = moveLegality;
       return [...moveHistory, nextPly];
     };
 
@@ -264,12 +259,11 @@ export const makeUseRecordingState =
       });
     };
 
-    const incrementPositionOccurance = (
+    const changePositionOccurance = (
       moveHistory: ChessPly[],
       moveIndex: number,
+      change: number,
     ): void => {
-      //increase count of fen in moveHistory list
-
       const key = moveHistory[moveIndex]!.startingFen.split(' ')
         .slice(0, 4)
         .join(' ');
@@ -279,18 +273,8 @@ export const makeUseRecordingState =
 
       appModeState.pairing.positionOccurances[key] =
         key in appModeState.pairing.positionOccurances
-          ? (appModeState.pairing.positionOccurances[key] || 0) + 1
+          ? (appModeState.pairing.positionOccurances[key] || 0) + change
           : 1;
-    };
-
-    const decrementPositionOccurance = (moveIndex: number): void => {
-      const key = appModeState.moveHistory[moveIndex]!.startingFen.split(' ')
-        .slice(0, 4)
-        .join(' ');
-      appModeState.pairing.positionOccurances[key] =
-        key in appModeState.pairing.positionOccurances
-          ? (appModeState.pairing.positionOccurances[key] || 0) - 1
-          : 0;
     };
 
     const move = (
@@ -307,18 +291,8 @@ export const makeUseRecordingState =
         return fail('Illegal Move');
       }
 
-      const startingFen = getCurrentFen(moveHistory);
-      const moveHistoryWithLegality = checkMoveLegality(
-        startingFen,
-        moveHistory,
-        moveHistory.length - 1,
-      );
-      if (!moveHistoryWithLegality) return fail('Illegal Move');
-      incrementPositionOccurance(
-        moveHistoryWithLegality,
-        moveHistoryWithLegality.length - 1,
-      );
-      updateBoard(moveHistoryWithLegality);
+      changePositionOccurance(moveHistory, moveHistory.length - 1, 1);
+      updateBoard(moveHistory);
 
       return succ(undefined);
     };
@@ -329,7 +303,11 @@ export const makeUseRecordingState =
 
     const undoLastMove = (): void => {
       if (appModeState.moveHistory.length > 0) {
-        decrementPositionOccurance(appModeState.moveHistory.length - 1);
+        changePositionOccurance(
+          appModeState.moveHistory,
+          appModeState.moveHistory.length - 1,
+          -1,
+        );
       } else {
         //game reset to start - clear position memory
         appModeState.pairing.positionOccurances = {};
@@ -366,9 +344,10 @@ export const makeUseRecordingState =
         historyAfterSkip.data,
         promotion,
       );
-      incrementPositionOccurance(
+      changePositionOccurance(
         historyAfterSkip.data,
         historyAfterSkip.data.length - 1,
+        1,
       );
       if (historyAfterSkipAndMove !== null) {
         updateBoard(historyAfterSkipAndMove);
@@ -443,7 +422,6 @@ export const makeUseRecordingState =
         setGameTime,
         toggleRecordingMode,
         goToEditMove,
-        checkMoveLegality,
       },
     ];
   };

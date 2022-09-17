@@ -253,16 +253,14 @@ const generatePgn = (
       if (move.type === PlyTypes.SkipPly) {
         return 'Cannot finish a game with skipped moves, go back and fill in the moves that were skipped.';
       }
-      if (
-        game.forceMove(move.move, {
-          promotion:
-            move.promotion !== undefined
-              ? chessTsPieceMap[move.promotion]
-              : undefined,
-        }) === null
-      ) {
-        return 'Error processing move, an impossible move has been recorded';
-      }
+      game.move({
+        from: move.move.from,
+        to: move.move.to,
+        promotion:
+          move.promotion !== undefined
+            ? chessTsPieceMap[move.promotion]
+            : undefined,
+      });
       addComments(game, move);
       return '';
     })
