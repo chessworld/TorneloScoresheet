@@ -20,7 +20,6 @@ import PrimaryText, {
 
 const EnterPgn: React.FC = () => {
   const state = useEnterPgnState();
-  const viewPastGames = state?.viewPastGames;
   const [loading, setLoading] = useState(false);
   const goToPairingSelection = state?.goToPairingSelection;
   const appMode = state?.state;
@@ -93,12 +92,6 @@ const EnterPgn: React.FC = () => {
               />
             </View>
             <View style={styles.buttonBox}>
-              <PrimaryButton
-                style={styles.startButton}
-                labelStyle={styles.startButtonLabel}
-                onPress={viewPastGames}
-                label="Past Games"
-              />
               <PrimaryButton
                 style={styles.startButton}
                 labelStyle={styles.startButtonLabel}
