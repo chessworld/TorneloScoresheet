@@ -102,14 +102,12 @@ const splitRoundIntoMultiplePgn = (roundPgns: string): string[] => {
 /**
  * Enter Pgn state hook
  */
-type EnterPgnStateHookType = [
-  EnterPgnMode,
-  {
-    goToPairingSelection: (liveLinkUrl: string) => Promise<Result<undefined>>;
-    viewPastGames: () => void;
-    viewEnterPgnScreen: () => void;
-  },
-];
+type EnterPgnStateHookType = {
+  state: EnterPgnMode;
+  goToPairingSelection: (liveLinkUrl: string) => Promise<Result<undefined>>;
+  viewPastGames: () => void;
+  viewEnterPgnScreen: () => void;
+};
 
 export const makeUseEnterPgnState =
   (
@@ -132,8 +130,10 @@ export const makeUseEnterPgnState =
 
     const goToPairingSelection = makegoToTablePairingSelection(setAppModeState);
 
-    return [
-      appModeState,
-      { goToPairingSelection, viewPastGames, viewEnterPgnScreen },
-    ];
+    return {
+      goToPairingSelection,
+      viewPastGames,
+      viewEnterPgnScreen,
+      state: appModeState,
+    };
   };
