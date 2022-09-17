@@ -7,7 +7,11 @@ import {
   textColour,
 } from '../../style/colour';
 import { BLACK_LOGO_IMAGE, WHITE_LOGO_IMAGE } from '../../style/images';
-import { AppMode, isArbiterMode } from '../../types/AppModeState';
+import {
+  AppMode,
+  EnterPgnViews,
+  isArbiterMode,
+} from '../../types/AppModeState';
 import IconButton from '../IconButton/IconButton';
 import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import Sheet from '../Sheet/Sheet';
@@ -58,9 +62,20 @@ const Toolbar: React.FC = () => {
         <View style={styles.arbiterLock}>
           {appModeState.mode === AppMode.EnterPgn && (
             <IconButton
-              icon="history"
+              icon={
+                appModeState.view === EnterPgnViews.ENTER_PGN
+                  ? 'history'
+                  : 'arrow-back'
+              }
+              label={
+                appModeState.view === EnterPgnViews.ENTER_PGN ? '' : 'Back'
+              }
               onPress={() => {
-                enterPgnMode?.viewPastGames();
+                if (appModeState.view === EnterPgnViews.ENTER_PGN) {
+                  enterPgnMode?.viewPastGames();
+                  return;
+                }
+                enterPgnMode?.viewEnterPgnScreen();
               }}
               colour="black"
             />
