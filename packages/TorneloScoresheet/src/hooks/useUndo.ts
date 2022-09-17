@@ -4,7 +4,10 @@ import {
   ReversibleAction,
   ReversibleActionType,
 } from '../types/ReversibleAction';
-import { RecordingStateHookType } from './appMode/recordingState';
+import {
+  handleRedoAction,
+  handleUndoAction,
+} from './appMode/reversibleActions';
 
 export type UndoStateModifiers = {
   undo: (() => void) | undefined;
@@ -23,10 +26,8 @@ export const useUndo = (): UndoStateModifiers => {
       if (!action) {
         return [];
       }
-      if (recordingMode) {
-        handleUndoAction(action, recordingMode);
-      }
-      setRedoStack(redoStackState => redoStackState.concat([action]));
+      moveActionBetweenStacks(action, setRedoStack);
+      handleUndoAction(action, recordingMode);
       return stack.slice(0, -1);
     });
   };
@@ -37,12 +38,38 @@ export const useUndo = (): UndoStateModifiers => {
       if (!action) {
         return [];
       }
-      if (recordingMode) {
-        handleRedoAction(action, recordingMode);
-      }
-      setUndoStack(state => state.concat([action]));
+      moveActionBetweenStacks(action, setUndoStack);
+      handleRedoAction(action, recordingMode);
       return stack.slice(0, -1);
     });
+  };
+
+  // We may need to have special logic for moving actions between the undo and redo stacks.
+  // The default is to just push the item to the stack
+  const moveActionBetweenStacks = (
+    action: ReversibleAction,
+    newStackSetter: (value: React.SetStateAction<ReversibleAction[]>) => void,
+  ) => {
+    switch (action.type) {
+      case ReversibleActionType.EditTimeForMove: {
+        newStackSetter(redoStackState =>
+          redoStackState.concat([
+            {
+              type: ReversibleActionType.EditTimeForMove,
+              previousGameTime:
+                recordingMode?.state?.moveHistory?.[action.indexOfPlyInHistory]
+                  ?.gameTime,
+              indexOfPlyInHistory: action.indexOfPlyInHistory,
+            },
+          ]),
+        );
+        return;
+      }
+      default: {
+        newStackSetter(state => state.concat([action]));
+        return;
+      }
+    }
   };
 
   const pushUndoAction = (action: ReversibleAction) => {
@@ -55,40 +82,4 @@ export const useUndo = (): UndoStateModifiers => {
     pushUndoAction,
     redo: redoStack.length === 0 ? undefined : redo,
   };
-};
-
-const handleUndoAction = (
-  action: ReversibleAction,
-  recordingModeState: RecordingStateHookType,
-) => {
-  switch (action.type) {
-    case ReversibleActionType.ToggleDrawOffer: {
-      recordingModeState.toggleDraw(action.indexOfPlyInHistory);
-      return;
-    }
-    default: {
-      console.log(
-        'handleUndoAction: Got unsupported ReversibleAction: ',
-        action,
-      );
-    }
-  }
-};
-
-const handleRedoAction = (
-  action: ReversibleAction,
-  recordingModeState: RecordingStateHookType,
-) => {
-  switch (action.type) {
-    case ReversibleActionType.ToggleDrawOffer: {
-      recordingModeState.toggleDraw(action.indexOfPlyInHistory);
-      return;
-    }
-    default: {
-      console.log(
-        'handleRedoAction: Got unsupported ReversibleAction: ',
-        action,
-      );
-    }
-  }
 };

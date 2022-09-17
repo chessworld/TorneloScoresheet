@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import ChessBoard from '../../components/ChessBoard/ChessBoard';
@@ -18,6 +18,7 @@ import { isError } from '../../types/Result';
 import { useError } from '../../context/ErrorContext';
 import { plysToMoves } from '../../util/moves';
 import { useUndo } from '../../hooks/useUndo';
+import { ReversibleActionType } from '../../types/ReversibleAction';
 
 const GraphicalRecording: React.FC = () => {
   const { undo, redo, pushUndoAction } = useUndo();
@@ -35,13 +36,19 @@ const GraphicalRecording: React.FC = () => {
     recordingMode?.currentPlayer === PlayerColour.Black,
   );
   const [showPromotion, setShowPromotion] = useState(false);
-  const [showTimeSheet, setShowTimeSheet] = useState(false);
   const [showEndGame, setShowEndGame] = useState(false);
-  const [moveGameTime, setMoveGameTime] = useState<GameTime>({
-    hours: 0,
-    minutes: 0,
-  });
-  const [moveGameTimeIndex, setMoveGameTimeIndex] = useState(0);
+  const [moveGameTimeIndex, setMoveGameTimeIndex] = useState<
+    number | undefined
+  >(undefined);
+  const moveGameTime = useMemo(() => {
+    if (!recordingMode || moveGameTimeIndex === undefined) {
+      return { hours: 0, minutes: 0 };
+    }
+    const gameTime = recordingMode.moveHistory[moveGameTimeIndex]?.gameTime;
+
+    // return gameTime associated with move if it exists else current game time
+    return gameTime ? gameTime : getCurrentGameTime(recordingMode);
+  }, [recordingMode, moveGameTimeIndex]);
   const [, showError] = useError();
 
   // Scroll view ref
@@ -108,8 +115,6 @@ const GraphicalRecording: React.FC = () => {
   const showSelectGameTimeSheet = (index: number): void => {
     // store index, set the current game time for that move, then show sheet
     setMoveGameTimeIndex(index);
-    setMoveGameTime(getMoveGameTime(recordingMode, index));
-    setShowTimeSheet(true);
   };
 
   useEffect(() => {
@@ -141,14 +146,20 @@ const GraphicalRecording: React.FC = () => {
             dismiss={handleDismissMoveOptions}
           />
           <TimePickerSheet
-            dismiss={() => setShowTimeSheet(false)}
-            visible={showTimeSheet}
+            dismiss={() => setMoveGameTimeIndex(undefined)}
+            visible={moveGameTimeIndex !== undefined}
             gameTime={moveGameTime}
             setGameTime={(gameTime: GameTime | undefined) => {
-              if (setGameTime) {
+              if (setGameTime && moveGameTimeIndex !== undefined) {
+                pushUndoAction({
+                  type: ReversibleActionType.EditTimeForMove,
+                  indexOfPlyInHistory: moveGameTimeIndex,
+                  previousGameTime:
+                    recordingMode?.moveHistory[moveGameTimeIndex]?.gameTime,
+                });
                 setGameTime(moveGameTimeIndex, gameTime);
               }
-              setShowTimeSheet(false);
+              setMoveGameTimeIndex(undefined);
             }}
           />
           {/*----- body ----- */}
@@ -200,27 +211,6 @@ const GraphicalRecording: React.FC = () => {
       )}
     </>
   );
-};
-
-/**
- * Gets the game time associated with the move index stored
- * Will return the time since the start of the game if the current move has no time
- * @param currentState - the current game state
- * @param moveIndex - the index of the move to get the game time for
- * @returns The game time
- */
-const getMoveGameTime = (
-  currentState: RecordingMode | undefined,
-  moveIndex: number,
-): GameTime => {
-  if (!currentState) {
-    // un reachable code, graphical state should never be null
-    return { hours: 0, minutes: 0 };
-  }
-  const gameTime = currentState.moveHistory[moveIndex]?.gameTime;
-
-  // return gameTime associated with move if it exists else current game time
-  return gameTime ? gameTime : getCurrentGameTime(currentState);
 };
 
 /**
