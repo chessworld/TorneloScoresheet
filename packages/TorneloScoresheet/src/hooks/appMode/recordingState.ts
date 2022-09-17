@@ -17,7 +17,7 @@ import { MoveLegality } from '../../types/MoveLegality';
 import { AppModeStateContextType } from '../../context/AppModeStateContext';
 import { getCurrentFen } from '../../util/moveHistory';
 
-type RecordingStateHookType = {
+export type RecordingStateHookType = {
   state: RecordingMode;
   goToEndGame: (result: ChessGameResult) => void;
   goToTextInput: () => void;
