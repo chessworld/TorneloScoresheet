@@ -30,7 +30,7 @@ export type MoveAction = {
 
 // An action that can be "undone"
 export type ReversibleAction =
-  | ReplaceMovesAction
+  | EditTimeForMoveAction
   | ReplaceMovesAction
   | ToggleDrawOfferAction
   | MoveAction;
