@@ -1,4 +1,4 @@
-import { ChessPly, GameTime } from './ChessMove';
+import { ChessPly, GameTime, MoveSquares, PieceType } from './ChessMove';
 
 export enum ReversibleActionType {
   ReplaceMoves,
@@ -26,6 +26,8 @@ export type EditTimeForMoveAction = {
 
 export type MoveAction = {
   type: ReversibleActionType.Move;
+  moveSquares: MoveSquares;
+  promotion: PieceType | undefined;
 };
 
 // An action that can be "undone"
