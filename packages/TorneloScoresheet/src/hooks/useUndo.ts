@@ -66,15 +66,7 @@ export const useUndo = (): UndoStateModifiers => {
         return;
       }
       case ReversibleActionType.Move: {
-        newStackSetter(stackState =>
-          stackState.concat([
-            {
-              type: ReversibleActionType.Move,
-              moveSquares: action.moveSquares,
-              promotion: action.promotion,
-            },
-          ]),
-        );
+        newStackSetter(stackState => stackState.concat([action]));
         return;
       }
       default: {

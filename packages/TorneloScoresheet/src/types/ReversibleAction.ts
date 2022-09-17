@@ -28,6 +28,7 @@ export type MoveAction = {
   type: ReversibleActionType.Move;
   moveSquares: MoveSquares;
   promotion: PieceType | undefined;
+  withSkip: boolean;
 };
 
 // An action that can be "undone"

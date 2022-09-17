@@ -90,12 +90,17 @@ const GraphicalRecording: React.FC = () => {
       promotion = await promptUserForPromotionChoice();
     }
 
-    pushUndoAction({ type: ReversibleActionType.Move, moveSquares, promotion });
     // If the user is moving the piece of the player who's turn it ISN'T,
     // automatically insert a skip for them
-    const moveFunction = isOtherPlayersPiece(moveSquares)
-      ? skipTurnAndProcessMove
-      : makeMove;
+    const withSkip = isOtherPlayersPiece(moveSquares);
+    const moveFunction = withSkip ? skipTurnAndProcessMove : makeMove;
+
+    pushUndoAction({
+      type: ReversibleActionType.Move,
+      moveSquares,
+      promotion,
+      withSkip,
+    });
 
     const resultOfMove = moveFunction(moveSquares, promotion);
     if (isError(resultOfMove)) {
