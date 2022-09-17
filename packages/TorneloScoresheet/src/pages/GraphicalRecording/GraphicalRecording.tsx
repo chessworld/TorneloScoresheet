@@ -20,7 +20,7 @@ import { plysToMoves } from '../../util/moves';
 import { useUndo } from '../../hooks/useUndo';
 
 const GraphicalRecording: React.FC = () => {
-  const { undo, pushUndoAction } = useUndo();
+  const { undo, redo, pushUndoAction } = useUndo();
   // app mode hook unpacking
   const recordingState = useRecordingState();
   const recordingMode = recordingState?.state;
@@ -168,6 +168,7 @@ const GraphicalRecording: React.FC = () => {
             <Actions
               pushUndoAction={pushUndoAction}
               undo={undo}
+              redo={redo}
               flipBoard={() => setFlipBoard(v => !v)}
               recordTime={() =>
                 recordingState &&
