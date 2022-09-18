@@ -24,6 +24,15 @@ describe('Edit Move With Skip Ply', () => {
         move: { from: 'a2', to: 'a4' } as MoveSquares,
         drawOffer: false,
         san: 'a2a4',
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inFiveFoldRepetition: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
       },
       {
         moveNo: 1,
@@ -34,12 +43,20 @@ describe('Edit Move With Skip Ply', () => {
         type: PlyTypes.MovePly,
         drawOffer: false,
         san: 'h6',
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inFiveFoldRepetition: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
       },
     ];
     const editMoveState = generateEditMoveState(moveHistory, 0);
     const setContextMock = mockAppModeContext(editMoveState);
     const editMoveStateHook = renderCustomHook(useEditMoveState);
-    editMoveState.pairing.positionOccurances = {};
     mockGetRecordingModeData();
 
     await act(async () => {
@@ -51,7 +68,14 @@ describe('Edit Move With Skip Ply', () => {
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         mode: AppMode.Recording,
-        pairing: editMoveState.pairing,
+        pairing: {
+          ...editMoveState.pairing,
+          positionOccurances: {
+            'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': 1,
+            'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq -': 1,
+            'rnbqkbnr/ppppppp1/7p/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': 1,
+          },
+        },
         board: chessEngine.fenToBoardPositions(
           'rnbqkbnr/ppppppp1/7p/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 2',
         ),
@@ -66,6 +90,15 @@ describe('Edit Move With Skip Ply', () => {
               'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
             type: PlyTypes.SkipPly,
             drawOffer: false,
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inFiveFoldRepetition: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
           },
           {
             moveNo: 1,
@@ -76,6 +109,15 @@ describe('Edit Move With Skip Ply', () => {
             type: PlyTypes.MovePly,
             drawOffer: false,
             san: 'h6',
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inFiveFoldRepetition: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
           },
         ],
       });
@@ -139,6 +181,15 @@ describe('Edit move with Move Ply', () => {
         move: { from: 'a2', to: 'a4' } as MoveSquares,
         drawOffer: false,
         san: 'a2a4',
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inFiveFoldRepetition: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
       },
       {
         moveNo: 1,
@@ -149,12 +200,20 @@ describe('Edit move with Move Ply', () => {
         type: PlyTypes.MovePly,
         drawOffer: false,
         san: 'h6',
+        legality: {
+          inCheck: false,
+          inCheckmate: false,
+          inFiveFoldRepetition: false,
+          inDraw: false,
+          inStalemate: false,
+          inThreefoldRepetition: false,
+          insufficientMaterial: false,
+        },
       },
     ];
     const editMoveState = generateEditMoveState(moveHistory, 0);
     const setContextMock = mockAppModeContext(editMoveState);
     const editMoveStateHook = renderCustomHook(useEditMoveState);
-    editMoveState.pairing.positionOccurances = {};
     mockGetRecordingModeData();
 
     await act(async () => {
@@ -169,7 +228,14 @@ describe('Edit move with Move Ply', () => {
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         mode: AppMode.Recording,
-        pairing: editMoveState.pairing,
+        pairing: {
+          ...editMoveState.pairing,
+          positionOccurances: {
+            'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': 1,
+            'rnbqkbnr/pppppppp/8/8/8/P7/1PPPPPPP/RNBQKBNR b KQkq -': 1,
+            'rnbqkbnr/ppppppp1/7p/8/8/P7/1PPPPPPP/RNBQKBNR w KQkq -': 1,
+          },
+        },
         board: chessEngine.fenToBoardPositions(
           'rnbqkbnr/ppppppp1/7p/8/8/P7/1PPPPPPP/RNBQKBNR w KQkq - 0 2',
         ),
@@ -187,6 +253,15 @@ describe('Edit move with Move Ply', () => {
             drawOffer: false,
             san: 'a3',
             promotion: undefined,
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inFiveFoldRepetition: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
           },
           {
             moveNo: 1,
@@ -196,6 +271,15 @@ describe('Edit move with Move Ply', () => {
             move: { from: 'h7', to: 'h6' } as MoveSquares,
             type: PlyTypes.MovePly,
             drawOffer: false,
+            legality: {
+              inCheck: false,
+              inCheckmate: false,
+              inFiveFoldRepetition: false,
+              inDraw: false,
+              inStalemate: false,
+              inThreefoldRepetition: false,
+              insufficientMaterial: false,
+            },
             san: 'h6',
           },
         ],
