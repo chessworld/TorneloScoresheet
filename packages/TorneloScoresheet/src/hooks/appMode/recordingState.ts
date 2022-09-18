@@ -42,11 +42,6 @@ type recordingStateHookType = [
     setGameTime: (index: number, gameTime: GameTime | undefined) => void;
     toggleRecordingMode: () => void;
     goToEditMove: (index: number) => void;
-    checkMoveLegality: (
-      fen: string,
-      moveHistory: ChessPly[],
-      index: number,
-    ) => ChessPly[] | undefined;
   },
 ];
 
@@ -140,7 +135,7 @@ export const makeUseRecordingState =
       );
 
       // return null if move is impossible
-      if (!moveSAN) {
+      if (!moveResult) {
         return null;
       }
 
@@ -330,16 +325,16 @@ export const makeUseRecordingState =
       if (isError(historyAfterSkip)) {
         return historyAfterSkip;
       }
+
       const historyAfterSkipAndMove = processPlayerMove(
         moveSquares,
         historyAfterSkip.data,
         promotion,
       );
-      changePositionOccurance(
-        historyAfterSkip.data,
-        historyAfterSkip.data.length - 1,
-        1,
-      );
+      if (!historyAfterSkipAndMove) {
+        return fail('illegal move');
+      }
+
       updateBoard(historyAfterSkipAndMove);
       return succ(undefined);
     };
@@ -409,7 +404,6 @@ export const makeUseRecordingState =
         setGameTime,
         toggleRecordingMode,
         goToEditMove,
-        checkMoveLegality,
       },
     ];
   };
