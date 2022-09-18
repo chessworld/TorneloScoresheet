@@ -4,6 +4,7 @@ export type MoveLegality = {
   inThreefoldRepetition?: boolean;
   inCheck?: boolean;
   inDraw?: boolean;
+  inFiveFoldRepetition?: boolean;
   inCheckmate?: boolean;
   insufficientMaterial?: boolean;
   inStalemate?: boolean;
