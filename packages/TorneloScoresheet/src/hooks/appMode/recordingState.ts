@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
-import { MoveReturnType } from '../../chessEngine/chessTsChessEngine';
 import {
   AppMode,
   AppModeState,
@@ -71,13 +70,17 @@ const getCurrentFen = (moveHistory: ChessPly[]): string => {
   }
 
   // Last ply = MovePly
-  return (
-    chessEngine.makeMove(
-      lastPly.startingFen,
-      lastPly.move,
-      lastPly.promotion,
-    ) ?? ''
-  ); // all move in history are legal, -> should never return undef
+  const result = chessEngine.makeMove(
+    lastPly.startingFen,
+    lastPly.move,
+    lastPly.promotion,
+  );
+
+  // all move in history are legal, -> should never be undef
+  if (!result) {
+    return '';
+  }
+  return result[0];
 };
 
 export const makeUseRecordingState =
@@ -92,41 +95,25 @@ export const makeUseRecordingState =
     if (appModeState.mode !== AppMode.Recording) {
       return null;
     }
-    const inThreeFoldRepetition = (fen: string): boolean => {
-      const newFen = fen.split('-')[0]?.concat('-');
-      if (newFen && appModeState.pairing.positionOccurances[newFen]) {
-        if ((appModeState.pairing.positionOccurances[newFen] || 0) >= 2) {
-          return true;
-        }
-      }
-      return false;
-    };
 
     const checkMoveLegality = (fen: string): MoveLegality => {
-      let moveLegality: MoveLegality = {};
-      moveLegality.inThreefoldRepetition = inThreeFoldRepetition(fen);
-      moveLegality.inCheck = chessEngine.inCheck(fen);
-      moveLegality.inDraw = chessEngine.inDraw(fen);
-      moveLegality.inCheckmate = chessEngine.inCheckmate(fen);
-      moveLegality.insufficientMaterial = chessEngine.insufficientMaterial(fen);
-      moveLegality.inStalemate = chessEngine.inStalemate(fen);
-      return moveLegality;
-    };
-
-    const moveInFiveFoldRepetition = (fen: string): boolean => {
-      return (appModeState.pairing.positionOccurances[fen] ?? 0) > 4;
-    };
-
-    const gameInFiveFoldRepetition = (): boolean => {
-      let gameInRepetition = false;
-      if (appModeState.pairing.positionOccurances) {
-        for (let key in appModeState.pairing.positionOccurances) {
-          if (moveInFiveFoldRepetition(key)) {
-            gameInRepetition = true;
-          }
-        }
-      }
-      return gameInRepetition;
+      return {
+        inThreefoldRepetition: chessEngine.gameInNFoldRepetition(
+          fen,
+          appModeState.pairing.positionOccurances,
+          3,
+        ),
+        inCheck: chessEngine.inCheck(fen),
+        inDraw: chessEngine.inDraw(fen),
+        inCheckmate: chessEngine.inCheckmate(fen),
+        insufficientMaterial: chessEngine.insufficientMaterial(fen),
+        inStalemate: chessEngine.inStalemate(fen),
+        inFiveFoldRepetition: chessEngine.gameInNFoldRepetition(
+          fen,
+          appModeState.pairing.positionOccurances,
+          5,
+        ),
+      };
     };
 
     /**
@@ -143,28 +130,23 @@ export const makeUseRecordingState =
       promotion?: PieceType,
     ): ChessPly[] | null => {
       const startingFen = getCurrentFen(moveHistory);
+
       // process move
-      const moveSAN = chessEngine.makeMove(
+      const moveResult = chessEngine.makeMove(
         startingFen,
         moveSquares,
         promotion,
-        MoveReturnType.MOVE_SAN,
+        appModeState.pairing.positionOccurances,
       );
 
-      const moveFEN = chessEngine.makeMove(
-        startingFen,
-        moveSquares,
-        promotion,
-        MoveReturnType.NEXT_STARTING_FEN,
-      );
       // return null if move is impossible
       if (!moveSAN) {
         return null;
       }
 
-      if (gameInFiveFoldRepetition()) {
-        return null;
-      }
+      const [moveFEN, moveSAN] = moveResult;
+
+      changePositionOccurance(moveFEN, 1);
 
       // build next play and return new history
       const nextPly: MovePly = {
@@ -179,10 +161,9 @@ export const makeUseRecordingState =
         promotion,
         drawOffer: false,
         san: moveSAN,
+        legality: checkMoveLegality(moveFEN),
       };
 
-      const moveLegality = checkMoveLegality(moveFEN);
-      nextPly.legality = moveLegality;
       return [...moveHistory, nextPly];
     };
 
@@ -193,11 +174,23 @@ export const makeUseRecordingState =
      * @returns new moveHistory array
      */
     const skipPlayerTurn = (moveHistory: ChessPly[]): Result<ChessPly[]> => {
-      if (gameInFiveFoldRepetition()) {
+      const currentFen = getCurrentFen(moveHistory);
+
+      // ensure game in legal state
+      if (
+        chessEngine.gameInNFoldRepetition(
+          currentFen,
+          appModeState.pairing.positionOccurances,
+          5,
+        )
+      ) {
         return fail('Illegal Move');
       }
+
+      changePositionOccurance(chessEngine.skipTurn(currentFen), 1);
+
       const nextPly: SkipPly = {
-        startingFen: getCurrentFen(moveHistory),
+        startingFen: currentFen,
         type: PlyTypes.SkipPly,
         moveNo: Math.floor(moveHistory.length / 2) + 1,
         player:
@@ -264,14 +257,8 @@ export const makeUseRecordingState =
       });
     };
 
-    const changePositionOccurance = (
-      moveHistory: ChessPly[],
-      moveIndex: number,
-      change: number,
-    ): void => {
-      const key = moveHistory[moveIndex]!.startingFen.split(' ')
-        .slice(0, 4)
-        .join(' ');
+    const changePositionOccurance = (fen: string, change: number): void => {
+      const key = fen.split('-')[0]?.concat('-') ?? '';
       if (!appModeState.pairing.positionOccurances) {
         appModeState.pairing.positionOccurances = {};
       }
@@ -296,7 +283,6 @@ export const makeUseRecordingState =
         return fail('Illegal Move');
       }
 
-      changePositionOccurance(moveHistory, moveHistory.length - 1, 1);
       updateBoard(moveHistory);
 
       return succ(undefined);
@@ -309,8 +295,8 @@ export const makeUseRecordingState =
     const undoLastMove = (): void => {
       if (appModeState.moveHistory.length > 0) {
         changePositionOccurance(
-          appModeState.moveHistory,
-          appModeState.moveHistory.length - 1,
+          appModeState.moveHistory[appModeState.moveHistory.length - 1]
+            ?.startingFen ?? '',
           -1,
         );
       } else {
