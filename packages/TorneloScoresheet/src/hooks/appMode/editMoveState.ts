@@ -93,15 +93,22 @@ const rebuildHistory = (
   }
   let previousPly: ChessPly = editedPly;
   let previousStartingFen = getStartingFen(previousPly) ?? '';
-  if (previousStartingFen === '') {
-    return null;
-  }
 
   // for each move after the edited ply
   // we generate it's new starting fen based on the previous ply
   // if the starting fen is null (the move was impossible) we add null to to newHistory[]
   // otherwise we add the ply with the updated starting fen to newHistory[]
   const newHistory = futureMoves.map(move => {
+    if (previousStartingFen === '') {
+      previousPly = {
+        moveNo: move.moveNo,
+        startingFen: previousPly.startingFen,
+        drawOffer: move.drawOffer,
+        player: move.player,
+        type: PlyTypes.SkipPly,
+      };
+      return previousPly;
+    }
     positionOccurances = updatePositionOccurence(
       positionOccurances,
       previousStartingFen,
@@ -115,8 +122,20 @@ const rebuildHistory = (
         move.promotion,
         positionOccurances,
       );
+
+      // return a skip if move impossible
       if (!nextMoveResult) {
-        return null;
+        previousPly = {
+          moveNo: move.moveNo,
+          startingFen: previousStartingFen,
+          drawOffer: move.drawOffer,
+          player: move.player,
+          type: PlyTypes.SkipPly,
+        };
+
+        const nextFen = chessEngine.skipTurn(previousStartingFen);
+        previousStartingFen = nextFen;
+        return previousPly;
       }
       const [nextFen, nextSan] = nextMoveResult;
 
@@ -154,11 +173,16 @@ const rebuildHistory = (
   // if (previousStartingFen === '') {
   // return null;
   // }
-
-  // if moveHistory contains a null, a move was impossible -> return null
-  const errors = newHistory.filter((moves): moves is null => moves === null);
-  if (errors.length > 0) {
-    return null;
+  const nextMovesFen = getStartingFen(previousPly);
+  if (nextMovesFen === null) {
+    const skip: ChessPly = {
+      moveNo: previousPly.moveNo,
+      startingFen: previousPly.startingFen,
+      drawOffer: previousPly.drawOffer,
+      player: previousPly.player,
+      type: PlyTypes.SkipPly,
+    };
+    newHistory[newHistory.length - 1] = skip;
   }
 
   // return the a new array containing the updated history
