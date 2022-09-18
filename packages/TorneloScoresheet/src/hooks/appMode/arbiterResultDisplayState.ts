@@ -67,13 +67,19 @@ export const makeUseArbiterResultDisplayState =
       }
 
       // get next move's starting fen based on the last move
-      return lastMove.type === PlyTypes.MovePly
-        ? chessEngine.makeMove(
-            lastMove.startingFen,
-            lastMove.move,
-            lastMove.promotion,
-          )
-        : chessEngine.skipTurn(lastMove.startingFen);
+      if (lastMove.type === PlyTypes.MovePly) {
+        const moveResult = chessEngine.makeMove(
+          lastMove.startingFen,
+          lastMove.move,
+          lastMove.promotion,
+        );
+        if (!moveResult) {
+          return null;
+        }
+        return moveResult[0];
+      }
+
+      return chessEngine.skipTurn(lastMove.startingFen);
     };
 
     const goBackToRecordingMode = async (): Promise<Result<string>> => {
