@@ -26,16 +26,17 @@ export type ChessEngineInterface = {
    * Processes a move given the starting fen and to and from positions
    * @param startingFen the fen of the game state before the move
    * @param moveSquares the to and from positions of the move
+   * @param positionOccurence the record of fen to count of occurences, if null, will not check for 5 fold repetition
    * @param promotion the to and from positions of the move
    * @param returnType the return of this function, either the starting fen or the move's SAN
-   * @returns the next fen / move SAN if move is possible else null
+   * @returns the next fen and move SAN if move is possible else null
    */
   makeMove: (
     startingFen: string,
     moveSquares: MoveSquares,
     promotion?: PieceType,
-    returnType?: MoveReturnType,
-  ) => string | null;
+    positionOccurence?: Record<string, number>,
+  ) => [string, string] | null;
 
   /**
    * Returns the board postion state given a fen
@@ -51,6 +52,18 @@ export type ChessEngineInterface = {
    * @returns true/false
    */
   isPawnPromotion: (startingFen: string, moveSquares: MoveSquares) => boolean;
+
+  /**
+   * Checks if the game is currently in a n fold repetition state
+   * @param fen: the state of the game
+   * @param positionOccurence the record of fen to count of occurences
+   * @param n the number of occurences
+   */
+  gameInNFoldRepetition: (
+    fen: string,
+    positionOccurence: Record<string, number>,
+    n: number,
+  ) => boolean;
 
   /**
    * Skips the turn of the current player

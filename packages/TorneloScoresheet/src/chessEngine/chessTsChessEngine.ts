@@ -107,18 +107,42 @@ export enum MoveReturnType {
 }
 
 /**
+ * Checks if the game is currently in a five fold repetition state
+ * @param fen: the state of the game
+ * @param positionOccurence the record of fen to count of occurences
+ */
+const gameInNFoldRepetition = (
+  fen: string,
+  positionOccurence: Record<string, number>,
+  n: number,
+): boolean => {
+  const newFen = fen.split('-')[0]?.concat('-') ?? '';
+  return (positionOccurence[newFen] ?? 0) >= n;
+};
+
+/**
  * Processes a move given the starting fen and to and from positions
- * @param fromFen the fen of the game state before the move
+ * @param startingFen the fen of the game state before the move
  * @param moveSquares the to and from positions of the move
+ * @param positionOccurence the record of fen to count of occurences
+ * @param promotion the to and from positions of the move
  * @param returnType the return of this function, either the starting fen or the move's SAN
- * @returns the next fen / move SAN if move is possible else null
+ * @returns the next fen and move SAN if move is possible else null
  */
 const makeMove = (
   fromFen: string,
   moveSquares: MoveSquares,
   promotion?: PieceType,
-  returnType: MoveReturnType = MoveReturnType.NEXT_STARTING_FEN,
-): string | null => {
+  positionOccurence?: Record<string, number>,
+): [string, string] | null => {
+  // check for five fold repetition
+  if (positionOccurence) {
+    for (const key in positionOccurence) {
+      if (gameInNFoldRepetition(key, positionOccurence, 5)) {
+        return null;
+      }
+    }
+  }
   const game = new Chess(fromFen);
   const result = game.move({
     from: moveSquares.from,
@@ -131,13 +155,7 @@ const makeMove = (
     return null;
   }
 
-  // if move is possible -> return next starting fen or the SAN of the move
-  switch (returnType) {
-    case MoveReturnType.NEXT_STARTING_FEN:
-      return game.fen();
-    case MoveReturnType.MOVE_SAN:
-      return result.san;
-  }
+  return [game.fen(), result.san];
 };
 
 /**
@@ -298,6 +316,7 @@ export const chessTsChessEngine: ChessEngineInterface = {
   inStalemate,
   isOtherPlayersPiece,
   generatePgn,
+  gameInNFoldRepetition,
 };
 
 // ------- Privates

@@ -1015,17 +1015,22 @@ describe('makeMove', () => {
   };
   positions.forEach(function (position) {
     it(position.name, function () {
-      const nextFenResult = chessEngine.makeMove(position.fen, {
-        from: position.move.from as Position,
-        to: position.move.to as Position,
-      });
+      const nextFenResult = chessEngine.makeMove(
+        position.fen,
+        {
+          from: position.move.from as Position,
+          to: position.move.to as Position,
+        },
+        {},
+      );
       if (position.possible) {
         expect(nextFenResult !== null).toBe(true);
         if (nextFenResult !== null) {
-          const board = chessEngine.fenToBoardPositions(nextFenResult);
+          const [nextfen, nextsan] = nextFenResult;
+          const board = chessEngine.fenToBoardPositions(nextfen);
           expect(
-            nextFenResult &&
-              nextFenResult === position.next &&
+            nextfen &&
+              nextfen === position.next &&
               boardCorrect(
                 board,
                 {
@@ -1047,13 +1052,14 @@ describe('makeMove', () => {
         from: position.move.from as Position,
         to: position.move.to as Position,
       },
+      {},
       undefined,
-      MoveReturnType.MOVE_SAN,
     );
     if (position.possible) {
       expect(moveSanResult !== null).toBe(true);
       if (moveSanResult !== null) {
-        expect(moveSanResult).toEqual(position.san);
+        const [nextfen, nextsan] = moveSanResult;
+        expect(nextsan).toEqual(position.san);
       }
     } else {
       expect(moveSanResult).toBeNull();
