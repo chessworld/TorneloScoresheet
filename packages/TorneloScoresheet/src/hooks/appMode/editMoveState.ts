@@ -131,6 +131,7 @@ const rebuildHistory = (
           drawOffer: move.drawOffer,
           player: move.player,
           type: PlyTypes.SkipPly,
+          legality: checkMoveLegality(previousStartingFen, positionOccurances),
         };
 
         const nextFen = chessEngine.skipTurn(previousStartingFen);
@@ -181,6 +182,7 @@ const rebuildHistory = (
       drawOffer: previousPly.drawOffer,
       player: previousPly.player,
       type: PlyTypes.SkipPly,
+      legality: checkMoveLegality(previousPly.startingFen, positionOccurances),
     };
     newHistory[newHistory.length - 1] = skip;
   }
