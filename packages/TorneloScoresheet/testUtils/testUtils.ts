@@ -29,7 +29,10 @@ export const renderCustomHook = <T>(hook: () => T): RenderResult<T> => {
  * Generates a fake pairing
  * @returns a ChessGameInfo object with test values
  */
-export const generateGamePairingInfo = (pgn?: string): ChessGameInfo => {
+export const generateGamePairingInfo = (
+  pgn?: string,
+  positionOccurances?: Record<string, number>,
+): ChessGameInfo => {
   return {
     name: 'name',
     site: 'site',
@@ -57,7 +60,7 @@ export const generateGamePairingInfo = (pgn?: string): ChessGameInfo => {
     ],
     result: '',
     pgn: pgn ?? '',
-    positionOccurances: {},
+    positionOccurances: positionOccurances ?? {},
   };
 };
 
@@ -71,10 +74,16 @@ export const generateRecordingState = (
   recordingModeType: 'Graphical' | 'Text',
   pgn?: string,
 ): RecordingMode => {
+  const positionOccurances: Record<string, number> = {};
+  moveHistory.forEach(move => {
+    const key = move.startingFen.split('-')[0]?.concat('-') ?? '';
+    positionOccurances[key] =
+      key in positionOccurances ? (positionOccurances[key] || 0) + 1 : 1;
+  });
   return {
     startTime: new Date().getTime(),
     mode: AppMode.Recording,
-    pairing: generateGamePairingInfo(pgn),
+    pairing: generateGamePairingInfo(pgn, positionOccurances),
     moveHistory: moveHistory,
     board: chessEngine.fenToBoardPositions(
       moveHistory.at(-1)?.startingFen ?? chessEngine.startingFen(),
@@ -93,11 +102,17 @@ export const generateEditMoveState = (
   moveHistory: ChessPly[],
   moveIndex: number,
 ): EditingMoveMode => {
+  const positionOccurances: Record<string, number> = {};
+  moveHistory.forEach(move => {
+    const key = move.startingFen.split('-')[0]?.concat('-') ?? '';
+    positionOccurances[key] =
+      key in positionOccurances ? (positionOccurances[key] || 0) + 1 : 1;
+  });
   return {
     mode: AppMode.EditMove,
     moveHistory,
     editingIndex: moveIndex,
-    pairing: generateGamePairingInfo(),
+    pairing: generateGamePairingInfo('', positionOccurances),
     board: chessEngine.fenToBoardPositions(
       moveHistory.at(-1)?.startingFen ?? chessEngine.startingFen(),
     ),
