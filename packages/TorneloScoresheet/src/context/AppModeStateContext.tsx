@@ -9,6 +9,7 @@ import { makeUseArbiterRecordingState } from '../hooks/appMode/arbiterRecordingS
 import { makeUseArbiterTablePairingState } from '../hooks/appMode/arbiterTablePairingState';
 import { makeUseArbiterResultDisplayState } from '../hooks/appMode/arbiterResultDisplayState';
 import { makeUseEditMoveState } from '../hooks/appMode/editMoveState';
+import { makeToolbarViewModel } from '../hooks/appMode/toolbarViewModel';
 
 export type AppModeStateContextType = React.Context<
   [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
@@ -40,6 +41,8 @@ export const AppModeStateContextProvider: React.FC = ({ children }) => {
 };
 
 // state creations
+export const useToolbar = makeToolbarViewModel(AppModeStateContext);
+
 export const useEnterPgnState = makeUseEnterPgnState(AppModeStateContext);
 
 export const usePairingSelectionState =
