@@ -2,10 +2,12 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   movesContainer: {
-    borderTopColor: 'black',
-    borderTopWidth: 1,
     margin: 10,
     marginBottom: 40,
+  },
+  firstMoveContainer: {
+    borderTopColor: 'black',
+    borderTopWidth: 1,
   },
   moveRowContainer: {
     display: 'flex',
