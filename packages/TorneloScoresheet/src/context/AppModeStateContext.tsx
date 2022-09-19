@@ -3,12 +3,13 @@ import { makeUseEnterPgnState } from '../hooks/appMode/enterPgnState';
 import { makeUsePairingSelectionState } from '../hooks/appMode/pairingSelectionState';
 import { makeUseTablePairingState } from '../hooks/appMode/tablePairingState';
 import { makeUseRecordingState } from '../hooks/appMode/recordingState';
-import { AppModeState, AppMode, EnterPgnViews } from '../types/AppModeState';
+import { AppModeState, AppMode } from '../types/AppModeState';
 import { makeUseResultDisplayState } from '../hooks/appMode/resultDisplayState';
 import { makeUseArbiterRecordingState } from '../hooks/appMode/arbiterRecordingState';
 import { makeUseArbiterTablePairingState } from '../hooks/appMode/arbiterTablePairingState';
 import { makeUseArbiterResultDisplayState } from '../hooks/appMode/arbiterResultDisplayState';
 import { makeUseEditMoveState } from '../hooks/appMode/editMoveState';
+import { makeUseViewPastGames } from '../hooks/appMode/viewPastGamesState';
 import { makeToolbarViewModel } from '../hooks/appMode/toolbarViewModel';
 
 export type AppModeStateContextType = React.Context<
@@ -19,7 +20,7 @@ export type AppModeStateContextType = React.Context<
 // This is not exported so the setAppModeState is never leaked
 const AppModeStateContext = React.createContext<
   [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
->([{ mode: AppMode.EnterPgn, view: EnterPgnViews.ENTER_PGN }, () => undefined]);
+>([{ mode: AppMode.EnterPgn }, () => undefined]);
 
 export const useAppModeState = (): AppModeState => {
   const [appModeState] = useContext(AppModeStateContext);
@@ -30,7 +31,6 @@ export const useAppModeState = (): AppModeState => {
 export const AppModeStateContextProvider: React.FC = ({ children }) => {
   const appModeState = useState({
     mode: AppMode.EnterPgn,
-    view: EnterPgnViews.ENTER_PGN,
   } as AppModeState);
 
   return (
@@ -44,6 +44,8 @@ export const AppModeStateContextProvider: React.FC = ({ children }) => {
 export const useToolbar = makeToolbarViewModel(AppModeStateContext);
 
 export const useEnterPgnState = makeUseEnterPgnState(AppModeStateContext);
+
+export const useViewPastGames = makeUseViewPastGames(AppModeStateContext);
 
 export const usePairingSelectionState =
   makeUsePairingSelectionState(AppModeStateContext);

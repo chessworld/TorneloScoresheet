@@ -1,10 +1,6 @@
 import { useContext } from 'react';
 import { AppModeStateContextType } from '../../context/AppModeStateContext';
-import {
-  AppMode,
-  ArbiterTablePairingMode,
-  EnterPgnViews,
-} from '../../types/AppModeState';
+import { AppMode, ArbiterTablePairingMode } from '../../types/AppModeState';
 import { fail, Result, succ } from '../../types/Result';
 import { getStoredPairingList } from '../../util/storage';
 
@@ -54,7 +50,6 @@ export const makeUseArbiterTablePairingState =
     const goBackToEnterPgn = (): void => {
       setAppModeState({
         mode: AppMode.EnterPgn,
-        view: EnterPgnViews.ENTER_PGN,
       });
     };
 

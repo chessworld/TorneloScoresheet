@@ -1,10 +1,6 @@
 import { useContext } from 'react';
 import { AppModeStateContextType } from '../../context/AppModeStateContext';
-import {
-  AppMode,
-  EnterPgnViews,
-  PairingSelectionMode,
-} from '../../types/AppModeState';
+import { AppMode, PairingSelectionMode } from '../../types/AppModeState';
 import { ChessGameInfo } from '../../types/ChessGameInfo';
 
 type PairingSelectionStateHookType = [
@@ -29,7 +25,6 @@ export const makeUsePairingSelectionState =
     const goToEnterPgn = (): void => {
       setAppModeState({
         mode: AppMode.EnterPgn,
-        view: EnterPgnViews.ENTER_PGN,
       });
     };
 

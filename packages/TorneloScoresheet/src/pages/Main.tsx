@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAppModeState } from '../context/AppModeStateContext';
-import { AppMode, EnterPgnViews } from '../types/AppModeState';
+import { AppMode } from '../types/AppModeState';
 import GraphicalEditMove from './EditMove/GraphicalEditMove';
 import EnterPgn from './EnterPgn/EnterPgn';
 import ArbiterRecording from './GraphicalRecording/ArbiterRecording';
@@ -18,14 +18,11 @@ const Main: React.FC = () => {
 
   switch (appMode.mode) {
     case AppMode.EnterPgn:
-      switch (appMode.view) {
-        case EnterPgnViews.ENTER_PGN:
-          return <EnterPgn />;
-        case EnterPgnViews.VIEW_PAST_GAMES:
-          return <ViewPastGames />;
-      }
+      return <EnterPgn />;
     case AppMode.PairingSelection:
       return <PairingSelection />;
+    case AppMode.ViewPastGames:
+      return <ViewPastGames />;
     case AppMode.TablePairing:
       return <TablePairing />;
     case AppMode.Recording:

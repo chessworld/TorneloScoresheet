@@ -1,11 +1,7 @@
 import { useContext } from 'react';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
 import { AppModeStateContextType } from '../../context/AppModeStateContext';
-import {
-  AppMode,
-  ArbiterResultDisplayMode,
-  EnterPgnViews,
-} from '../../types/AppModeState';
+import { AppMode, ArbiterResultDisplayMode } from '../../types/AppModeState';
 import { PlayerColour } from '../../types/ChessGameInfo';
 import { ChessPly, PlyTypes } from '../../types/ChessMove';
 import { fail, Result, succ } from '../../types/Result';
@@ -53,7 +49,6 @@ export const makeUseArbiterResultDisplayState =
       // set mode to enter pgn
       setAppModeState({
         mode: AppMode.EnterPgn,
-        view: EnterPgnViews.ENTER_PGN,
       });
     };
 
