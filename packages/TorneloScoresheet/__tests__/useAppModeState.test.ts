@@ -44,13 +44,13 @@ describe('useAppModeState', () => {
       }
 
       // try to go to pairing selection with wrong url
-      const actionResult = await result.current[1].goToPairingSelection('');
+      const actionResult = await result.current.goToPairingSelection('');
 
       // should return an error
       expect(isError(actionResult)).toEqual(true);
 
       // should still be in enter pgn state
-      expect(result.current[0]).toStrictEqual({
+      expect(result.current.state).toStrictEqual({
         mode: AppMode.EnterPgn,
         view: EnterPgnViews.ENTER_PGN,
       });
@@ -80,7 +80,7 @@ describe('useAppModeState', () => {
       }
 
       // try to go to pairing selection with valid url
-      const actionResult = await enterPgnState.current[1].goToPairingSelection(
+      const actionResult = await enterPgnState.current.goToPairingSelection(
         pgnUrl,
       );
 

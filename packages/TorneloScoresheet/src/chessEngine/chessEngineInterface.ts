@@ -2,7 +2,7 @@ import { BoardPosition } from '../types/ChessBoardPositions';
 import { ChessGameInfo, PlayerColour } from '../types/ChessGameInfo';
 import { PieceType, MoveSquares, ChessPly } from '../types/ChessMove';
 import { Result } from '../types/Result';
-import { chessTsChessEngine, MoveReturnType } from './chessTsChessEngine';
+import { chessTsChessEngine } from './chessTsChessEngine';
 
 /**
  * The interface for the chess engine wrapper, this type is used all
