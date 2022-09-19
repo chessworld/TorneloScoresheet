@@ -46,6 +46,7 @@ const ArbiterAndPlayerModeDisplay: React.FC<
     [AppMode.TablePairing]:
       useTablePairingState()?.[1].goToArbiterGameMode ?? voidReturn,
     [AppMode.EditMove]: useEditMoveState()?.[1].goToArbiterMode ?? voidReturn,
+    [AppMode.ViewPastGames]: voidReturn,
   };
 
   const appModePlayerTransition: Record<AppMode, () => void> = {
@@ -61,6 +62,7 @@ const ArbiterAndPlayerModeDisplay: React.FC<
       useArbiterTablePairingState()?.[1].goToTablePairingMode ?? voidReturn,
     [AppMode.ArbiterResultDisplay]:
       useArbiterResultDisplayState()?.[1].goToResultDisplayMode ?? voidReturn,
+    [AppMode.ViewPastGames]: voidReturn,
   };
 
   const arbiterModeLockDisplay = () => {

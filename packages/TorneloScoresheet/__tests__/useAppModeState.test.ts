@@ -4,7 +4,7 @@ import {
   useEnterPgnState,
 } from '../src/context/AppModeStateContext';
 import { act, renderHook } from '@testing-library/react-hooks';
-import { AppMode, EnterPgnViews } from '../src/types/AppModeState';
+import { AppMode } from '../src/types/AppModeState';
 import { isError } from '../src/types/Result';
 import axios, { AxiosRequestConfig } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -29,7 +29,6 @@ describe('useAppModeState', () => {
     });
     expect(result.current).toStrictEqual({
       mode: AppMode.EnterPgn,
-      view: EnterPgnViews.ENTER_PGN,
     });
   });
 
@@ -52,7 +51,6 @@ describe('useAppModeState', () => {
       // should still be in enter pgn state
       expect(result.current.state).toStrictEqual({
         mode: AppMode.EnterPgn,
-        view: EnterPgnViews.ENTER_PGN,
       });
     });
   });

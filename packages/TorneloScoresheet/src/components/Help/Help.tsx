@@ -52,6 +52,8 @@ const helpFile = (state: AppModeState): string => {
       return 'ResultsDisplay.md';
     case AppMode.TablePairing:
       return 'TablePairing.md';
+    case AppMode.ViewPastGames:
+      return 'ViewPastGames.md';
   }
 };
 
