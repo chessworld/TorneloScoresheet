@@ -1,7 +1,7 @@
 import { useContext } from 'react';
+import { AppModeStateContextType } from '../../context/AppModeStateContext';
 import {
   AppMode,
-  AppModeState,
   EnterPgnViews,
   PairingSelectionMode,
 } from '../../types/AppModeState';
@@ -17,9 +17,7 @@ type PairingSelectionStateHookType = [
 
 export const makeUsePairingSelectionState =
   (
-    context: React.Context<
-      [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
-    >,
+    context: AppModeStateContextType,
   ): (() => PairingSelectionStateHookType | null) =>
   (): PairingSelectionStateHookType | null => {
     const [appModeState, setAppModeState] = useContext(context);

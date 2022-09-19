@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import React, { useContext } from 'react';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
+import { AppModeStateContextType } from '../../context/AppModeStateContext';
 import {
   AppModeState,
   AppMode,
@@ -110,11 +111,7 @@ type EnterPgnStateHookType = {
 };
 
 export const makeUseEnterPgnState =
-  (
-    context: React.Context<
-      [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
-    >,
-  ): (() => EnterPgnStateHookType | null) =>
+  (context: AppModeStateContextType): (() => EnterPgnStateHookType | null) =>
   () => {
     const [appModeState, setAppModeState] = useContext(context);
     if (appModeState.mode !== AppMode.EnterPgn) {

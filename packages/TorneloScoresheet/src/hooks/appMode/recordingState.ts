@@ -2,7 +2,6 @@ import { useContext } from 'react';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
 import {
   AppMode,
-  AppModeState,
   RecordingMode as recordingMode,
 } from '../../types/AppModeState';
 import { ChessGameResult, PlayerColour } from '../../types/ChessGameInfo';
@@ -18,6 +17,7 @@ import {
 import { Result, succ, fail, isError } from '../../types/Result';
 import { storeRecordingModeData } from '../../util/storage';
 import { MoveLegality } from '../../types/MoveLegality';
+import { AppModeStateContextType } from '../../context/AppModeStateContext';
 
 type recordingStateHookType = [
   recordingMode,
@@ -79,11 +79,7 @@ const getCurrentFen = (moveHistory: ChessPly[]): string => {
 };
 
 export const makeUseRecordingState =
-  (
-    context: React.Context<
-      [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
-    >,
-  ): (() => recordingStateHookType | null) =>
+  (context: AppModeStateContextType): (() => recordingStateHookType | null) =>
   (): recordingStateHookType | null => {
     const [appModeState, setAppModeState] = useContext(context);
 

@@ -1,7 +1,7 @@
 import { useContext } from 'react';
+import { AppModeStateContextType } from '../../context/AppModeStateContext';
 import {
   AppMode,
-  AppModeState,
   ArbiterTablePairingMode,
   EnterPgnViews,
 } from '../../types/AppModeState';
@@ -19,9 +19,7 @@ type arbiterTablePairingStateHookType = [
 
 export const makeUseArbiterTablePairingState =
   (
-    context: React.Context<
-      [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
-    >,
+    context: AppModeStateContextType,
   ): (() => arbiterTablePairingStateHookType | null) =>
   (): arbiterTablePairingStateHookType | null => {
     const [appModeState, setAppModeState] = useContext(context);

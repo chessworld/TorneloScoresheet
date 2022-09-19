@@ -10,6 +10,10 @@ import { makeUseArbiterTablePairingState } from '../hooks/appMode/arbiterTablePa
 import { makeUseArbiterResultDisplayState } from '../hooks/appMode/arbiterResultDisplayState';
 import { makeUseEditMoveState } from '../hooks/appMode/editMoveState';
 
+export type AppModeStateContextType = React.Context<
+  [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
+>;
+
 // The global state for the app
 // This is not exported so the setAppModeState is never leaked
 const AppModeStateContext = React.createContext<
