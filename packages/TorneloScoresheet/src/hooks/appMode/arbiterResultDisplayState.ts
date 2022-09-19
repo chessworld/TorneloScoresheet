@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
+import { AppModeStateContextType } from '../../context/AppModeStateContext';
 import {
   AppMode,
-  AppModeState,
   ArbiterResultDisplayMode,
   EnterPgnViews,
 } from '../../types/AppModeState';
@@ -25,9 +25,7 @@ type arbiterResultDisplayStateHookType = [
 
 export const makeUseArbiterResultDisplayState =
   (
-    context: React.Context<
-      [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
-    >,
+    context: AppModeStateContextType,
   ): (() => arbiterResultDisplayStateHookType | null) =>
   (): arbiterResultDisplayStateHookType | null => {
     const [appModeState, setAppModeState] = useContext(context);

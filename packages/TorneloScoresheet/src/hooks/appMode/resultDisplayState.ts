@@ -1,9 +1,6 @@
 import { useContext } from 'react';
-import {
-  AppMode,
-  AppModeState,
-  ResultDisplayMode,
-} from '../../types/AppModeState';
+import { AppModeStateContextType } from '../../context/AppModeStateContext';
+import { AppMode, ResultDisplayMode } from '../../types/AppModeState';
 
 type ResultDisplayStateHookType = [
   ResultDisplayMode,
@@ -14,9 +11,7 @@ type ResultDisplayStateHookType = [
 
 export const makeUseResultDisplayState =
   (
-    context: React.Context<
-      [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
-    >,
+    context: AppModeStateContextType,
   ): (() => ResultDisplayStateHookType | null) =>
   (): ResultDisplayStateHookType | null => {
     const [appModeState, setAppModeState] = useContext(context);

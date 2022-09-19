@@ -1,11 +1,8 @@
 import { useContext } from 'react';
-import {
-  AppMode,
-  AppModeState,
-  TablePairingMode,
-} from '../../types/AppModeState';
+import { AppMode, TablePairingMode } from '../../types/AppModeState';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
 import { PlayerColour } from '../../types/ChessGameInfo';
+import { AppModeStateContextType } from '../../context/AppModeStateContext';
 
 type TablePairingStateHookType = [
   TablePairingMode,
@@ -18,9 +15,7 @@ type TablePairingStateHookType = [
 
 export const makeUseTablePairingState =
   (
-    context: React.Context<
-      [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
-    >,
+    context: AppModeStateContextType,
   ): (() => TablePairingStateHookType | null) =>
   (): TablePairingStateHookType | null => {
     const [appModeState, setAppModeState] = useContext(context);

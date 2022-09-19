@@ -1,11 +1,8 @@
 import { useContext } from 'react';
-import {
-  AppMode,
-  AppModeState,
-  ArbiterRecordingMode as ArbiterRecordingMode,
-} from '../../types/AppModeState';
+import { AppModeStateContextType } from '../../context/AppModeStateContext';
+import { AppMode, ArbiterRecordingMode } from '../../types/AppModeState';
 
-type arbiterRecordingStateHookType = [
+type ArbiterRecordingStateHookType = [
   ArbiterRecordingMode,
   {
     goToRecordingMode: () => void;
@@ -14,11 +11,9 @@ type arbiterRecordingStateHookType = [
 
 export const makeUseArbiterRecordingState =
   (
-    context: React.Context<
-      [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
-    >,
-  ): (() => arbiterRecordingStateHookType | null) =>
-  (): arbiterRecordingStateHookType | null => {
+    context: AppModeStateContextType,
+  ): (() => ArbiterRecordingStateHookType | null) =>
+  (): ArbiterRecordingStateHookType | null => {
     const [appModeState, setAppModeState] = useContext(context);
     if (appModeState.mode !== AppMode.ArbiterRecording) {
       return null;

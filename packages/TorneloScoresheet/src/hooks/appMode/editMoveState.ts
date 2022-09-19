@@ -1,10 +1,7 @@
 import { useContext } from 'react';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
-import {
-  AppMode,
-  AppModeState,
-  EditingMoveMode,
-} from '../../types/AppModeState';
+import { AppModeStateContextType } from '../../context/AppModeStateContext';
+import { AppMode, EditingMoveMode } from '../../types/AppModeState';
 import {
   ChessPly,
   MovePly,
@@ -197,11 +194,7 @@ const updatePositionOccurence = (
   return positionOccurences;
 };
 export const makeUseEditMoveState =
-  (
-    context: React.Context<
-      [AppModeState, React.Dispatch<React.SetStateAction<AppModeState>>]
-    >,
-  ): (() => editMoveStateHookType | null) =>
+  (context: AppModeStateContextType): (() => editMoveStateHookType | null) =>
   (): editMoveStateHookType | null => {
     const [appModeState, setAppModeState] = useContext(context);
     if (appModeState.mode !== AppMode.EditMove) {
