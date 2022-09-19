@@ -1,6 +1,5 @@
 import moment from 'moment';
 import { chessEngine } from '../src/chessEngine/chessEngineInterface';
-import { MoveReturnType } from '../src/chessEngine/chessTsChessEngine';
 import { BoardPosition, Position } from '../src/types/ChessBoardPositions';
 import { PlayerColour } from '../src/types/ChessGameInfo';
 import {
@@ -1021,12 +1020,12 @@ describe('makeMove', () => {
           from: position.move.from as Position,
           to: position.move.to as Position,
         },
-        {},
+        undefined,
       );
       if (position.possible) {
         expect(nextFenResult !== null).toBe(true);
         if (nextFenResult !== null) {
-          const [nextfen, nextsan] = nextFenResult;
+          const [nextfen] = nextFenResult;
           const board = chessEngine.fenToBoardPositions(nextfen);
           expect(
             nextfen &&
@@ -1052,13 +1051,13 @@ describe('makeMove', () => {
         from: position.move.from as Position,
         to: position.move.to as Position,
       },
-      {},
+      undefined,
       undefined,
     );
     if (position.possible) {
       expect(moveSanResult !== null).toBe(true);
       if (moveSanResult !== null) {
-        const [nextfen, nextsan] = moveSanResult;
+        const [, nextsan] = moveSanResult;
         expect(nextsan).toEqual(position.san);
       }
     } else {
