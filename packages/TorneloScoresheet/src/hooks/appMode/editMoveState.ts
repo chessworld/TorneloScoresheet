@@ -100,13 +100,20 @@ const rebuildHistory = (
   // otherwise we add the ply with the updated starting fen to newHistory[]
   const newHistory = futureMoves.map(move => {
     if (previousStartingFen === '') {
+      const nextFen = chessEngine.skipTurn(previousPly.startingFen);
+      previousStartingFen = nextFen;
       previousPly = {
         moveNo: move.moveNo,
         startingFen: previousPly.startingFen,
         drawOffer: move.drawOffer,
         player: move.player,
         type: PlyTypes.SkipPly,
+        legality: checkMoveLegality(nextFen, positionOccurances),
       };
+      positionOccurances = updatePositionOccurence(
+        positionOccurances,
+        previousPly.startingFen,
+      );
       return previousPly;
     }
     positionOccurances = updatePositionOccurence(
@@ -125,16 +132,15 @@ const rebuildHistory = (
 
       // return a skip if move impossible
       if (!nextMoveResult) {
+        const nextFen = chessEngine.skipTurn(previousStartingFen);
         previousPly = {
           moveNo: move.moveNo,
           startingFen: previousStartingFen,
           drawOffer: move.drawOffer,
           player: move.player,
           type: PlyTypes.SkipPly,
-          legality: checkMoveLegality(previousStartingFen, positionOccurances),
+          legality: checkMoveLegality(nextFen, positionOccurances),
         };
-
-        const nextFen = chessEngine.skipTurn(previousStartingFen);
         previousStartingFen = nextFen;
         return previousPly;
       }
@@ -176,13 +182,14 @@ const rebuildHistory = (
   // }
   const nextMovesFen = getStartingFen(previousPly);
   if (nextMovesFen === null) {
+    const nextFen = chessEngine.skipTurn(previousPly.startingFen);
     const skip: ChessPly = {
       moveNo: previousPly.moveNo,
       startingFen: previousPly.startingFen,
       drawOffer: previousPly.drawOffer,
       player: previousPly.player,
       type: PlyTypes.SkipPly,
-      legality: checkMoveLegality(previousPly.startingFen, positionOccurances),
+      legality: checkMoveLegality(nextFen, positionOccurances),
     };
     newHistory[newHistory.length - 1] = skip;
   }
