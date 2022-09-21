@@ -13,7 +13,6 @@ import {
   ICON_SKIP,
   ICON_UNDO,
   KNIGHT,
-  PAWN,
   QUEEN,
   ROOK,
 } from '../../style/images';
@@ -55,24 +54,6 @@ const GraphicalEditMove: React.FC = () => {
   // Button parameters
   const actionButtons: ActionButtonProps[] = [
     {
-      text: 'reset',
-      onPress: () => {
-        // TODO: we will implement this when the user needs to edit multiple moves in a row
-        return;
-      },
-      icon: (
-        <IconButton
-          icon="arrow-back"
-          size={40}
-          colour={colours.white}
-          onPress={() => {
-            return;
-          }}
-        />
-      ),
-      style: { height: 136 },
-    },
-    {
       text: 'cancel',
       style: { height: 136 },
       onPress: () => {
@@ -104,14 +85,6 @@ const GraphicalEditMove: React.FC = () => {
       icon: <ICON_SKIP height={40} fill={colours.white} />,
       style: { height: 136 },
     },
-    {
-      text: 'undo',
-      onPress: () => {
-        // TODO: we will implement this when the user needs to edit multiple moves in a row
-        return;
-      },
-      icon: <ICON_UNDO height={40} fill={colours.white} />,
-    },
   ];
 
   const promotionButtons = [
@@ -120,7 +93,6 @@ const GraphicalEditMove: React.FC = () => {
       onPress: () => handleSelectPromotion(PieceType.Queen),
     },
     { icon: ROOK, onPress: () => handleSelectPromotion(PieceType.Rook) },
-    { icon: PAWN, onPress: () => handleSelectPromotion(PieceType.Pawn) },
     {
       icon: KNIGHT,
       onPress: () => handleSelectPromotion(PieceType.Knight),
@@ -158,7 +130,7 @@ const GraphicalEditMove: React.FC = () => {
     return new Promise<PieceType>(r => (promotionSelectedFunc.current = r));
   };
 
-  const handEditMove = async (moveSquares: MoveSquares): Promise<void> => {
+  const handleEditMove = async (moveSquares: MoveSquares): Promise<void> => {
     // check for promotion
     let promotion: PieceType | undefined;
     if (editMoveStateHook?.[1].isPawnPromotion(moveSquares)) {
@@ -207,10 +179,12 @@ const GraphicalEditMove: React.FC = () => {
           </View>
 
           <View style={styles.boardButtonContainer}>
-            <ActionBar actionButtons={actionButtons} />
+            <View style={styles.actionButtons}>
+              <ActionBar actionButtons={actionButtons} />
+            </View>
             <ChessBoard
               positions={editMoveState.board}
-              onMove={handEditMove}
+              onMove={handleEditMove}
               highlightedMove={editingMoveSquares}
               flipBoard={flipBoard}
             />

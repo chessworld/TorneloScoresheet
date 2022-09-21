@@ -11,6 +11,9 @@ export const styles = StyleSheet.create({
     borderLeftWidth: 1,
     marginHorizontal: 20,
   },
+  actionButtons: {
+    marginTop: 135,
+  },
   boardButtonContainer: {
     display: 'flex',
     flexDirection: 'row',
