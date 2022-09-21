@@ -11,7 +11,6 @@ import {
   BISHOP,
   ICON_FLIP,
   ICON_SKIP,
-  ICON_UNDO,
   KNIGHT,
   QUEEN,
   ROOK,
