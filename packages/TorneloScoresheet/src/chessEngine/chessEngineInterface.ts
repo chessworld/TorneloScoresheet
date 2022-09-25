@@ -94,12 +94,14 @@ export type ChessEngineInterface = {
    * @param originPgn the pgn of the event with the headers
    * @param moveHistory the list of ChessPlys of the game
    * @param winner The player who won or null if its a draw
+   * @param allowSkips Whether to return an error if there are skip plys in the history
    * @returns A result with the pgn, if an error occurs, will return an error
    */
   generatePgn: (
     originPgn: string,
     moveHistory: ChessPly[],
     winner: PlayerColour | null,
+    allowSkips: boolean,
   ) => Result<string>;
 };
 

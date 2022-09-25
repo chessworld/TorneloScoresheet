@@ -1283,6 +1283,7 @@ describe('Adding Comments', () => {
         testCase.pgn,
         testCase.moves,
         testCase.winner,
+        false,
       );
       if (!isError(result)) {
         expect(result.data).toStrictEqual(testCase.expectedPgn);
@@ -1313,6 +1314,7 @@ describe('generatePgn', () => {
       winner: PlayerColour.White,
       expectedPgn:
         stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') + '1. e4 1-0',
+      allowSkips: false,
     },
     {
       name: 'Skip ply error',
@@ -1339,6 +1341,34 @@ describe('generatePgn', () => {
       winner: PlayerColour.White,
       expectedPgn:
         stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') + '1. e4 1-0',
+      allowSkips: false,
+    },
+    {
+      name: 'Skip ply no error',
+      pgn: pgnSuccess,
+      isError: false,
+      moves: [
+        {
+          moveNo: 1,
+          startingFen: chessEngine.startingFen(),
+          player: PlayerColour.White,
+          type: PlyTypes.MovePly,
+          move: {
+            from: 'e2',
+            to: 'e4',
+          },
+        },
+        {
+          moveNo: 2,
+          startingFen: chessEngine.startingFen(),
+          player: PlayerColour.Black,
+          type: PlyTypes.SkipPly,
+        },
+      ] as ChessPly[],
+      winner: PlayerColour.White,
+      expectedPgn:
+        stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') + '1. e4 - 1-0',
+      allowSkips: true,
     },
     {
       name: 'Parse PGN error',
@@ -1359,6 +1389,7 @@ describe('generatePgn', () => {
       winner: PlayerColour.White,
       expectedPgn:
         stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') + '1. e4 1-0',
+      allowSkips: false,
     },
     {
       name: 'Impossible move error',
@@ -1379,6 +1410,7 @@ describe('generatePgn', () => {
       winner: PlayerColour.White,
       expectedPgn:
         stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') + '1. e4 1-0',
+      allowSkips: false,
     },
     {
       name: 'Black win no error',
@@ -1410,6 +1442,7 @@ describe('generatePgn', () => {
       winner: PlayerColour.Black,
       expectedPgn:
         stripStarAndReplaceResultFromPgn(pgnSuccess, '0-1') + '1. e4 g6 0-1',
+      allowSkips: false,
     },
     {
       name: 'Draw win no error',
@@ -1441,6 +1474,7 @@ describe('generatePgn', () => {
       winner: null,
       expectedPgn:
         stripStarAndReplaceResultFromPgn(pgnSuccess, '1-1') + '1. e4 g6 1-1',
+      allowSkips: false,
     },
     {
       name: 'Illegal move',
@@ -1461,6 +1495,7 @@ describe('generatePgn', () => {
       winner: PlayerColour.White,
       expectedPgn:
         stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') + '1. e2e6 1-0',
+      allowSkips: false,
     },
     {
       name: 'En Passant move',
@@ -1526,6 +1561,7 @@ describe('generatePgn', () => {
       expectedPgn:
         stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') +
         '1. e4 d5 2. e5 f5 3. exf6 1-0',
+      allowSkips: false,
     },
     {
       name: 'Capture',
@@ -1569,6 +1605,7 @@ describe('generatePgn', () => {
       expectedPgn:
         stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') +
         '1. e4 d5 2. exd5 1-0',
+      allowSkips: false,
     },
     {
       name: 'Check symbol',
@@ -1656,6 +1693,7 @@ describe('generatePgn', () => {
       expectedPgn:
         stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') +
         '1. g4 f5 2. gxf5 e6 3. f6 e5 4. f7+ 1-0',
+      allowSkips: false,
     },
     {
       name: 'check mate',
@@ -1699,6 +1737,7 @@ describe('generatePgn', () => {
       expectedPgn:
         stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') +
         '1. e4 d5 2. exd5 1-0',
+      allowSkips: false,
     },
   ];
 
@@ -1708,6 +1747,7 @@ describe('generatePgn', () => {
         testCase.pgn,
         testCase.moves,
         testCase.winner,
+        testCase.allowSkips,
       );
       expect(isError(result)).toStrictEqual(testCase.isError);
       if (!isError(result)) {
