@@ -29,14 +29,18 @@ export const styles = StyleSheet.create({
     marginRight: 20,
     marginBottom: 10,
   },
+  titleContainer: {
+    flexGrow: 10,
+  },
   header: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     padding: 20,
   },
+  exitButtonContainer: {
+    flexGrow: 1,
+  },
   exitButton: {
-    paddingLeft: 20,
+    alignSelf: 'flex-end',
   },
 });
