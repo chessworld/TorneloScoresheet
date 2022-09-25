@@ -26,14 +26,18 @@ const Sheet: React.FC<SheetProps> = ({ visible, children, dismiss, title }) => {
       <View style={styles.backdrop}>
         <View style={styles.contentContainer}>
           <View style={styles.header}>
-            <PrimaryText size={30} weight={FontWeight.Bold} label={title} />
+            <View style={styles.titleContainer}>
+              <PrimaryText size={30} weight={FontWeight.Bold} label={title} />
+            </View>
             {dismiss && (
-              <IconButton
-                style={styles.exitButton}
-                icon="cancel"
-                colour="#4f4f4f"
-                onPress={dismiss}
-              />
+              <View style={{ flexGrow: 1 }}>
+                <IconButton
+                  style={styles.exitButton}
+                  icon="cancel"
+                  colour="#4f4f4f"
+                  onPress={dismiss}
+                />
+              </View>
             )}
           </View>
           <View style={styles.content}>{children}</View>
