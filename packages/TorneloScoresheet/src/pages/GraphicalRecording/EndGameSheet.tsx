@@ -13,7 +13,22 @@ export type EndGameSheetProps = {
 };
 
 const EndGameSheet: React.FC<EndGameSheetProps> = ({ show, dismiss }) => {
+  /**
+   * End Game Flow
+   * 1) User clicks end game
+   * 2) User is prompted to select the winner
+   * 3) Try to generate PGN
+   *    a) If error generating PGN -> display error, cancel ending game
+   *    b) If skips present -> ask the user if they want to edit the skips
+   *      i) user wants to edit the skips -> cancel ending game
+   *      ii) user wants to end anyways -> step 4
+   * 4) First player signs
+   * 5) Second player signs
+   * 6) call hooks endGame method
+   */
+
   const [showSignature, setShowSignature] = useState(false);
+  const [showConfirmEndWithSkips, setshowConfirmEndWithSkips] = useState(false);
   const [, showError] = useError();
   const [pgn, setPgn] = useState('');
   const [selectedWinner, setSelectedWinner] = useState<
@@ -21,7 +36,6 @@ const EndGameSheet: React.FC<EndGameSheetProps> = ({ show, dismiss }) => {
   >(undefined);
   const recordingState = useRecordingState();
   const recordingMode = recordingState?.[0];
-
   const currentPlayerSignature = useRef<string | undefined>(undefined);
   const [signingPlayer, setSigningPlayer] = useState(
     recordingMode?.currentPlayer,
@@ -67,21 +81,48 @@ const EndGameSheet: React.FC<EndGameSheetProps> = ({ show, dismiss }) => {
       gamePgn: pgn,
     });
   };
-  const handleSelectWinner = (player: Player | null) => {
+
+  const handleConfirmEndWithSkip = () => {
+    if (selectedWinner === undefined) {
+      return;
+    }
+
+    setshowConfirmEndWithSkips(false);
+    handleSelectWinner(selectedWinner, true);
+  };
+
+  const handleCancelEndWithSkips = () => {
+    cancelSelection();
+    setSelectedWinner(null);
+    setshowConfirmEndWithSkips(false);
+  };
+
+  const handleSelectWinner = (
+    player: Player | null,
+    allowSkips: boolean = false,
+  ) => {
     // generate pgn first to ensure no errors present
     if (!generatePgn) {
       return;
     }
-    const pgnResult = generatePgn(player?.color ?? null);
+    const pgnResult = generatePgn(player?.color ?? null, allowSkips);
     if (isError(pgnResult)) {
+      // skips present -> confirm with user if they still want to end game
+      if (pgnResult.error === 'SKIPS_PRESENT') {
+        dismiss();
+        setshowConfirmEndWithSkips(true);
+        setSelectedWinner(player);
+        return;
+      }
+
+      // error -> inform user
       showError(pgnResult.error);
       cancelSelection();
       dismiss();
       return;
     }
-    setPgn(pgnResult.data);
 
-    // if pgn can be generated -> prompt user for signature
+    setPgn(pgnResult.data);
     dismiss();
     setShowSignature(true);
     setSelectedWinner(player);
@@ -115,6 +156,28 @@ const EndGameSheet: React.FC<EndGameSheetProps> = ({ show, dismiss }) => {
 
   return (
     <>
+      <OptionSheet
+        message="Are you sure you want to end the game with skip moves recorded?"
+        options={[
+          {
+            text: 'End game with skips',
+            onPress: () => handleConfirmEndWithSkip(),
+            style: {
+              width: '100%',
+            },
+          },
+          {
+            text: 'Go back and fix skips',
+            onPress: () => handleCancelEndWithSkips(),
+            style: {
+              width: '100%',
+            },
+          },
+        ]}
+        visible={showConfirmEndWithSkips}
+        onCancel={handleCancelEndWithSkips}
+      />
+
       <OptionSheet
         message="Please Select the Winner"
         options={endGameOptions}
