@@ -33,6 +33,9 @@ import {
   State,
   Validation,
   PartialMove,
+  SkipMove,
+  MoveType,
+  PieceMove,
 } from './types'
 import { file, isSquare, rank, swapColor, validateFen } from './utils'
 import { DEFAULT_POSITION, SQUARES, BITS } from './constants'
@@ -821,7 +824,7 @@ export class Chess {
   public move(
     move: string | PartialMove,
     options: { sloppy?: boolean; dry_run?: boolean } = {}
-  ): Move | null {
+  ): PieceMove | null {
     const validMove = validateMove(this._state, move, options)
 
     if (!validMove) {
@@ -839,7 +842,7 @@ export class Chess {
   public forceMove(
     move: PartialMove,
     options: { promotion?: string } = {}
-  ): Move | null {
+  ): PieceMove | null {
     const hexMove = processMove(this._state, move, options.promotion)
 
     if (!hexMove) {
@@ -971,6 +974,16 @@ export class Chess {
    */
   public undo(): Move | null {
     const move = this.undoMove()
+    if (!move) {
+      return null
+    }
+    if (move.type === MoveType.SkipMove) {
+      return {
+        color: move.color,
+        san: '-',
+        type: MoveType.SkipMove,
+      }
+    }
     return move ? makePretty(this._state, move) : null
   }
 
@@ -1044,12 +1057,24 @@ export class Chess {
     let state
     if (verbose) {
       return this._history.map((gameHistory) => {
+        if (gameHistory.move.type === MoveType.SkipMove) {
+          const skipMove: SkipMove = {
+            color: gameHistory.move.color,
+            san: '-',
+            type: MoveType.SkipMove,
+          }
+          return skipMove
+        }
         const move = gameHistory.move
         state = gameHistory.state
         return makePretty(state, move)
       })
     }
     return this._history.map((gameHistory) => {
+      if (gameHistory.move.type === MoveType.SkipMove) {
+        return '-'
+      }
+
       const move = gameHistory.move
       state = gameHistory.state
       return moveToSan(state, move)
@@ -1258,6 +1283,16 @@ export class Chess {
    *
    */
   public skipTurn(): void {
+    const move: SkipMove = {
+      color: this._state.turn,
+      san: '-',
+      type: MoveType.SkipMove,
+    }
+    this._history.push({
+      move: move,
+      state: this._state,
+    })
+
     this._state = skipTurn(this._state)
   }
 
@@ -1343,7 +1378,7 @@ export class Chess {
   }
 
   /** @internal */
-  protected undoMove(): HexMove | null {
+  protected undoMove(): HexMove | SkipMove | null {
     const prev = this._history.pop()
     if (prev == null) {
       return null

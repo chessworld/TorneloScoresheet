@@ -37,6 +37,9 @@ import {
   State,
   PartialMove,
   FlagKey,
+  SkipMove,
+  MoveType,
+  PieceMove,
 } from './types'
 import {
   algebraic,
@@ -306,9 +309,14 @@ export function getPgn(
       }
       moveStr = state.move_number + '.'
     }
-
-    moveStr = moveStr + ' ' + moveToSan(state, move)
-    state = makeMove(state, move)
+    if (move.type === MoveType.SkipMove) {
+      moveStr = moveStr + ' ' + '-'
+      state = skipTurn(state)
+    }
+    if (move.type === MoveType.PieceMove) {
+      moveStr = moveStr + ' ' + moveToSan(state, move)
+      state = makeMove(state, move)
+    }
   })
 
   // Append leftover moves
@@ -596,6 +604,7 @@ export function cloneMove(move: HexMove): HexMove {
     captured: move.captured,
     promotion: move.promotion,
     san: move.san,
+    type: MoveType.PieceMove,
   }
 }
 
@@ -982,7 +991,7 @@ export function sanToMove(
   return null
 }
 
-export function makePretty(state: State, ugly_move: HexMove): Move {
+export function makePretty(state: State, ugly_move: HexMove): PieceMove {
   const move: HexMove = cloneMove(ugly_move)
 
   let flags = ''
@@ -1001,6 +1010,7 @@ export function makePretty(state: State, ugly_move: HexMove): Move {
     san: moveToSan(state, move),
     captured: move.captured,
     promotion: move.promotion,
+    type: MoveType.PieceMove,
   }
 }
 
@@ -1220,7 +1230,9 @@ export function makeMove(prevState: State, move: HexMove): State {
   return state
 }
 
-export function skipTurn(state: State): State {
+export function skipTurn(prevState: State): State {
+  const state = prevState.clone()
+
   state.ep_square = EMPTY
   state.half_moves++
 
@@ -1261,6 +1273,7 @@ export function buildMove(
     from: from,
     to: to,
     flags: flags,
+    type: MoveType.PieceMove,
     piece: (state.board[from] as Piece).type,
   }
 
@@ -1352,6 +1365,7 @@ export function processMove(
   const newMove: HexMove = {
     color: state.turn,
     from: fromSquare,
+    type: MoveType.PieceMove,
     to: toSquare,
     flags: BITS.NORMAL,
     piece: (state.board[fromSquare] as Piece).type,
