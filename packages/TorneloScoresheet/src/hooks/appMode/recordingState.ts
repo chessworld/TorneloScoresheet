@@ -37,7 +37,10 @@ type recordingStateHookType = [
       move: MoveSquares,
       promotion?: PieceType,
     ) => Result<undefined>;
-    generatePgn: (winner: PlayerColour | null) => Result<string>;
+    generatePgn: (
+      winner: PlayerColour | null,
+      allowSkips: boolean,
+    ) => Result<string>;
     toggleDraw: (drawIndex: number) => void;
     setGameTime: (index: number, gameTime: GameTime | undefined) => void;
     toggleRecordingMode: () => void;
@@ -335,11 +338,15 @@ export const makeUseRecordingState =
       return succ(undefined);
     };
 
-    const generatePgn = (winner: PlayerColour | null): Result<string> => {
+    const generatePgn = (
+      winner: PlayerColour | null,
+      allowSkips: boolean = false,
+    ): Result<string> => {
       return chessEngine.generatePgn(
         appModeState.pairing.pgn,
         appModeState.moveHistory,
         winner,
+        allowSkips,
       );
     };
 

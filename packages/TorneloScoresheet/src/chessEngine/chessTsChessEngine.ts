@@ -17,6 +17,7 @@ import {
   ChessPly,
   PlyTypes,
   MovePly,
+  SkipPly,
 } from '../types/ChessMove';
 import { Result, succ, fail, isError } from '../types/Result';
 import { ChessEngineInterface } from './chessEngineInterface';
@@ -225,7 +226,7 @@ const isOtherPlayersPiece = (fen: string, move: MoveSquares): boolean => {
   return game.isOtherPlayersPiece(move);
 };
 
-const addComments = (game: Chess, move: MovePly): void => {
+const addComments = (game: Chess, move: MovePly | SkipPly): void => {
   if (move.drawOffer || move.gameTime) {
     game.setComment(
       `${move.drawOffer ? '=' : ''}${
@@ -248,6 +249,7 @@ const generatePgn = (
   originPgn: string,
   moveHistory: ChessPly[],
   winner: PlayerColour | null,
+  allowSkips: boolean = false,
 ): Result<string> => {
   const getResultString = (): string => {
     switch (winner) {
@@ -269,19 +271,25 @@ const generatePgn = (
   const error = moveHistory
     .map(move => {
       if (move.type === PlyTypes.SkipPly) {
-        return 'Cannot finish a game with skipped moves, go back and fill in the moves that were skipped.';
+        if (!allowSkips) {
+          return 'SKIPS_PRESENT';
+        }
+        game.skipTurn();
       }
-      if (
-        !game.move({
-          from: move.move.from,
-          to: move.move.to,
-          promotion:
-            move.promotion !== undefined
-              ? chessTsPieceMap[move.promotion]
-              : undefined,
-        })
-      ) {
-        return 'Error processing move, an impossible move has been recorded';
+
+      if (move.type === PlyTypes.MovePly) {
+        if (
+          !game.move({
+            from: move.move.from,
+            to: move.move.to,
+            promotion:
+              move.promotion !== undefined
+                ? chessTsPieceMap[move.promotion]
+                : undefined,
+          })
+        ) {
+          return 'Error processing move, an impossible move has been recorded';
+        }
       }
 
       addComments(game, move);
