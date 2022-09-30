@@ -257,7 +257,16 @@ export const makeUseRecordingState =
         //game reset to start - clear position memory
         appModeState.pairing.positionOccurances = {};
       }
-      updateBoard(appModeState.moveHistory.slice(0, -1));
+
+      // If the last move also inserted a skip, delete that as well
+      if (
+        appModeState.moveHistory[appModeState.moveHistory.length - 2]?.type ===
+        PlyTypes.SkipPly
+      ) {
+        updateBoard(appModeState.moveHistory.slice(0, -2));
+      } else {
+        updateBoard(appModeState.moveHistory.slice(0, -1));
+      }
     };
 
     const skipTurn = (): Result<undefined> => {
