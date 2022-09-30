@@ -21,12 +21,12 @@ import { plysToMoves } from '../../util/moves';
 const GraphicalRecording: React.FC = () => {
   // app mode hook unpacking
   const recordingState = useRecordingState();
-  const recordingMode = recordingState?.[0];
-  const makeMove = recordingState?.[1].move;
-  const isPawnPromotion = recordingState?.[1].isPawnPromotion;
-  const setGameTime = recordingState?.[1].setGameTime;
-  const isOtherPlayersPiece = recordingState?.[1].isOtherPlayersPiece;
-  const skipTurnAndProcessMove = recordingState?.[1].skipTurnAndProcessMove;
+  const recordingMode = recordingState?.state;
+  const makeMove = recordingState?.move;
+  const isPawnPromotion = recordingState?.isPawnPromotion;
+  const setGameTime = recordingState?.setGameTime;
+  const isOtherPlayersPiece = recordingState?.isOtherPlayersPiece;
+  const skipTurnAndProcessMove = recordingState?.skipTurnAndProcessMove;
 
   // states
   const [flipBoard, setFlipBoard] = useState(
@@ -166,9 +166,7 @@ const GraphicalRecording: React.FC = () => {
               flipBoard={() => setFlipBoard(v => !v)}
               recordTime={() =>
                 recordingState &&
-                showSelectGameTimeSheet(
-                  recordingState?.[0].moveHistory.length - 1,
-                )
+                showSelectGameTimeSheet(recordingMode.moveHistory.length - 1)
               }
               endGame={() => setShowEndGame(true)}
             />

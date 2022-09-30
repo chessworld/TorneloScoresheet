@@ -38,8 +38,7 @@ const ArbiterAndPlayerModeDisplay: React.FC<
     [AppMode.ArbiterTablePairing]: voidReturn,
     [AppMode.ArbiterResultDisplay]: voidReturn,
     [AppMode.EnterPgn]: voidReturn,
-    [AppMode.Recording]:
-      useRecordingState()?.[1].goToArbiterGameMode ?? voidReturn,
+    [AppMode.Recording]: useRecordingState()?.goToArbiterGameMode ?? voidReturn,
     [AppMode.PairingSelection]: voidReturn,
     [AppMode.ResultDisplay]:
       useResultDisplayState()?.[1].goToArbiterMode ?? voidReturn,

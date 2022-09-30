@@ -25,7 +25,7 @@ const ToggleRecordingMode: React.FC = () => {
     return;
   };
   const toggleRecordingState =
-    recordingState?.[1].toggleRecordingMode ?? voidReturn;
+    recordingState?.toggleRecordingMode ?? voidReturn;
   const handleRecordingModeTogglePress = () => {
     //if in Graphic Game Mode, move to text recording mode
     //if in Text Recording Mode, move to Graphic Game Mode

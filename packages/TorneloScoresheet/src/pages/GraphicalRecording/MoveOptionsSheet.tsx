@@ -27,9 +27,8 @@ const MoveOptionsSheet = ({
 }: MoveOptionsSheetProps) => {
   const recordingState = useRecordingState();
   const [displaySkipMoves, setDisplaySkipMoves] = useState(false);
-  const actions = recordingState?.[1];
-
-  const toggleDraw = actions?.toggleDraw;
+  const toggleDraw = recordingState?.toggleDraw;
+  const goToEditMove = recordingState?.goToEditMove;
 
   const handleDrawOffer = () => {
     if (!toggleDraw || !editingMove) {
@@ -44,7 +43,7 @@ const MoveOptionsSheet = ({
   const handleConfirmSkips = () => {
     setDisplaySkipMoves(false);
     if (editingMove) {
-      actions?.goToEditMove(
+      goToEditMove?.(
         editingMove.moveIndex * 2 +
           (editingMove.colour === PlayerColour.Black ? 1 : 0),
       );

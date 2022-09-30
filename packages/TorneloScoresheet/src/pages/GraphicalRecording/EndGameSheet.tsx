@@ -35,7 +35,7 @@ const EndGameSheet: React.FC<EndGameSheetProps> = ({ show, dismiss }) => {
     undefined | Player | null
   >(undefined);
   const recordingState = useRecordingState();
-  const recordingMode = recordingState?.[0];
+  const recordingMode = recordingState?.state;
   const currentPlayerSignature = useRef<string | undefined>(undefined);
   const [signingPlayer, setSigningPlayer] = useState(
     recordingMode?.currentPlayer,
@@ -47,8 +47,8 @@ const EndGameSheet: React.FC<EndGameSheetProps> = ({ show, dismiss }) => {
     setSigningPlayer(recordingMode?.currentPlayer);
   };
 
-  const generatePgn = recordingState?.[1].generatePgn;
-  const goToEndGame = recordingState?.[1].goToEndGame;
+  const generatePgn = recordingState?.generatePgn;
+  const goToEndGame = recordingState?.goToEndGame;
 
   const handleConfirmSignature = (signatureInput: string) => {
     if (!recordingMode || !goToEndGame) {

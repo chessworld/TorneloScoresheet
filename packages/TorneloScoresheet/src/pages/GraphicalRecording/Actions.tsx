@@ -25,10 +25,10 @@ const Actions: React.FC<ActionsProps> = ({
   endGame,
 }) => {
   const recordingState = useRecordingState();
-  const recordingMode = recordingState?.[0];
-  const undoLastAction = recordingState?.[1].undoLastMove;
-  const skipTurn = recordingState?.[1].skipTurn;
-  const toggleDraw = recordingState?.[1].toggleDraw;
+  const recordingMode = recordingState?.state;
+  const undoLastAction = recordingState?.undoLastMove;
+  const skipTurn = recordingState?.skipTurn;
+  const toggleDraw = recordingState?.toggleDraw;
   const isFirstMove = (recordingMode?.moveHistory.length ?? 0) === 0;
 
   const actionButtons: ActionButtonProps[] = [
