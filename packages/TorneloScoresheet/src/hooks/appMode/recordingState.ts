@@ -19,7 +19,7 @@ import { storeRecordingModeData } from '../../util/storage';
 import { MoveLegality } from '../../types/MoveLegality';
 import { AppModeStateContextType } from '../../context/AppModeStateContext';
 
-type recordingStateHookType = [
+type RecordingStateHookType = [
   recordingMode,
   {
     goToEndGame: (result: ChessGameResult) => void;
@@ -82,8 +82,8 @@ const getCurrentFen = (moveHistory: ChessPly[]): string => {
 };
 
 export const makeUseRecordingState =
-  (context: AppModeStateContextType): (() => recordingStateHookType | null) =>
-  (): recordingStateHookType | null => {
+  (context: AppModeStateContextType): (() => RecordingStateHookType | null) =>
+  (): RecordingStateHookType | null => {
     const [appModeState, setAppModeState] = useContext(context);
 
     if (appModeState.mode !== AppMode.Recording) {
