@@ -18,6 +18,7 @@ import { Result, succ, fail, isError } from '../../types/Result';
 import { storeRecordingModeData } from '../../util/storage';
 import { MoveLegality } from '../../types/MoveLegality';
 import { AppModeStateContextType } from '../../context/AppModeStateContext';
+import { getCurrentFen } from '../../util/moveHistory';
 
 type RecordingStateHookType = [
   recordingMode,
@@ -47,39 +48,6 @@ type RecordingStateHookType = [
     goToEditMove: (index: number) => void;
   },
 ];
-
-/**
- * Gets the current fen of the game based on move history
- * @param moveHistory array of ChessPly
- * @returns current fen
- */
-const getCurrentFen = (moveHistory: ChessPly[]): string => {
-  // no moves -> starting fen
-  if (moveHistory.length === 0) {
-    return chessEngine.startingFen();
-  }
-
-  // execute last ply to get resulting fen
-  const lastPly = moveHistory[moveHistory.length - 1]!;
-
-  // Last ply = SkipPly
-  if (lastPly.type === PlyTypes.SkipPly) {
-    return chessEngine.skipTurn(lastPly.startingFen);
-  }
-
-  // Last ply = MovePly
-  const result = chessEngine.makeMove(
-    lastPly.startingFen,
-    lastPly.move,
-    lastPly.promotion,
-  );
-
-  // all move in history are legal, -> should never be undef
-  if (!result) {
-    return '';
-  }
-  return result[0];
-};
 
 export const makeUseRecordingState =
   (context: AppModeStateContextType): (() => RecordingStateHookType | null) =>
