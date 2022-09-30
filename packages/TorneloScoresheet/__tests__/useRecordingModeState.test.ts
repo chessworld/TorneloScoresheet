@@ -41,7 +41,7 @@ describe('recording moving', () => {
     const recordingStateHook = renderCustomHook(useRecordingState);
     recordingState.pairing.positionOccurances = {};
     act(() => {
-      recordingStateHook.current?.[1].move(move as MoveSquares);
+      recordingStateHook.current?.move(move as MoveSquares);
 
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
@@ -92,7 +92,7 @@ describe('recording moving', () => {
     const graphicalStateHook = renderCustomHook(useRecordingState);
     graphicalState.pairing.positionOccurances = {};
     act(() => {
-      graphicalStateHook.current?.[1].move(move as MoveSquares);
+      graphicalStateHook.current?.move(move as MoveSquares);
 
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
@@ -135,7 +135,7 @@ describe('undoing last move', () => {
     const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
-      graphicalStateHook.current?.[1].undoLastMove();
+      graphicalStateHook.current?.undoLastMove();
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         ...graphicalState,
@@ -161,7 +161,7 @@ describe('undoing last move', () => {
     const graphicalStateHook = renderCustomHook(useRecordingState);
     graphicalState.pairing.positionOccurances = {};
     act(() => {
-      graphicalStateHook.current?.[1].undoLastMove();
+      graphicalStateHook.current?.undoLastMove();
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         ...graphicalState,
@@ -197,7 +197,7 @@ describe('undoing last move', () => {
     const graphicalStateHook = renderCustomHook(useRecordingState);
     graphicalState.pairing.positionOccurances = {};
     act(() => {
-      graphicalStateHook.current?.[1].undoLastMove();
+      graphicalStateHook.current?.undoLastMove();
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         ...graphicalState,
@@ -231,7 +231,7 @@ describe('Skipping player turn', () => {
     const resultingFen =
       'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 1 1';
     act(() => {
-      graphicalStateHook.current?.[1].skipTurn();
+      graphicalStateHook.current?.skipTurn();
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         ...graphicalState,
@@ -266,7 +266,7 @@ describe('Skipping player turn', () => {
     const graphicalStateHook = renderCustomHook(useRecordingState);
     graphicalState.pairing.positionOccurances = {};
     act(() => {
-      graphicalStateHook.current?.[1].skipTurn();
+      graphicalStateHook.current?.skipTurn();
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         ...graphicalState,
@@ -300,7 +300,7 @@ describe('Auto Skip player turn', () => {
       to: 'h6',
     } as MoveSquares;
     act(() => {
-      graphicalStateHook.current?.[1].skipTurnAndProcessMove(move);
+      graphicalStateHook.current?.skipTurnAndProcessMove(move);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         ...graphicalState,
@@ -359,7 +359,7 @@ describe('Auto Skip player turn', () => {
     const graphicalStateHook = renderCustomHook(useRecordingState);
     graphicalState.pairing.positionOccurances = {};
     act(() => {
-      graphicalStateHook.current?.[1].skipTurnAndProcessMove(move);
+      graphicalStateHook.current?.skipTurnAndProcessMove(move);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         ...graphicalState,
@@ -411,7 +411,7 @@ describe('Auto Skip player turn', () => {
     } as MoveSquares;
 
     act(() => {
-      graphicalStateHook.current?.[1].skipTurnAndProcessMove(move);
+      graphicalStateHook.current?.skipTurnAndProcessMove(move);
       expect(setContextMock).toHaveBeenCalledTimes(0);
     });
   });
@@ -436,7 +436,7 @@ describe('Auto Skip player turn', () => {
       'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1': 1,
     };
     act(() => {
-      graphicalStateHook.current?.[1].skipTurnAndProcessMove(move);
+      graphicalStateHook.current?.skipTurnAndProcessMove(move);
       expect(setContextMock).toHaveBeenCalledTimes(0);
     });
   });
@@ -528,10 +528,7 @@ describe('Auto Skip player turn', () => {
       'rnbqkbnr/ppppppp1/P7/8/7p/8/1PPPPPPP/RNBQKBNR w KQkq - 0 4': 1,
     };
     act(() => {
-      graphicalStateHook.current?.[1].skipTurnAndProcessMove(
-        move,
-        PieceType.Queen,
-      );
+      graphicalStateHook.current?.skipTurnAndProcessMove(move, PieceType.Queen);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         ...graphicalState,
@@ -668,7 +665,7 @@ describe('Generate pgn', () => {
     mockAppModeContext(graphicalState);
     const graphicalStateHook = renderCustomHook(useRecordingState);
     act(() => {
-      const pgnResult = graphicalStateHook.current?.[1].generatePgn(
+      const pgnResult = graphicalStateHook.current?.generatePgn(
         PlayerColour.Black,
       );
       if (pgnResult) {
@@ -816,7 +813,7 @@ describe('Generate pgn', () => {
 
     const graphicalStateHook = renderCustomHook(useRecordingState);
     act(() => {
-      const pgnResult = graphicalStateHook.current?.[1].generatePgn(
+      const pgnResult = graphicalStateHook.current?.generatePgn(
         PlayerColour.Black,
       );
       if (pgnResult) {
@@ -966,7 +963,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
     };
 
     act(() => {
-      graphicalStateHook.current?.[1].goToEndGame(result);
+      graphicalStateHook.current?.goToEndGame(result);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         mode: AppMode.ResultDisplay,
@@ -1115,7 +1112,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
     };
 
     act(() => {
-      graphicalStateHook.current?.[1].goToEndGame(result);
+      graphicalStateHook.current?.goToEndGame(result);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         mode: AppMode.ResultDisplay,
@@ -1264,7 +1261,7 @@ describe('goToResultDisplayFromGraphicalRecording', () => {
     };
 
     act(() => {
-      graphicalStateHook.current?.[1].goToEndGame(result);
+      graphicalStateHook.current?.goToEndGame(result);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         mode: AppMode.ResultDisplay,
@@ -1293,7 +1290,7 @@ describe('Toggle Draw Offer', () => {
     const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
-      graphicalStateHook.current?.[1].toggleDraw(0);
+      graphicalStateHook.current?.toggleDraw(0);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(typeof setContextMock.mock.calls[0][0]).toBe('function');
       expect(setContextMock.mock.calls[0][0](graphicalState)).toEqual({
@@ -1331,7 +1328,7 @@ describe('Toggle Draw Offer', () => {
     const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
-      graphicalStateHook.current?.[1].toggleDraw(0);
+      graphicalStateHook.current?.toggleDraw(0);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(typeof setContextMock.mock.calls[0][0]).toBe('function');
       expect(setContextMock.mock.calls[0][0](graphicalState)).toEqual({
@@ -1378,7 +1375,7 @@ describe('Toggle Draw Offer', () => {
     const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
-      graphicalStateHook.current?.[1].toggleDraw(1);
+      graphicalStateHook.current?.toggleDraw(1);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(typeof setContextMock.mock.calls[0][0]).toBe('function');
       expect(setContextMock.mock.calls[0][0](graphicalState)).toEqual({
@@ -1438,7 +1435,7 @@ describe('Toggle Draw Offer', () => {
     const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
-      graphicalStateHook.current?.[1].toggleDraw(1);
+      graphicalStateHook.current?.toggleDraw(1);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(typeof setContextMock.mock.calls[0][0]).toBe('function');
       expect(setContextMock.mock.calls[0][0](graphicalState)).toEqual({
@@ -1493,7 +1490,7 @@ describe('Add Game time', () => {
     const gameTime: GameTime = { hours: 1, minutes: 1 };
 
     act(() => {
-      graphicalStateHook.current?.[1].setGameTime(0, gameTime);
+      graphicalStateHook.current?.setGameTime(0, gameTime);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(typeof setContextMock.mock.calls[0][0]).toBe('function');
       expect(setContextMock.mock.calls[0][0](graphicalState)).toEqual({
@@ -1533,7 +1530,7 @@ describe('Add Game time', () => {
     const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
-      graphicalStateHook.current?.[1].setGameTime(0, undefined);
+      graphicalStateHook.current?.setGameTime(0, undefined);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(typeof setContextMock.mock.calls[0][0]).toBe('function');
       expect(setContextMock.mock.calls[0][0](graphicalState)).toEqual({
@@ -1581,7 +1578,7 @@ describe('Add Game time', () => {
     const graphicalStateHook = renderCustomHook(useRecordingState);
     const newGameTime = { hours: 2, minutes: 2 };
     act(() => {
-      graphicalStateHook.current?.[1].setGameTime(0, newGameTime);
+      graphicalStateHook.current?.setGameTime(0, newGameTime);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(typeof setContextMock.mock.calls[0][0]).toBe('function');
       expect(setContextMock.mock.calls[0][0](graphicalState)).toEqual({
@@ -1624,7 +1621,7 @@ describe('Toggle Recording Mode', () => {
     const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
-      graphicalStateHook.current?.[1].toggleRecordingMode();
+      graphicalStateHook.current?.toggleRecordingMode();
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         ...graphicalState,
@@ -1639,7 +1636,7 @@ describe('Toggle Recording Mode', () => {
     const graphicalStateHook = renderCustomHook(useRecordingState);
 
     act(() => {
-      graphicalStateHook.current?.[1].toggleRecordingMode();
+      graphicalStateHook.current?.toggleRecordingMode();
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         ...graphicalState,
@@ -1659,7 +1656,7 @@ describe('Go to edit move', () => {
     useContextSpy.mockImplementation(_ => Promise.resolve());
 
     act(() => {
-      graphicalStateHook.current?.[1].goToEditMove(1);
+      graphicalStateHook.current?.goToEditMove(1);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(useContextSpy).toHaveBeenCalledWith({
         startTime: graphicalState.startTime,
@@ -1850,7 +1847,7 @@ describe('Move Legality Checking', () => {
     const move = { from: 'g1', to: 'f3' };
     const recordingStateHook = renderCustomHook(useRecordingState);
     act(() => {
-      recordingStateHook.current?.[1].move(move as MoveSquares);
+      recordingStateHook.current?.move(move as MoveSquares);
       expect(setContextMock).toHaveBeenCalledWith({
         ...recordingState,
         board: chessEngine.fenToBoardPositions(
@@ -2393,9 +2390,7 @@ describe('Move Legality Checking', () => {
     const move = { from: 'g8', to: 'f6' };
     const recordingStateHook = renderCustomHook(useRecordingState);
     act(() => {
-      const illegalMove = recordingStateHook.current?.[1].move(
-        move as MoveSquares,
-      );
+      const illegalMove = recordingStateHook.current?.move(move as MoveSquares);
       if (!illegalMove) return;
       expect(setContextMock).toHaveBeenCalledTimes(0);
 
@@ -2729,7 +2724,7 @@ describe('Move Legality Checking', () => {
     const move = { from: 'g1', to: 'f3' };
     const recordingStateHook = renderCustomHook(useRecordingState);
     act(() => {
-      recordingStateHook.current?.[1].move(move as MoveSquares);
+      recordingStateHook.current?.move(move as MoveSquares);
       expect(setContextMock).toHaveBeenCalledWith({
         ...recordingState,
         board: chessEngine.fenToBoardPositions(
@@ -3112,7 +3107,7 @@ describe('Move Legality Checking', () => {
     const move = { from: 'f8', to: 'b4' };
 
     act(() => {
-      recordingStateHook.current?.[1].move(move as MoveSquares);
+      recordingStateHook.current?.move(move as MoveSquares);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         ...recordingState,
@@ -3193,7 +3188,7 @@ describe('Move Legality Checking', () => {
     const move = { from: 'd8', to: 'h4' };
 
     act(() => {
-      recordingStateHook.current?.[1].move(move as MoveSquares);
+      recordingStateHook.current?.move(move as MoveSquares);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         ...recordingState,
@@ -3271,7 +3266,7 @@ describe('Move Legality Checking', () => {
     const move = { from: 'c8', to: 'e6' };
 
     act(() => {
-      recordingStateHook.current?.[1].move(move as MoveSquares);
+      recordingStateHook.current?.move(move as MoveSquares);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         ...recordingState,
@@ -3351,7 +3346,7 @@ describe('Move Legality Checking', () => {
     const move = { from: 'd8', to: 'c8' };
 
     act(() => {
-      recordingStateHook.current?.[1].move(move as MoveSquares);
+      recordingStateHook.current?.move(move as MoveSquares);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         ...recordingState,

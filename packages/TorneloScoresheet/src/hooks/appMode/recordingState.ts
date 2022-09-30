@@ -1,9 +1,6 @@
 import { useContext } from 'react';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
-import {
-  AppMode,
-  RecordingMode as recordingMode,
-} from '../../types/AppModeState';
+import { AppMode, RecordingMode } from '../../types/AppModeState';
 import { ChessGameResult, PlayerColour } from '../../types/ChessGameInfo';
 import {
   ChessPly,
@@ -20,34 +17,29 @@ import { MoveLegality } from '../../types/MoveLegality';
 import { AppModeStateContextType } from '../../context/AppModeStateContext';
 import { getCurrentFen } from '../../util/moveHistory';
 
-type RecordingStateHookType = [
-  recordingMode,
-  {
-    goToEndGame: (result: ChessGameResult) => void;
-    goToTextInput: () => void;
-    goToArbiterGameMode: () => void;
-    move: (
-      moveSquares: MoveSquares,
-      promotion?: PieceType,
-    ) => Result<undefined>;
-    undoLastMove: () => void;
-    isPawnPromotion: (moveSquares: MoveSquares) => boolean;
-    skipTurn: () => Result<undefined>;
-    isOtherPlayersPiece: (move: MoveSquares) => boolean;
-    skipTurnAndProcessMove: (
-      move: MoveSquares,
-      promotion?: PieceType,
-    ) => Result<undefined>;
-    generatePgn: (
-      winner: PlayerColour | null,
-      allowSkips?: boolean,
-    ) => Result<string>;
-    toggleDraw: (drawIndex: number) => void;
-    setGameTime: (index: number, gameTime: GameTime | undefined) => void;
-    toggleRecordingMode: () => void;
-    goToEditMove: (index: number) => void;
-  },
-];
+type RecordingStateHookType = {
+  state: RecordingMode;
+  goToEndGame: (result: ChessGameResult) => void;
+  goToTextInput: () => void;
+  goToArbiterGameMode: () => void;
+  move: (moveSquares: MoveSquares, promotion?: PieceType) => Result<undefined>;
+  undoLastMove: () => void;
+  isPawnPromotion: (moveSquares: MoveSquares) => boolean;
+  skipTurn: () => Result<undefined>;
+  isOtherPlayersPiece: (move: MoveSquares) => boolean;
+  skipTurnAndProcessMove: (
+    move: MoveSquares,
+    promotion?: PieceType,
+  ) => Result<undefined>;
+  generatePgn: (
+    winner: PlayerColour | null,
+    allowSkips?: boolean,
+  ) => Result<string>;
+  toggleDraw: (drawIndex: number) => void;
+  setGameTime: (index: number, gameTime: GameTime | undefined) => void;
+  toggleRecordingMode: () => void;
+  goToEditMove: (index: number) => void;
+};
 
 export const makeUseRecordingState =
   (context: AppModeStateContextType): (() => RecordingStateHookType | null) =>
@@ -358,23 +350,21 @@ export const makeUseRecordingState =
       });
     };
 
-    return [
-      appModeState,
-      {
-        goToEndGame,
-        goToTextInput,
-        goToArbiterGameMode,
-        move,
-        undoLastMove,
-        isPawnPromotion,
-        skipTurn,
-        isOtherPlayersPiece,
-        skipTurnAndProcessMove,
-        generatePgn,
-        toggleDraw,
-        setGameTime,
-        toggleRecordingMode,
-        goToEditMove,
-      },
-    ];
+    return {
+      state: appModeState,
+      goToEndGame,
+      goToTextInput,
+      goToArbiterGameMode,
+      move,
+      undoLastMove,
+      isPawnPromotion,
+      skipTurn,
+      isOtherPlayersPiece,
+      skipTurnAndProcessMove,
+      generatePgn,
+      toggleDraw,
+      setGameTime,
+      toggleRecordingMode,
+      goToEditMove,
+    };
   };
