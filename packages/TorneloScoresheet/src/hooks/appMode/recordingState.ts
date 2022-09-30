@@ -39,7 +39,7 @@ type recordingStateHookType = [
     ) => Result<undefined>;
     generatePgn: (
       winner: PlayerColour | null,
-      allowSkips: boolean,
+      allowSkips?: boolean,
     ) => Result<string>;
     toggleDraw: (drawIndex: number) => void;
     setGameTime: (index: number, gameTime: GameTime | undefined) => void;
