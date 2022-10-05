@@ -56,12 +56,7 @@ export const handleRedoAction = (
       return;
     }
     case ReversibleActionType.Move: {
-      action.withSkip
-        ? recordingModeState.skipTurnAndProcessMove(
-            action.moveSquares,
-            action.promotion,
-          )
-        : recordingModeState.move(action.moveSquares, action.promotion);
+      recordingModeState.move(action.moveSquares, action.promotion);
       return;
     }
     default: {

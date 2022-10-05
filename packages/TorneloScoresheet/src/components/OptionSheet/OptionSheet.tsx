@@ -17,7 +17,7 @@ type OptionSheetProps = {
   message: string;
   options: Option[];
   visible: boolean;
-  onCancel: () => void;
+  onCancel?: () => void;
 };
 
 const OptionSheet: React.FC<OptionSheetProps> = ({
