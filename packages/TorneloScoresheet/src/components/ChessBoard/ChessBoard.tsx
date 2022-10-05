@@ -1,5 +1,5 @@
-import React from 'react';
-import { colours } from '../../style/colour';
+import React, { useMemo } from 'react';
+import { colours, ColourType } from '../../style/colour';
 import {
   BoardPosition,
   boardPositionToIndex,
@@ -16,11 +16,17 @@ import PieceAsset from '../PieceAsset/PieceAsset';
 import RoundedView from '../RoundedView/RoundedView';
 import { styles } from './style';
 
+type HighlightedPosition = {
+  position: Position;
+  colour: ColourType;
+};
+
 export type ChessBoardProps = {
   positions: BoardPosition[];
   flipBoard?: boolean;
-  highlightedMove?: MoveSquares;
+  highlightedMove?: HighlightedPosition[];
   onMove: (moveSquares: MoveSquares) => Promise<void>;
+  onPositionPressed?: (position: Position) => void;
 };
 
 const positionStyle = (position: Position, flipBoard: boolean) => {
@@ -40,12 +46,27 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
   highlightedMove,
   onMove,
 }) => {
+  const boardPositionLookupTable: {
+    [key: string]: ColourType;
+  } = useMemo(() => {
+    return (
+      highlightedMove?.reduce(
+        (acc, el) => {
+          acc[el.position] = el.colour;
+          return acc;
+        },
+        {} as {
+          [key: string]: ColourType;
+        },
+      ) ?? {}
+    );
+  }, [highlightedMove]);
+
   const squareColour = (position: Position) => {
-    if (position === highlightedMove?.from) {
-      return colours.lightGreen;
-    }
-    if (position === highlightedMove?.to) {
-      return colours.lightOrange;
+    const squareColour = boardPositionLookupTable[position];
+
+    if (squareColour) {
+      return squareColour;
     }
 
     const [col, row] = boardPositionToIndex(position);

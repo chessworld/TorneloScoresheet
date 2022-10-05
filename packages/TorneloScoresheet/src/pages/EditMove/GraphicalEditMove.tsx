@@ -184,7 +184,20 @@ const GraphicalEditMove: React.FC = () => {
             <ChessBoard
               positions={editMoveState.board}
               onMove={handleEditMove}
-              highlightedMove={editingMoveSquares}
+              highlightedMove={
+                editingMoveSquares
+                  ? [
+                      {
+                        position: editingMoveSquares.from,
+                        colour: colours.lightGreen,
+                      },
+                      {
+                        position: editingMoveSquares.to,
+                        colour: colours.lightOrange,
+                      },
+                    ]
+                  : undefined
+              }
               flipBoard={flipBoard}
             />
           </View>

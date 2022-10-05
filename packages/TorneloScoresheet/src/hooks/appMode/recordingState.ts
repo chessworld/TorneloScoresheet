@@ -16,6 +16,9 @@ import { storeRecordingModeData } from '../../util/storage';
 import { MoveLegality } from '../../types/MoveLegality';
 import { AppModeStateContextType } from '../../context/AppModeStateContext';
 import { getCurrentFen } from '../../util/moveHistory';
+import { Position } from '../../types/ChessBoardPositions';
+import { HighlightedPosition } from '../../types/HighlightedPosition';
+import { colours } from '../../style/colour';
 
 export type MakeMoveResult = {
   didInsertSkip: boolean;
@@ -44,6 +47,8 @@ export type RecordingStateHookType = {
   makePromotionSelection: (promotion: PieceType) => void;
   promptUserForPromotionChoice: () => Promise<PieceType>;
   isPawnPromotion: (moveSquares: MoveSquares) => boolean;
+  pressToMoveSelectedFromSquare: HighlightedPosition | undefined;
+  positionPress: (position: Position, promotion: PieceType | undefined) => void;
 };
 
 export const makeUseRecordingState =
@@ -56,6 +61,8 @@ export const makeUseRecordingState =
     const resolvePromotion = useRef<
       ((value: PieceType | PromiseLike<PieceType>) => void) | null
     >(null);
+    const [pressToMoveSelectedFromSquare, setPressToMoveSelectedFromSquare] =
+      useState<HighlightedPosition | undefined>(undefined);
 
     if (appModeState.mode !== AppMode.Recording) {
       return null;
@@ -389,6 +396,33 @@ export const makeUseRecordingState =
       });
     };
 
+    const positionPress = (
+      position: Position,
+      promotion: PieceType | undefined,
+    ) => {
+      if (!pressToMoveSelectedFromSquare) {
+        setPressToMoveSelectedFromSquare({
+          position,
+          colour: colours.negative,
+        });
+        return;
+      }
+      // The case where the user presses the same square twice -
+      // we clear the squares
+      if (position === pressToMoveSelectedFromSquare.position) {
+        setPressToMoveSelectedFromSquare(undefined);
+        return;
+      }
+      move(
+        {
+          from: pressToMoveSelectedFromSquare.position,
+          to: position,
+        },
+        promotion,
+      );
+      setPressToMoveSelectedFromSquare(undefined);
+    };
+
     return {
       state: appModeState,
       goToEndGame,
@@ -406,5 +440,7 @@ export const makeUseRecordingState =
       makePromotionSelection,
       isPawnPromotion,
       promptUserForPromotionChoice,
+      pressToMoveSelectedFromSquare,
+      positionPress,
     };
   };
