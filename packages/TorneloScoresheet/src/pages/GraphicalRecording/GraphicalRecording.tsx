@@ -18,6 +18,7 @@ import { useError } from '../../context/ErrorContext';
 import { plysToMoves } from '../../util/moves';
 import { useUndo } from '../../hooks/useUndo';
 import { ReversibleActionType } from '../../types/ReversibleAction';
+import { Position } from '../../types/ChessBoardPositions';
 
 const GraphicalRecording: React.FC = () => {
   const { undo, redo, pushUndoAction } = useUndo();
@@ -31,6 +32,13 @@ const GraphicalRecording: React.FC = () => {
   const isPawnPromotion = recordingState?.isPawnPromotion;
   const promptUserForPromotionChoice =
     recordingState?.promptUserForPromotionChoice;
+  const pressToMoveCurrentMove = recordingState?.pressToMoveSelectedFromSquare;
+  const positionPress = recordingState?.positionPress;
+
+  const handlePositionPress = (position: Position) => {
+    // TODO: Calculate whether we need to do a promotion...
+    positionPress?.(position, undefined);
+  };
 
   // states
   const [flipBoard, setFlipBoard] = useState(
@@ -170,6 +178,12 @@ const GraphicalRecording: React.FC = () => {
               positions={recordingMode.board}
               onMove={handleMove}
               flipBoard={flipBoard}
+              onPositionPressed={handlePositionPress}
+              highlightedMove={
+                pressToMoveCurrentMove === undefined
+                  ? undefined
+                  : [pressToMoveCurrentMove]
+              }
             />
           </View>
           <ScrollView
