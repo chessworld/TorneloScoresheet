@@ -31,6 +31,16 @@ const ArbiterRecording: React.FC = () => {
     });
   };
 
+  const getPositionOccurance = (fen: string): number => {
+    if (!recordingMode) {
+      return 0;
+    }
+    if (recordingMode.pairing.positionOccurances[fen]) {
+      return recordingMode.pairing.positionOccurances[fen] || 0;
+    }
+    return 0;
+  };
+
   const selectFen = (fen: string): void => {
     let shortFen = fen.split('-')[0]?.concat('-') ?? '';
     if (shortFen === selectedFen) {
@@ -38,7 +48,15 @@ const ArbiterRecording: React.FC = () => {
       setSelectedFen(undefined);
       return;
     }
-    setSelectedFen(shortFen);
+    if (getPositionOccurance(shortFen)) {
+      if (getPositionOccurance(shortFen) >= 3) {
+        //only fens with 3 or more fold repetition can be selected
+        setSelectedFen(shortFen);
+        return;
+      }
+    }
+
+    setSelectedFen(undefined);
   };
 
   return (
@@ -59,7 +77,6 @@ const ArbiterRecording: React.FC = () => {
 
           <MoveTable
             moves={propagateRepetitions(recordingMode.moveHistory)}
-            positionOccurance={recordingMode.pairing.positionOccurances}
             onCellSelect={selectFen}
             selectedFen={selectedFen}
           />

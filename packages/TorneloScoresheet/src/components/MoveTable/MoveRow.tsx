@@ -5,11 +5,11 @@ import { styles } from './style';
 import MoveCell from './MoveCell';
 import { ChessPly, Move } from '../../types/ChessMove';
 import { colours, ColourType } from '../../style/colour';
+import { getShortFenAfterMove } from '../../util/moves';
 
 export type MoveRowProps = {
   move: Move;
   moveNumber: number;
-  positionOccurance: Record<string, number>;
   onCellSelect: (fen: string) => void;
   selectedFen: string | undefined;
 };
@@ -17,20 +17,13 @@ export type MoveRowProps = {
 const MoveRow: React.FC<MoveRowProps> = ({
   move,
   moveNumber,
-  positionOccurance,
   onCellSelect,
   selectedFen,
 }) => {
-  const getPositionOccurance = (fen: string): number => {
-    let key = fen.split('-')[0]?.concat('-') ?? '';
-    if (positionOccurance[key]) {
-      return positionOccurance[key] || 0;
-    }
-    return 0;
-  };
+  const fensSameAfterMove = (fen: string, ply: ChessPly): boolean => {
+    let shortFenfromPly = getShortFenAfterMove(ply);
 
-  const fensSame = (fen: string, plyFen: string): boolean => {
-    let shortFenfromPly = plyFen.split('-')[0]?.concat('-') ?? '';
+    //compare fens
     if (fen === shortFenfromPly) {
       return true;
     }
@@ -43,7 +36,7 @@ const MoveRow: React.FC<MoveRowProps> = ({
     }
 
     if (selectedFen) {
-      if (fensSame(selectedFen, ply.startingFen)) {
+      if (fensSameAfterMove(selectedFen, ply)) {
         return colours.lightGreen;
       }
     }
@@ -67,13 +60,6 @@ const MoveRow: React.FC<MoveRowProps> = ({
     if (ply.legality?.inThreefoldRepetition) {
       return colours.darkBlue;
     }
-    /*
-    if (getPositionOccurance(ply.startingFen)) {
-      if (getPositionOccurance(ply.startingFen) >= 3) {
-        return colours.lightGreen;
-      }
-    }
-    */
 
     return undefined;
   };

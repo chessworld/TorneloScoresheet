@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { colours, ColourType } from '../../style/colour';
 import { ChessPly, GameTime } from '../../types/ChessMove';
-import { moveString } from '../../util/moves';
+import { getShortFenAfterMove, moveString } from '../../util/moves';
 import PrimaryText from '../PrimaryText/PrimaryText';
 import { styles } from './style';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -18,6 +18,14 @@ const MoveCell: React.FC<MoveCellProps> = ({
   highlightColor,
   onCellSelect,
 }) => {
+  const processCellPress = (ply?: ChessPly): void => {
+    if (!ply) {
+      return;
+    }
+    let shortFenfromPly = getShortFenAfterMove(ply);
+    onCellSelect(shortFenfromPly);
+  };
+
   const formatTime = (time?: GameTime): string => {
     if (!time) {
       return '--:--';
@@ -31,13 +39,11 @@ const MoveCell: React.FC<MoveCellProps> = ({
   return (
     <View style={styles.moveCellContainer}>
       <TouchableOpacity
+        style={[styles.moveSanTextBox, { backgroundColor: highlightColor }]}
         onPress={() => {
-          if (ply) {
-            onCellSelect(ply.startingFen);
-          }
+          processCellPress(ply);
         }}>
-        <View
-          style={[styles.moveSanTextBox, { backgroundColor: highlightColor }]}>
+        <View>
           {ply && <PrimaryText size={25} label={moveString(ply, false)} />}
         </View>
       </TouchableOpacity>
