@@ -402,6 +402,13 @@ export const makeUseRecordingState =
       position: Position,
       promotion: PieceType | undefined,
     ) => {
+      // If there's no currently selected from square - assert that the pressed position has a piece
+      if (
+        !pressToMoveSelectedFromSquare &&
+        !appModeState.board.find(p => p.position === position)?.piece
+      ) {
+        return;
+      }
       if (!pressToMoveSelectedFromSquare) {
         setPressToMoveSelectedFromSquare({
           position,
