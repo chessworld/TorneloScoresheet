@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { TouchableOpacity } from 'react-native';
 import { colours, ColourType } from '../../style/colour';
 import {
   BoardPosition,
@@ -44,6 +45,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
   positions,
   flipBoard,
   highlightedMove,
+  onPositionPressed,
   onMove,
 }) => {
   const boardPositionLookupTable: {
@@ -87,28 +89,38 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
         {positions.map((position, rowIdx) => {
           return (
             position.piece !== null && (
-              <Draggable
-                data={position.position}
-                key={rowIdx}
-                style={positionStyle(position.position, flipBoard ?? false)}>
-                <PieceAsset piece={position.piece} size={CHESS_SQUARE_SIZE} />
-              </Draggable>
+              <TouchableOpacity
+                onPress={() => onPositionPressed?.(position.position)}
+                activeOpacity={0.8}
+                key={rowIdx}>
+                <Draggable
+                  data={position.position}
+                  style={positionStyle(position.position, flipBoard ?? false)}>
+                  <PieceAsset piece={position.piece} size={CHESS_SQUARE_SIZE} />
+                </Draggable>
+              </TouchableOpacity>
             )
           );
         })}
         {/* Board Squares */}
         {(flipBoard ? flippedBoard : standardBoard).map((square, rowIndex) => {
           return (
-            <DropTarget
-              onDrop={(data: unknown) => handleDrop(data as Position, square)}
+            <TouchableOpacity
               key={rowIndex}
-              style={[
-                styles.boardSquare,
-                {
-                  backgroundColor: squareColour(square),
-                },
-              ]}
-            />
+              activeOpacity={0.8}
+              style={{ zIndex: -2 }}
+              onPress={() => onPositionPressed?.(square)}>
+              <DropTarget
+                onDrop={(data: unknown) => handleDrop(data as Position, square)}
+                key={rowIndex}
+                style={[
+                  styles.boardSquare,
+                  {
+                    backgroundColor: squareColour(square),
+                  },
+                ]}
+              />
+            </TouchableOpacity>
           );
         })}
       </RoundedView>
