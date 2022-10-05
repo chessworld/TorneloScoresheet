@@ -44,7 +44,10 @@ const ArbiterRecording: React.FC = () => {
             />
           </View>
 
-          <MoveTable moves={propagateRepetitions(recordingMode.moveHistory)} />
+          <MoveTable
+            moves={propagateRepetitions(recordingMode.moveHistory)}
+            positionOccurance={recordingMode.pairing.positionOccurances}
+          />
         </View>
       )}
     </>

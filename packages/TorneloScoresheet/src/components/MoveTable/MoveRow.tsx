@@ -9,36 +9,57 @@ import { colours, ColourType } from '../../style/colour';
 export type MoveRowProps = {
   move: Move;
   moveNumber: number;
+  positionOccurance: Record<string, number>;
 };
-const highlightColorForPly = (ply?: ChessPly): ColourType | undefined => {
-  if (!ply) {
+
+const MoveRow: React.FC<MoveRowProps> = ({
+  move,
+  moveNumber,
+  positionOccurance,
+}) => {
+  const getPositionOccurance = (fen: string): number => {
+    let key = fen.split('-')[0]?.concat('-') ?? '';
+    console.log(key);
+    if (positionOccurance[key]) {
+      console.log(positionOccurance[key]);
+      return positionOccurance[key] || 0;
+    }
+    return 0;
+  };
+
+  const highlightColorForPly = (ply?: ChessPly): ColourType | undefined => {
+    if (!ply) {
+      return undefined;
+    }
+
+    if (ply.legality?.inCheckmate) {
+      return colours.lightOrange;
+    }
+
+    if (ply.legality?.inFiveFoldRepetition) {
+      return colours.darkBlue;
+    }
+
+    if (ply.legality?.inStalemate) {
+      return colours.lightGrey;
+    }
+
+    if (ply.legality?.inDraw) {
+      return colours.tertiary;
+    }
+
+    if (ply.legality?.inThreefoldRepetition) {
+      return colours.darkBlue;
+    }
+
+    if (getPositionOccurance(ply.startingFen)) {
+      if (getPositionOccurance(ply.startingFen) >= 3) {
+        return colours.lightGreen;
+      }
+    }
+
     return undefined;
-  }
-
-  if (ply.legality?.inCheckmate) {
-    return colours.lightOrange;
-  }
-
-  if (ply.legality?.inFiveFoldRepetition) {
-    return colours.darkBlue;
-  }
-
-  if (ply.legality?.inStalemate) {
-    return colours.lightGrey;
-  }
-
-  if (ply.legality?.inDraw) {
-    return colours.tertiary;
-  }
-
-  if (ply.legality?.inThreefoldRepetition) {
-    return colours.darkBlue;
-  }
-
-  return undefined;
-};
-
-const MoveRow: React.FC<MoveRowProps> = ({ move, moveNumber }) => {
+  };
   return (
     <View
       style={[
