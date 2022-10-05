@@ -262,6 +262,8 @@ export const makeUseRecordingState =
       moveSquares: MoveSquares,
       promotion: PieceType | undefined,
     ): Result<MakeMoveResult> => {
+      // Clear the state for press to move
+      setPressToMoveSelectedFromSquare(undefined);
       // If the user is moving the piece of the player who's turn it ISN'T,
       // automatically insert a skip for them
       const withSkip = isOtherPlayersPiece(moveSquares);
