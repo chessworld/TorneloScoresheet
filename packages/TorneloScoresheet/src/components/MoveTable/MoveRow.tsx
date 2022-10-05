@@ -10,26 +10,42 @@ export type MoveRowProps = {
   move: Move;
   moveNumber: number;
   positionOccurance: Record<string, number>;
+  onCellSelect: (fen: string) => void;
+  selectedFen: string | undefined;
 };
 
 const MoveRow: React.FC<MoveRowProps> = ({
   move,
   moveNumber,
   positionOccurance,
+  onCellSelect,
+  selectedFen,
 }) => {
   const getPositionOccurance = (fen: string): number => {
     let key = fen.split('-')[0]?.concat('-') ?? '';
-    console.log(key);
     if (positionOccurance[key]) {
-      console.log(positionOccurance[key]);
       return positionOccurance[key] || 0;
     }
     return 0;
   };
 
+  const fensSame = (fen: string, plyFen: string): boolean => {
+    let shortFenfromPly = plyFen.split('-')[0]?.concat('-') ?? '';
+    if (fen === shortFenfromPly) {
+      return true;
+    }
+    return false;
+  };
+
   const highlightColorForPly = (ply?: ChessPly): ColourType | undefined => {
     if (!ply) {
       return undefined;
+    }
+
+    if (selectedFen) {
+      if (fensSame(selectedFen, ply.startingFen)) {
+        return colours.lightGreen;
+      }
     }
 
     if (ply.legality?.inCheckmate) {
@@ -51,12 +67,13 @@ const MoveRow: React.FC<MoveRowProps> = ({
     if (ply.legality?.inThreefoldRepetition) {
       return colours.darkBlue;
     }
-
+    /*
     if (getPositionOccurance(ply.startingFen)) {
       if (getPositionOccurance(ply.startingFen) >= 3) {
         return colours.lightGreen;
       }
     }
+    */
 
     return undefined;
   };
@@ -78,11 +95,12 @@ const MoveRow: React.FC<MoveRowProps> = ({
         <MoveCell
           ply={move.white}
           highlightColor={highlightColorForPly(move.white)}
+          onCellSelect={onCellSelect}
         />
         <MoveCell
           ply={move.black}
           highlightColor={highlightColorForPly(move.black)}
-        />
+          onCellSelect={onCellSelect}></MoveCell>
       </View>
     </View>
   );

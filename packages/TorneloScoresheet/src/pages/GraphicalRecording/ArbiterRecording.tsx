@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View } from 'react-native';
 import GraphicalModePlayerCard from '../../components/GraphicalModePlayerCard/GraphicalModePlayerCard';
 import { useArbiterRecordingState } from '../../context/AppModeStateContext';
@@ -8,6 +8,8 @@ import { ChessPly } from '../../types/ChessMove';
 
 const ArbiterRecording: React.FC = () => {
   const recordingModeState = useArbiterRecordingState();
+  const [selectedFen, setSelectedFen] = useState<string | undefined>(undefined);
+
   const recordingMode = recordingModeState?.[0];
   const propagateRepetitions = (moves: ChessPly[]): ChessPly[] => {
     const repetition = moves
@@ -28,6 +30,17 @@ const ArbiterRecording: React.FC = () => {
       return { ...move };
     });
   };
+
+  const selectFen = (fen: string): void => {
+    let shortFen = fen.split('-')[0]?.concat('-') ?? '';
+    if (shortFen === selectedFen) {
+      //unselct
+      setSelectedFen(undefined);
+      return;
+    }
+    setSelectedFen(shortFen);
+  };
+
   return (
     <>
       {recordingMode && (
@@ -47,6 +60,8 @@ const ArbiterRecording: React.FC = () => {
           <MoveTable
             moves={propagateRepetitions(recordingMode.moveHistory)}
             positionOccurance={recordingMode.pairing.positionOccurances}
+            onCellSelect={selectFen}
+            selectedFen={selectedFen}
           />
         </View>
       )}

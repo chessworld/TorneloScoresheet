@@ -8,9 +8,16 @@ import MoveRow from './MoveRow';
 export type MoveTableProps = {
   moves: ChessPly[];
   positionOccurance: Record<string, number>;
+  onCellSelect: (fen: string) => void;
+  selectedFen: string | undefined;
 };
 
-const MoveTable: React.FC<MoveTableProps> = ({ moves, positionOccurance }) => {
+const MoveTable: React.FC<MoveTableProps> = ({
+  moves,
+  positionOccurance,
+  onCellSelect,
+  selectedFen,
+}) => {
   return (
     <ScrollView style={styles.movesContainer}>
       {plysToMoves(moves).map((move, index) => (
@@ -19,6 +26,8 @@ const MoveTable: React.FC<MoveTableProps> = ({ moves, positionOccurance }) => {
           move={move}
           moveNumber={index + 1}
           positionOccurance={positionOccurance}
+          onCellSelect={onCellSelect}
+          selectedFen={selectedFen}
         />
       ))}
     </ScrollView>
