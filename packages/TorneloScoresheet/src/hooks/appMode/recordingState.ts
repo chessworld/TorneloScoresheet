@@ -405,7 +405,7 @@ export const makeUseRecordingState =
       if (!pressToMoveSelectedFromSquare) {
         setPressToMoveSelectedFromSquare({
           position,
-          colour: colours.negative,
+          colour: colours.lightYellow,
         });
         return;
       }
