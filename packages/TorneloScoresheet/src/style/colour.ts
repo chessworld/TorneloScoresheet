@@ -8,8 +8,6 @@ export const colours = {
   negative: '#fa3e2d' as const,
   white: '#ffffff' as const,
   black: '#000000' as const,
-  lightGreen: 'rgba(5, 168, 111, 0.5)' as const,
-  lightOrange: 'rgba(166, 101, 31, 0.5)' as const,
   // Brand Colours
   primary: '#00aeef' as const,
   primary20: 'rgba(0, 174, 239, 0.2)' as const,
@@ -26,6 +24,9 @@ export const colours = {
   // Chess Board Colours
   darkBlue: '#A2CEE3' as const,
   lightBlue: '#E3ECF3' as const,
+  lightGreen: 'rgba(5, 168, 111, 0.5)' as const,
+  lightOrange: 'rgba(166, 101, 31, 0.5)' as const,
+  lightYellow: 'rgba(247, 238, 131, 0.5)' as const,
 };
 
 export type ColourType = typeof colours[keyof typeof colours];
@@ -51,6 +52,7 @@ export const statusBarStyleForColor = (colour: ColourType): StatusBarStyle => {
     case colours.lightBlue:
     case colours.lightOrange:
     case colours.lightGreen:
+    case colours.lightYellow:
     case colours.darkBlue:
       return 'dark-content';
   }
@@ -85,6 +87,7 @@ export const textColour = (colour: ColourType): string => {
     case colours.tertiary:
     case colours.white:
     case colours.primary20:
+    case colours.lightYellow:
       return 'black';
   }
 };
