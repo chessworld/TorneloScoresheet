@@ -5,7 +5,7 @@ import ChessBoard from '../../components/ChessBoard/ChessBoard';
 import MoveCard from '../../components/MoveCard/MoveCard';
 import { useRecordingState } from '../../context/AppModeStateContext';
 import { PlayerColour } from '../../types/ChessGameInfo';
-import { PieceType, MoveSquares, GameTime } from '../../types/ChessMove';
+import { MoveSquares, GameTime } from '../../types/ChessMove';
 import { styles } from './style';
 import MoveOptionsSheet, { EditingMove } from './MoveOptionsSheet';
 import GraphicalModePlayerCard from '../../components/GraphicalModePlayerCard/GraphicalModePlayerCard';
@@ -25,17 +25,18 @@ const GraphicalRecording: React.FC = () => {
   // app mode hook unpacking
   const recordingState = useRecordingState();
   const recordingMode = recordingState?.state;
-  const makeMove = recordingState?.move;
-  const isPawnPromotion = recordingState?.isPawnPromotion;
+  const move = recordingState?.move;
   const setGameTime = recordingState?.setGameTime;
-  const isOtherPlayersPiece = recordingState?.isOtherPlayersPiece;
-  const skipTurnAndProcessMove = recordingState?.skipTurnAndProcessMove;
+  const showPromotionModal = recordingState?.showPromotionModal;
+  const makePromotionSelection = recordingState?.makePromotionSelection;
+  const isPawnPromotion = recordingState?.isPawnPromotion;
+  const promptUserForPromotionChoice =
+    recordingState?.promptUserForPromotionChoice;
 
   // states
   const [flipBoard, setFlipBoard] = useState(
     recordingMode?.currentPlayer === PlayerColour.Black,
   );
-  const [showPromotion, setShowPromotion] = useState(false);
   const [showEndGame, setShowEndGame] = useState(false);
   const [moveGameTimeIndex, setMoveGameTimeIndex] = useState<
     number | undefined
@@ -51,63 +52,28 @@ const GraphicalRecording: React.FC = () => {
   }, [recordingMode, moveGameTimeIndex]);
   const [, showError] = useError();
 
-  // Scroll view ref
-  const scrollRef = useRef<ScrollView>(null);
-
-  // when the promotion popup opens, the app will await untill a promise is resolved
-  // this ref stores this resolve function (it will be called once the user selects a promotion)
-  const resolvePromotion = useRef<
-    ((value: PieceType | PromiseLike<PieceType>) => void) | null
-  >(null);
-
-  // Button Functions
-  /**
-   * this will prompt user to select a promotion piece and will not return until they do
-   */
-  const promptUserForPromotionChoice = (): Promise<PieceType> => {
-    // prompt user to select promotion
-    setShowPromotion(true);
-
-    // create a promise, store the resolve function in the ref
-    // this promise will not return until the resolve function is called by handleSelectPromotion()
-    return new Promise<PieceType>(r => (resolvePromotion.current = r));
-  };
-
-  const handleMove = async (moveSquares: MoveSquares): Promise<void> => {
-    if (
-      !makeMove ||
-      !isPawnPromotion ||
-      !isOtherPlayersPiece ||
-      !skipTurnAndProcessMove
-    ) {
+  const handleMove = async (moveSquares: MoveSquares) => {
+    if (!move || !isPawnPromotion || !promptUserForPromotionChoice) {
       return;
     }
-
-    // check for promotion
-    let promotion: PieceType | undefined;
-    if (isPawnPromotion(moveSquares)) {
-      // prompt user to select piece and wait until they do
-      promotion = await promptUserForPromotionChoice();
+    const promotion = isPawnPromotion(moveSquares)
+      ? await promptUserForPromotionChoice()
+      : undefined;
+    const result = move(moveSquares, promotion);
+    if (isError(result)) {
+      showError(result.error);
+      return;
     }
-
-    // If the user is moving the piece of the player who's turn it ISN'T,
-    // automatically insert a skip for them
-    const withSkip = isOtherPlayersPiece(moveSquares);
-    const moveFunction = withSkip ? skipTurnAndProcessMove : makeMove;
-
     pushUndoAction({
       type: ReversibleActionType.Move,
-      moveSquares,
+      moveSquares: moveSquares,
       promotion,
-      withSkip,
+      withSkip: result.data.didInsertSkip,
     });
-
-    const resultOfMove = moveFunction(moveSquares, promotion);
-    if (isError(resultOfMove)) {
-      showError(resultOfMove.error);
-      return;
-    }
   };
+
+  // Scroll view ref
+  const scrollRef = useRef<ScrollView>(null);
 
   const [editingMove, setEditingMove] = useState<undefined | EditingMove>(
     undefined,
@@ -133,13 +99,8 @@ const GraphicalRecording: React.FC = () => {
         <View style={styles.mainContainer}>
           {/*----- Popups -----*/}
           <PromotionSheet
-            show={showPromotion}
-            dismiss={() => setShowPromotion(false)}
-            makeSelection={promotion => {
-              // call the promise's resolve function
-              // this will end the await and result in the move being executed
-              resolvePromotion.current && resolvePromotion.current(promotion);
-            }}
+            show={showPromotionModal ?? false}
+            makeSelection={makePromotionSelection!}
           />
           <EndGameSheet
             show={showEndGame}

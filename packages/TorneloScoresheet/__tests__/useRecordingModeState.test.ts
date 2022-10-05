@@ -1,7 +1,7 @@
 import { useRecordingState } from '../src/context/AppModeStateContext';
 import { act } from '@testing-library/react-hooks';
 import { AppMode } from '../src/types/AppModeState';
-import { isError } from '../src/types/Result';
+import { isError, Success } from '../src/types/Result';
 import {
   generateRecordingState,
   mockAppModeContext,
@@ -18,6 +18,7 @@ import {
 import { chessEngine } from '../src/chessEngine/chessEngineInterface';
 import { PlayerColour } from '../src/types/ChessGameInfo';
 import * as Storage from '../src/util/storage';
+import { MakeMoveResult } from '../src/hooks/appMode/recordingState';
 
 const pgnSucess = `[Event "Skywalker Challenge - A"]
 [Site "Prague, Czechia"]
@@ -300,7 +301,9 @@ describe('Auto Skip player turn', () => {
       to: 'h6',
     } as MoveSquares;
     act(() => {
-      graphicalStateHook.current?.skipTurnAndProcessMove(move);
+      const result = graphicalStateHook.current?.move(move);
+      expect(!isError(result!));
+      expect((result as Success<MakeMoveResult>).data.didInsertSkip);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         ...graphicalState,
@@ -359,7 +362,7 @@ describe('Auto Skip player turn', () => {
     const graphicalStateHook = renderCustomHook(useRecordingState);
     graphicalState.pairing.positionOccurances = {};
     act(() => {
-      graphicalStateHook.current?.skipTurnAndProcessMove(move);
+      graphicalStateHook.current?.move(move);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         ...graphicalState,
@@ -411,7 +414,7 @@ describe('Auto Skip player turn', () => {
     } as MoveSquares;
 
     act(() => {
-      graphicalStateHook.current?.skipTurnAndProcessMove(move);
+      graphicalStateHook.current?.move(move);
       expect(setContextMock).toHaveBeenCalledTimes(0);
     });
   });
@@ -436,7 +439,7 @@ describe('Auto Skip player turn', () => {
       'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1': 1,
     };
     act(() => {
-      graphicalStateHook.current?.skipTurnAndProcessMove(move);
+      graphicalStateHook.current?.move(move);
       expect(setContextMock).toHaveBeenCalledTimes(0);
     });
   });
@@ -528,7 +531,7 @@ describe('Auto Skip player turn', () => {
       'rnbqkbnr/ppppppp1/P7/8/7p/8/1PPPPPPP/RNBQKBNR w KQkq - 0 4': 1,
     };
     act(() => {
-      graphicalStateHook.current?.skipTurnAndProcessMove(move, PieceType.Queen);
+      graphicalStateHook.current?.move(move, PieceType.Queen);
       expect(setContextMock).toHaveBeenCalledTimes(1);
       expect(setContextMock).toHaveBeenCalledWith({
         ...graphicalState,

@@ -5,13 +5,11 @@ import { PieceType } from '../../types/ChessMove';
 
 export type PromotionSheetProps = {
   show: boolean;
-  dismiss: () => void;
   makeSelection: (prommotion: PieceType) => void;
 };
 
 const PromotionSheet: React.FC<PromotionSheetProps> = ({
   show,
-  dismiss,
   makeSelection,
 }) => {
   const promotionButtons = [
@@ -35,14 +33,12 @@ const PromotionSheet: React.FC<PromotionSheetProps> = ({
    */
   const handleSelectPromotion = (promotion: PieceType) => {
     // hide the popup
-    dismiss();
     makeSelection(promotion);
   };
 
   return (
     <OptionSheet
       visible={show}
-      onCancel={dismiss}
       message="Select Promotion Piece"
       options={promotionButtons}
     />

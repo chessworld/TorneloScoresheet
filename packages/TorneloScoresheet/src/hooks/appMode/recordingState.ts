@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
 import { AppMode, RecordingMode } from '../../types/AppModeState';
 import { ChessGameResult, PlayerColour } from '../../types/ChessGameInfo';
@@ -17,20 +17,21 @@ import { MoveLegality } from '../../types/MoveLegality';
 import { AppModeStateContextType } from '../../context/AppModeStateContext';
 import { getCurrentFen } from '../../util/moveHistory';
 
+export type MakeMoveResult = {
+  didInsertSkip: boolean;
+};
+
 export type RecordingStateHookType = {
   state: RecordingMode;
   goToEndGame: (result: ChessGameResult) => void;
   goToTextInput: () => void;
   goToArbiterGameMode: () => void;
-  move: (moveSquares: MoveSquares, promotion?: PieceType) => Result<undefined>;
-  undoLastMove: () => void;
-  isPawnPromotion: (moveSquares: MoveSquares) => boolean;
-  skipTurn: () => Result<undefined>;
-  isOtherPlayersPiece: (move: MoveSquares) => boolean;
-  skipTurnAndProcessMove: (
-    move: MoveSquares,
+  move: (
+    moveSquares: MoveSquares,
     promotion?: PieceType,
-  ) => Result<undefined>;
+  ) => Result<MakeMoveResult>;
+  undoLastMove: () => void;
+  skipTurn: () => Result<undefined>;
   generatePgn: (
     winner: PlayerColour | null,
     allowSkips?: boolean,
@@ -39,12 +40,22 @@ export type RecordingStateHookType = {
   setGameTime: (index: number, gameTime: GameTime | undefined) => void;
   toggleRecordingMode: () => void;
   goToEditMove: (index: number) => void;
+  showPromotionModal: boolean;
+  makePromotionSelection: (promotion: PieceType) => void;
+  promptUserForPromotionChoice: () => Promise<PieceType>;
+  isPawnPromotion: (moveSquares: MoveSquares) => boolean;
 };
 
 export const makeUseRecordingState =
   (context: AppModeStateContextType): (() => RecordingStateHookType | null) =>
   (): RecordingStateHookType | null => {
     const [appModeState, setAppModeState] = useContext(context);
+    const [showPromotionModal, setShowPromotionModal] = useState(false);
+    // when the promotion popup opens, the app will await untill a promise is resolved
+    // this ref stores this resolve function (it will be called once the user selects a promotion)
+    const resolvePromotion = useRef<
+      ((value: PieceType | PromiseLike<PieceType>) => void) | null
+    >(null);
 
     if (appModeState.mode !== AppMode.Recording) {
       return null;
@@ -223,10 +234,50 @@ export const makeUseRecordingState =
           : 1;
     };
 
+    /**
+     * this will prompt user to select a promotion piece and will not return until they do
+     */
+    const promptUserForPromotionChoice = (): Promise<PieceType> => {
+      // prompt user to select promotion
+      setShowPromotionModal(true);
+
+      // create a promise, store the resolve function in the ref
+      // this promise will not return until the resolve function is called by handleSelectPromotion()
+      return new Promise<PieceType>(r => (resolvePromotion.current = r));
+    };
+
+    const makePromotionSelection = (selection: PieceType) => {
+      setShowPromotionModal(false);
+      resolvePromotion.current?.(selection);
+    };
+
     const move = (
       moveSquares: MoveSquares,
-      promotion?: PieceType,
-    ): Result<undefined> => {
+      promotion: PieceType | undefined,
+    ): Result<MakeMoveResult> => {
+      // If the user is moving the piece of the player who's turn it ISN'T,
+      // automatically insert a skip for them
+      const withSkip = isOtherPlayersPiece(moveSquares);
+
+      if (withSkip) {
+        const historyAfterSkip = skipPlayerTurn(appModeState.moveHistory);
+        if (isError(historyAfterSkip)) {
+          return historyAfterSkip;
+        }
+
+        const historyAfterSkipAndMove = processPlayerMove(
+          moveSquares,
+          historyAfterSkip.data,
+          promotion,
+        );
+        if (!historyAfterSkipAndMove) {
+          return fail('illegal move');
+        }
+
+        updateBoard(historyAfterSkipAndMove);
+        return succ({ didInsertSkip: true });
+      }
+
       const moveHistory = processPlayerMove(
         moveSquares,
         appModeState.moveHistory,
@@ -239,8 +290,9 @@ export const makeUseRecordingState =
 
       updateBoard(moveHistory);
 
-      return succ(undefined);
+      return succ({ didInsertSkip: false });
     };
+
     const isPawnPromotion = (moveSquares: MoveSquares): boolean => {
       const fen = getCurrentFen(appModeState.moveHistory);
       return chessEngine.isPawnPromotion(fen, moveSquares);
@@ -283,28 +335,6 @@ export const makeUseRecordingState =
         getCurrentFen(appModeState.moveHistory),
         moveSquares,
       );
-    };
-
-    const skipTurnAndProcessMove = (
-      moveSquares: MoveSquares,
-      promotion?: PieceType,
-    ): Result<undefined> => {
-      let historyAfterSkip = skipPlayerTurn(appModeState.moveHistory);
-      if (isError(historyAfterSkip)) {
-        return historyAfterSkip;
-      }
-
-      const historyAfterSkipAndMove = processPlayerMove(
-        moveSquares,
-        historyAfterSkip.data,
-        promotion,
-      );
-      if (!historyAfterSkipAndMove) {
-        return fail('illegal move');
-      }
-
-      updateBoard(historyAfterSkipAndMove);
-      return succ(undefined);
     };
 
     const generatePgn = (
@@ -366,14 +396,15 @@ export const makeUseRecordingState =
       goToArbiterGameMode,
       move,
       undoLastMove,
-      isPawnPromotion,
       skipTurn,
-      isOtherPlayersPiece,
-      skipTurnAndProcessMove,
       generatePgn,
       toggleDraw,
       setGameTime,
       toggleRecordingMode,
       goToEditMove,
+      showPromotionModal,
+      makePromotionSelection,
+      isPawnPromotion,
+      promptUserForPromotionChoice,
     };
   };
