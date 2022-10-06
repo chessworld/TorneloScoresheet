@@ -44,7 +44,7 @@ const ArbiterAndPlayerModeDisplay: React.FC<
       useResultDisplayState()?.[1].goToArbiterMode ?? voidReturn,
     [AppMode.TablePairing]:
       useTablePairingState()?.[1].goToArbiterGameMode ?? voidReturn,
-    [AppMode.EditMove]: useEditMoveState()?.[1].goToArbiterMode ?? voidReturn,
+    [AppMode.EditMove]: useEditMoveState()?.goToArbiterMode ?? voidReturn,
     [AppMode.ViewPastGames]: voidReturn,
   };
 
