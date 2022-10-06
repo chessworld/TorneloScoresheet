@@ -24,18 +24,38 @@ import GraphicalModePlayerCard from '../../components/GraphicalModePlayerCard/Gr
 import { isError } from '../../types/Result';
 import { styles } from './style';
 import IconButton from '../../components/IconButton/IconButton';
+import { Position } from '../../types/ChessBoardPositions';
 
 const GraphicalEditMove: React.FC = () => {
-  const editMoveStateHook = useEditMoveState();
-  const editMoveState = editMoveStateHook?.[0];
+  const editMoveState = useEditMoveState();
+  const editMoveMode = editMoveState?.state;
+  const pressToMoveCurrentMove = editMoveState?.pressToMoveSelectedFromSquare;
+  const positionPress = editMoveState?.positionPress;
+
+  const handlePositionPress = async (position: Position) => {
+    // If the pawn is one row away from the end of the board, show the promotion piece
+    var promotion = undefined;
+    if (pressToMoveCurrentMove && editMoveState) {
+      const fromPiece = editMoveMode?.board.find(
+        p => p.position === pressToMoveCurrentMove.position,
+      );
+      // if (
+      //   fromPiece?.piece?.type == PieceType.Pawn &&
+      //   (position[1] == '8' || position[1] == '1')
+      // ) {
+      //   promotion = await promptUserForPromotionChoice();
+      // }
+    }
+    positionPress?.(position, promotion);
+  };
 
   const [flipBoard, setFlipBoard] = useState(
-    editMoveState?.currentPlayer === PlayerColour.Black,
+    editMoveMode?.currentPlayer === PlayerColour.Black,
   );
 
   const [, showError] = useError();
   const [showPromotion, setShowPromotion] = useState(false);
-  const editingMove = editMoveState?.moveHistory[editMoveState.editingIndex];
+  const editingMove = editMoveMode?.moveHistory[editMoveMode.editingIndex];
   const editingMoveSquares =
     editingMove && editingMove.type === PlyTypes.MovePly
       ? editingMove.move
@@ -56,7 +76,7 @@ const GraphicalEditMove: React.FC = () => {
       text: 'cancel',
       style: { height: 136 },
       onPress: () => {
-        editMoveStateHook?.[1].cancelEditMove();
+        editMoveState?.cancelEditMove();
       },
       icon: (
         <IconButton
@@ -79,7 +99,7 @@ const GraphicalEditMove: React.FC = () => {
     {
       text: 'skip',
       onPress: () => {
-        editMoveStateHook?.[1].editMoveSkip();
+        editMoveState?.editMoveSkip();
       },
       icon: <ICON_SKIP height={40} fill={colours.white} />,
       style: { height: 136 },
@@ -132,14 +152,11 @@ const GraphicalEditMove: React.FC = () => {
   const handleEditMove = async (moveSquares: MoveSquares): Promise<void> => {
     // check for promotion
     let promotion: PieceType | undefined;
-    if (editMoveStateHook?.[1].isPawnPromotion(moveSquares)) {
+    if (editMoveState?.isPawnPromotion(moveSquares)) {
       // prompt user to select piece and wait until they do
       promotion = await promptUserForPromotionChoice();
     }
-    const result = await editMoveStateHook?.[1].editMove(
-      moveSquares,
-      promotion,
-    );
+    const result = await editMoveState?.editMove(moveSquares, promotion);
     if (!result) {
       return;
     }
@@ -150,11 +167,11 @@ const GraphicalEditMove: React.FC = () => {
 
   useEffect(() => {
     scrollRef.current?.scrollToEnd();
-  }, [editMoveState?.moveHistory]);
+  }, [editMoveMode?.moveHistory]);
 
   return (
     <>
-      {editMoveState && (
+      {editMoveMode && (
         <View style={styles.mainContainer}>
           {/*----- Popups -----*/}
           <OptionSheet
@@ -168,12 +185,12 @@ const GraphicalEditMove: React.FC = () => {
           <View style={styles.playerCardsContainer}>
             <GraphicalModePlayerCard
               align="left"
-              player={editMoveState.pairing.players[0]}
+              player={editMoveMode.pairing.players[0]}
             />
             <View style={styles.verticalSeparator} />
             <GraphicalModePlayerCard
               align="right"
-              player={editMoveState.pairing.players[1]}
+              player={editMoveMode.pairing.players[1]}
             />
           </View>
 
@@ -182,8 +199,9 @@ const GraphicalEditMove: React.FC = () => {
               <ActionBar actionButtons={actionButtons} />
             </View>
             <ChessBoard
-              positions={editMoveState.board}
+              positions={editMoveMode.board}
               onMove={handleEditMove}
+              onPositionPressed={handlePositionPress}
               highlightedMove={
                 editingMoveSquares
                   ? [
@@ -205,13 +223,13 @@ const GraphicalEditMove: React.FC = () => {
             ref={scrollRef}
             horizontal
             style={styles.moveCardContainer}>
-            {plysToMoves(editMoveState.moveHistory).map((move, index) => (
+            {plysToMoves(editMoveMode.moveHistory).map((move, index) => (
               <MoveCard
                 key={index}
                 move={move}
                 plyBeingEdited={
-                  Math.floor(editMoveState.editingIndex / 2) === index
-                    ? editMoveState.editingIndex % 2 === 0
+                  Math.floor(editMoveMode.editingIndex / 2) === index
+                    ? editMoveMode.editingIndex % 2 === 0
                       ? PlayerColour.White
                       : PlayerColour.Black
                     : undefined
