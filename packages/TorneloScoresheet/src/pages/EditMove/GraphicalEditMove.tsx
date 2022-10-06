@@ -39,12 +39,16 @@ const GraphicalEditMove: React.FC = () => {
       const fromPiece = editMoveMode?.board.find(
         p => p.position === pressToMoveCurrentMove.position,
       );
-      // if (
-      //   fromPiece?.piece?.type == PieceType.Pawn &&
-      //   (position[1] == '8' || position[1] == '1')
-      // ) {
-      //   promotion = await promptUserForPromotionChoice();
-      // }
+      if (
+        fromPiece?.piece?.type == PieceType.Pawn &&
+        promptUserForPromotionChoice &&
+        ((fromPiece?.piece?.type == PieceType.Pawn &&
+          position[1] == '8' &&
+          fromPiece.piece.player == PlayerColour.White) ||
+          (position[1] == '1' && fromPiece.piece.player == PlayerColour.Black))
+      ) {
+        promotion = await promptUserForPromotionChoice();
+      }
     }
     positionPress?.(position, promotion);
   };

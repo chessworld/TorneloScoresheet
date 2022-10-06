@@ -45,7 +45,10 @@ const GraphicalRecording: React.FC = () => {
       if (
         fromPiece?.piece?.type == PieceType.Pawn &&
         promptUserForPromotionChoice &&
-        (position[1] == '8' || position[1] == '1')
+        ((fromPiece?.piece?.type == PieceType.Pawn &&
+          position[1] == '8' &&
+          fromPiece.piece.player == PlayerColour.White) ||
+          (position[1] == '1' && fromPiece.piece.player == PlayerColour.Black))
       ) {
         promotion = await promptUserForPromotionChoice();
       }
