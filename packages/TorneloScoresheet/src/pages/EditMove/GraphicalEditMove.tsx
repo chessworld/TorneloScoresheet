@@ -165,6 +165,33 @@ const GraphicalEditMove: React.FC = () => {
     }
   };
 
+  const selectHighlightedMove = (
+    editingMoveSquares: MoveSquares | undefined,
+  ) => {
+    if (editingMoveSquares) {
+      const greenSquare = {
+        position: editingMoveSquares.from,
+        colour: colours.lightGreen,
+      };
+      const orangeSquare = {
+        position: editingMoveSquares.to,
+        colour: colours.lightOrange,
+      };
+      if (pressToMoveCurrentMove) {
+        const yellowSquare = {
+          position: pressToMoveCurrentMove.position,
+          colour: colours.lightYellow,
+        };
+        if (pressToMoveCurrentMove.position == editingMoveSquares.from) {
+          return [yellowSquare, orangeSquare];
+        }
+        return [yellowSquare, greenSquare, orangeSquare];
+      }
+      return [greenSquare, orangeSquare];
+    }
+    return undefined;
+  };
+
   useEffect(() => {
     scrollRef.current?.scrollToEnd();
   }, [editMoveMode?.moveHistory]);
@@ -202,20 +229,7 @@ const GraphicalEditMove: React.FC = () => {
               positions={editMoveMode.board}
               onMove={handleEditMove}
               onPositionPressed={handlePositionPress}
-              highlightedMove={
-                editingMoveSquares
-                  ? [
-                      {
-                        position: editingMoveSquares.from,
-                        colour: colours.lightGreen,
-                      },
-                      {
-                        position: editingMoveSquares.to,
-                        colour: colours.lightOrange,
-                      },
-                    ]
-                  : undefined
-              }
+              highlightedMove={selectHighlightedMove(editingMoveSquares)}
               flipBoard={flipBoard}
             />
           </View>
