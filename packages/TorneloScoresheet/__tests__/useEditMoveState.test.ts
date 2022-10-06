@@ -60,7 +60,7 @@ describe('Edit Move With Skip Ply', () => {
     mockGetRecordingModeData();
 
     await act(async () => {
-      const result = await editMoveStateHook.current?.[1].editMoveSkip();
+      const result = await editMoveStateHook.current?.editMoveSkip();
       if (!result) {
         return;
       }
@@ -189,7 +189,7 @@ describe('Edit Move With Skip Ply', () => {
     mockGetRecordingModeData();
 
     await act(async () => {
-      const result = await editMoveStateHook.current?.[1].editMoveSkip();
+      const result = await editMoveStateHook.current?.editMoveSkip();
       if (!result) {
         return;
       }
@@ -318,7 +318,7 @@ describe('Edit move with Move Ply', () => {
     mockGetRecordingModeData();
 
     await act(async () => {
-      const result = await editMoveStateHook.current?.[1].editMove({
+      const result = await editMoveStateHook.current?.editMove({
         from: 'a2',
         to: 'a3',
       });
@@ -416,7 +416,7 @@ describe('Edit move with Move Ply', () => {
     mockGetRecordingModeData();
 
     await act(async () => {
-      const result = await editMoveStateHook.current?.[1].editMove({
+      const result = await editMoveStateHook.current?.editMove({
         from: 'a6',
         to: 'a4',
       });
@@ -465,7 +465,7 @@ describe('Edit move with Move Ply', () => {
     mockGetRecordingModeData();
 
     await act(async () => {
-      const result = await editMoveStateHook.current?.[1].editMove({
+      const result = await editMoveStateHook.current?.editMove({
         from: 'a5',
         to: 'a6',
       });
@@ -505,7 +505,7 @@ describe('Edit move with Move Ply', () => {
     mockGetRecordingModeData();
 
     await act(async () => {
-      const result = await editMoveStateHook.current?.[1].cancelEditMove();
+      const result = await editMoveStateHook.current?.cancelEditMove();
       if (!result) {
         return;
       }
