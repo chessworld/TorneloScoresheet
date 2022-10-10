@@ -7,7 +7,6 @@ export const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   timeBox: {
-    marginTop: 25,
     marginBottom: 65,
   },
   buttonContainer: {
@@ -17,5 +16,11 @@ export const styles = StyleSheet.create({
   buttons: {
     height: 70,
     marginHorizontal: 10,
+  },
+  headersContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: 300,
   },
 });

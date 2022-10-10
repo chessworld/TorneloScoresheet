@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import { GameTime } from '../../types/ChessMove';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
+import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import Sheet from '../Sheet/Sheet';
 import { styles } from './style';
 
@@ -34,13 +35,17 @@ const TimePickerSheet: React.FC<TimePickerSheetProps> = ({
   return (
     <Sheet dismiss={dismiss} visible={visible} title={'Set move time'}>
       <View style={styles.container}>
+        <View style={styles.headersContainer}>
+          <PrimaryText label="HOURS" weight={FontWeight.Bold} size={18} />
+          <PrimaryText label="MINUTES" weight={FontWeight.Bold} size={18} />
+        </View>
         <DatePicker
           style={styles.timeBox}
           date={date}
           onDateChange={setDate}
-          mode={'time'}
-          locale={'fr'}
-          is24hourSource={'locale'}
+          mode="time"
+          locale="fr"
+          is24hourSource="locale"
         />
         <View style={styles.buttonContainer}>
           <PrimaryButton
