@@ -79,6 +79,13 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
     return (col + row) % 2 === 0 ? colours.darkBlue : colours.lightBlue;
   };
 
+  const handleDrop = async (from: Position, to: Position): Promise<void> => {
+    if (from === to) {
+      return;
+    }
+    onMove({ from, to });
+  };
+
   return (
     <DragAndDropContextProvider>
       <RoundedView style={styles.board}>
@@ -101,7 +108,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
             return (
               <DropTarget
                 onDrop={(data: unknown) =>
-                  onMove({ from: data as Position, to: square.position })
+                  handleDrop(data as Position, square.position)
                 }
                 key={rowIndex}
                 style={[
