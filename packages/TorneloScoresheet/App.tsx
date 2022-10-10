@@ -6,6 +6,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import Toolbar from './src/components/Toolbar/Toolbar';
 import { AppModeStateContextProvider } from './src/context/AppModeStateContext';
 import { ErrorContextProvider } from './src/context/ErrorContext';
+import { ArbiterInfoContextProvider } from './src/context/ArbiterInfoContext';
 import Main from './src/pages/Main';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import LockAppOnExit from './src/components/LockAppOnExit/LockAppOnExit';
@@ -27,17 +28,19 @@ const App = () => {
   return (
     <GestureHandlerRootView>
       <ErrorContextProvider>
-        <ModalStackContextProvider>
-          <AppModeStateContextProvider>
-            <LockAppOnExit>
-              <Toolbar />
-              <SafeAreaView style={backgroundStyle}>
-                <Main />
-              </SafeAreaView>
-              <ErrorToast />
-            </LockAppOnExit>
-          </AppModeStateContextProvider>
-        </ModalStackContextProvider>
+        <ArbiterInfoContextProvider>
+          <ModalStackContextProvider>
+            <AppModeStateContextProvider>
+              <LockAppOnExit>
+                <Toolbar />
+                <SafeAreaView style={backgroundStyle}>
+                  <Main />
+                </SafeAreaView>
+                <ErrorToast />
+              </LockAppOnExit>
+            </AppModeStateContextProvider>
+          </ModalStackContextProvider>
+        </ArbiterInfoContextProvider>
       </ErrorContextProvider>
     </GestureHandlerRootView>
   );
