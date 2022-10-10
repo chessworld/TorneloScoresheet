@@ -3,7 +3,9 @@ import { colours } from '../../style/colour';
 import {
   BoardPosition,
   boardPositionToIndex,
+  flippedBoard,
   Position,
+  standardBoard,
 } from '../../types/ChessBoardPositions';
 import { MoveSquares } from '../../types/ChessMove';
 import { CHESS_SQUARE_SIZE } from '../ChessSquare/ChessSquare';
@@ -27,38 +29,9 @@ const positionStyle = (position: Position, flipBoard: boolean) => {
   return {
     position: 'absolute' as const,
     zIndex: 2,
-    left: (flipBoard ? col : col) * CHESS_SQUARE_SIZE,
+    left: (flipBoard ? 7 - col : col) * CHESS_SQUARE_SIZE,
     top: (flipBoard ? row : 7 - row) * CHESS_SQUARE_SIZE,
   };
-};
-
-/**
- * Will reverse the row order
- * @param board The board postions
- * @returns the board positions in reversed order
- */
-const reverseRowOrder = (board: BoardPosition[]) => {
-  return (
-    board
-      // turn the array of length 64 into and 8x8
-      .reduce<BoardPosition[][]>((resultArray, item, index) => {
-        const rowIndex = Math.floor(index / 8);
-
-        // new row
-        if (!resultArray[rowIndex]) {
-          resultArray[rowIndex] = [];
-        }
-
-        // same row
-        resultArray[rowIndex]!.push(item);
-
-        return resultArray;
-      }, [])
-      // reverse the rows
-      .reverse()
-      // transform back to flat array of length 64
-      .flatMap(row => row)
-  );
 };
 
 const ChessBoard: React.FC<ChessBoardProps> = ({
@@ -103,22 +76,20 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
           );
         })}
         {/* Board Squares */}
-        {(!flipBoard ? reverseRowOrder(positions) : positions).map(
-          (square, rowIndex) => {
-            return (
-              <DropTarget
-                onDrop={(data: unknown) =>
-                  handleDrop(data as Position, square.position)
-                }
-                key={rowIndex}
-                style={[
-                  styles.boardSquare,
-                  { backgroundColor: squareColour(square.position) },
-                ]}
-              />
-            );
-          },
-        )}
+        {(flipBoard ? flippedBoard : standardBoard).map((square, rowIndex) => {
+          return (
+            <DropTarget
+              onDrop={(data: unknown) => handleDrop(data as Position, square)}
+              key={rowIndex}
+              style={[
+                styles.boardSquare,
+                {
+                  backgroundColor: squareColour(square),
+                },
+              ]}
+            />
+          );
+        })}
       </RoundedView>
     </DragAndDropContextProvider>
   );
