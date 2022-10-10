@@ -46,8 +46,21 @@ const GraphicalRecording: React.FC = () => {
     }
     const gameTime = recordingMode.moveHistory[moveGameTimeIndex]?.gameTime;
 
-    // return gameTime associated with move if it exists else current game time
-    return gameTime ? gameTime : getCurrentGameTime(recordingMode);
+    if (gameTime) {
+      return gameTime;
+    }
+
+    // Get the game time of the previous move that has a game time
+    const previousGameTime = recordingMode.moveHistory
+      .slice(0, moveGameTimeIndex)
+      .reverse()
+      .find(move => move.gameTime)?.gameTime;
+
+    if (previousGameTime) {
+      return previousGameTime;
+    }
+
+    return { hours: 0, minutes: 0 };
   }, [recordingMode, moveGameTimeIndex]);
   const [, showError] = useError();
 
