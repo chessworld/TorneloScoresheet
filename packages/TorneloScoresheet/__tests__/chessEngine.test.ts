@@ -1232,7 +1232,7 @@ describe('Adding Comments', () => {
       winner: PlayerColour.White,
       expectedPgn:
         stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') +
-        '1. e4 {[%clk 1:1]} 1-0',
+        '1. e4 {[%clk 01:01]} 1-0',
     },
     {
       name: 'Adding draw offer comment',
@@ -1274,7 +1274,7 @@ describe('Adding Comments', () => {
       winner: PlayerColour.White,
       expectedPgn:
         stripStarAndReplaceResultFromPgn(pgnSuccess, '1-0') +
-        '1. e4 {=[%clk 1:1]} 1-0',
+        '1. e4 {=[%clk 01:01]} 1-0',
     },
   ];
   testCases.forEach(testCase => {
