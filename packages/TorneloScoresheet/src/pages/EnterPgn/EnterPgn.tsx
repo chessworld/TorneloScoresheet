@@ -17,6 +17,7 @@ import InputBox from '../../components/InputBox/InputBox';
 import PrimaryText, {
   FontWeight,
 } from '../../components/PrimaryText/PrimaryText';
+import { useArbiterInfo } from '../../context/ArbiterInfoContext';
 
 const EnterPgn: React.FC = () => {
   const state = useEnterPgnState();
@@ -24,7 +25,21 @@ const EnterPgn: React.FC = () => {
   const goToPairingSelection = state?.goToPairingSelection;
   const appMode = state?.state;
 
+  const [, setArbiterInfo] = useArbiterInfo();
   const [url, setUrl] = useState('');
+  const [arbiterPin, setArbiterPin] = useState('');
+  const [arbiterEmailSecret, setArbiterEmailSecret] = useState('');
+  const inputBoxesContent: [
+    string,
+    React.Dispatch<React.SetStateAction<string>>,
+    string,
+  ][] = [
+    [url, setUrl, 'Tournament Url'],
+    [arbiterPin, setArbiterPin, 'Arbiter Pin'],
+    [arbiterEmailSecret, setArbiterEmailSecret, 'Arbiter Email Secret'],
+    // TODO investigate if division ID is required here
+  ];
+
   const [, showError] = useError();
 
   useEffect(() => {
@@ -40,7 +55,12 @@ const EnterPgn: React.FC = () => {
 
   const handleNextClick = async () => {
     setLoading(true);
+    setArbiterInfo({
+      emailApiToken: arbiterEmailSecret,
+      pin: arbiterPin,
+    });
     await storePgnUrl(url);
+
     if (!goToPairingSelection) {
       return;
     }
@@ -83,13 +103,17 @@ const EnterPgn: React.FC = () => {
                 />{' '}
                 to find the Live Broadcast PGN link. Then paste it below
               </PrimaryText>
-              <InputBox
-                style={styles.inputBox}
-                onChangeText={setUrl}
-                onSubmitEditing={handleNextClick}
-                value={url}
-                placeholder="Tournament Link"
-              />
+              <View style={styles.inputBoxesContainer}>
+                {inputBoxesContent.map((inputBoxContent, key) => (
+                  <InputBox
+                    key={key}
+                    style={styles.inputBox}
+                    value={inputBoxContent[0]}
+                    onChangeText={inputBoxContent[1]}
+                    placeholder={inputBoxContent[2]}
+                  />
+                ))}
+              </View>
             </View>
             <View style={styles.buttonBox}>
               <PrimaryButton
@@ -97,6 +121,13 @@ const EnterPgn: React.FC = () => {
                 labelStyle={styles.startButtonLabel}
                 onPress={handleNextClick}
                 label="Start"
+                loading={loading}
+              />
+              <PrimaryButton
+                style={styles.startButton}
+                labelStyle={styles.startButtonLabel}
+                onPress={() => console.log('placeholder')}
+                label="Scan QR"
                 loading={loading}
               />
             </View>
