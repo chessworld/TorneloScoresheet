@@ -214,11 +214,21 @@ const inStalemate = (fen: string): boolean => {
 };
 
 /**
+ * Given a number, if it is less than 10, adds a leading zero
+ */
+const zeroPad = (value: number): string => {
+  if (value > 9) {
+    return value.toString();
+  }
+  return `0${value}`;
+};
+
+/**
  * Determins if the move is attempting to move the opposite player's piece
  * This can be used to determine if the player is intending to auto skip a turn
  *
  * @param fen the current state of the board
- * @param moveSquares the to and from positions of the move
+ * @param move the to and from positions of the move
  * @returns if the move is targeting the opposite player's piece
  */
 const isOtherPlayersPiece = (fen: string, move: MoveSquares): boolean => {
@@ -231,7 +241,9 @@ const addComments = (game: Chess, move: MovePly | SkipPly): void => {
     game.setComment(
       `${move.drawOffer ? '=' : ''}${
         move.gameTime
-          ? `[%clk ${move.gameTime.hours.toString()}:${move.gameTime.minutes.toString()}]`
+          ? `[%clk ${zeroPad(move.gameTime.hours)}:${zeroPad(
+              move.gameTime.minutes,
+            )}]`
           : ''
       }`,
     );
