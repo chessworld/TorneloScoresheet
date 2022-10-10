@@ -43,7 +43,11 @@ export const styles = StyleSheet.create({
     marginBottom: -2,
   },
   inputBox: {
-    marginTop: 58,
+    marginTop: 29,
+    width: 600,
+  },
+  inputBoxesContainer: {
+    paddingBottom: 29,
     width: 600,
   },
   startButton: {
