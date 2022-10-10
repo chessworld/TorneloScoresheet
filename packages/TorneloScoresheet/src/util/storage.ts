@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ArbiterInfo } from '../types/ArbiterInfoState';
 import { ChessGameInfo } from '../types/ChessGameInfo';
 import { PlayerColour } from '../types/ChessGameInfo';
 import { ChessPly } from '../types/ChessMove';
@@ -117,8 +118,9 @@ export const [storePairingList, getStoredPairingList] =
 
 // PGN url, stores the url
 // used to be able to access the prev used url when eneting the url
-const PGN_API_URL = 'PGN_API_URL';
-export const [storePgnUrl, getStoredPgnUrl] = buildStoreGetFuncs(PGN_API_URL);
+const ARBITER_INFO = 'ARBITER_INFO';
+export const [storeArbiterInfo, getStoredArbiterInfo] =
+  buildJsonStoreGetFuncs<ArbiterInfo>(ARBITER_INFO);
 
 // Game history data, stores the signatures and pgns of past games
 // Required for arbiter to see previous games to settle disputes
