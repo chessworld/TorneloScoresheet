@@ -13,7 +13,6 @@ import TimePickerSheet from '../../components/TimePickerSheet/TimePickerSheet';
 import Actions from './Actions';
 import PromotionSheet from './PromotionSheet';
 import EndGameSheet from './EndGameSheet';
-import { RecordingMode } from '../../types/AppModeState';
 import { isError } from '../../types/Result';
 import { useError } from '../../context/ErrorContext';
 import { plysToMoves } from '../../util/moves';
@@ -191,21 +190,6 @@ const GraphicalRecording: React.FC = () => {
       )}
     </>
   );
-};
-
-/**
- * Calculates the game time since the game started
- * @returns the game time
- */
-const getCurrentGameTime = (currentState: RecordingMode): GameTime => {
-  const totalMiliseconds = new Date().getTime() - currentState.startTime;
-  const totalMinutes = totalMiliseconds / (1000 * 60);
-
-  // calculate time since start
-  return {
-    hours: totalMinutes / 60,
-    minutes: totalMinutes % 60,
-  };
 };
 
 export default GraphicalRecording;
