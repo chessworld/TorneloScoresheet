@@ -12,7 +12,7 @@ import {
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import PrimaryText from '../PrimaryText/PrimaryText';
 import { useError } from '../../context/ErrorContext';
-import { pinValid } from '../../util/arbiterPin';
+import { useArbiterInfo } from '../../context/ArbiterInfoContext';
 
 const CELL_COUNT = 4;
 
@@ -28,8 +28,17 @@ const Pin: React.FC<PinProps> = ({ onPress }) => {
     value,
     setValue,
   });
+  const [arbiterInfo] = useArbiterInfo();
 
   const [, showError] = useError();
+
+  const pinValid = (pin: string): boolean => {
+    if (!arbiterInfo) {
+      showError('Error, arbiter pin is not set');
+      return false;
+    }
+    return pin === arbiterInfo.pin;
+  };
   return (
     <View>
       <SafeAreaView>
