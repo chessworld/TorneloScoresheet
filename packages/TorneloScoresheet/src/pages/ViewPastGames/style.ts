@@ -13,6 +13,11 @@ export const styles = StyleSheet.create({
     height: 100,
     width: 300,
   },
+  emailButton: {
+    width: 280,
+    alignSelf: 'center',
+    marginVertical: 30,
+  },
   signatureBox: {
     marginVertical: 50,
     display: 'flex',

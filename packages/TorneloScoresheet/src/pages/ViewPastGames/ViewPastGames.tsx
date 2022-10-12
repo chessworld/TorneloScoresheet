@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatList, Image, View } from 'react-native';
 import { styles } from './style';
 import { useViewPastGames } from '../../context/AppModeStateContext';
@@ -8,9 +8,41 @@ import PrimaryText, {
 import BoardPairing from '../../components/BoardPairing/BoardPairing';
 import { chessGameIdentifier } from '../../util/chessGameInfo';
 import Sheet from '../../components/Sheet/Sheet';
+import PrimaryButton from '../../components/PrimaryButton/PrimaryButton';
+import { useError } from '../../context/ErrorContext';
+import { useArbiterInfo } from '../../context/ArbiterInfoContext';
+import { emailGameResults } from '../../util/emailUtils';
+import { isError } from '../../types/Result';
 
 const ViewPastGames: React.FC = () => {
   const viewModel = useViewPastGames();
+  const [emailSending, setEmailSending] = useState(false);
+  const [, showError] = useError();
+  const [arbiterInfo] = useArbiterInfo();
+
+  const handleEmailGame = async (): Promise<void> => {
+    if (!viewModel || !viewModel.selectedGame) {
+      return;
+    }
+
+    setEmailSending(true);
+    if (!arbiterInfo) {
+      showError('Cannot send email as arbiter info is not stored!');
+      setEmailSending(false);
+      return;
+    }
+
+    const result = await emailGameResults(
+      arbiterInfo,
+      viewModel.selectedGame.pairing,
+      viewModel.selectedGame.pgn,
+    );
+    if (isError(result)) {
+      showError(result.error);
+    }
+
+    setEmailSending(false);
+  };
 
   return (
     viewModel && (
@@ -37,6 +69,14 @@ const ViewPastGames: React.FC = () => {
                   uri: viewModel.selectedGame.blackSign,
                 }}
                 resizeMode={'contain'}
+              />
+            </View>
+            <View>
+              <PrimaryButton
+                label="Email Game"
+                onPress={handleEmailGame}
+                style={styles.emailButton}
+                loading={emailSending}
               />
             </View>
           </Sheet>
