@@ -5,7 +5,7 @@ import ChessBoard from '../../components/ChessBoard/ChessBoard';
 import MoveCard from '../../components/MoveCard/MoveCard';
 import { useRecordingState } from '../../context/AppModeStateContext';
 import { PlayerColour } from '../../types/ChessGameInfo';
-import { MoveSquares, GameTime, PieceType } from '../../types/ChessMove';
+import { MoveSquares, GameTime } from '../../types/ChessMove';
 import { styles } from './style';
 import MoveOptionsSheet, { EditingMove } from './MoveOptionsSheet';
 import GraphicalModePlayerCard from '../../components/GraphicalModePlayerCard/GraphicalModePlayerCard';
@@ -18,7 +18,6 @@ import { useError } from '../../context/ErrorContext';
 import { plysToMoves } from '../../util/moves';
 import { useUndo } from '../../hooks/useUndo';
 import { ReversibleActionType } from '../../types/ReversibleAction';
-import { Position } from '../../types/ChessBoardPositions';
 
 const GraphicalRecording: React.FC = () => {
   const { undo, redo, pushUndoAction } = useUndo();
@@ -32,29 +31,6 @@ const GraphicalRecording: React.FC = () => {
   const isPawnPromotion = recordingState?.isPawnPromotion;
   const promptUserForPromotionChoice =
     recordingState?.promptUserForPromotionChoice;
-  const pressToMoveCurrentMove = recordingState?.pressToMoveSelectedFromSquare;
-  const positionPress = recordingState?.positionPress;
-
-  const handlePositionPress = async (position: Position) => {
-    // If the pawn is one row away from the end of the board, show the promotion piece
-    var promotion = undefined;
-    if (pressToMoveCurrentMove && recordingState) {
-      const fromPiece = recordingMode?.board.find(
-        p => p.position === pressToMoveCurrentMove.position,
-      );
-      if (
-        fromPiece?.piece?.type == PieceType.Pawn &&
-        promptUserForPromotionChoice &&
-        ((fromPiece?.piece?.type == PieceType.Pawn &&
-          position[1] == '8' &&
-          fromPiece.piece.player == PlayerColour.White) ||
-          (position[1] == '1' && fromPiece.piece.player == PlayerColour.Black))
-      ) {
-        promotion = await promptUserForPromotionChoice();
-      }
-    }
-    positionPress?.(position, promotion);
-  };
 
   // states
   const [flipBoard, setFlipBoard] = useState(
@@ -194,12 +170,6 @@ const GraphicalRecording: React.FC = () => {
               positions={recordingMode.board}
               onMove={handleMove}
               flipBoard={flipBoard}
-              onPositionPressed={handlePositionPress}
-              highlightedMove={
-                pressToMoveCurrentMove === undefined
-                  ? undefined
-                  : [pressToMoveCurrentMove]
-              }
             />
           </View>
           <ScrollView

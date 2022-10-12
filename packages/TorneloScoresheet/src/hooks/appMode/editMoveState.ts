@@ -1,9 +1,7 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
 import { AppModeStateContextType } from '../../context/AppModeStateContext';
-import { colours } from '../../style/colour';
 import { AppMode, EditingMoveMode } from '../../types/AppModeState';
-import { Position } from '../../types/ChessBoardPositions';
 import {
   ChessPly,
   MovePly,
@@ -12,7 +10,6 @@ import {
   PlyTypes,
   SkipPly,
 } from '../../types/ChessMove';
-import { HighlightedPosition } from '../../types/HighlightedPosition';
 import { MoveLegality } from '../../types/MoveLegality';
 import { fail, Result, succ } from '../../types/Result';
 import { getStoredRecordingModeData } from '../../util/storage';
@@ -27,8 +24,6 @@ type editMoveStateHookType = {
   editMoveSkip: () => Promise<Result<string>>;
   isPawnPromotion: (moveSquares: MoveSquares) => boolean;
   goToArbiterMode: () => void;
-  pressToMoveSelectedFromSquare: HighlightedPosition | undefined;
-  positionPress: (position: Position, promotion: PieceType | undefined) => void;
 };
 
 const checkMoveLegality = (
@@ -233,8 +228,6 @@ export const makeUseEditMoveState =
   (context: AppModeStateContextType): (() => editMoveStateHookType | null) =>
   (): editMoveStateHookType | null => {
     const [appModeState, setAppModeState] = useContext(context);
-    const [pressToMoveSelectedFromSquare, setPressToMoveSelectedFromSquare] =
-      useState<HighlightedPosition | undefined>(undefined);
     if (appModeState.mode !== AppMode.EditMove) {
       return null;
     }
@@ -417,40 +410,6 @@ export const makeUseEditMoveState =
       );
     };
 
-    const positionPress = (
-      position: Position,
-      promotion: PieceType | undefined,
-    ) => {
-      // If there's no currently selected from square - assert that the pressed position has a piece
-      if (
-        !pressToMoveSelectedFromSquare &&
-        !appModeState.board.find(p => p.position === position)?.piece
-      ) {
-        return;
-      }
-      if (!pressToMoveSelectedFromSquare) {
-        setPressToMoveSelectedFromSquare({
-          position,
-          colour: colours.lightYellow,
-        });
-        return;
-      }
-      // The case where the user presses the same square twice -
-      // we clear the squares
-      if (position === pressToMoveSelectedFromSquare.position) {
-        setPressToMoveSelectedFromSquare(undefined);
-        return;
-      }
-      editMove(
-        {
-          from: pressToMoveSelectedFromSquare.position,
-          to: position,
-        },
-        promotion,
-      );
-      setPressToMoveSelectedFromSquare(undefined);
-    };
-
     return {
       state: appModeState,
       cancelEditMove,
@@ -458,7 +417,5 @@ export const makeUseEditMoveState =
       editMoveSkip,
       isPawnPromotion,
       goToArbiterMode,
-      pressToMoveSelectedFromSquare,
-      positionPress,
     };
   };
