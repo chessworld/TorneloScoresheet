@@ -14,6 +14,45 @@ export const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
+  placeholderQRSection: {
+    backgroundColor: colours.grey10,
+    padding: 30,
+    minHeight: 400,
+  },
+  editEventHeader: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 20,
+  },
+  currentEventBox: {
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: colours.grey10,
+    padding: 30,
+    minWidth: '95%',
+    marginTop: 80,
+  },
+  editEventButton: {
+    marginTop: 30,
+  },
+  editEventButtonLabel: {
+    fontSize: 20,
+    marginHorizontal: 10,
+  },
+  currentEventDesc: {
+    textAlign: 'center',
+    marginTop: 10,
+  },
+  currentEventTitle: {
+    textAlign: 'center',
+    marginTop: 30,
+  },
+  editEventSheetSection: {
+    maxHeight: 600,
+    minHeight: 600,
+  },
   buttonBox: {
     display: 'flex',
     flexDirection: 'row',
@@ -32,8 +71,27 @@ export const styles = StyleSheet.create({
     marginTop: 40,
   },
   instructions: {
-    marginTop: 50,
-    alignItems: 'baseline',
+    width: '60%',
+    marginLeft: 30,
+  },
+  switchInputModeButton: {
+    alignItems: 'center',
+    width: 200,
+    backgroundColor: colours.primary,
+    marginVertical: 20,
+    paddingTop: 10,
+    borderRadius: 16,
+    display: 'flex',
+    flexDirection: 'row',
+    height: 80,
+    justifyContent: 'center',
+  },
+  switchInputModeButtonText: {
+    fontSize: 23,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: colours.white,
+    paddingBottom: 10,
   },
   instructionsLink: {
     fontFamily: primary,
