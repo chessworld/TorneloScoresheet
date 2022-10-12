@@ -93,13 +93,13 @@ const EditCurrentEvent: React.FC<EditCurrentEventParams> = ({
 
   const confirmArbiterInfo = async (): Promise<void> => {
     const newArbiterInfo: ArbiterInfo = {
-      pin: arbiterPin,
-      broadcastUrl: pgnUrl,
-      arbiterToken: arbiterEmailSecret,
-      divisionId,
-      userId: arbiterId,
-      userName: arbiterName,
-      eventName,
+      pin: arbiterPin.trim().replace(/^\s+|\s+$/g, ''),
+      broadcastUrl: pgnUrl.trim().replace(/^\s+|\s+$/g, ''),
+      arbiterToken: arbiterEmailSecret.trim().replace(/^\s+|\s+$/g, ''),
+      divisionId: divisionId.trim().replace(/^\s+|\s+$/g, ''),
+      userId: arbiterId.trim().replace(/^\s+|\s+$/g, ''),
+      userName: arbiterName.trim().replace(/^\s+|\s+$/g, ''),
+      eventName: eventName.trim().replace(/^\s+|\s+$/g, ''),
     };
     dismiss();
 
