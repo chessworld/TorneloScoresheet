@@ -16,6 +16,7 @@ import DropTarget from '../DragAndDrop/DropTarget/DropTarget';
 import PieceAsset from '../PieceAsset/PieceAsset';
 import RoundedView from '../RoundedView/RoundedView';
 import { styles } from './style';
+import { useChessBoard } from './useChessboard';
 
 type HighlightedPosition = {
   position: Position;
@@ -45,14 +46,20 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
   positions,
   flipBoard,
   highlightedMove,
-  onPositionPressed,
   onMove,
 }) => {
+  const { onPositionPressed, clearSelectedPosition, selectedPosition } =
+    useChessBoard(positions, onMove);
+
+  const highlightedMoveAndSelectedPosition = (highlightedMove ?? []).concat(
+    selectedPosition ? [selectedPosition] : [],
+  );
+
   const boardPositionLookupTable: {
     [key: string]: ColourType;
   } = useMemo(() => {
     return (
-      highlightedMove?.reduce(
+      highlightedMoveAndSelectedPosition?.reduce(
         (acc, el) => {
           acc[el.position] = el.colour;
           return acc;
@@ -62,7 +69,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
         },
       ) ?? {}
     );
-  }, [highlightedMove]);
+  }, [highlightedMove, selectedPosition]);
 
   const squareColour = (position: Position) => {
     const squareColour = boardPositionLookupTable[position];
@@ -111,7 +118,10 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
               style={{ zIndex: -2 }}
               onPress={() => onPositionPressed?.(square)}>
               <DropTarget
-                onDrop={(data: unknown) => handleDrop(data as Position, square)}
+                onDrop={(data: unknown) => {
+                  clearSelectedPosition();
+                  return handleDrop(data as Position, square);
+                }}
                 key={rowIndex}
                 style={[
                   styles.boardSquare,

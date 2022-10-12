@@ -24,41 +24,16 @@ import GraphicalModePlayerCard from '../../components/GraphicalModePlayerCard/Gr
 import { isError } from '../../types/Result';
 import { styles } from './style';
 import IconButton from '../../components/IconButton/IconButton';
-import { Position } from '../../types/ChessBoardPositions';
 
 const GraphicalEditMove: React.FC = () => {
   const editMoveState = useEditMoveState();
   const editMoveMode = editMoveState?.state;
-  const pressToMoveCurrentMove = editMoveState?.pressToMoveSelectedFromSquare;
-  const positionPress = editMoveState?.positionPress;
-
-  const handlePositionPress = async (position: Position) => {
-    // If the pawn is one row away from the end of the board, show the promotion piece
-    var promotion = undefined;
-    if (pressToMoveCurrentMove && editMoveState) {
-      const fromPiece = editMoveMode?.board.find(
-        p => p.position === pressToMoveCurrentMove.position,
-      );
-      if (
-        fromPiece?.piece?.type == PieceType.Pawn &&
-        promptUserForPromotionChoice &&
-        ((fromPiece?.piece?.type == PieceType.Pawn &&
-          position[1] == '8' &&
-          fromPiece.piece.player == PlayerColour.White) ||
-          (position[1] == '1' && fromPiece.piece.player == PlayerColour.Black))
-      ) {
-        promotion = await promptUserForPromotionChoice();
-      }
-    }
-    positionPress?.(position, promotion);
-  };
-
-  const [flipBoard, setFlipBoard] = useState(
-    editMoveMode?.currentPlayer === PlayerColour.Black,
-  );
 
   const [, showError] = useError();
   const [showPromotion, setShowPromotion] = useState(false);
+  const [flipBoard, setFlipBoard] = useState(
+    editMoveMode?.currentPlayer === PlayerColour.Black,
+  );
   const editingMove = editMoveMode?.moveHistory[editMoveMode.editingIndex];
   const editingMoveSquares =
     editingMove && editingMove.type === PlyTypes.MovePly
@@ -172,28 +147,18 @@ const GraphicalEditMove: React.FC = () => {
   const selectHighlightedMove = (
     editingMoveSquares: MoveSquares | undefined,
   ) => {
-    if (editingMoveSquares) {
-      const greenSquare = {
-        position: editingMoveSquares.from,
-        colour: colours.lightGreen,
-      };
-      const orangeSquare = {
-        position: editingMoveSquares.to,
-        colour: colours.lightOrange,
-      };
-      if (pressToMoveCurrentMove) {
-        const yellowSquare = {
-          position: pressToMoveCurrentMove.position,
-          colour: colours.lightYellow,
-        };
-        if (pressToMoveCurrentMove.position == editingMoveSquares.from) {
-          return [yellowSquare, orangeSquare];
-        }
-        return [yellowSquare, greenSquare, orangeSquare];
-      }
-      return [greenSquare, orangeSquare];
+    if (!editingMoveSquares) {
+      return undefined;
     }
-    return undefined;
+    const greenSquare = {
+      position: editingMoveSquares.from,
+      colour: colours.lightGreen,
+    };
+    const orangeSquare = {
+      position: editingMoveSquares.to,
+      colour: colours.lightOrange,
+    };
+    return [greenSquare, orangeSquare];
   };
 
   useEffect(() => {
@@ -232,7 +197,6 @@ const GraphicalEditMove: React.FC = () => {
             <ChessBoard
               positions={editMoveMode.board}
               onMove={handleEditMove}
-              onPositionPressed={handlePositionPress}
               highlightedMove={selectHighlightedMove(editingMoveSquares)}
               flipBoard={flipBoard}
             />
