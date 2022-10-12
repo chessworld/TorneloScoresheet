@@ -1,51 +1,50 @@
-import qs from 'qs';
-import { Linking } from 'react-native';
-import { ChessGameInfo, ChessGameResult } from '../types/ChessGameInfo';
-import { fail, succ } from '../types/Result';
-import { chessGameIdentifier } from './chessGameInfo';
-import { fullName } from './player';
+import axios, { AxiosResponse } from 'axios';
+import { ArbiterInfo } from '../types/ArbiterInfoState';
+import { ChessGameInfo } from '../types/ChessGameInfo';
+import { fail, isError, Result, succ } from '../types/Result';
+import { emailEndpoint } from './env';
 
-export async function sendEmail(
-  to: string,
+export const emailGameResults = async (
+  arbiterInfo: ArbiterInfo,
   pairing: ChessGameInfo,
-  result: ChessGameResult,
-) {
-  let url = `mailto:${to}`;
-  const subjectLine =
-    'Tornello Game Results ' +
-    chessGameIdentifier(pairing) +
-    ':' +
-    fullName(pairing.players[0]) +
-    ' vs' +
-    fullName(pairing.players[1]);
-  const body =
-    'Tornello Game Results ' +
-    chessGameIdentifier(pairing) +
-    '\n\nPlayer 1: ' +
-    fullName(pairing.players[0]) +
-    '\nPlayer 2: ' +
-    fullName(pairing.players[1]) +
-    '\n\nFull Game PGN:\n' +
-    result.gamePgn;
+  pgn: string,
+): Promise<Result<string>> => {
+  const sendRequest = (): Promise<AxiosResponse> => {
+    const url = emailEndpoint(arbiterInfo.userId);
+    console.log(arbiterInfo);
+    const payload = {
+      userId: arbiterInfo.userId,
+      arbiterToken: arbiterInfo.arbiterToken,
+      divisionId: arbiterInfo.divisionId,
+      pgn,
+      round: pairing.round,
+      board: pairing.board,
+      match: pairing.game,
+    };
+    const config = {
+      validateStatus: () => true,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    return axios.post(url, payload, config);
+  };
 
-  // Create email link query
-  const query = qs.stringify({
-    subject: subjectLine,
-    body: body,
-    bcc: '', //option to add arbiter 'BCC' address in the future
-  });
-
-  if (query.length) {
-    url += `?${query}`;
-  }
-  // check if we can use this link
-  const canOpen = await Linking.canOpenURL(url);
-
-  if (!canOpen) {
-    return fail('Unable to send email');
+  const resultOrErr: Result<AxiosResponse> = await (async () => {
+    try {
+      return succ(await sendRequest());
+    } catch (e) {
+      console.log(e);
+      return fail('Network error, please check your internet connection');
+    }
+  })();
+  if (isError(resultOrErr)) {
+    return fail(resultOrErr.error);
   }
 
-  Linking.openURL(url);
-
+  if (resultOrErr.data.status !== 200) {
+    console.log(resultOrErr.data.data);
+    return fail(`Error sending email (${resultOrErr.data.status})`);
+  }
   return succ('');
-}
+};
