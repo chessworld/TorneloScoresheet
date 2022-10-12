@@ -59,6 +59,13 @@ export const styles = StyleSheet.create({
     alignContent: 'center',
     alignItems: 'center',
   },
+  saveEventButtonBox: {
+    marginTop: 30,
+    display: 'flex',
+    flexDirection: 'column',
+    alignContent: 'center',
+    alignItems: 'center',
+  },
   informationAndInputBoxContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -96,17 +103,27 @@ export const styles = StyleSheet.create({
   instructionsLink: {
     fontFamily: primary,
     fontWeight: '500',
-    fontSize: 26,
+    fontSize: 25,
     color: colours.secondary,
-    marginBottom: -2,
   },
   inputBox: {
+    fontSize: 23,
+    padding: 23,
     marginTop: 29,
     width: 600,
   },
   inputBoxesContainer: {
     paddingBottom: 29,
     width: 600,
+  },
+  saveEventButton: {
+    marginBottom: 30,
+    paddingLeft: 40,
+    paddingRight: 40,
+    marginHorizontal: 20,
+  },
+  saveEventButtonLabel: {
+    fontSize: 20,
   },
   startButton: {
     marginBottom: 30,
