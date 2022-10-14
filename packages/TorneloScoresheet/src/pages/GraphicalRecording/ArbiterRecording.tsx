@@ -5,6 +5,7 @@ import { useArbiterRecordingState } from '../../context/AppModeStateContext';
 import { styles } from './style';
 import MoveTable from '../../components/MoveTable/MoveTable';
 import { ChessPly } from '../../types/ChessMove';
+import { getShortFenAfterMove } from '../../util/moves';
 
 const ArbiterRecording: React.FC = () => {
   const recordingModeState = useArbiterRecordingState();
@@ -28,6 +29,23 @@ const ArbiterRecording: React.FC = () => {
       return { ...move };
     });
   };
+
+  const getFenOfLastRepetition = (): String => {
+    if (!recordingMode) {
+      return '';
+    }
+    if (
+      !recordingMode.moveHistory[recordingMode.moveHistory.length - 1]?.legality
+        ?.inThreefoldRepetition
+    ) {
+      return '';
+    }
+    return getShortFenAfterMove(
+      recordingMode.moveHistory[
+        recordingMode.moveHistory.length - 1
+      ] as ChessPly,
+    );
+  };
   return (
     <>
       {recordingMode && (
@@ -44,7 +62,10 @@ const ArbiterRecording: React.FC = () => {
             />
           </View>
 
-          <MoveTable moves={propagateRepetitions(recordingMode.moveHistory)} />
+          <MoveTable
+            moves={propagateRepetitions(recordingMode.moveHistory)}
+            repeatedFenToHighlight={getFenOfLastRepetition()}
+          />
         </View>
       )}
     </>
