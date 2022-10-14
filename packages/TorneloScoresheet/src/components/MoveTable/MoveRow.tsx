@@ -5,22 +5,29 @@ import { styles } from './style';
 import MoveCell from './MoveCell';
 import { ChessPly, Move } from '../../types/ChessMove';
 import { colours, ColourType } from '../../style/colour';
+import { getShortFenAfterMove } from '../../util/moves';
 
 export type MoveRowProps = {
   move: Move;
   moveNumber: number;
+  repeatedFenToHighlight: String;
 };
-const highlightColorForPly = (ply?: ChessPly): ColourType | undefined => {
+const highlightColorForPly = (
+  ply?: ChessPly,
+  repeatedFenToHighlight?: String,
+): ColourType | undefined => {
   if (!ply) {
     return undefined;
   }
 
-  if (ply.legality?.inCheckmate) {
-    return colours.lightOrange;
+  if (repeatedFenToHighlight) {
+    if (repeatedFenToHighlight === getShortFenAfterMove(ply)) {
+      return colours.darkBlue;
+    }
   }
 
-  if (ply.legality?.inFiveFoldRepetition) {
-    return colours.darkBlue;
+  if (ply.legality?.inCheckmate) {
+    return colours.lightOrange;
   }
 
   if (ply.legality?.inStalemate) {
@@ -31,14 +38,14 @@ const highlightColorForPly = (ply?: ChessPly): ColourType | undefined => {
     return colours.tertiary;
   }
 
-  if (ply.legality?.inThreefoldRepetition) {
-    return colours.darkBlue;
-  }
-
   return undefined;
 };
 
-const MoveRow: React.FC<MoveRowProps> = ({ move, moveNumber }) => {
+const MoveRow: React.FC<MoveRowProps> = ({
+  move,
+  moveNumber,
+  repeatedFenToHighlight,
+}) => {
   return (
     <View
       style={[
@@ -56,11 +63,17 @@ const MoveRow: React.FC<MoveRowProps> = ({ move, moveNumber }) => {
       <View style={styles.moveDetailsContainer}>
         <MoveCell
           ply={move.white}
-          highlightColor={highlightColorForPly(move.white)}
+          highlightColor={highlightColorForPly(
+            move.white,
+            repeatedFenToHighlight,
+          )}
         />
         <MoveCell
           ply={move.black}
-          highlightColor={highlightColorForPly(move.black)}
+          highlightColor={highlightColorForPly(
+            move.black,
+            repeatedFenToHighlight,
+          )}
         />
       </View>
     </View>
