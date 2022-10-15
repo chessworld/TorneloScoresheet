@@ -53,4 +53,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   versionContainer: { marginLeft: 6, marginTop: 6 },
+  backArrow: {
+    flex: 7,
+  },
 });
