@@ -16,6 +16,7 @@ import { storeRecordingModeData } from '../../util/storage';
 import { MoveLegality } from '../../types/MoveLegality';
 import { AppModeStateContextType } from '../../context/AppModeStateContext';
 import { getCurrentFen } from '../../util/moveHistory';
+import { getStateFromFen } from '../../util/fen';
 
 export type MakeMoveResult = {
   didInsertSkip: boolean;
@@ -223,7 +224,7 @@ export const makeUseRecordingState =
     };
 
     const changePositionOccurance = (fen: string, change: number): void => {
-      const key = fen.split('-')[0]?.concat('-') ?? '';
+      const key = getStateFromFen(fen);
       if (!appModeState.pairing.positionOccurances) {
         appModeState.pairing.positionOccurances = {};
       }

@@ -6,6 +6,7 @@ import { styles } from './style';
 import MoveTable from '../../components/MoveTable/MoveTable';
 import { ChessPly } from '../../types/ChessMove';
 import { getShortFenAfterMove } from '../../util/moves';
+import { getStateFromFen } from '../../util/fen';
 
 const ArbiterRecording: React.FC = () => {
   const recordingModeState = useArbiterRecordingState();
@@ -17,10 +18,10 @@ const ArbiterRecording: React.FC = () => {
           move.legality?.inFiveFoldRepetition ||
           move.legality?.inThreefoldRepetition,
       )
-      .map(move => move.startingFen.split('-')[0]?.concat('-') ?? '');
+      .map(move => getStateFromFen(move.startingFen));
 
     return moves.map(move => {
-      if ((move.startingFen.split('-')[0]?.concat('-') ?? '') in repetition) {
+      if (getStateFromFen(move.startingFen) in repetition) {
         return {
           ...move,
           legality: { ...move.legality, inFiveFoldRepetition: true },
