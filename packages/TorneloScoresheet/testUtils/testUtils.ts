@@ -11,6 +11,7 @@ import {
 } from '../src/types/AppModeState';
 import { ChessGameInfo, PlayerColour } from '../src/types/ChessGameInfo';
 import { ChessPly } from '../src/types/ChessMove';
+import { getStateFromFen } from '../src/util/fen';
 import * as Storage from '../src/util/storage';
 
 /**
@@ -76,7 +77,7 @@ export const generateRecordingState = (
 ): RecordingMode => {
   const positionOccurances: Record<string, number> = {};
   moveHistory.forEach(move => {
-    const key = move.startingFen.split('-')[0]?.concat('-') ?? '';
+    const key = getStateFromFen(move.startingFen);
     positionOccurances[key] =
       key in positionOccurances ? (positionOccurances[key] || 0) + 1 : 1;
   });
@@ -104,7 +105,7 @@ export const generateEditMoveState = (
 ): EditingMoveMode => {
   const positionOccurances: Record<string, number> = {};
   moveHistory.forEach(move => {
-    const key = move.startingFen.split('-')[0]?.concat('-') ?? '';
+    const key = getStateFromFen(move.startingFen);
     positionOccurances[key] =
       key in positionOccurances ? (positionOccurances[key] || 0) + 1 : 1;
   });
