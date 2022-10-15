@@ -20,6 +20,7 @@ import {
   SkipPly,
 } from '../types/ChessMove';
 import { Result, succ, fail, isError } from '../types/Result';
+import { getStateFromFen } from '../util/fen';
 import { ChessEngineInterface } from './chessEngineInterface';
 
 const PARSING_FAILURE = fail(
@@ -117,7 +118,7 @@ const gameInNFoldRepetition = (
   positionOccurence: Record<string, number>,
   n: number,
 ): boolean => {
-  const newFen = fen.split('-')[0]?.concat('-') ?? '';
+  const newFen = getStateFromFen(fen);
   return (positionOccurence[newFen] ?? 0) >= n;
 };
 

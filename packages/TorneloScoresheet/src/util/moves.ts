@@ -1,6 +1,7 @@
 import { chessEngine } from '../chessEngine/chessEngineInterface';
 import { PlayerColour } from '../types/ChessGameInfo';
 import { ChessPly, Move, PlyTypes } from '../types/ChessMove';
+import { getStateFromFen } from './fen';
 
 export const moveString = (ply: ChessPly, isEditing: boolean): string => {
   if (isEditing) {
@@ -45,6 +46,6 @@ export const getShortFenAfterMove = (ply: ChessPly): string => {
   }
 
   //shorten Fen
-  let shortFenfromPly = plyFen.split('-')[0]?.concat('-') ?? '';
+  let shortFenfromPly = getStateFromFen(plyFen);
   return shortFenfromPly;
 };

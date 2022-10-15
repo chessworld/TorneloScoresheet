@@ -12,6 +12,7 @@ import {
 } from '../../types/ChessMove';
 import { MoveLegality } from '../../types/MoveLegality';
 import { fail, Result, succ } from '../../types/Result';
+import { getStateFromFen } from '../../util/fen';
 import { getStoredRecordingModeData } from '../../util/storage';
 
 type editMoveStateHookType = {
@@ -206,7 +207,7 @@ const getOldPositionOccurences = (
 ): Record<string, number> => {
   const positionOccurences: Record<string, number> = {};
   moveHistory.forEach(move => {
-    const key = move.startingFen.split('-')[0]?.concat('-') ?? '';
+    const key = getStateFromFen(move.startingFen);
 
     positionOccurences[key] =
       key in positionOccurences ? (positionOccurences[key] || 0) + 1 : 1;
@@ -218,7 +219,7 @@ const updatePositionOccurence = (
   positionOccurences: Record<string, number>,
   fen: string,
 ): Record<string, number> => {
-  const key = fen.split('-')[0]?.concat('-') ?? '';
+  const key = getStateFromFen(fen);
 
   positionOccurences[key] =
     key in positionOccurences ? (positionOccurences[key] || 0) + 1 : 1;
