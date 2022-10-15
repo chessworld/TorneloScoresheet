@@ -1840,12 +1840,6 @@ describe('Move Legality Checking', () => {
     ] as ChessPly[];
 
     const recordingState = generateRecordingState(moveHistory, 'Graphical');
-    recordingState.pairing.positionOccurances = {
-      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': 2,
-      'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq -': 2,
-      'rnbqkb1r/pppppppp/5n2/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq -': 2,
-      'rnbqkb1r/pppppppp/5n2/8/8/8/PPPPPPPP/RNBQKBNR b KQkq -': 2,
-    };
     const setContextMock = mockAppModeContext(recordingState);
     const move = { from: 'g1', to: 'f3' };
     const recordingStateHook = renderCustomHook(useRecordingState);
@@ -2383,12 +2377,6 @@ describe('Move Legality Checking', () => {
       },
     ] as ChessPly[];
     const recordingState = generateRecordingState(moveHistory, 'Graphical');
-    recordingState.pairing.positionOccurances = {
-      'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': 5,
-      'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq -': 4,
-      'rnbqkb1r/pppppppp/5n2/8/8/5N2/PPPPPPPP/RNBQKB1R w KQkq -': 4,
-      'rnbqkb1r/pppppppp/5n2/8/8/8/PPPPPPPP/RNBQKBNR b KQkq -': 4,
-    };
     const setContextMock = mockAppModeContext(recordingState);
     const move = { from: 'g8', to: 'f6' };
     const recordingStateHook = renderCustomHook(useRecordingState);

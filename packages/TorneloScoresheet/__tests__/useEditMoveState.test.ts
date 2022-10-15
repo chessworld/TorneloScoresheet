@@ -71,9 +71,9 @@ describe('Edit Move With Skip Ply', () => {
         pairing: {
           ...editMoveState.pairing,
           positionOccurances: {
-            'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': 1,
-            'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq -': 1,
-            'rnbqkbnr/ppppppp1/7p/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': 1,
+            'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w': 1,
+            'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b': 1,
+            'rnbqkbnr/ppppppp1/7p/8/8/8/PPPPPPPP/RNBQKBNR w': 1,
           },
         },
         board: chessEngine.fenToBoardPositions(
@@ -199,10 +199,10 @@ describe('Edit Move With Skip Ply', () => {
         pairing: {
           ...editMoveState.pairing,
           positionOccurances: {
-            'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': 1,
-            'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq -': 1,
-            'rnbqkbnr/ppppppp1/7p/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': 1,
-            'rnbqkbnr/ppppppp1/7p/8/8/8/PPPPPPPP/RNBQKBNR b KQkq -': 1,
+            'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w': 1,
+            'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b': 1,
+            'rnbqkbnr/ppppppp1/7p/8/8/8/PPPPPPPP/RNBQKBNR w': 1,
+            'rnbqkbnr/ppppppp1/7p/8/8/8/PPPPPPPP/RNBQKBNR b': 1,
           },
         },
         board: chessEngine.fenToBoardPositions(
@@ -332,9 +332,9 @@ describe('Edit move with Move Ply', () => {
         pairing: {
           ...editMoveState.pairing,
           positionOccurances: {
-            'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -': 1,
-            'rnbqkbnr/pppppppp/8/8/8/P7/1PPPPPPP/RNBQKBNR b KQkq -': 1,
-            'rnbqkbnr/ppppppp1/7p/8/8/P7/1PPPPPPP/RNBQKBNR w KQkq -': 1,
+            'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w': 1,
+            'rnbqkbnr/pppppppp/8/8/8/P7/1PPPPPPP/RNBQKBNR b': 1,
+            'rnbqkbnr/ppppppp1/7p/8/8/P7/1PPPPPPP/RNBQKBNR w': 1,
           },
         },
         board: chessEngine.fenToBoardPositions(
