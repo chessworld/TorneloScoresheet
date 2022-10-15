@@ -11,6 +11,7 @@ import { useToolbar } from '../../context/AppModeStateContext';
 import ArbiterAndPlayerModeDisplay from './ArbiterAndPlayerModeDisplay';
 import packageJson from '../../../package.json';
 import Help from '../Help/Help';
+import OptionSheet from '../OptionSheet/OptionSheet';
 /**
  * The App's toolbar.
  *
@@ -21,9 +22,16 @@ import Help from '../Help/Help';
 const Toolbar: React.FC = () => {
   const viewModel = useToolbar();
   const [showSheet, setShowSheet] = useState(false);
+  const [showConfirmBack, setShowConfirmBack] = useState(false);
 
   const handleHelpPress = () => {
     setShowSheet((a: any) => !a);
+  };
+
+  const handleBackPress = () => {
+    if (!viewModel || !viewModel.goToPairingSelection) return;
+    setShowConfirmBack(false);
+    viewModel.goToPairingSelection();
   };
 
   return (
@@ -36,6 +44,17 @@ const Toolbar: React.FC = () => {
           visible={showSheet}>
           <Help onDone={() => setShowSheet(false)} />
         </Sheet>
+        <OptionSheet
+          message={`Confirm Game Exit`}
+          onCancel={() => setShowConfirmBack(false)}
+          options={[
+            {
+              text: 'Confirm',
+              onPress: handleBackPress,
+            },
+          ]}
+          visible={showConfirmBack}
+        />
         <View
           style={[
             styles.container,
@@ -66,7 +85,7 @@ const Toolbar: React.FC = () => {
               <IconButton
                 icon="arrow-back"
                 label="Back"
-                onPress={viewModel.goToPairingSelection}
+                onPress={() => setShowConfirmBack(true)}
                 colour="black"
               />
             )}
