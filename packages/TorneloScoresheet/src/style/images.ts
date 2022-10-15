@@ -26,6 +26,8 @@ import ICON_UNDO_ASSET from '../../assets/images/buttonIcons/icon_undo.svg';
 import ICON_REDO_ASSET from '../../assets/images/buttonIcons/icon_redo.svg';
 import ICON_CLOCK_ASSET from '../../assets/images/buttonIcons/icon_clock.svg';
 import ICON_GEAR_ASSET from '../../assets/images/buttonIcons/icon_gear.svg';
+import ICON_QR_ASSET from '../../assets/images/buttonIcons/icon_qr.svg';
+import ICON_TEXT_ASSET from '../../assets/images/buttonIcons/icon_text.svg';
 
 export const ICON_FLIP = ICON_FLIP_ASSET;
 export const ICON_SKIP = ICON_SKIP_ASSET;
@@ -36,3 +38,5 @@ export const ICON_UNDO = ICON_UNDO_ASSET;
 export const ICON_REDO = ICON_REDO_ASSET;
 export const ICON_CLOCK = ICON_CLOCK_ASSET;
 export const ICON_GEAR = ICON_GEAR_ASSET;
+export const ICON_QR = ICON_QR_ASSET;
+export const ICON_TEXT = ICON_TEXT_ASSET;
