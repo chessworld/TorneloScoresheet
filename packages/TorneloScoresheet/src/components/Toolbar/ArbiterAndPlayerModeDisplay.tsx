@@ -72,6 +72,7 @@ const ArbiterAndPlayerModeDisplay: React.FC<
     }
     return 'Placeholder';
   };
+
   const handlePlayerPress = () => {
     //go back to player mode
     appModePlayerTransition[appModeState.mode]();

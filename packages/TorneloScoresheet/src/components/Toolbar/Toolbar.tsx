@@ -50,6 +50,14 @@ const Toolbar: React.FC = () => {
                 colour="black"
               />
             )}
+            {viewModel?.goToPairingSelection && (
+              <IconButton
+                icon="arrow-back"
+                label="Back"
+                onPress={viewModel.goToPairingSelection}
+                colour="black"
+              />
+            )}
             {viewModel?.goToViewPastGames && (
               <IconButton
                 icon="history"
