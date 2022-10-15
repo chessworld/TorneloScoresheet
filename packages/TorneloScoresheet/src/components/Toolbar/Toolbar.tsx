@@ -50,14 +50,6 @@ const Toolbar: React.FC = () => {
                 colour="black"
               />
             )}
-            {viewModel?.goToPairingSelection && (
-              <IconButton
-                icon="arrow-back"
-                label="Back"
-                onPress={viewModel.goToPairingSelection}
-                colour="black"
-              />
-            )}
             {viewModel?.goToViewPastGames && (
               <IconButton
                 icon="history"
@@ -68,6 +60,16 @@ const Toolbar: React.FC = () => {
             <ArbiterAndPlayerModeDisplay
               currentTextColour={viewModel.currentTextColour}
             />
+          </View>
+          <View style={styles.backArrow}>
+            {viewModel?.goToPairingSelection && (
+              <IconButton
+                icon="arrow-back"
+                label="Back"
+                onPress={viewModel.goToPairingSelection}
+                colour="black"
+              />
+            )}
           </View>
           <View style={styles.logo}>
             <Image
