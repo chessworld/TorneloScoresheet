@@ -16,7 +16,7 @@ The aim of this project is to create an iOS application that can be used to reco
 - During our sprint review meeting, all team members will summarise the work they completed during the sprint. 
 - The team will then discuss and document what could have been improved and what went well. 
 - The team should discuss possible solutions to problems encountered during the sprint, and create Trello tickets accordingly. 
-- If needed, team documents  (e.g QAP or PMP) should be updated to include any changes to team processes. 
+- If needed, team documents (e.g QAP or PMP) should be updated to include any changes to team processes. 
 
 ## Sprint Planning Methodology
 Upon completion of the sprint review, the team will plan the upcoming sprint as follows: 
@@ -32,7 +32,7 @@ Upon completion of the sprint review, the team will plan the upcoming sprint as 
 | 8            | Substantial work, with potentially unknown technology                       | < 2 days      |
 | 13           | Too big, like a full feature. Break down the task or convert it to an epic. | Full sprint   |
 
-3. At most two team members will be assigned to each ticket. 
+3. At most two team members will be assigned to each development ticket.
 
 - Immediately after our sprint planning sessions, the development team will meet with the product owner/client to showcase the work done in the previous sprint and get approval for the work in the upcoming sprint.
 - If the client requests any changes, steps 1-3 above will be repeated until the client has approved the sprint backlog.
@@ -83,15 +83,10 @@ The key stakeholders that need to be kept informed are
 The methods for keeping all parties informed and up-to-speed with the project progress have been agreed upon as follows: 
 - Facebook Messenger: for team member communication, such as asking quick questions and organising meetings. Team members should check this daily.
 - Slack: for more significant team member communication, such as announcements or discussing larger and more complex problems. All pull requests should be posted in the dedicated Slack channel. Team members should check the Slack at least weekly.
-- Email: for communicating with clients and supervisor to ask questions and/or organise meetings. Team members should check this at least weekly, Llio who is responsible for client communication should check daily.
+- Email: for communicating with clients and supervisor to ask questions and/or organise meetings. Team members should check this at least weekly, Llio, who is responsible for client communication should check daily.
 - Meetings (Zoom/in-person): meetings with client, supervisor or between team members. These meetings will be used for requirement gathering, sprint planning, retrospectives or to resolve larger and more complex issues that require a more in-depth discussion. Client and supervisor meetings will happen fortnightly. 
 
 Meetings will form an essential part of the project process, and will play a key role in the way all parties will stay in the loop. Meetings will likely be held in a mixture of online and/or in-person mode due to the client preferring Zoom communication, and some team members occasionally being unavailable for in-person meetings. During more formal meetings such as sprint planning and retrospectives, minutes should be noted down and made accessible to the entire team for future reference. 
-
-## Process Information
-This project will follow an adapted Agile methodology, which will involve sprint planning meetings, individual and team-based work during the sprint, and conclude with a retrospective session to reflect and improve upon the last sprint before beginning the next one. 
-
-Due to being a university project and the team not always being available at the same time, this project agile method will omit daily stand-ups. However, to compensate for this and not lose team awareness and focus, we will be using Messenger to post updates on progress whenever a task is being completed or worked on, or if an issue is encountered. 
 
 ## Team Management
 The team is following a modified version of the Agile methodology. As such, there are three main roles being used: product owner, scrum master, and developer. 
