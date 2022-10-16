@@ -10,7 +10,7 @@
 **Risk Monitoring and Control:** Identifying, analyzing, and planning for newly identified risks, monitoring previously identified risks, and reevaluating existing risks to verify the planned risks response strategies for their effectiveness. <br>
 
 # Risk Rating Matrix 
-![risk_rating_matrix](Pictures/riskMatrix.jpg)
+![risk_rating_matrix](Pictures/risk-matrix.png)
 
 ## Team Risks
 
