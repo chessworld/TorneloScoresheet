@@ -166,14 +166,14 @@ If the client fails to communicate with the team it will be difficult for the te
 **CONTINGENCY:** The nature of the deficiency should be identified to the greatest extent allowed by the client. Several alternatives should be prepared or described as quickly as possible and presented to the client. The project managers will alter the roadmap to prioritise the implementation of features the client deems to be the most important.
 The circumstances which lead to the misunderstanding should be identified during the team retro to reduce the likelihood of recurrence. This will be done by identifying what did not go well and possible ways to improve.
 
-### App is Not Approved by  the International Chess Federation in Time 
+### MVP is not completed in time
 ### Rating: 8
 
-**MONITORING:** The team has been given a maximum estimated approval time of 4 months. Throughout the year, work should be planned so that the app is submitted for approval before this time.
+**MONITORING:** The team should monitor their velocity during each sprint to determine if the requirements of the mvp will be met. 
 
-**MITIGATION:** The team is prioritising requirements from the Chess governing body above requirements from the client. This means that if an incomplete app has to be sent for approval, it will have all of the required features.
+**MITIGATION:** The team should ensure that the project is kept within scope and that as requirements evolve the scope remains feasible. 
 
-**CONTINGENCY:** If this timeframe is unable to be met, it is possible that the application will not be approved before the end of the year. In this event, the application will be submitted for approval when it is fully functional and the team will hear the outcome after the end of the year. The client may need to make any additional changes required internally. 
+**CONTINGENCY:** If the team is unable to complete the MVP before the end of the year they should notify the client and work with them to prioritise the remaining workload. When the project handover occurs, the team should specify which sections of the MVP have not been met.
 
 ### International Chess Federation Requests Large Changes   
 ### Rating: 11
