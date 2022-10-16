@@ -6,6 +6,7 @@ import { PlayerColour } from '../../types/ChessGameInfo';
 import { ChessPly, PlyTypes } from '../../types/ChessMove';
 import { fail, Result, succ } from '../../types/Result';
 import {
+  getStoredPairingList,
   getStoredRecordingModeData,
   storeGameHistory,
 } from '../../util/storage';
@@ -15,6 +16,7 @@ type arbiterResultDisplayStateHookType = [
   {
     goToResultDisplayMode: () => void;
     goBackToEnterPgn: () => void;
+    goBackToPairingSelection: () => void;
     goBackToRecordingMode: () => Promise<Result<string>>;
   },
 ];
@@ -49,6 +51,12 @@ export const makeUseArbiterResultDisplayState =
       // set mode to enter pgn
       setAppModeState({
         mode: AppMode.EnterPgn,
+      });
+    };
+    const goBackToPairingSelection = async () => {
+      setAppModeState({
+        mode: AppMode.PairingSelection,
+        pairings: (await getStoredPairingList()) ?? [],
       });
     };
 
@@ -101,6 +109,11 @@ export const makeUseArbiterResultDisplayState =
 
     return [
       appModeState,
-      { goToResultDisplayMode, goBackToEnterPgn, goBackToRecordingMode },
+      {
+        goToResultDisplayMode,
+        goBackToEnterPgn,
+        goBackToRecordingMode,
+        goBackToPairingSelection,
+      },
     ];
   };

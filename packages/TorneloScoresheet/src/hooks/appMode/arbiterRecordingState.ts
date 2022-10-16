@@ -1,11 +1,15 @@
 import { useContext } from 'react';
 import { AppModeStateContextType } from '../../context/AppModeStateContext';
 import { AppMode, ArbiterRecordingMode } from '../../types/AppModeState';
+import { getStoredPairingList } from '../../util/storage';
 
 type ArbiterRecordingStateHookType = [
   ArbiterRecordingMode,
   {
     goToRecordingMode: () => void;
+    goBackToEnterPgn: () => void;
+    goBackToPairingSelection: () => void;
+    goBackToTablePairing: () => void;
   },
 ];
 
@@ -26,5 +30,33 @@ export const makeUseArbiterRecordingState =
       });
     };
 
-    return [appModeState, { goToRecordingMode }];
+    const goBackToEnterPgn = () => {
+      setAppModeState({
+        mode: AppMode.EnterPgn,
+      });
+    };
+
+    const goBackToTablePairing = () => {
+      setAppModeState({
+        mode: AppMode.TablePairing,
+        pairing: appModeState.pairing,
+      });
+    };
+
+    const goBackToPairingSelection = async () => {
+      setAppModeState({
+        mode: AppMode.PairingSelection,
+        pairings: (await getStoredPairingList()) ?? [],
+      });
+    };
+
+    return [
+      appModeState,
+      {
+        goToRecordingMode,
+        goBackToEnterPgn,
+        goBackToTablePairing,
+        goBackToPairingSelection,
+      },
+    ];
   };
