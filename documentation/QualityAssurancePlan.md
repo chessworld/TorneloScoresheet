@@ -19,7 +19,7 @@ without fear of unintentionally changing the UI.
 
 All tests will be required to be passing in order for Pull Requests to be accepted into "main".
 
-Each feature introduced should also include appropriate unit tests to test the feature.
+Each feature introduced should also include appropriate unit tests.
 
 ## GitHub Management Policies
 
@@ -83,8 +83,6 @@ If the Trello ticket is code based, the following additional requirements need t
 - Any relevant test cases have been written
 - The code is commented such that another developer on the team can understand what it does by reading it.
 - The code has the correct syntax for the language being used, and syntax is consistent across the entire code base.
-- All code has undergone testing (black box, integration, system or acceptance depending on what the deliverable is)
-- The Trello ticket contains a link to the pull request
 - The branch has been merged into main and deleted
 
 When all the relevant points above have been fulfilled, the Trello ticket can be closed
@@ -108,16 +106,15 @@ All large tasks (e.g assignments) should be created as epics. The epics should c
 Stories should be short requirements that are part of a larger Epic. A story should contain:
 
 - A name that clearly defines what the task is
-- A summary of the task
-- An acceptance criteria
+- A summary of the task (if not clear in the task name)
+- Acceptance criteria (if not clear in the task name and summary)
 - Labels (indicating both the epic and the level of priority)
-- A link to the branch where the work is being commited
 - An assignee (if work is in progress)
-- A description of the outcome (when completed)
 
-Stories should be moved from the backlog into the current sprint during sprint planning. At the beginning of each sprint, stories will be assigned to team members depending on their availability. There should be no more than two people assigned to each ticket, these will be the ticket owners. The ticket owners are responsible for the delivery of the task. Other (non-assigned) team members may also work on the ticket if they have permission from the owner.
 
-As the developer works on the story, they should move the ticket through the 'Current Sprint', 'Doing', 'In Review' and 'Done' colums and add comments as needed. When a code review is completed, the ticket should be updated to indicate who performed the review and the outcome. Stories should only be moved into the current sprint section during sprint planning.
+Stories should be moved from the backlog into the current sprint during sprint planning. At the beginning of each sprint, stories will be assigned to team members depending on their availability. There should be no more than two people assigned to each development ticket, these will be the ticket owners. The ticket owners are responsible for the delivery of the task. Other (non-assigned) team members may also work on the ticket if they have permission from the owner.
+
+As the developer works on the story, they should move the ticket through the 'Current Sprint', 'Doing', 'In Review' and 'Done' colums and add comments as needed. Stories should only be moved into the current sprint section during sprint planning.
 
 ## Releases
 
