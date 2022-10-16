@@ -11,7 +11,7 @@ import { useToolbar } from '../../context/AppModeStateContext';
 import ArbiterAndPlayerModeDisplay from './ArbiterAndPlayerModeDisplay';
 import packageJson from '../../../package.json';
 import Help from '../Help/Help';
-import OptionSheet from '../OptionSheet/OptionSheet';
+import ArbiterModeNavigation from './ArbiterModeNavigation';
 /**
  * The App's toolbar.
  *
@@ -22,16 +22,9 @@ import OptionSheet from '../OptionSheet/OptionSheet';
 const Toolbar: React.FC = () => {
   const viewModel = useToolbar();
   const [showSheet, setShowSheet] = useState(false);
-  const [showConfirmBack, setShowConfirmBack] = useState(false);
 
   const handleHelpPress = () => {
     setShowSheet((a: any) => !a);
-  };
-
-  const handleBackPress = () => {
-    if (!viewModel || !viewModel.goToPairingSelection) return;
-    setShowConfirmBack(false);
-    viewModel.goToPairingSelection();
   };
 
   return (
@@ -44,52 +37,19 @@ const Toolbar: React.FC = () => {
           visible={showSheet}>
           <Help onDone={() => setShowSheet(false)} />
         </Sheet>
-        <OptionSheet
-          message={`Confirm Game Exit`}
-          onCancel={() => setShowConfirmBack(false)}
-          options={[
-            {
-              text: 'Confirm',
-              onPress: handleBackPress,
-            },
-          ]}
-          visible={showConfirmBack}
-        />
         <View
           style={[
             styles.container,
             backgroundColorStyle(viewModel.currentColour),
           ]}>
           <View style={styles.arbiterLock}>
-            {viewModel?.goToEnterPgn && (
-              <IconButton
-                icon="arrow-back"
-                label="Back"
-                onPress={viewModel.goToEnterPgn}
-                colour="black"
-              />
-            )}
-            {viewModel?.goToViewPastGames && (
-              <IconButton
-                icon="history"
-                onPress={viewModel.goToViewPastGames}
-                colour="black"
-              />
-            )}
+            <ArbiterModeNavigation />
+
             <ArbiterAndPlayerModeDisplay
               currentTextColour={viewModel.currentTextColour}
             />
           </View>
-          <View style={styles.backArrow}>
-            {viewModel?.goToPairingSelection && (
-              <IconButton
-                icon="arrow-back"
-                label="Back"
-                onPress={() => setShowConfirmBack(true)}
-                colour="black"
-              />
-            )}
-          </View>
+
           <View style={styles.logo}>
             <Image
               style={styles.logoImage}
@@ -115,9 +75,7 @@ const Toolbar: React.FC = () => {
               />
             </View>
           </View>
-          <View style={styles.toggleToTextEntryModeButton}>
-            <ToggleRecordingMode />
-          </View>
+
           <IconButton
             icon="help"
             onPress={handleHelpPress}

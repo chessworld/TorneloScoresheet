@@ -50,10 +50,11 @@ export const styles = StyleSheet.create({
     marginRight: 20,
   },
   arbiterLock: {
-    flex: 1,
+    display: 'flex',
+    flexDirection: 'row',
   },
   versionContainer: { marginLeft: 6, marginTop: 6 },
   backArrow: {
-    flex: 7,
+    marginRight: 30,
   },
 });
