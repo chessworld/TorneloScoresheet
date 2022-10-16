@@ -7,7 +7,7 @@ import TextIconButton, {
   TextIconButtonProps,
 } from '../TextIconButton/TextIconButton';
 
-type Option = {
+export type Option = {
   icon?: React.FC<SvgProps>;
   text?: string;
   onPress: () => void;
