@@ -55,11 +55,6 @@ const PairingSelection: React.FC = () => {
             />
           )}
           <View style={styles.headerRow}>
-            <PrimaryButton
-              style={styles.actionButton}
-              onPress={goToEnterPgn}
-              label="Back"
-            />
             <PrimaryText
               size={50}
               weight={FontWeight.SemiBold}
