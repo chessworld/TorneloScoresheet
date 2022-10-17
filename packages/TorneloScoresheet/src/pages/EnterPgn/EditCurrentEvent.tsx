@@ -8,7 +8,6 @@ import InputBox from '../../components/InputBox/InputBox';
 import { useArbiterInfo } from '../../context/ArbiterInfoContext';
 import Sheet from '../../components/Sheet/Sheet';
 import { ScrollView } from 'react-native-gesture-handler';
-import IconButton from '../../components/IconButton/IconButton';
 import PrimaryText, {
   FontWeight,
 } from '../../components/PrimaryText/PrimaryText';
@@ -17,10 +16,10 @@ import { torneloUrl } from '../../util/env';
 import { ArbiterInfo } from '../../types/ArbiterInfoState';
 import { useError } from '../../context/ErrorContext';
 import { validUrl } from '../../util/url';
-import { colours } from '../../style/colour';
 import TextIconButton from '../../components/TextIconButton/TextIconButton';
 import { ICON_QR, ICON_TEXT } from '../../style/images';
-import { withDecay } from 'react-native-reanimated';
+import QRCodeScanner from 'react-native-qrcode-scanner';
+import { BarCodeReadEvent } from 'react-native-camera';
 
 export type EditCurrentEventParams = {
   display: boolean;
@@ -60,32 +59,24 @@ const EditCurrentEvent: React.FC<EditCurrentEventParams> = ({
   ];
 
   const validateArbiterInfo = (arbiterInfo: ArbiterInfo): boolean => {
-    if (arbiterInfo.arbiterToken == '') {
-      showError('Arbiter Email token cannot be blank');
-      return false;
-    }
-    if (arbiterInfo.divisionId == '') {
-      showError('Division Id cannot be blank');
-      return false;
-    }
-    if (arbiterInfo.eventName == '') {
-      showError('Event Name cannot be blank');
-      return false;
-    }
-    if (arbiterInfo.userName == '') {
-      showError('Arbiter Name cannot be blank');
-      return false;
-    }
-    if (arbiterInfo.userId == '') {
-      showError('Arbiter Id cannot be blank');
-      return false;
-    }
-    if (arbiterInfo.pin == '') {
-      showError('Arbiter Pin cannot be blank');
-      return false;
-    }
-    if (!validUrl(arbiterInfo.broadcastUrl)) {
-      showError('Invalid Pgn Url');
+    const validationError = Object.entries(arbiterInfo)
+      .map(([fieldName, fieldValue]) => {
+        if (fieldName === 'broadcastUrl') {
+          if (!validUrl(fieldValue)) {
+            return 'Error, the Broadcast URL is not in the correct format!';
+          }
+        }
+        if (fieldValue === '') {
+          return `Error, the ${fieldName} cannot be blank!`;
+        }
+        return null;
+      })
+      .find(
+        (validStatus: string | null): validStatus is string =>
+          validStatus !== null,
+      );
+    if (validationError) {
+      showError(validationError);
       return false;
     }
     return true;
@@ -105,6 +96,29 @@ const EditCurrentEvent: React.FC<EditCurrentEventParams> = ({
 
     if (validateArbiterInfo(newArbiterInfo)) {
       await setArbiterInfo(newArbiterInfo);
+    }
+  };
+
+  const handleQrCodeScanned = async (e: BarCodeReadEvent) => {
+    try {
+      const data = JSON.parse(e.data);
+      const arbiterInfo = data as ArbiterInfo;
+
+      setPgnUrl(arbiterInfo.broadcastUrl);
+      setArbiterEmailSecret(arbiterInfo.arbiterToken);
+      setDivisionId(arbiterInfo.divisionId);
+      setArbiterId(arbiterInfo.userId);
+      setArbiterName(arbiterInfo.userName);
+      setArbiterPin(arbiterInfo.pin);
+      setEventName(arbiterInfo.eventName);
+
+      await confirmArbiterInfo();
+    } catch {
+      // bar code incorrect
+      showError(
+        'QR code incorrect! Please make sure you are scanning the QR code from tornelo.com',
+      );
+      dismiss();
     }
   };
   return (
@@ -135,10 +149,11 @@ const EditCurrentEvent: React.FC<EditCurrentEventParams> = ({
         {/* QR Code Entry */}
         {inScanQRMode && (
           <View style={styles.editEventSheetSection}>
-            {/* Placeholder - QR Code scanning camera section will go here call confirmArbiterInfo() once the qr code has scanned and everything will be saved!*/}
-            <View style={styles.placeholderQRSection}>
-              <PrimaryText label="QR CODE PLACEHOLDER" size={60}></PrimaryText>
-            </View>
+            <QRCodeScanner
+              onRead={handleQrCodeScanned}
+              containerStyle={styles.qrScanningContainer}
+              cameraStyle={styles.qrScanningCamera}
+            />
           </View>
         )}
         {/* Text Box Entry */}
