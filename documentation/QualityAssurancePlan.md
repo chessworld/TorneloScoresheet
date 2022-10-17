@@ -118,19 +118,23 @@ As the developer works on the story, they should move the ticket through the 'Cu
 
 ## Releases
 
-There will be 2 branches in the git repository used for releasing:
+The app will be manually deployed to TestFlight. The following steps must be done on an Apple device that is logged into a developer account that has access to the project in App Store Connect.
 
-- RELEASE_BETA - will release the app to Apple's Test Flight system for internal testing
-- RELEASE_PROD - will release the app to the Apple App Store as a production app
-
-Each branch will have Github action pipelines that will perform the following operations when pushed to:
-
-- Run the unit tests
-- Compile the code
-- Build the app
-- Download pod dependencies
-- Sign the certificate
-- Release the app to the App Store
+1. Bump the `packages/TorneloScoresheet/package.json` version by a minor or major version. (example: 1.4.0 => 1.5.0)
+2. Bump the `packages/TorneloScoresheet/ios/TorneloScoresheet/Info.plist` “CFBundleShortVersionString” Key. (example: 1.4 => 1.5)
+3. Open `packages/TorneloScoresheet/ios/TorneloScoresheet.xcworkspace` in XCode.
+4. Make sure “Any iOS Device” is selected as the build target.
+5. Build the project. (`Product > Build` in the menu bar)
+6. Archive the project. (`Product > Archive` in the menu bar)
+7. After the archive is completed, select `Distribute App`
+8. Step through the wizard to “Upload” the app to “App Store Connect”
+9. Go to “App Store Connect” in your browser (It’s easily accessible by googling it)
+10. Select “My apps”
+11. Select “Tornelo Scoresheet” from the list
+12. Select “TestFlight”
+13. Select the dropdown for the newly Uploaded version
+14. Click on the latest build from the list under the dropdown.
+15. Add the “TorneloScoresheet Testers” group under “Group”
 
 ## Artifacts
 
