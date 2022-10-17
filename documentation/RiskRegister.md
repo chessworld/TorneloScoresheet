@@ -175,15 +175,15 @@ The circumstances which lead to the misunderstanding should be identified during
 
 **CONTINGENCY:** If the team is unable to complete the MVP before the end of the year they should notify the client and work with them to prioritise the remaining workload. When the project handover occurs, the team should specify which sections of the MVP have not been met.
 
-### International Chess Federation Requests Large Changes   
+### Client or FIDE Changes Requirements  
 ### Rating: 11
-If the International Chess Federation (FIDE) requests large changes to the app, it is unlikely that the team will have time to implement them.
+If the client or FIDE requests large changes to the app, particularly at a late stage of the project, it may be difficult to meet them. 
 
-**MONITORING:** The client has been in communication with FIDE to discuss approval for the app, and they will be shown an early version. 
+**MONITORING:** The client has been in communication with FIDE and chess arbiters to ensure they are up to date on any potential changes. The team should be notified as soon as possible regarding any potential changes.
 
-**MITIGATION:** Care should be taken to ensure all FIDE guidelines are met before the app is sunmitted for approval
+**MITIGATION:** Care should be taken to ensure all FIDE guidelines are met and that the app is designed in such a manner that it can be extended or modified. 
 
-**CONTINGENCY:** The team will work with the client to proritise what work needs to be done. The team will complete as much as possible before the end of the year. Comprehensive handover documentation should be created to ensure Tornelo developers can continue work if needed.
+**CONTINGENCY:** The team will work with the client to proritise what work needs to be done  and revise the roadmap. The team will complete as much as possible before the end of the year. Comprehensive handover documentation should be created to ensure Tornelo developers can continue work if needed.
 
 ## Technical Risks
 
