@@ -14,10 +14,16 @@ export const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  placeholderQRSection: {
-    backgroundColor: colours.grey10,
-    padding: 30,
-    minHeight: 400,
+  qrScanningContainer: {
+    marginTop: 30,
+    marginLeft: 20,
+    display: 'flex',
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  qrScanningCamera: {
+    maxWidth: 420,
+    height: 400,
   },
   editEventHeader: {
     display: 'flex',
@@ -52,6 +58,7 @@ export const styles = StyleSheet.create({
   editEventSheetSection: {
     maxHeight: 600,
     minHeight: 600,
+    maxWidth: 600,
   },
   buttonBox: {
     display: 'flex',
