@@ -69,13 +69,13 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
         },
       ) ?? {}
     );
-  }, [highlightedMove, selectedPosition]);
+  }, [highlightedMoveAndSelectedPosition]);
 
   const squareColour = (position: Position) => {
-    const squareColour = boardPositionLookupTable[position];
+    const colourForSquare = boardPositionLookupTable[position];
 
-    if (squareColour) {
-      return squareColour;
+    if (colourForSquare) {
+      return colourForSquare;
     }
 
     const [col, row] = boardPositionToIndex(position);
@@ -115,7 +115,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
             <TouchableOpacity
               key={rowIndex}
               activeOpacity={0.8}
-              style={{ zIndex: -2 }}
+              style={styles.emptyBoardSquare}
               onPress={() => onPositionPressed?.(square)}>
               <DropTarget
                 onDrop={(data: unknown) => {

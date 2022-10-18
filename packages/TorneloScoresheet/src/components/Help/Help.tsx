@@ -40,8 +40,6 @@ const helpFile = (state: AppModeState): string => {
       return 'ArbiterResultDisplay.md';
     case AppMode.ArbiterTablePairing:
       return 'ArbiterTablePairing.md';
-    case AppMode.EditMove:
-      return 'EditMove.md';
     case AppMode.EnterPgn:
       return 'EnterPgn.md';
     case AppMode.PairingSelection:

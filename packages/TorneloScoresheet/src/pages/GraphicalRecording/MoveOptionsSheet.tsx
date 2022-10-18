@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Sheet from '../../components/Sheet/Sheet';
 import { colours } from '../../style/colour';
 import { ICON_CLOCK, ICON_HALF } from '../../style/images';
@@ -7,42 +7,42 @@ import MoveOption from './MoveOption';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { useRecordingState } from '../../context/AppModeStateContext';
-import OptionSheet from '../../components/OptionSheet/OptionSheet';
 import {
   ReversibleAction,
   ReversibleActionType,
 } from '../../types/ReversibleAction';
 
-export type EditingMove = {
+// A way of identifying a move within the current game
+export type MoveIdentifer = {
   colour: PlayerColour;
   moveIndex: number;
 };
 
 type MoveOptionsSheetProps = {
-  editingMove: EditingMove | undefined;
+  showOptionsFor: MoveIdentifer | undefined;
   handleGameTime: (index: number) => void;
   dismiss: () => void;
+  editMove: () => void;
   pushUndoAction: (action: ReversibleAction) => void;
 };
 
 const MoveOptionsSheet = ({
-  editingMove,
+  showOptionsFor,
   handleGameTime,
   dismiss,
   pushUndoAction,
+  editMove,
 }: MoveOptionsSheetProps) => {
   const recordingState = useRecordingState();
-  const [displaySkipMoves, setDisplaySkipMoves] = useState(false);
   const toggleDraw = recordingState?.toggleDraw;
-  const goToEditMove = recordingState?.goToEditMove;
 
   const handleDrawOffer = () => {
-    if (!toggleDraw || !editingMove) {
+    if (!toggleDraw || !showOptionsFor) {
       return;
     }
     const indexOfPlyInHistory =
-      editingMove.moveIndex * 2 +
-      (editingMove.colour === PlayerColour.Black ? 1 : 0);
+      showOptionsFor.moveIndex * 2 +
+      (showOptionsFor.colour === PlayerColour.Black ? 1 : 0);
     pushUndoAction({
       type: ReversibleActionType.ToggleDrawOffer,
       indexOfPlyInHistory,
@@ -50,40 +50,19 @@ const MoveOptionsSheet = ({
     toggleDraw(indexOfPlyInHistory);
     dismiss();
   };
-  const handleConfirmSkips = () => {
-    setDisplaySkipMoves(false);
-    if (editingMove) {
-      goToEditMove?.(
-        editingMove.moveIndex * 2 +
-          (editingMove.colour === PlayerColour.Black ? 1 : 0),
-      );
-    }
-    dismiss();
-  };
 
   return (
     <>
-      <OptionSheet
-        visible={displaySkipMoves}
-        message="Illegal Moves Will Be Replaced with Skips"
-        onCancel={() => setDisplaySkipMoves(false)}
-        options={[
-          {
-            text: 'Confirm',
-            onPress: handleConfirmSkips,
-          },
-        ]}
-      />
       <Sheet
-        visible={Boolean(editingMove)}
+        visible={Boolean(showOptionsFor)}
         dismiss={dismiss}
         title="Move options">
         <MoveOption
           onPress={() => {
-            if (editingMove) {
+            if (showOptionsFor) {
               handleGameTime(
-                editingMove.moveIndex * 2 +
-                  (editingMove.colour === PlayerColour.Black ? 1 : 0),
+                showOptionsFor.moveIndex * 2 +
+                  (showOptionsFor.colour === PlayerColour.Black ? 1 : 0),
               );
             }
             dismiss();
@@ -99,7 +78,7 @@ const MoveOptionsSheet = ({
           label="Draw offer"
         />
         <MoveOption
-          onPress={() => setDisplaySkipMoves(true)}
+          onPress={editMove}
           colour={colours.primary}
           icon={<Icon name="edit" size={35} color={colours.white} />}
           label="Edit move"

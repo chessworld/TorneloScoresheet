@@ -3,11 +3,14 @@ import { View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import ChessBoard from '../../components/ChessBoard/ChessBoard';
 import MoveCard from '../../components/MoveCard/MoveCard';
-import { useRecordingState } from '../../context/AppModeStateContext';
+import {
+  useEditMove,
+  useRecordingState,
+} from '../../context/AppModeStateContext';
 import { PlayerColour } from '../../types/ChessGameInfo';
 import { MoveSquares, GameTime } from '../../types/ChessMove';
 import { styles } from './style';
-import MoveOptionsSheet, { EditingMove } from './MoveOptionsSheet';
+import MoveOptionsSheet, { MoveIdentifer } from './MoveOptionsSheet';
 import GraphicalModePlayerCard from '../../components/GraphicalModePlayerCard/GraphicalModePlayerCard';
 import TimePickerSheet from '../../components/TimePickerSheet/TimePickerSheet';
 import Actions from './Actions';
@@ -18,6 +21,37 @@ import { useError } from '../../context/ErrorContext';
 import { plysToMoves } from '../../util/moves';
 import { useUndo } from '../../hooks/useUndo';
 import { ReversibleActionType } from '../../types/ReversibleAction';
+
+const useMoveOptions = (
+  beginEditingMove: ((moveIndex: number) => void) | undefined,
+) => {
+  const [moveShowingOptionsFor, setMoveShowingOptionsFor] = useState<
+    undefined | MoveIdentifer
+  >(undefined);
+  const handleRequestEditMove = (colour: PlayerColour, moveIndex: number) => {
+    setMoveShowingOptionsFor({ colour, moveIndex });
+  };
+
+  const dismissMoveOptionsMenu = () => setMoveShowingOptionsFor(undefined);
+
+  const editMove = () => {
+    if (moveShowingOptionsFor === undefined || !beginEditingMove) {
+      return;
+    }
+    beginEditingMove(
+      moveShowingOptionsFor.moveIndex * 2 +
+        (moveShowingOptionsFor.colour === PlayerColour.Black ? 1 : 0),
+    );
+    dismissMoveOptionsMenu();
+  };
+
+  return {
+    handleRequestEditMove,
+    dismissMoveOptionsMenu,
+    moveShowingOptionsFor,
+    editMove,
+  };
+};
 
 const GraphicalRecording: React.FC = () => {
   const { undo, redo, pushUndoAction } = useUndo();
@@ -31,6 +65,23 @@ const GraphicalRecording: React.FC = () => {
   const isPawnPromotion = recordingState?.isPawnPromotion;
   const promptUserForPromotionChoice =
     recordingState?.promptUserForPromotionChoice;
+
+  const {
+    beginEditingMove,
+    highlightedMoves,
+    highlightedCard,
+    board: editingMoveBoardState,
+    handleEditMove,
+    skip: replaceMoveBeingEditedWithSkip,
+    cancel: cancelEditMove,
+  } = useEditMove() ?? {};
+
+  const {
+    dismissMoveOptionsMenu,
+    handleRequestEditMove,
+    moveShowingOptionsFor,
+    editMove,
+  } = useMoveOptions(beginEditingMove);
 
   // states
   const [flipBoard, setFlipBoard] = useState(
@@ -63,38 +114,57 @@ const GraphicalRecording: React.FC = () => {
     return { hours: 0, minutes: 0 };
   }, [recordingMode, moveGameTimeIndex]);
   const [, showError] = useError();
+  const handleReplaceMoveBeingEditedWithSkip = async () => {
+    if (!replaceMoveBeingEditedWithSkip) {
+      return;
+    }
+    const skipResult = await replaceMoveBeingEditedWithSkip();
+    if (isError(skipResult)) {
+      showError(skipResult.error);
+    }
+  };
 
   const handleMove = async (moveSquares: MoveSquares) => {
+    if (
+      editingMoveBoardState &&
+      promptUserForPromotionChoice &&
+      handleEditMove
+    ) {
+      const result = await handleEditMove(
+        moveSquares,
+        promptUserForPromotionChoice,
+      );
+      if (isError(result)) {
+        showError(result.error);
+        return;
+      }
+      pushUndoAction({
+        type: ReversibleActionType.ReplaceMoves,
+        indexOfPlyInHistory: result.data.indexOfMoveReplaced,
+        replacedMoves: result.data.movesReplaced,
+      });
+      return;
+    }
     if (!move || !isPawnPromotion || !promptUserForPromotionChoice) {
       return;
     }
     const promotion = isPawnPromotion(moveSquares)
       ? await promptUserForPromotionChoice()
       : undefined;
-    const result = move(moveSquares, promotion);
+    const result = await move(moveSquares, promotion);
     if (isError(result)) {
       showError(result.error);
       return;
     }
     pushUndoAction({
       type: ReversibleActionType.Move,
-      moveSquares: moveSquares,
+      moveSquares,
       promotion,
-      withSkip: result.data.didInsertSkip,
     });
   };
 
   // Scroll view ref
   const scrollRef = useRef<ScrollView>(null);
-
-  const [editingMove, setEditingMove] = useState<undefined | EditingMove>(
-    undefined,
-  );
-
-  const handleRequestEditMove = (colour: PlayerColour, moveIndex: number) =>
-    setEditingMove({ colour, moveIndex });
-
-  const handleDismissMoveOptions = () => setEditingMove(undefined);
 
   const showSelectGameTimeSheet = (index: number): void => {
     // store index, set the current game time for that move, then show sheet
@@ -120,9 +190,10 @@ const GraphicalRecording: React.FC = () => {
           />
           <MoveOptionsSheet
             pushUndoAction={pushUndoAction}
-            editingMove={editingMove}
+            showOptionsFor={moveShowingOptionsFor}
             handleGameTime={showSelectGameTimeSheet}
-            dismiss={handleDismissMoveOptions}
+            dismiss={dismissMoveOptionsMenu}
+            editMove={editMove}
           />
           <TimePickerSheet
             dismiss={() => setMoveGameTimeIndex(undefined)}
@@ -165,11 +236,17 @@ const GraphicalRecording: React.FC = () => {
                 showSelectGameTimeSheet(recordingMode.moveHistory.length - 1)
               }
               endGame={() => setShowEndGame(true)}
+              editingMove={editingMoveBoardState !== undefined}
+              cancelEditMove={() => cancelEditMove?.()}
+              replaceMoveBeingEditedWithSkip={
+                handleReplaceMoveBeingEditedWithSkip
+              }
             />
             <ChessBoard
-              positions={recordingMode.board}
+              positions={editingMoveBoardState ?? recordingMode.board}
               onMove={handleMove}
               flipBoard={flipBoard}
+              highlightedMove={highlightedMoves}
             />
           </View>
           <ScrollView
@@ -182,6 +259,11 @@ const GraphicalRecording: React.FC = () => {
                 move={move}
                 onRequestEditMove={colour =>
                   handleRequestEditMove(colour, index)
+                }
+                plyBeingEdited={
+                  index === highlightedCard?.index
+                    ? highlightedCard.player
+                    : undefined
                 }
               />
             ))}
