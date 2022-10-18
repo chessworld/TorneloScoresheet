@@ -28,10 +28,10 @@ export const useAppModeState = (): AppModeState => {
   return appModeState;
 };
 
-export const AppModeStateContextProvider: React.FC = ({ children }) => {
-  const appModeState = useState({
-    mode: AppMode.EnterPgn,
-  } as AppModeState);
+export const AppModeStateContextProvider: React.FC<{
+  initialState: AppModeState;
+}> = ({ children, initialState }) => {
+  const appModeState = useState(initialState);
 
   return (
     <AppModeStateContext.Provider value={appModeState}>
@@ -55,6 +55,8 @@ export const useTablePairingState =
 
 export const useRecordingState = makeUseRecordingState(AppModeStateContext);
 
+export const useEditMove = makeUseEditMoveState(AppModeStateContext);
+
 export const useResultDisplayState =
   makeUseResultDisplayState(AppModeStateContext);
 
@@ -68,5 +70,3 @@ export const useArbiterResultDisplayState =
   makeUseArbiterResultDisplayState(AppModeStateContext);
 
 export const useCurrentAppMode = () => useContext(AppModeStateContext)[0].mode;
-
-export const useEditMoveState = makeUseEditMoveState(AppModeStateContext);

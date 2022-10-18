@@ -6,22 +6,30 @@ import { AppModeStateContextProvider } from '../src/context/AppModeStateContext'
 import {
   AppMode,
   AppModeState,
-  EditingMoveMode,
   RecordingMode,
 } from '../src/types/AppModeState';
 import { ChessGameInfo, PlayerColour } from '../src/types/ChessGameInfo';
 import { ChessPly } from '../src/types/ChessMove';
-import { getStateFromFen } from '../src/util/fen';
+import { getShortFenAfterMove } from '../src/util/moves';
 import * as Storage from '../src/util/storage';
 
 /**
- * Mocks a hook for testing
- * @param hook the hook function to mock
+ * Uses react testing library to do a headlesss render of a hook for testing
+ * @param hook the hook function to test
  * @returns the rendered hook result
  */
-export const renderCustomHook = <T>(hook: () => T): RenderResult<T> => {
+export const renderCustomHook = <T extends any>(
+  hook: () => T,
+  initialState: AppModeState,
+): RenderResult<T> => {
+  const wrapper: React.FC = ({ children }) => (
+    <AppModeStateContextProvider initialState={initialState}>
+      {children}
+    </AppModeStateContextProvider>
+  );
+
   const { result: state } = renderHook(() => hook(), {
-    wrapper: AppModeStateContextProvider,
+    wrapper,
   });
   return state;
 };
@@ -65,6 +73,18 @@ export const generateGamePairingInfo = (
   };
 };
 
+export const buildMoveOccurrencesForMoveHistory = (
+  moveHistory: ChessPly[],
+): Record<string, number> =>
+  moveHistory.reduce((acc, el) => {
+    const key = getShortFenAfterMove(el);
+    if (!acc[key]) {
+      acc[key] = 0;
+    }
+    acc[key] += 1;
+    return acc;
+  }, {} as Record<string, number>);
+
 /**
  * Genrates a fake RecordingState object
  * @param moveHistory the move history to set in the state
@@ -75,16 +95,13 @@ export const generateRecordingState = (
   recordingModeType: 'Graphical' | 'Text',
   pgn?: string,
 ): RecordingMode => {
-  const positionOccurances: Record<string, number> = {};
-  moveHistory.forEach(move => {
-    const key = getStateFromFen(move.startingFen);
-    positionOccurances[key] =
-      key in positionOccurances ? (positionOccurances[key] || 0) + 1 : 1;
-  });
   return {
     startTime: new Date().getTime(),
     mode: AppMode.Recording,
-    pairing: generateGamePairingInfo(pgn, positionOccurances),
+    pairing: generateGamePairingInfo(
+      pgn,
+      buildMoveOccurrencesForMoveHistory(moveHistory),
+    ),
     moveHistory: moveHistory,
     board: chessEngine.fenToBoardPositions(
       moveHistory.at(-1)?.startingFen ?? chessEngine.startingFen(),
@@ -92,49 +109,6 @@ export const generateRecordingState = (
     currentPlayer: PlayerColour.White,
     type: recordingModeType,
   };
-};
-
-/**
- * Genrates a fake EditingMoveState object
- * @param moveHistory the move history to set in the state
- * @returns editing move state object
- */
-export const generateEditMoveState = (
-  moveHistory: ChessPly[],
-  moveIndex: number,
-): EditingMoveMode => {
-  const positionOccurances: Record<string, number> = {};
-  moveHistory.forEach(move => {
-    const key = getStateFromFen(move.startingFen);
-    positionOccurances[key] =
-      key in positionOccurances ? (positionOccurances[key] || 0) + 1 : 1;
-  });
-  return {
-    mode: AppMode.EditMove,
-    moveHistory,
-    editingIndex: moveIndex,
-    pairing: generateGamePairingInfo('', positionOccurances),
-    board: chessEngine.fenToBoardPositions(
-      moveHistory.at(-1)?.startingFen ?? chessEngine.startingFen(),
-    ),
-    currentPlayer: PlayerColour.White,
-  };
-};
-
-/**
- * Mocks the appmodeContext
- * useContext(appmodecontext) will return the fake state passed as and argument
- * and a mock function to set the context which is returned from this function
- * @param state The state to be returned when calling useContext
- * @returns the setContext mocked function
- */
-export const mockAppModeContext = (
-  state: AppModeState,
-): jest.Mock<React.Dispatch<React.SetStateAction<AppModeState>>> => {
-  const setContextMock = jest.fn();
-  const useContextSpy = jest.spyOn(React, 'useContext');
-  useContextSpy.mockImplementation(_ => [state, setContextMock]);
-  return setContextMock;
 };
 
 /**

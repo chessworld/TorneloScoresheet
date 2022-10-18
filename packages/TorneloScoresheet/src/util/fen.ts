@@ -8,12 +8,8 @@ export const getStateFromFen = (fen: string): string => {
     /(?<boardState>.+\/.+\/.+\/.+\/.+\/.+\/.+\/.+?\s.{1})(?<game_state>\s.+?\s.+?\s.+?\s.+?)?/.exec(
       fen,
     );
-  if (
-    !regexResult ||
-    !regexResult.groups ||
-    !regexResult.groups['boardState']
-  ) {
+  if (!regexResult || !regexResult.groups || !regexResult.groups.boardState) {
     return '';
   }
-  return regexResult.groups['boardState'];
+  return regexResult.groups.boardState;
 };

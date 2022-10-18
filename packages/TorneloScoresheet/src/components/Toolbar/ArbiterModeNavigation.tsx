@@ -30,7 +30,6 @@ const ArbiterModeNavigation: React.FC = () => {
     // do not show arbiter navigation button
     [AppMode.ResultDisplay]: false,
     [AppMode.TablePairing]: false,
-    [AppMode.EditMove]: false,
     [AppMode.Recording]: false,
   };
 
@@ -54,7 +53,6 @@ const ArbiterModeNavigation: React.FC = () => {
   const arbiterNavigationOptions: Record<AppMode, Option[]> = {
     [AppMode.ResultDisplay]: [],
     [AppMode.TablePairing]: [],
-    [AppMode.EditMove]: [],
     [AppMode.Recording]: [],
     [AppMode.EnterPgn]: [
       makeNavigationOption('Past Games', useEnterPgnState()?.viewPastGames),

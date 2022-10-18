@@ -7,27 +7,6 @@ import { GeneralSettings } from '../types/GeneralSettingsState';
 import { maxPastGameStored } from './env';
 
 /**
- * Builds a setter and getter functions for storing strings
- * @param key The string key used to uniquely identify this data
- * @returns [getFunction, setFunction]
- */
-const buildStoreGetFuncs = (
-  key: string,
-): [(data: string) => Promise<void>, () => Promise<string | null>] => {
-  // storage function
-  const storeFunc = async (data: string): Promise<void> => {
-    return AsyncStorage.setItem(key, data);
-  };
-
-  // getting function
-  const getFunc = async (): Promise<string | null> => {
-    return await AsyncStorage.getItem(key);
-  };
-
-  return [storeFunc, getFunc];
-};
-
-/**
  * Builds a setter and getter functions for storage data
  * Data will be converted to JSON string for storage and parsed when accessing
  * @param key The string key used to uniquely identify this data

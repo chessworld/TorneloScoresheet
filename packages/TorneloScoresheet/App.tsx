@@ -13,6 +13,7 @@ import LockAppOnExit from './src/components/LockAppOnExit/LockAppOnExit';
 import { ModalStackContextProvider } from './src/context/ModalStackContext';
 import SplashScreen from 'react-native-splash-screen';
 import { GeneralSettingsContextProvider } from './src/context/GeneralSettingsContext';
+import { AppMode } from './src/types/AppModeState';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -32,7 +33,8 @@ const App = () => {
         <ErrorContextProvider>
           <ArbiterInfoContextProvider>
             <ModalStackContextProvider>
-              <AppModeStateContextProvider>
+              <AppModeStateContextProvider
+                initialState={{ mode: AppMode.EnterPgn }}>
                 <LockAppOnExit>
                   <Toolbar />
                   <SafeAreaView style={backgroundStyle}>

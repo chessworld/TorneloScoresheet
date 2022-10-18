@@ -11,7 +11,7 @@ type ToolbarViewModel = {
 export const makeToolbarViewModel =
   (context: AppModeStateContextType): (() => ToolbarViewModel | null) =>
   () => {
-    const [appModeState, setAppModeState] = useContext(context);
+    const [appModeState] = useContext(context);
 
     const currentColour = colourForMode(appModeState.mode);
 

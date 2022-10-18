@@ -19,4 +19,5 @@ export const styles = StyleSheet.create({
     height: CHESS_SQUARE_SIZE,
     zIndex: -10,
   },
+  emptyBoardSquare: { zIndex: -2 },
 });

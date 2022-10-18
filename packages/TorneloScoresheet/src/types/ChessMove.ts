@@ -46,7 +46,6 @@ export type PlyInfo = {
   moveNo: number;
   startingFen: string;
   player: PlayerColour;
-  type: PlyTypes;
   drawOffer: boolean;
   legality?: MoveLegality;
   gameTime?: GameTime;
@@ -66,6 +65,10 @@ export type MovePly = {
 // for a ply will be filled in later
 export type SkipPly = {
   type: PlyTypes.SkipPly;
+  // We remember whether a skip ply was inserted manually by pressing the skip button,
+  // so that when we undo moves, we know whether the preceding skip should be undone
+  // as well
+  insertedManually: boolean;
 } & PlyInfo;
 
 // Either a skip or a piece that is moved

@@ -6,7 +6,6 @@ import IconButton from '../IconButton/IconButton';
 import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import Sheet from '../Sheet/Sheet';
 import { styles } from './style';
-import ToggleRecordingMode from './ToggleRecordingMode';
 import { useToolbar } from '../../context/AppModeStateContext';
 import ArbiterAndPlayerModeDisplay from './ArbiterAndPlayerModeDisplay';
 import packageJson from '../../../package.json';
