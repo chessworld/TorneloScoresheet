@@ -31,6 +31,10 @@
 
 1. Install npm packages
     ```bash
+    cd <project_directory>/packages/chess.ts
+    npm install
+    cd <project_directory>/packages/TorneloScoreSheet
+    npm link ../packages/chess.ts
     npm install
     ```
 
