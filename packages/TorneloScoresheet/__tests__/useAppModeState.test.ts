@@ -1,13 +1,10 @@
-import {
-  AppModeStateContextProvider,
-  useAppModeState,
-  useEnterPgnState,
-} from '../src/context/AppModeStateContext';
-import { act, renderHook } from '@testing-library/react-hooks';
+import { useEnterPgnState } from '../src/context/AppModeStateContext';
+import { act } from '@testing-library/react-hooks';
 import { AppMode } from '../src/types/AppModeState';
 import { isError } from '../src/types/Result';
 import axios, { AxiosRequestConfig } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { renderCustomHook } from '../testUtils/testUtils';
 
 const pgnSucess = `[Event "Skywalker Challenge - A"]
 [Site "Prague, Czechia"]
@@ -23,36 +20,18 @@ const pgnSucess = `[Event "Skywalker Challenge - A"]
 `;
 
 describe('useAppModeState', () => {
-  test('initial state', () => {
-    const { result } = renderHook(() => useAppModeState(), {
-      wrapper: AppModeStateContextProvider,
-    });
-    expect(result.current).toStrictEqual({
-      mode: AppMode.EnterPgn,
-    });
-  });
-
   test('enterPgnToPairingSelectionWrongUrl', async () => {
-    const { result } = renderHook(() => useEnterPgnState(), {
-      wrapper: AppModeStateContextProvider,
-    });
+    const useTest = () => ({ enterPgn: useEnterPgnState() });
+    const testState = renderCustomHook(useTest, { mode: AppMode.EnterPgn });
 
     await act(async () => {
-      if (result.current === null) {
-        return;
-      }
-
-      // try to go to pairing selection with wrong url
-      const actionResult = await result.current.goToPairingSelection('');
-
-      // should return an error
-      expect(isError(actionResult)).toEqual(true);
-
-      // should still be in enter pgn state
-      expect(result.current.state).toStrictEqual({
-        mode: AppMode.EnterPgn,
-      });
+      const result = await testState.current?.enterPgn?.goToPairingSelection?.(
+        '',
+      );
+      expect(isError(result!)).toEqual(true);
     });
+
+    expect(testState.current?.enterPgn).toBeTruthy();
   });
 
   const pgnUrl =
@@ -68,27 +47,19 @@ describe('useAppModeState', () => {
     );
 
     // mock render hook
-    const { result: enterPgnState } = renderHook(() => useEnterPgnState(), {
-      wrapper: AppModeStateContextProvider,
-    });
+    const useTest = () => ({ enterPgn: useEnterPgnState() });
+    const testState = renderCustomHook(useTest, { mode: AppMode.EnterPgn });
 
     await act(async () => {
-      if (enterPgnState.current === null) {
-        return;
-      }
-
-      // try to go to pairing selection with valid url
-      const actionResult = await enterPgnState.current.goToPairingSelection(
+      const result = await testState.current?.enterPgn?.goToPairingSelection(
         pgnUrl,
       );
-
-      // should not return an error
-      expect(isError(actionResult)).toEqual(false);
-
-      expect(AsyncStorage.setItem).toBeCalledTimes(1);
-
-      // should no longer be in pgn state
-      expect(enterPgnState.current).toBeNull();
+      expect(result).toBeTruthy();
+      expect(isError(result!)).toBe(false);
     });
+    expect(AsyncStorage.setItem).toBeCalledTimes(1);
+
+    // should no longer be in pgn state
+    expect(testState.current?.enterPgn).toBeNull();
   });
 });

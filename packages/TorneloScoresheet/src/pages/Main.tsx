@@ -1,7 +1,6 @@
 import React from 'react';
 import { useAppModeState } from '../context/AppModeStateContext';
 import { AppMode } from '../types/AppModeState';
-import GraphicalEditMove from './EditMove/GraphicalEditMove';
 import EnterPgn from './EnterPgn/EnterPgn';
 import ArbiterRecording from './GraphicalRecording/ArbiterRecording';
 import GraphicalRecording from './GraphicalRecording/GraphicalRecording';
@@ -40,8 +39,6 @@ const Main: React.FC = () => {
       return <ArbiterResultDisplay />;
     case AppMode.ResultDisplay:
       return <ResultDisplay />;
-    case AppMode.EditMove:
-      return <GraphicalEditMove />;
   }
 };
 

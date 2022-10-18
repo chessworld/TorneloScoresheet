@@ -5,6 +5,7 @@ export enum ReversibleActionType {
   ToggleDrawOffer,
   EditTimeForMove,
   Move,
+  Skip,
 }
 
 export type ReplaceMovesAction = {
@@ -28,7 +29,10 @@ export type MoveAction = {
   type: ReversibleActionType.Move;
   moveSquares: MoveSquares;
   promotion: PieceType | undefined;
-  withSkip: boolean;
+};
+
+export type SkipAction = {
+  type: ReversibleActionType.Skip;
 };
 
 // An action that can be "undone"
@@ -36,4 +40,5 @@ export type ReversibleAction =
   | EditTimeForMoveAction
   | ReplaceMovesAction
   | ToggleDrawOfferAction
-  | MoveAction;
+  | MoveAction
+  | SkipAction;

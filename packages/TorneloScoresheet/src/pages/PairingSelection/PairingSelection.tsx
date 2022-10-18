@@ -3,7 +3,6 @@ import { FlatList, View } from 'react-native';
 import { ChessGameInfo } from '../../types/ChessGameInfo';
 import { styles } from './style';
 import { usePairingSelectionState } from '../../context/AppModeStateContext';
-import PrimaryButton from '../../components/PrimaryButton/PrimaryButton';
 import PrimaryText, {
   FontWeight,
 } from '../../components/PrimaryText/PrimaryText';
@@ -17,7 +16,6 @@ const PairingSelection: React.FC = () => {
 
   const pairingSelectionState = usePairingSelectionState();
   const pairingSelectionMode = pairingSelectionState?.[0];
-  const goToEnterPgn = pairingSelectionState?.[1]?.goToEnterPgn;
   const goToTablePairing = pairingSelectionState?.[1]?.goToTablePairing;
 
   const handleSelectPairing = (pairing: ChessGameInfo) => {

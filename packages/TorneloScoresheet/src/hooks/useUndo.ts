@@ -65,7 +65,26 @@ export const useUndo = (): UndoStateModifiers => {
         );
         return;
       }
+      case ReversibleActionType.ReplaceMoves: {
+        newStackSetter(stackState =>
+          stackState.concat([
+            {
+              type: ReversibleActionType.ReplaceMoves,
+              indexOfPlyInHistory: action.indexOfPlyInHistory,
+              replacedMoves:
+                recordingMode?.state?.moveHistory?.slice(
+                  action.indexOfPlyInHistory,
+                ) ?? [],
+            },
+          ]),
+        );
+        return;
+      }
       case ReversibleActionType.Move: {
+        newStackSetter(stackState => stackState.concat([action]));
+        return;
+      }
+      case ReversibleActionType.Skip: {
         newStackSetter(stackState => stackState.concat([action]));
         return;
       }
