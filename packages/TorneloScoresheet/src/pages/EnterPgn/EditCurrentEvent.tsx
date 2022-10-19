@@ -163,20 +163,19 @@ const EditCurrentEvent: React.FC<EditCurrentEventParams> = ({
               <View style={styles.informationAndInputBoxContainer}>
                 <View style={styles.inputBoxesContainer}>
                   {inputBoxesContent.map((inputBoxContent, key) => (
-                    <>
+                    <View key={key}>
                       <PrimaryText
                         size={30}
                         weight={FontWeight.SemiBold}
                         label={inputBoxContent[2]}
                       />
                       <InputBox
-                        key={key}
                         style={styles.inputBox}
                         value={inputBoxContent[0]}
                         onChangeText={inputBoxContent[1]}
                         placeholder={inputBoxContent[2]}
                       />
-                    </>
+                    </View>
                   ))}
                 </View>
               </View>
