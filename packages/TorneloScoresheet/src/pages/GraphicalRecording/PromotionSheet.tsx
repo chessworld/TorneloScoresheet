@@ -1,59 +1,61 @@
 import React from 'react';
 import OptionSheet from '../../components/OptionSheet/OptionSheet';
-import {
-  TORNELO_QUEEN,
-  TORNELO_ROOK,
-  TORNELO_KNIGHT,
-  TORNELO_BISHOP,
-  CLASSIC_QUEEN,
-  CLASSIC_ROOK,
-  CLASSIC_KNIGHT,
-  CLASSIC_BISHOP,
-} from '../../style/images';
+import PieceAsset from '../../components/PieceAsset/PieceAsset';
+import { PlayerColour } from '../../types/ChessGameInfo';
 import { PieceType } from '../../types/ChessMove';
-import { ChessPieceStyles } from '../../types/GeneralSettingsState';
 
 export type PromotionSheetProps = {
   show: boolean;
-  pieceStyle?: ChessPieceStyles;
   makeSelection: (prommotion: PieceType) => void;
 };
 
 const PromotionSheet: React.FC<PromotionSheetProps> = ({
   show,
-  pieceStyle,
   makeSelection,
 }) => {
-  const selectedPieceStyle =
-    pieceStyle === undefined ? ChessPieceStyles.TORNELO : pieceStyle;
-
   const promotionButtons = [
     {
-      icon:
-        selectedPieceStyle == ChessPieceStyles.TORNELO
-          ? TORNELO_QUEEN
-          : CLASSIC_QUEEN,
+      icon: () => (
+        <>
+          {PieceAsset({
+            piece: { type: PieceType.Queen, player: PlayerColour.White },
+            size: 60,
+          })}
+        </>
+      ),
       onPress: () => handleSelectPromotion(PieceType.Queen),
     },
     {
-      icon:
-        selectedPieceStyle == ChessPieceStyles.TORNELO
-          ? TORNELO_ROOK
-          : CLASSIC_ROOK,
+      icon: () => (
+        <>
+          {PieceAsset({
+            piece: { type: PieceType.Rook, player: PlayerColour.White },
+            size: 60,
+          })}
+        </>
+      ),
       onPress: () => handleSelectPromotion(PieceType.Rook),
     },
     {
-      icon:
-        selectedPieceStyle == ChessPieceStyles.TORNELO
-          ? TORNELO_KNIGHT
-          : CLASSIC_KNIGHT,
+      icon: () => (
+        <>
+          {PieceAsset({
+            piece: { type: PieceType.Knight, player: PlayerColour.White },
+            size: 60,
+          })}
+        </>
+      ),
       onPress: () => handleSelectPromotion(PieceType.Knight),
     },
     {
-      icon:
-        selectedPieceStyle == ChessPieceStyles.TORNELO
-          ? TORNELO_BISHOP
-          : CLASSIC_BISHOP,
+      icon: () => (
+        <>
+          {PieceAsset({
+            piece: { type: PieceType.Bishop, player: PlayerColour.White },
+            size: 60,
+          })}
+        </>
+      ),
       onPress: () => handleSelectPromotion(PieceType.Bishop),
     },
   ];

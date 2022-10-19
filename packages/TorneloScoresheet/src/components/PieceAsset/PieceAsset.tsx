@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { Color, SvgProps } from 'react-native-svg';
+import { useGeneralSettings } from '../../context/GeneralSettingsContext';
 import { colours } from '../../style/colour';
 import {
   TORNELO_BISHOP,
@@ -22,7 +23,6 @@ import { ChessPieceStyles } from '../../types/GeneralSettingsState';
 
 export type PieceAssetProps = {
   piece: Piece;
-  pieceStyle?: ChessPieceStyles;
   size: number;
   colour?: Color | undefined;
   style?: StyleProp<ViewStyle>;
@@ -30,13 +30,12 @@ export type PieceAssetProps = {
 
 const PieceAsset: React.FC<PieceAssetProps> = ({
   piece,
-  pieceStyle,
   size,
   colour,
   style,
 }) => {
-  const selectedStyle =
-    pieceStyle === undefined ? ChessPieceStyles.TORNELO : pieceStyle;
+  const [generalSettings] = useGeneralSettings();
+
   const torneloPieceRecord: Record<PieceType, React.FC<SvgProps>> = {
     [PieceType.Bishop]: TORNELO_BISHOP,
     [PieceType.Pawn]: TORNELO_PAWN,
@@ -69,7 +68,7 @@ const PieceAsset: React.FC<PieceAssetProps> = ({
     colour ??
     (piece.player === PlayerColour.White ? colours.black : colours.white);
 
-  return pieceRecord[selectedStyle][piece.type]({
+  return pieceRecord[generalSettings.chessPieceStyle][piece.type]({
     style,
     height: size,
     width: size,
