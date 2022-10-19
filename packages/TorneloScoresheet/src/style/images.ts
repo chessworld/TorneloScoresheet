@@ -2,19 +2,34 @@ export const BLACK_LOGO_IMAGE = require('../../assets/images/icon-logo-black-500
 export const WHITE_LOGO_IMAGE = require('../../assets/images/icon-logo-white-500.png');
 
 // chess pieces
-import BISHOP_ASSET from '../../assets/images/chessPieces/Tornelo Pieces_bishop_black.svg';
-import PAWN_ASSET from '../../assets/images/chessPieces/Tornelo Pieces_pawn_black.svg';
-import ROOK_ASSET from '../../assets/images/chessPieces/Tornelo Pieces_rook_black.svg';
-import KNIGHT_ASSET from '../../assets/images/chessPieces/Tornelo Pieces_knight_black.svg';
-import QUEEN_ASSET from '../../assets/images/chessPieces/Tornelo Pieces_queen_black.svg';
-import KING_ASSET from '../../assets/images/chessPieces/Tornelo Pieces_king_black.svg';
+import TORNELO_BISHOP_ASSET from '../../assets/images/chessPieces/Tornelo Pieces_bishop_black.svg';
+import TORNELO_PAWN_ASSET from '../../assets/images/chessPieces/Tornelo Pieces_pawn_black.svg';
+import TORNELO_ROOK_ASSET from '../../assets/images/chessPieces/Tornelo Pieces_rook_black.svg';
+import TORNELO_KNIGHT_ASSET from '../../assets/images/chessPieces/Tornelo Pieces_knight_black.svg';
+import TORNELO_QUEEN_ASSET from '../../assets/images/chessPieces/Tornelo Pieces_queen_black.svg';
+import TORNELO_KING_ASSET from '../../assets/images/chessPieces/Tornelo Pieces_king_black.svg';
 
-export const BISHOP = BISHOP_ASSET;
-export const PAWN = PAWN_ASSET;
-export const ROOK = ROOK_ASSET;
-export const KNIGHT = KNIGHT_ASSET;
-export const QUEEN = QUEEN_ASSET;
-export const KING = KING_ASSET;
+export const TORNELO_BISHOP = TORNELO_BISHOP_ASSET;
+export const TORNELO_PAWN = TORNELO_PAWN_ASSET;
+export const TORNELO_ROOK = TORNELO_ROOK_ASSET;
+export const TORNELO_KNIGHT = TORNELO_KNIGHT_ASSET;
+export const TORNELO_QUEEN = TORNELO_QUEEN_ASSET;
+export const TORNELO_KING = TORNELO_KING_ASSET;
+
+import CLASSIC_KNIGHT_ASSET from '../../assets/images/chessPieces/black_knight.svg';
+
+import CLASSIC_BISHOP_ASSET from '../../assets/images/chessPieces/black_bishop.svg';
+import CLASSIC_PAWN_ASSET from '../../assets/images/chessPieces/black_pawn.svg';
+import CLASSIC_ROOK_ASSET from '../../assets/images/chessPieces/black_rook.svg';
+import CLASSIC_QUEEN_ASSET from '../../assets/images/chessPieces/black_queen.svg';
+import CLASSIC_KING_ASSET from '../../assets/images/chessPieces/black_king.svg';
+
+export const CLASSIC_BISHOP = CLASSIC_BISHOP_ASSET;
+export const CLASSIC_PAWN = CLASSIC_PAWN_ASSET;
+export const CLASSIC_ROOK = CLASSIC_ROOK_ASSET;
+export const CLASSIC_KNIGHT = CLASSIC_KNIGHT_ASSET;
+export const CLASSIC_QUEEN = CLASSIC_QUEEN_ASSET;
+export const CLASSIC_KING = CLASSIC_KING_ASSET;
 
 // Button Icons
 import ICON_FLIP_ASSET from '../../assets/images/buttonIcons/icon_flip.svg';
