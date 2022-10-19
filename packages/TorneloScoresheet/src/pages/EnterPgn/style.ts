@@ -116,7 +116,8 @@ export const styles = StyleSheet.create({
   inputBox: {
     fontSize: 23,
     padding: 23,
-    marginTop: 29,
+    marginTop: 10,
+    marginBottom: 20,
     width: 600,
   },
   inputBoxesContainer: {
