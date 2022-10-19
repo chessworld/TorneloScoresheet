@@ -12,6 +12,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import LockAppOnExit from './src/components/LockAppOnExit/LockAppOnExit';
 import { ModalStackContextProvider } from './src/context/ModalStackContext';
 import SplashScreen from 'react-native-splash-screen';
+import { GeneralSettingsContextProvider } from './src/context/GeneralSettingsContext';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -27,21 +28,23 @@ const App = () => {
 
   return (
     <GestureHandlerRootView>
-      <ErrorContextProvider>
-        <ArbiterInfoContextProvider>
-          <ModalStackContextProvider>
-            <AppModeStateContextProvider>
-              <LockAppOnExit>
-                <Toolbar />
-                <SafeAreaView style={backgroundStyle}>
-                  <Main />
-                </SafeAreaView>
-                <ErrorToast />
-              </LockAppOnExit>
-            </AppModeStateContextProvider>
-          </ModalStackContextProvider>
-        </ArbiterInfoContextProvider>
-      </ErrorContextProvider>
+      <GeneralSettingsContextProvider>
+        <ErrorContextProvider>
+          <ArbiterInfoContextProvider>
+            <ModalStackContextProvider>
+              <AppModeStateContextProvider>
+                <LockAppOnExit>
+                  <Toolbar />
+                  <SafeAreaView style={backgroundStyle}>
+                    <Main />
+                  </SafeAreaView>
+                  <ErrorToast />
+                </LockAppOnExit>
+              </AppModeStateContextProvider>
+            </ModalStackContextProvider>
+          </ArbiterInfoContextProvider>
+        </ErrorContextProvider>
+      </GeneralSettingsContextProvider>
     </GestureHandlerRootView>
   );
 };
