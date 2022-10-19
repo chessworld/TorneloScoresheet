@@ -3,6 +3,7 @@ import { ArbiterInfo } from '../types/ArbiterInfoState';
 import { ChessGameInfo } from '../types/ChessGameInfo';
 import { PlayerColour } from '../types/ChessGameInfo';
 import { ChessPly } from '../types/ChessMove';
+import { GeneralSettings } from '../types/GeneralSettingsState';
 import { maxPastGameStored } from './env';
 
 /**
@@ -155,3 +156,8 @@ export const [storeGameHistory, getStoredGameHistory] =
     GAME_HISTORY_DATA,
     mapNewHistoryToHistoryArray,
   );
+
+// stores the general settings to they are saved after quitting
+const GENERAL_SETTINGS = 'GENERAL_SETTINGS';
+export const [storeGeneralSettings, getStoredGeneralSettings] =
+  buildJsonStoreGetFuncs<GeneralSettings>(GENERAL_SETTINGS);
