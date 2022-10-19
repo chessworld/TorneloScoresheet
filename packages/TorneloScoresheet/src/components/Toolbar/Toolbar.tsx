@@ -12,6 +12,7 @@ import ArbiterAndPlayerModeDisplay from './ArbiterAndPlayerModeDisplay';
 import packageJson from '../../../package.json';
 import Help from '../Help/Help';
 import ArbiterModeNavigation from './ArbiterModeNavigation';
+import SettingsSheet from '../SettingsSheet/SettingsSheet';
 /**
  * The App's toolbar.
  *
@@ -22,7 +23,7 @@ import ArbiterModeNavigation from './ArbiterModeNavigation';
 const Toolbar: React.FC = () => {
   const viewModel = useToolbar();
   const [showSheet, setShowSheet] = useState(false);
-
+  const [showSettings, setShowSettings] = useState(false);
   const handleHelpPress = () => {
     setShowSheet((a: any) => !a);
   };
@@ -37,6 +38,10 @@ const Toolbar: React.FC = () => {
           visible={showSheet}>
           <Help onDone={() => setShowSheet(false)} />
         </Sheet>
+        <SettingsSheet
+          visible={showSettings}
+          onCancel={() => setShowSettings(false)}
+        />
         <View
           style={[
             styles.container,
@@ -75,12 +80,20 @@ const Toolbar: React.FC = () => {
               />
             </View>
           </View>
+          <View style={styles.settingsHelpContainer}>
+            <IconButton
+              style={styles.settingsButton}
+              icon="settings"
+              onPress={() => setShowSettings(true)}
+              colour={viewModel.currentTextColour}
+            />
 
-          <IconButton
-            icon="help"
-            onPress={handleHelpPress}
-            colour={viewModel.currentTextColour}
-          />
+            <IconButton
+              icon="help"
+              onPress={handleHelpPress}
+              colour={viewModel.currentTextColour}
+            />
+          </View>
         </View>
       </>
     )

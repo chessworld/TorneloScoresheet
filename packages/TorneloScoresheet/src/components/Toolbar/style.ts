@@ -19,6 +19,13 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     height: TOOLBAR_HEIGHT,
   },
+  settingsHelpContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  settingsButton: {
+    marginRight: 20,
+  },
   logo: {
     display: 'flex',
     flexDirection: 'row',
