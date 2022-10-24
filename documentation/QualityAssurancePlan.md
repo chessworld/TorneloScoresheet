@@ -111,30 +111,9 @@ Stories should be short requirements that are part of a larger Epic. A story sho
 - Labels (indicating both the epic and the level of priority)
 - An assignee (if work is in progress)
 
-
 Stories should be moved from the backlog into the current sprint during sprint planning. At the beginning of each sprint, stories will be assigned to team members depending on their availability. There should be no more than two people assigned to each development ticket, these will be the ticket owners. The ticket owners are responsible for the delivery of the task. Other (non-assigned) team members may also work on the ticket if they have permission from the owner.
 
 As the developer works on the story, they should move the ticket through the 'Current Sprint', 'Doing', 'In Review' and 'Done' colums and add comments as needed. Stories should only be moved into the current sprint section during sprint planning.
-
-## Releases
-
-The app will be manually deployed to TestFlight. The following steps must be done on an Apple device that is logged into a developer account that has access to the project in App Store Connect.
-
-1. Bump the `packages/TorneloScoresheet/package.json` version by a minor or major version. (example: 1.4.0 => 1.5.0)
-2. Bump the `packages/TorneloScoresheet/ios/TorneloScoresheet/Info.plist` “CFBundleShortVersionString” Key. (example: 1.4 => 1.5)
-3. Open `packages/TorneloScoresheet/ios/TorneloScoresheet.xcworkspace` in XCode.
-4. Make sure “Any iOS Device” is selected as the build target.
-5. Build the project. (`Product > Build` in the menu bar)
-6. Archive the project. (`Product > Archive` in the menu bar)
-7. After the archive is completed, select `Distribute App`
-8. Step through the wizard to “Upload” the app to “App Store Connect”
-9. Go to “App Store Connect” in your browser (It’s easily accessible by googling it)
-10. Select “My apps”
-11. Select “Tornelo Scoresheet” from the list
-12. Select “TestFlight”
-13. Select the dropdown for the newly Uploaded version
-14. Click on the latest build from the list under the dropdown.
-15. Add the “TorneloScoresheet Testers” group under “Group”
 
 ## Artifacts
 
