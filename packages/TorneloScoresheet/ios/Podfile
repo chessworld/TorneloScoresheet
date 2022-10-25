@@ -13,12 +13,9 @@ target 'TorneloScoresheet' do
   )
 
 
-  pod 'react-native-camera', :path => '../node_modules/react-native-camera'
-
-  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
-
   permissions_path = '../node_modules/react-native-permissions/ios'
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+
 
   target 'TorneloScoresheetTests' do
     inherit! :complete
