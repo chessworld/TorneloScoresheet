@@ -24,8 +24,8 @@ As moves are recorded, they will appear in the move history below the board.
 Moves can be edited by pressing and holding on them in the move history. This allows you
 to toggle a draw offer, edit the timing information of the move, or edit the move itself.
 
-Editing the move will show the source and destination squares as highlighted on the board,
-and will not allow you to make edits that will make future moves impossible.
+Editing the move will show the source and destination squares as highlighted on the board.
+**If an edit makes future moves illegal/impossible, they will be replaced by skips!**
 
 When editing a move, the action buttons along the side of the board change:
 
