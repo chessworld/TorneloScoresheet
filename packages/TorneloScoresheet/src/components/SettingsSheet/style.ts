@@ -18,6 +18,14 @@ export const styles = StyleSheet.create({
     fontFamily: primary,
     fontWeight: FontWeight.SemiBold,
   },
+  buttonText: {
+    fontSize: 25,
+  },
+  saveButton: {
+    minWidth: 200,
+    height: 70,
+    marginTop: 50,
+  },
   inputBoxesContainer: {
     display: 'flex',
     flexDirection: 'row',

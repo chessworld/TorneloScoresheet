@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useGeneralSettings } from '../../context/GeneralSettingsContext';
 import { ChessPieceStyles } from '../../types/GeneralSettingsState';
+import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import Sheet from '../Sheet/Sheet';
 import { styles } from './style';
@@ -15,19 +16,24 @@ export type SettingsSheetProps = {
 const SettingsSheet: React.FC<SettingsSheetProps> = ({ visible, onCancel }) => {
   const [generalSettings, setGeneralSettings] = useGeneralSettings();
 
-  // Chess Piece Style
+  const saveSettings = async () => {
+    await setGeneralSettings({
+      chessPieceStyle: pieceStyle,
+    });
+    onCancel();
+  };
+
+  // -----  Chess Piece Style
   const [openPieceStyle, setOpenPieceStyle] = useState(false);
   const pieceStyleOptions = [
     { label: 'Tornelo', value: ChessPieceStyles.TORNELO },
     { label: 'Classic', value: ChessPieceStyles.CLASSIC },
   ];
   const [pieceStyle, setPieceStyle] = useState(generalSettings.chessPieceStyle);
-
+  // update piece style form value once settings load from disk
   useEffect(() => {
-    setGeneralSettings({
-      chessPieceStyle: pieceStyle,
-    });
-  }, [pieceStyle]);
+    setPieceStyle(generalSettings.chessPieceStyle);
+  }, [generalSettings]);
 
   return (
     <Sheet visible={visible} dismiss={onCancel} title="General Settings">
@@ -49,6 +55,12 @@ const SettingsSheet: React.FC<SettingsSheetProps> = ({ visible, onCancel }) => {
             textStyle={styles.settingText}
           />
         </View>
+        <PrimaryButton
+          label="save"
+          onPress={saveSettings}
+          style={styles.saveButton}
+          labelStyle={styles.buttonText}
+        />
       </View>
     </Sheet>
   );
