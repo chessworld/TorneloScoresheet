@@ -1473,7 +1473,8 @@ describe('generatePgn', () => {
       ] as ChessPly[],
       winner: null,
       expectedPgn:
-        stripStarAndReplaceResultFromPgn(pgnSuccess, '1-1') + '1. e4 g6 1-1',
+        stripStarAndReplaceResultFromPgn(pgnSuccess, '1/2-1/2') +
+        '1. e4 g6 1/2-1/2',
       allowSkips: false,
     },
     {

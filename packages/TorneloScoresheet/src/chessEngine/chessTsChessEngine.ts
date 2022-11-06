@@ -271,7 +271,7 @@ const generatePgn = (
       case PlayerColour.White:
         return '1-0';
       case null:
-        return '1-1';
+        return '1/2-1/2';
     }
   };
 

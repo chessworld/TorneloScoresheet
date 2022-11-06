@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   resultText: {
-    fontSize: 130,
+    fontSize: 100,
     color: colours.black,
   },
   resultContainer: {

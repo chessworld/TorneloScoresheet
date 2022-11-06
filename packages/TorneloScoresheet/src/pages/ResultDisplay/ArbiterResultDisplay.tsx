@@ -35,7 +35,7 @@ const ArbiterResultDisplay: React.FC = () => {
               player={arbiterResultDisplayMode.pairing.players[0]}
               result={
                 arbiterResultDisplayMode.result.winner === null
-                  ? 1
+                  ? 0.5
                   : arbiterResultDisplayMode.pairing.players[0].color ===
                     arbiterResultDisplayMode.result.winner
                   ? 1
@@ -47,7 +47,7 @@ const ArbiterResultDisplay: React.FC = () => {
               player={arbiterResultDisplayMode.pairing.players[1]}
               result={
                 arbiterResultDisplayMode.result.winner === null
-                  ? 1
+                  ? 0.5
                   : arbiterResultDisplayMode.pairing.players[1].color ===
                     arbiterResultDisplayMode.result.winner
                   ? 1

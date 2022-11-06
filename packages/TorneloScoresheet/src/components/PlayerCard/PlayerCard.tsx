@@ -75,7 +75,7 @@ const PlayerCard: React.FC<playerCardProps> = ({
         <View style={[styles.cardColumns, styles.resultContainer]}>
           <View style={styles.resultBox}>
             <PrimaryText weight={FontWeight.Bold} style={styles.resultText}>
-              {result && result}
+              {result && result === 0.5 ? '½' : result}
             </PrimaryText>
           </View>
         </View>

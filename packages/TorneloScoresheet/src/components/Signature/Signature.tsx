@@ -41,7 +41,7 @@ const Signature: React.FC<SignatureProps> = ({
   };
 
   const resultText = (name: string | null, playerName: string | null) => {
-    return name === null ? '1' : playerName === name ? '1' : '0';
+    return name === null ? '½' : playerName === name ? '1' : '0';
   };
 
   return (
