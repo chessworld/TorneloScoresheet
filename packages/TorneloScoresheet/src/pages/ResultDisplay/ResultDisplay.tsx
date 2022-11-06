@@ -61,7 +61,7 @@ const ResultDisplay: React.FC = () => {
               player={resultDisplayMode.pairing.players[0]}
               result={
                 resultDisplayMode.result.winner === null
-                  ? 1
+                  ? 0.5
                   : resultDisplayMode.pairing.players[0].color ===
                     resultDisplayMode.result.winner
                   ? 1
@@ -73,7 +73,7 @@ const ResultDisplay: React.FC = () => {
               player={resultDisplayMode.pairing.players[1]}
               result={
                 resultDisplayMode.result.winner === null
-                  ? 1
+                  ? 0.5
                   : resultDisplayMode.pairing.players[1].color ===
                     resultDisplayMode.result.winner
                   ? 1
