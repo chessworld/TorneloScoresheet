@@ -9,9 +9,11 @@ import TextIconButton, {
 
 export type Option = {
   icon?: React.FC<SvgProps>;
+  iconHeight?: number;
   text?: string;
   onPress: () => void;
   style?: TextIconButtonProps['style'];
+  disabled?: boolean;
 };
 type OptionSheetProps = {
   message: string;
@@ -34,11 +36,15 @@ const OptionSheet: React.FC<OptionSheetProps> = ({
             <TextIconButton
               Icon={option.icon}
               text={option.text}
-              buttonHeight={60}
+              buttonHeight={option.iconHeight ?? 40}
               onPress={option.onPress}
               key={'button-' + i.toString()}
-              buttonTextStyle={styles.buttonText}
+              buttonTextStyle={[
+                styles.buttonText,
+                { marginLeft: option.icon ? 20 : 0 },
+              ]}
               style={[styles.button, option.style]}
+              disabled={option.disabled}
             />
           ))}
         </View>
