@@ -10,6 +10,7 @@ type arbiterTablePairingStateHookType = [
     goToTablePairingMode: () => void;
     goBackToPairingSelectionMode: () => Promise<Result<string>>;
     goBackToEnterPgn: () => void;
+    goToGameHistory: () => void;
   },
 ];
 
@@ -53,8 +54,18 @@ export const makeUseArbiterTablePairingState =
       });
     };
 
+    const goToGameHistory = () => {
+      setAppModeState({
+        mode: AppMode.ViewPastGames,
+      });
+    };
     return [
       appModeState,
-      { goToTablePairingMode, goBackToPairingSelectionMode, goBackToEnterPgn },
+      {
+        goToTablePairingMode,
+        goBackToPairingSelectionMode,
+        goBackToEnterPgn,
+        goToGameHistory,
+      },
     ];
   };

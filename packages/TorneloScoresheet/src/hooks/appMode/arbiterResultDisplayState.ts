@@ -16,6 +16,7 @@ type arbiterResultDisplayStateHookType = [
     goToResultDisplayMode: () => void;
     goBackToEnterPgn: () => void;
     goBackToPairingSelection: () => void;
+    goToGameHistory: () => void;
     goBackToRecordingMode: () => Promise<Result<string>>;
   },
 ];
@@ -100,7 +101,11 @@ export const makeUseArbiterResultDisplayState =
         );
       }
     };
-
+    const goToGameHistory = () => {
+      setAppModeState({
+        mode: AppMode.ViewPastGames,
+      });
+    };
     return [
       appModeState,
       {
@@ -108,6 +113,7 @@ export const makeUseArbiterResultDisplayState =
         goBackToEnterPgn,
         goBackToRecordingMode,
         goBackToPairingSelection,
+        goToGameHistory,
       },
     ];
   };
