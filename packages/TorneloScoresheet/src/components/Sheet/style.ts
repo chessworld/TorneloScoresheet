@@ -24,6 +24,11 @@ export const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOpacity: 0.6,
   },
+  dismissButton: {
+    flexGrow: 1,
+    marginLeft: 20,
+    alignItems: 'flex-end',
+  },
   content: {
     marginLeft: 20,
     marginRight: 20,
