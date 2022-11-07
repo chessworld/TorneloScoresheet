@@ -136,6 +136,35 @@ export const [storeGameHistory, getStoredGameHistory] =
     mapNewHistoryToHistoryArray,
   );
 
+/**
+ * Will remove the last saved game in the history if it matches the paring provided
+ * @param pairing The pairing of the game expected to be removed
+ * @returns
+ */
+export const removeLastStoredGame = async (
+  pairing: ChessGameInfo,
+): Promise<void> => {
+  const pastGames = await getStoredGameHistory();
+  if (pastGames) {
+    const lastGame = pastGames[pastGames.length - 1];
+    const isCurrentGame = (lastGame: ChessGameInfo): boolean => {
+      return (
+        lastGame.board === pairing.board &&
+        lastGame.game === pairing.game &&
+        lastGame.round === pairing.round &&
+        lastGame.name === pairing.name
+      );
+    };
+    if (lastGame && isCurrentGame(lastGame.pairing)) {
+      const newGameHistory = pastGames.slice(0, pastGames.length - 1);
+      return AsyncStorage.setItem(
+        GAME_HISTORY_DATA,
+        JSON.stringify(newGameHistory),
+      );
+    }
+  }
+};
+
 // stores the general settings to they are saved after quitting
 const GENERAL_SETTINGS = 'GENERAL_SETTINGS';
 export const [storeGeneralSettings, getStoredGeneralSettings] =
