@@ -6,12 +6,16 @@ import IconButton from '../IconButton/IconButton';
 import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import Sheet from '../Sheet/Sheet';
 import { styles } from './style';
-import { useToolbar } from '../../context/AppModeStateContext';
+import {
+  useCurrentAppMode,
+  useToolbar,
+} from '../../context/AppModeStateContext';
 import ArbiterAndPlayerModeDisplay from './ArbiterAndPlayerModeDisplay';
 import packageJson from '../../../package.json';
 import Help from '../Help/Help';
 import ArbiterModeNavigation from './ArbiterModeNavigation';
 import SettingsSheet from '../SettingsSheet/SettingsSheet';
+import { AppMode } from '../../types/AppModeState';
 /**
  * The App's toolbar.
  *
@@ -21,6 +25,7 @@ import SettingsSheet from '../SettingsSheet/SettingsSheet';
 
 const Toolbar: React.FC = () => {
   const viewModel = useToolbar();
+  const currentAppMode = useCurrentAppMode();
   const [showSheet, setShowSheet] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const handleHelpPress = () => {
@@ -80,12 +85,14 @@ const Toolbar: React.FC = () => {
             </View>
           </View>
           <View style={styles.settingsHelpContainer}>
-            <IconButton
-              style={styles.settingsButton}
-              icon="settings"
-              onPress={() => setShowSettings(true)}
-              colour={viewModel.currentTextColour}
-            />
+            {currentAppMode === AppMode.Recording && (
+              <IconButton
+                style={styles.settingsButton}
+                icon="settings"
+                onPress={() => setShowSettings(true)}
+                colour={viewModel.currentTextColour}
+              />
+            )}
 
             <IconButton
               icon="help"
