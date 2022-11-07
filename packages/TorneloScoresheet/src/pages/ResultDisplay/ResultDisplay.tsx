@@ -19,6 +19,8 @@ const ResultDisplay: React.FC = () => {
   const resultDisplayMode = resultDisplayState?.[0];
   const [emailSending, setEmailSending] = useState(false);
   const [, showError] = useError();
+  const [emailButtonText, setEmailButtonText] = useState('Email Game');
+
   const [arbiterInfo] = useArbiterInfo();
   const infoString = `Board ${
     resultDisplayMode?.pairing
@@ -40,8 +42,12 @@ const ResultDisplay: React.FC = () => {
     );
     if (isError(result)) {
       showError(result.error);
+      setEmailButtonText('Email Game');
+      setEmailSending(false);
+      return;
     }
 
+    setEmailButtonText('Email Game Again');
     setEmailSending(false);
   };
 
@@ -83,7 +89,7 @@ const ResultDisplay: React.FC = () => {
           </View>
           <View>
             <PrimaryButton
-              label="Email Game"
+              label={emailButtonText}
               onPress={handleEmailGame}
               style={styles.emailButton}
               loading={emailSending}
