@@ -11,7 +11,6 @@ export const emailGameResults = async (
 ): Promise<Result<string>> => {
   const sendRequest = (): Promise<AxiosResponse> => {
     const url = emailEndpoint(arbiterInfo.userId);
-    console.log(arbiterInfo);
     const payload = {
       userId: arbiterInfo.userId,
       arbiterToken: arbiterInfo.arbiterToken,
