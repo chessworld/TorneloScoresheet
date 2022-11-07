@@ -71,7 +71,7 @@ const PromotionSheet: React.FC<PromotionSheetProps> = ({
   return (
     <OptionSheet
       visible={show}
-      message="Select Promotion Piece"
+      message="Select promotion piece"
       options={promotionButtons}
     />
   );

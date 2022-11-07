@@ -16,7 +16,7 @@ const getHelp = async (fileName: string): Promise<string> => {
 const styles = StyleSheet.create({
   container: { height: 400 },
   buttonLabel: { fontSize: 20 },
-  button: { marginTop: 20 },
+  button: { marginTop: 20, width: 200, alignSelf: 'center' },
 });
 
 const markdownStyle = StyleSheet.create({

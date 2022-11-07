@@ -26,10 +26,6 @@ export const styles = StyleSheet.create({
     height: 400,
   },
   editEventHeader: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignContent: 'center',
-    alignItems: 'center',
     paddingBottom: 20,
   },
   currentEventBox: {
@@ -38,10 +34,11 @@ export const styles = StyleSheet.create({
     backgroundColor: colours.grey10,
     padding: 30,
     minWidth: '95%',
-    marginTop: 80,
+    marginTop: 50,
   },
   editEventButton: {
     marginTop: 30,
+    backgroundColor: colours.tertiary,
   },
   editEventButtonLabel: {
     fontSize: 20,
@@ -56,9 +53,9 @@ export const styles = StyleSheet.create({
     marginTop: 30,
   },
   editEventSheetSection: {
+    marginTop: 30,
     maxHeight: 600,
     minHeight: 600,
-    maxWidth: 600,
   },
   buttonBox: {
     display: 'flex',
@@ -85,8 +82,7 @@ export const styles = StyleSheet.create({
     marginTop: 40,
   },
   instructions: {
-    width: '60%',
-    marginLeft: 30,
+    margin: 30,
   },
   switchInputModeButton: {
     alignItems: 'center',

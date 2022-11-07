@@ -134,21 +134,21 @@ const EndGameSheet: React.FC<EndGameSheetProps> = ({ show, dismiss }) => {
           text: fullName(recordingMode.pairing.players[0]),
           onPress: () => handleSelectWinner(recordingMode.pairing.players[0]),
           style: {
-            width: '100%',
+            width: 300,
           },
         },
         {
           text: fullName(recordingMode.pairing.players[1]),
           onPress: () => handleSelectWinner(recordingMode.pairing.players[1]),
           style: {
-            width: '100%',
+            width: 300,
           },
         },
         {
           text: 'Draw',
           onPress: () => handleSelectWinner(null),
           style: {
-            width: '100%',
+            width: 300,
           },
         },
       ]
@@ -163,14 +163,14 @@ const EndGameSheet: React.FC<EndGameSheetProps> = ({ show, dismiss }) => {
             text: 'End game with skips',
             onPress: () => handleConfirmEndWithSkip(),
             style: {
-              width: '100%',
+              width: 350,
             },
           },
           {
             text: 'Go back and fix skips',
             onPress: () => handleCancelEndWithSkips(),
             style: {
-              width: '100%',
+              width: 350,
             },
           },
         ]}
@@ -179,7 +179,7 @@ const EndGameSheet: React.FC<EndGameSheetProps> = ({ show, dismiss }) => {
       />
 
       <OptionSheet
-        message="Please Select the Winner"
+        message="Please select the winner"
         options={endGameOptions}
         visible={show}
         onCancel={() => {

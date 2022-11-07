@@ -23,16 +23,16 @@ import { BarCodeReadEvent } from 'react-native-camera';
 
 export type EditCurrentEventParams = {
   display: boolean;
+  isQrMode: boolean;
   dismiss: () => void;
 };
 const EditCurrentEvent: React.FC<EditCurrentEventParams> = ({
   dismiss,
+  isQrMode,
   display,
 }) => {
   const [arbiterInfo, setArbiterInfo] = useArbiterInfo();
   const [, showError] = useError();
-
-  const [inScanQRMode, setInScanQRMode] = useState(true);
 
   const [arbiterPin, setArbiterPin] = useState(arbiterInfo?.pin ?? '');
   const [pgnUrl, setPgnUrl] = useState(arbiterInfo?.broadcastUrl ?? '');
@@ -49,13 +49,13 @@ const EditCurrentEvent: React.FC<EditCurrentEventParams> = ({
     React.Dispatch<React.SetStateAction<string>>,
     string,
   ][] = [
-    [pgnUrl, setPgnUrl, 'Tournament Url'],
-    [arbiterPin, setArbiterPin, 'Arbiter Pin'],
-    [arbiterEmailSecret, setArbiterEmailSecret, 'Arbiter Email Secret'],
-    [divisionId, setDivisionId, 'Division Id'],
-    [arbiterId, setArbiterId, 'Arbiter Id'],
-    [arbiterName, setArbiterName, 'Arbiter Name'],
-    [eventName, setEventName, 'Event Name'],
+    [pgnUrl, setPgnUrl, 'Tournament url'],
+    [arbiterPin, setArbiterPin, 'Arbiter pin'],
+    [arbiterEmailSecret, setArbiterEmailSecret, 'Arbiter email secret'],
+    [divisionId, setDivisionId, 'Division id'],
+    [arbiterId, setArbiterId, 'Arbiter id'],
+    [arbiterName, setArbiterName, 'Arbiter name'],
+    [eventName, setEventName, 'Event name'],
   ];
 
   const validateArbiterInfo = (arbiterInfo: ArbiterInfo): boolean => {
@@ -123,31 +123,9 @@ const EditCurrentEvent: React.FC<EditCurrentEventParams> = ({
   };
   return (
     <>
-      <Sheet title="Edit Event" dismiss={dismiss} visible={display}>
-        <View style={styles.editEventHeader}>
-          <TextIconButton
-            Icon={inScanQRMode ? ICON_TEXT : ICON_QR}
-            text={inScanQRMode ? 'Text Input' : 'QR Input'}
-            buttonHeight={60}
-            style={styles.switchInputModeButton}
-            buttonTextStyle={styles.switchInputModeButtonText}
-            onPress={() => setInScanQRMode(!inScanQRMode)}
-          />
-          <PrimaryText
-            size={26}
-            weight={FontWeight.Medium}
-            style={styles.instructions}>
-            Go to{' '}
-            <Link
-              style={styles.instructionsLink}
-              label="tornelo.com"
-              link={torneloUrl}
-            />{' '}
-            and either generate a QR code or manually edit the fields.
-          </PrimaryText>
-        </View>
+      <Sheet title="Edit event" dismiss={dismiss} visible={display}>
         {/* QR Code Entry */}
-        {inScanQRMode && (
+        {isQrMode && (
           <View style={styles.editEventSheetSection}>
             <QRCodeScanner
               onRead={handleQrCodeScanned}
@@ -157,9 +135,9 @@ const EditCurrentEvent: React.FC<EditCurrentEventParams> = ({
           </View>
         )}
         {/* Text Box Entry */}
-        {!inScanQRMode && (
+        {!isQrMode && (
           <ScrollView style={styles.editEventSheetSection}>
-            <KeyboardAvoidingView behavior="padding">
+            <KeyboardAvoidingView behavior="height">
               <View style={styles.informationAndInputBoxContainer}>
                 <View style={styles.inputBoxesContainer}>
                   {inputBoxesContent.map((inputBoxContent, key) => (
