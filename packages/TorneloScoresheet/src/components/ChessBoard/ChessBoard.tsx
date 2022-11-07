@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { TouchableOpacity } from 'react-native';
+import { useGeneralSettings } from '../../context/GeneralSettingsContext';
 import { colours, ColourType } from '../../style/colour';
 import {
   BoardPosition,
@@ -9,6 +10,7 @@ import {
   standardBoard,
 } from '../../types/ChessBoardPositions';
 import { MoveSquares } from '../../types/ChessMove';
+import { ChessBoardStyles } from '../../types/GeneralSettingsState';
 import { CHESS_SQUARE_SIZE } from '../ChessSquare/ChessSquare';
 import DragAndDropContextProvider from '../DragAndDrop/DragAndDropContext/DragAndDropContext';
 import Draggable from '../DragAndDrop/Draggable/Draggable';
@@ -50,7 +52,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
 }) => {
   const { onPositionPressed, clearSelectedPosition, selectedPosition } =
     useChessBoard(positions, onMove);
-
+  const [generalSettings] = useGeneralSettings();
   const highlightedMoveAndSelectedPosition = (highlightedMove ?? []).concat(
     selectedPosition ? [selectedPosition] : [],
   );
@@ -79,7 +81,15 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
     }
 
     const [col, row] = boardPositionToIndex(position);
-    return (col + row) % 2 === 0 ? colours.darkBlue : colours.lightBlue;
+    const darkColour =
+      generalSettings.chessBoardStyle === ChessBoardStyles.CLASSIC
+        ? colours.darkChessboardGrey
+        : colours.darkBlue;
+    const lightColour =
+      generalSettings.chessBoardStyle === ChessBoardStyles.CLASSIC
+        ? colours.lightChessboardGrey
+        : colours.lightBlue;
+    return (col + row) % 2 === 0 ? darkColour : lightColour;
   };
 
   const handleDrop = async (from: Position, to: Position): Promise<void> => {
