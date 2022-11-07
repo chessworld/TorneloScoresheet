@@ -2,13 +2,12 @@ import { useContext } from 'react';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
 import { AppModeStateContextType } from '../../context/AppModeStateContext';
 import { AppMode, ArbiterResultDisplayMode } from '../../types/AppModeState';
-import { PlayerColour } from '../../types/ChessGameInfo';
 import { ChessPly, PlyTypes } from '../../types/ChessMove';
 import { fail, Result, succ } from '../../types/Result';
 import {
   getStoredPairingList,
   getStoredRecordingModeData,
-  storeGameHistory,
+  removeLastStoredGame,
 } from '../../util/storage';
 
 type arbiterResultDisplayStateHookType = [
@@ -39,15 +38,6 @@ export const makeUseArbiterResultDisplayState =
     };
 
     const goBackToEnterPgn = async (): Promise<void> => {
-      // store signatures and pgn
-      storeGameHistory({
-        pgn: appModeState.result.gamePgn ?? '',
-        whiteSign: appModeState.result.signature[PlayerColour.White],
-        blackSign: appModeState.result.signature[PlayerColour.Black],
-        pairing: appModeState.pairing,
-        winner: appModeState.result.winner,
-      });
-
       // set mode to enter pgn
       setAppModeState({
         mode: AppMode.EnterPgn,
@@ -99,6 +89,10 @@ export const makeUseArbiterResultDisplayState =
           ),
           type: 'Graphical',
         });
+
+        // remove stored game from disk since we are now editing it again
+        removeLastStoredGame(appModeState.pairing);
+
         return succ('');
       } else {
         return fail(
