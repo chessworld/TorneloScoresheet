@@ -1,23 +1,36 @@
 import React from 'react';
 import { View } from 'react-native';
 import PlayerCard from '../../components/PlayerCard/PlayerCard';
+import PrimaryButton from '../../components/PrimaryButton/PrimaryButton';
 import PrimaryText, {
   FontWeight,
 } from '../../components/PrimaryText/PrimaryText';
 import { useArbiterResultDisplayState } from '../../context/AppModeStateContext';
+import { useError } from '../../context/ErrorContext';
 import { colours } from '../../style/colour';
+import { isError } from '../../types/Result';
 import { chessGameIdentifier } from '../../util/chessGameInfo';
 import { styles } from './style';
 
 const ArbiterResultDisplay: React.FC = () => {
   const arbiterResultDisplayState = useArbiterResultDisplayState();
   const arbiterResultDisplayMode = arbiterResultDisplayState?.[0];
-
+  const [, setError] = useError();
   const infoString = `Board ${
     arbiterResultDisplayMode?.pairing
       ? chessGameIdentifier(arbiterResultDisplayMode?.pairing)
       : '[Unknown Game]'
   }`;
+
+  const goBackToRecordingMode = async () => {
+    if (!arbiterResultDisplayState) {
+      return;
+    }
+    const result = await arbiterResultDisplayState[1].goBackToRecordingMode();
+    if (isError(result)) {
+      setError(result.error);
+    }
+  };
 
   return (
     <>
@@ -53,6 +66,13 @@ const ArbiterResultDisplay: React.FC = () => {
                   ? 1
                   : 0
               }
+            />
+          </View>
+          <View>
+            <PrimaryButton
+              label="Go back"
+              onPress={goBackToRecordingMode}
+              style={styles.emailButton}
             />
           </View>
         </View>
