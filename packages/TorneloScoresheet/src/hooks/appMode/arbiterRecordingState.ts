@@ -10,6 +10,7 @@ type ArbiterRecordingStateHookType = [
     goBackToEnterPgn: () => void;
     goBackToPairingSelection: () => void;
     goBackToTablePairing: () => void;
+    goToGameHistory: () => void;
   },
 ];
 
@@ -43,6 +44,11 @@ export const makeUseArbiterRecordingState =
       });
     };
 
+    const goToGameHistory = () => {
+      setAppModeState({
+        mode: AppMode.ViewPastGames,
+      });
+    };
     const goBackToPairingSelection = async () => {
       setAppModeState({
         mode: AppMode.PairingSelection,
@@ -57,6 +63,7 @@ export const makeUseArbiterRecordingState =
         goBackToEnterPgn,
         goBackToTablePairing,
         goBackToPairingSelection,
+        goToGameHistory,
       },
     ];
   };

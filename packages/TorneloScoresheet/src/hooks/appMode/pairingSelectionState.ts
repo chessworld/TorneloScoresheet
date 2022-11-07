@@ -7,6 +7,7 @@ type PairingSelectionStateHookType = [
   PairingSelectionMode,
   {
     goToEnterPgn: () => void;
+    goToGameHistory: () => void;
     goToTablePairing: (pairing: ChessGameInfo) => void;
   },
 ];
@@ -34,12 +35,17 @@ export const makeUsePairingSelectionState =
         pairing: pairing,
       });
     };
-
+    const goToGameHistory = () => {
+      setAppModeState({
+        mode: AppMode.ViewPastGames,
+      });
+    };
     return [
       appModeState,
       {
         goToEnterPgn,
         goToTablePairing,
+        goToGameHistory,
       },
     ];
   };
