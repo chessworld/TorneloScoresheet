@@ -24,6 +24,8 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   verifyButton: {
-    marginTop: 30,
+    alignSelf: 'center',
+    marginTop: 50,
+    width: 250,
   },
 });

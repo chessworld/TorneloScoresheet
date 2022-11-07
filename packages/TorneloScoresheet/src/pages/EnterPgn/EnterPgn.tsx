@@ -25,6 +25,7 @@ const EnterPgn: React.FC = () => {
   const appMode = state?.state;
 
   const [showEditEvent, setShowEditEvent] = useState(false);
+  const [isQrMode, setIdQrMode] = useState(true);
   const [arbiterInfo] = useArbiterInfo();
   const [, showError] = useError();
 
@@ -58,10 +59,11 @@ const EnterPgn: React.FC = () => {
               style={styles.title}
               size={38}
               weight={FontWeight.SemiBold}
-              label="Arbiter Mode"
+              label="Select active event"
             />
             <EditCurrentEvent
               display={showEditEvent}
+              isQrMode={isQrMode}
               dismiss={() => setShowEditEvent(false)}
             />
             {arbiterInfo !== null && (
@@ -69,7 +71,7 @@ const EnterPgn: React.FC = () => {
                 <PrimaryText
                   size={30}
                   weight={FontWeight.SemiBold}
-                  label="Current Event"
+                  label="Current event"
                 />
                 <PrimaryText
                   style={styles.currentEventTitle}
@@ -81,7 +83,7 @@ const EnterPgn: React.FC = () => {
                   style={styles.currentEventDesc}
                   size={20}
                   weight={FontWeight.SemiBold}
-                  label={`Arbiter Name: ${arbiterInfo.userName}`}
+                  label={`Arbiter name: ${arbiterInfo.userName}`}
                 />
                 <PrimaryText
                   style={styles.currentEventDesc}
@@ -89,12 +91,32 @@ const EnterPgn: React.FC = () => {
                   weight={FontWeight.SemiBold}
                   label={`Pin: ${arbiterInfo.pin}`}
                 />
-                <PrimaryButton
-                  style={styles.editEventButton}
-                  labelStyle={styles.editEventButtonLabel}
-                  onPress={() => setShowEditEvent(true)}
-                  label="Edit Event"
-                />
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly',
+                    width: 400,
+                  }}>
+                  <PrimaryButton
+                    style={styles.editEventButton}
+                    labelStyle={styles.editEventButtonLabel}
+                    onPress={() => {
+                      setIdQrMode(true);
+                      setShowEditEvent(true);
+                    }}
+                    label="New event"
+                  />
+                  <PrimaryButton
+                    style={styles.editEventButton}
+                    labelStyle={styles.editEventButtonLabel}
+                    onPress={() => {
+                      setIdQrMode(false);
+                      setShowEditEvent(true);
+                    }}
+                    label="Edit event"
+                  />
+                </View>
               </RoundedView>
             )}
             {arbiterInfo === null && (
@@ -114,7 +136,7 @@ const EnterPgn: React.FC = () => {
                   style={styles.editEventButton}
                   labelStyle={styles.editEventButtonLabel}
                   onPress={() => setShowEditEvent(true)}
-                  label="Set Event"
+                  label="New event"
                 />
               </RoundedView>
             )}
@@ -125,7 +147,7 @@ const EnterPgn: React.FC = () => {
                 style={styles.startButton}
                 labelStyle={styles.startButtonLabel}
                 onPress={handleNextClick}
-                label="Start"
+                label="Assign game"
                 loading={loading}
               />
             </View>

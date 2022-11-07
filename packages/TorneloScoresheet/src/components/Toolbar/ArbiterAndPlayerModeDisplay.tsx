@@ -91,16 +91,16 @@ const ArbiterAndPlayerModeDisplay: React.FC<
   return (
     <>
       <Sheet
-        title="Arbiter Mode"
+        title="Enter arbiter mode"
         dismiss={() => setShowArbiterSheet(false)}
         visible={showArbiterSheet}>
         <PrimaryText
           style={styles.enterPinText}
           size={40}
           weight={FontWeight.Bold}
-          label={'Enter Pin'}
+          label={'Enter pin'}
         />
-        <Pin onPress={handleArbiterVerify} buttonText="submit" />
+        <Pin onPress={handleArbiterVerify} buttonText="Submit" />
       </Sheet>
       {arbiterModeLockDisplay() === 'Player' && (
         <IconButton

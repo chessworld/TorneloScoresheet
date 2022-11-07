@@ -70,7 +70,7 @@ const ArbiterResultDisplay: React.FC = () => {
           </View>
           <View>
             <PrimaryButton
-              label="Go back"
+              label="Back to game"
               onPress={goBackToRecordingMode}
               style={styles.emailButton}
             />

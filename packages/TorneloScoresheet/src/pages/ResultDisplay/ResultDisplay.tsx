@@ -42,12 +42,12 @@ const ResultDisplay: React.FC = () => {
     );
     if (isError(result)) {
       showError(result.error);
-      setEmailButtonText('Email Game');
+      setEmailButtonText('Email game');
       setEmailSending(false);
       return;
     }
 
-    setEmailButtonText('Email Game Again');
+    setEmailButtonText('Email game again');
     setEmailSending(false);
   };
 

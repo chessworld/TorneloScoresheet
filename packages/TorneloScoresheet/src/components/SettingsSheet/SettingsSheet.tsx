@@ -50,12 +50,12 @@ const SettingsSheet: React.FC<SettingsSheetProps> = ({ visible, onCancel }) => {
   }, [generalSettings]);
 
   return (
-    <Sheet visible={visible} dismiss={onCancel} title="General Settings">
+    <Sheet visible={visible} dismiss={onCancel} title="General settings">
       <View style={styles.informationAndInputBoxContainer}>
         {/* Chess Piece Style */}
         <View style={styles.inputBoxesContainer}>
           <PrimaryText
-            label="Chess Piece Style"
+            label="Chess piece style"
             style={styles.settingText}
             weight={FontWeight.SemiBold}
           />
@@ -76,7 +76,7 @@ const SettingsSheet: React.FC<SettingsSheetProps> = ({ visible, onCancel }) => {
         {/* Chess Board Style */}
         <View style={styles.inputBoxesContainer}>
           <PrimaryText
-            label="Chess Board Colour"
+            label="Chess board Colour"
             style={styles.settingText}
             weight={FontWeight.SemiBold}
           />
@@ -94,7 +94,7 @@ const SettingsSheet: React.FC<SettingsSheetProps> = ({ visible, onCancel }) => {
         </View>
 
         <PrimaryButton
-          label="save"
+          label="Save"
           onPress={saveSettings}
           style={styles.saveButton}
           labelStyle={styles.buttonText}

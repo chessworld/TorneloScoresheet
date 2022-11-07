@@ -51,9 +51,9 @@ const Signature: React.FC<SignatureProps> = ({
           style={styles.messageText}
           weight={FontWeight.Bold}
           size={40}
-          colour={colours.darkenedElements}>
-          {'Confirm Result'}
-        </PrimaryText>
+          colour={colours.darkenedElements}
+          label="Confirm result"
+        />
         <View style={styles.resultArea}>
           <View style={styles.resultAreaColumn}>
             <PrimaryText

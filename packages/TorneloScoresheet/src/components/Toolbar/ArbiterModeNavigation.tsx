@@ -58,7 +58,7 @@ const ArbiterModeNavigation: React.FC = () => {
         setShowConfirmExitGame(false);
         resolveExitGame.current?.(true);
       },
-      style: { width: 250 },
+      style: { width: 300 },
     },
     {
       text: 'cancel',
@@ -66,7 +66,7 @@ const ArbiterModeNavigation: React.FC = () => {
         setShowConfirmExitGame(false);
         resolveExitGame.current?.(false);
       },
-      style: { width: 250 },
+      style: { width: 300 },
     },
   ];
 
@@ -220,13 +220,13 @@ const ArbiterModeNavigation: React.FC = () => {
   return (
     <>
       <OptionSheet
-        message="Exiting the game will result in all recorded data being lost!"
+        message="Exiting the game will result in all recorded moves being lost!"
         visible={showConfirmExitGame}
         options={exitGameConfirmOptions}
         onCancel={() => setShowConfirmExitGame(false)}
       />
       <OptionSheet
-        message="Change App Mode"
+        message="Arbiter navigation"
         visible={showNavigationSheet}
         options={arbiterNavigationOptions[appModeState.mode]}
         onCancel={() => setShowNavigationSheet(false)}

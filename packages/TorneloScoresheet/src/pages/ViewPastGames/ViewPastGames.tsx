@@ -93,13 +93,13 @@ const ViewPastGames: React.FC = () => {
           <PrimaryText
             size={50}
             weight={FontWeight.SemiBold}
-            label="Past Games"
+            label="Game history"
           />
         </View>
         <PrimaryText
           style={styles.explanationText}
           size={24}
-          label="These are past games that were recorded on this device."
+          label="View or email games recorded on this device"
         />
         {viewModel.pastGames.length === 0 ? (
           <View style={styles.emptyHistoryList}>

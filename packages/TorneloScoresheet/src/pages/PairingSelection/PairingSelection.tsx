@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, RefreshControl, View } from 'react-native';
 import { ChessGameInfo } from '../../types/ChessGameInfo';
 import { styles } from './style';
 import { usePairingSelectionState } from '../../context/AppModeStateContext';
@@ -9,11 +9,14 @@ import PrimaryText, {
 import BoardPairing from '../../components/BoardPairing/BoardPairing';
 import OptionSheet from '../../components/OptionSheet/OptionSheet';
 import { chessGameIdentifier } from '../../util/chessGameInfo';
+import { isError } from '../../types/Result';
+import { useError } from '../../context/ErrorContext';
 
 const PairingSelection: React.FC = () => {
   const [showConfirm, setShowConfirm] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [selectedPairing, setSelected] = useState<ChessGameInfo | null>(null);
-
+  const [, setError] = useError();
   const pairingSelectionState = usePairingSelectionState();
   const pairingSelectionMode = pairingSelectionState?.[0];
   const goToTablePairing = pairingSelectionState?.[1]?.goToTablePairing;
@@ -23,6 +26,17 @@ const PairingSelection: React.FC = () => {
     setShowConfirm(true);
   };
 
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    if (!pairingSelectionState) {
+      return;
+    }
+    const result = await pairingSelectionState[1].refreshPairings();
+    if (isError(result)) {
+      setError(result.error);
+    }
+    setRefreshing(false);
+  };
   const handleConfirm = () => {
     if (!goToTablePairing || !selectedPairing) {
       return;
@@ -56,7 +70,7 @@ const PairingSelection: React.FC = () => {
             <PrimaryText
               size={50}
               weight={FontWeight.SemiBold}
-              label="Boards"
+              label="Assign game"
             />
             <View style={styles.noConfirmButton} />
           </View>
@@ -64,10 +78,16 @@ const PairingSelection: React.FC = () => {
           <PrimaryText
             style={styles.explanationText}
             size={24}
-            label="Select the board that this iPad is assigned to. This can be changed later."
+            label="Select the board that this scoresheet is assigned to"
           />
           <FlatList
             scrollEnabled={true}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
+              />
+            }
             data={pairingSelectionMode.pairings}
             renderItem={({ item }) => (
               <BoardPairing

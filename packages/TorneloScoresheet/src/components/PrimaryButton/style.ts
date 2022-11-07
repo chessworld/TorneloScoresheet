@@ -13,8 +13,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  buttonLabel: {
-    textTransform: 'uppercase',
-  },
+  buttonLabel: {},
   loadingIndicator: { position: 'absolute', top: '50%', zIndex: 2 },
 });
