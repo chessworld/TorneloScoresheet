@@ -11,7 +11,7 @@ import {
   SkipPly,
 } from '../../types/ChessMove';
 import { Result, succ, fail, isError } from '../../types/Result';
-import { storeRecordingModeData } from '../../util/storage';
+import { storeGameHistory, storeRecordingModeData } from '../../util/storage';
 import { MoveLegality } from '../../types/MoveLegality';
 import { AppModeStateContextType } from '../../context/AppModeStateContext';
 import { getCurrentFen } from '../../util/moveHistory';
@@ -67,6 +67,15 @@ export const makeUseRecordingState =
         moveHistory: appModeState.moveHistory,
         currentPlayer: appModeState.currentPlayer,
         startTime: appModeState.startTime,
+      });
+
+      // store signatures and pgn to disk
+      storeGameHistory({
+        pgn: result.gamePgn ?? '',
+        whiteSign: result.signature[PlayerColour.White],
+        blackSign: result.signature[PlayerColour.Black],
+        pairing: appModeState.pairing,
+        winner: result.winner,
       });
 
       // set state to results display
