@@ -323,7 +323,7 @@ const moveTransition = (
   );
 
   if (!moveResult) {
-    return fail('Illegal move');
+    return fail('Illegal move. Call the Arbiter!');
   }
 
   const [moveFEN, moveSAN] = moveResult;
@@ -380,7 +380,7 @@ const skipPlayerTurnTransition = (
       5,
     )
   ) {
-    return fail('Illegal Move');
+    return fail('Illegal Move. Call the Arbiter!');
   }
 
   const nextPly: SkipPly = {
