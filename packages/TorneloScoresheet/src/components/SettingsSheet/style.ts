@@ -17,6 +17,8 @@ export const styles = StyleSheet.create({
     fontSize: 25,
     fontFamily: primary,
     fontWeight: FontWeight.SemiBold,
+    minWidth: 220,
+    zIndex: 10,
   },
   buttonText: {
     fontSize: 25,
@@ -25,6 +27,9 @@ export const styles = StyleSheet.create({
     minWidth: 200,
     height: 70,
     marginTop: 50,
+  },
+  dropDownLabel: {
+    zIndex: 10,
   },
   inputBoxesContainer: {
     display: 'flex',
