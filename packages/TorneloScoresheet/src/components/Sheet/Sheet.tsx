@@ -30,7 +30,7 @@ const Sheet: React.FC<SheetProps> = ({ visible, children, dismiss, title }) => {
               <PrimaryText size={30} weight={FontWeight.Bold} label={title} />
             </View>
             {dismiss && (
-              <View style={{ flexGrow: 1, marginLeft: 20 }}>
+              <View style={styles.dismissButton}>
                 <IconButton
                   style={styles.exitButton}
                   icon="cancel"

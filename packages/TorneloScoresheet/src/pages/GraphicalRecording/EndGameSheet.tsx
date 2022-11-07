@@ -192,6 +192,7 @@ const EndGameSheet: React.FC<EndGameSheetProps> = ({ show, dismiss }) => {
           visible={showSignature}
           onCancel={() => {
             cancelSelection();
+            setShowSignature(false);
             dismiss();
           }}
           winnerName={(selectedWinner && fullName(selectedWinner)) ?? null}
