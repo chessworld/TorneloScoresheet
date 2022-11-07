@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import React, { useContext } from 'react';
 import { chessEngine } from '../../chessEngine/chessEngineInterface';
 import { AppModeStateContextType } from '../../context/AppModeStateContext';
+import { useArbiterInfo } from '../../context/ArbiterInfoContext';
 import { AppModeState, AppMode, EnterPgnMode } from '../../types/AppModeState';
 import { ChessGameInfo } from '../../types/ChessGameInfo';
 import { isError, Result, succ, Success, fail } from '../../types/Result';
@@ -13,12 +14,13 @@ import { validUrl } from '../../util/url';
  * From EnterPgn -> PairingSelection
  * This transition involves fetching a PGN from a Tornello URL
  */
-const makegoToTablePairingSelection =
+export const makegoToTablePairingSelection =
   (
     setAppMode: React.Dispatch<React.SetStateAction<AppModeState>>,
-  ): ((liveLinkUrl: string) => Promise<Result<undefined>>) =>
-  async (liveLinkUrl: string) => {
-    if (!validUrl(liveLinkUrl)) {
+    pgnUrl: string,
+  ): (() => Promise<Result<undefined>>) =>
+  async () => {
+    if (!validUrl(pgnUrl)) {
       return fail(
         'Invalid URL, please provide a valid Live Broadcast PGN link from the Tornelo website',
       );
@@ -26,9 +28,7 @@ const makegoToTablePairingSelection =
     // fetch pgn from api
     const resultOrErr: Result<AxiosResponse> = await (async () => {
       try {
-        return succ(
-          await axios.get(liveLinkUrl, { validateStatus: () => true }),
-        );
+        return succ(await axios.get(pgnUrl, { validateStatus: () => true }));
       } catch (e) {
         return fail('Network error, please check your internet connection');
       }
@@ -100,7 +100,7 @@ const splitRoundIntoMultiplePgn = (roundPgns: string): string[] => {
  */
 type EnterPgnStateHookType = {
   state: EnterPgnMode;
-  goToPairingSelection: (liveLinkUrl: string) => Promise<Result<undefined>>;
+  goToPairingSelection: () => Promise<Result<undefined>>;
   viewPastGames: () => void;
 };
 
@@ -108,6 +108,7 @@ export const makeUseEnterPgnState =
   (context: AppModeStateContextType): (() => EnterPgnStateHookType | null) =>
   () => {
     const [appModeState, setAppModeState] = useContext(context);
+    const [arbiterInfo] = useArbiterInfo();
     if (appModeState.mode !== AppMode.EnterPgn) {
       return null;
     }
@@ -119,7 +120,10 @@ export const makeUseEnterPgnState =
         return { mode: AppMode.ViewPastGames };
       });
 
-    const goToPairingSelection = makegoToTablePairingSelection(setAppModeState);
+    const goToPairingSelection = makegoToTablePairingSelection(
+      setAppModeState,
+      arbiterInfo?.broadcastUrl ?? '',
+    );
 
     return {
       goToPairingSelection,
