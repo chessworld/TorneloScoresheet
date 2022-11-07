@@ -35,7 +35,7 @@ const EnterPgn: React.FC = () => {
       return;
     }
 
-    const result = await goToPairingSelection(arbiterInfo.broadcastUrl);
+    const result = await goToPairingSelection();
 
     if (isError(result)) {
       showError(result.error);
