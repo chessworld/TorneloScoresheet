@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, View } from 'react-native';
 
 import { styles } from './style';
@@ -11,13 +11,9 @@ import { ScrollView } from 'react-native-gesture-handler';
 import PrimaryText, {
   FontWeight,
 } from '../../components/PrimaryText/PrimaryText';
-import Link from '../../components/Link/Link';
-import { torneloUrl } from '../../util/env';
 import { ArbiterInfo } from '../../types/ArbiterInfoState';
 import { useError } from '../../context/ErrorContext';
 import { validUrl } from '../../util/url';
-import TextIconButton from '../../components/TextIconButton/TextIconButton';
-import { ICON_QR, ICON_TEXT } from '../../style/images';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { BarCodeReadEvent } from 'react-native-camera';
 
@@ -43,6 +39,16 @@ const EditCurrentEvent: React.FC<EditCurrentEventParams> = ({
   const [arbiterId, setArbiterId] = useState(arbiterInfo?.userId ?? '');
   const [eventName, setEventName] = useState(arbiterInfo?.eventName ?? '');
   const [arbiterName, setArbiterName] = useState(arbiterInfo?.userName ?? '');
+
+  useEffect(() => {
+    setArbiterPin(arbiterInfo?.pin ?? '');
+    setPgnUrl(arbiterInfo?.broadcastUrl ?? '');
+    setArbiterEmailSecret(arbiterInfo?.arbiterToken ?? '');
+    setDivisionId(arbiterInfo?.divisionId ?? '');
+    setArbiterId(arbiterInfo?.userId ?? '');
+    setArbiterName(arbiterInfo?.userName ?? '');
+    setEventName(arbiterInfo?.eventName ?? '');
+  }, [arbiterInfo]);
 
   const inputBoxesContent: [
     string,
