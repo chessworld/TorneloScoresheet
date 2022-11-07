@@ -35,8 +35,11 @@ const LockAppOnExit = ({ children }: LockAppOnExitProps) => {
 
   return (
     <View>
-      <Sheet visible={locked} title="App Locked">
-        <Pin onPress={() => setLocked(false)} />
+      <Sheet visible={locked} title="App locked - call arbiter">
+        <Pin
+          onPress={() => setLocked(false)}
+          buttonText="Return to Game mode"
+        />
       </Sheet>
       {children}
     </View>

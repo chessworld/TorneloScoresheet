@@ -97,7 +97,7 @@ const ArbiterAndPlayerModeDisplay: React.FC<
           weight={FontWeight.Bold}
           label={'Enter Pin'}
         />
-        <Pin onPress={handleArbiterVerify} />
+        <Pin onPress={handleArbiterVerify} buttonText="submit" />
       </Sheet>
       {arbiterModeLockDisplay() === 'Player' && (
         <IconButton

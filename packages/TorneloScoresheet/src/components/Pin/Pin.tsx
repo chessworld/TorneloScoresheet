@@ -18,9 +18,10 @@ const CELL_COUNT = 4;
 
 export type PinProps = {
   onPress: () => void;
+  buttonText: string;
 };
 
-const Pin: React.FC<PinProps> = ({ onPress }) => {
+const Pin: React.FC<PinProps> = ({ onPress, buttonText }) => {
   const [value, setValue] = useState('');
   const [resetPin, setResetPin] = useState(0);
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
@@ -94,7 +95,7 @@ const Pin: React.FC<PinProps> = ({ onPress }) => {
             setResetPin(resetPin + 1);
           }
         }}
-        label="Enter Arbiter Mode"
+        label={buttonText}
       />
     </View>
   );
