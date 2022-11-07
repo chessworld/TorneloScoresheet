@@ -13,13 +13,14 @@ import { useError } from '../../context/ErrorContext';
 import { useArbiterInfo } from '../../context/ArbiterInfoContext';
 import { emailGameResults } from '../../util/emailUtils';
 import { isError } from '../../types/Result';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const ViewPastGames: React.FC = () => {
   const viewModel = useViewPastGames();
   const [emailSending, setEmailSending] = useState(false);
   const [, showError] = useError();
   const [arbiterInfo] = useArbiterInfo();
-
+  const [emailButtonText, setEmailButtonText] = useState('Email Game');
   const handleEmailGame = async (): Promise<void> => {
     if (!viewModel || !viewModel.selectedGame) {
       return;
@@ -38,9 +39,14 @@ const ViewPastGames: React.FC = () => {
       viewModel.selectedGame.pgn,
     );
     if (isError(result)) {
+      setEmailButtonText('Email game');
+      viewModel.deselectGame();
       showError(result.error);
+      setEmailSending(false);
+      return;
     }
 
+    setEmailButtonText('Email game again');
     setEmailSending(false);
   };
 
@@ -54,31 +60,33 @@ const ViewPastGames: React.FC = () => {
             title={`Board ${chessGameIdentifier(
               viewModel.selectedGame.pairing,
             )}`}>
-            <PrimaryText size={30} label={viewModel.selectedGame.pgn} />
-            <View style={styles.signatureBox}>
-              <Image
-                style={styles.signature}
-                resizeMode={'contain'}
-                source={{
-                  uri: viewModel.selectedGame.whiteSign,
-                }}
-              />
-              <Image
-                style={styles.signature}
-                source={{
-                  uri: viewModel.selectedGame.blackSign,
-                }}
-                resizeMode={'contain'}
-              />
-            </View>
-            <View>
-              <PrimaryButton
-                label="Email Game"
-                onPress={handleEmailGame}
-                style={styles.emailButton}
-                loading={emailSending}
-              />
-            </View>
+            <ScrollView style={styles.gameSheetContainer}>
+              <PrimaryText size={30} label={viewModel.selectedGame.pgn} />
+              <View style={styles.signatureBox}>
+                <Image
+                  style={styles.signature}
+                  resizeMode={'contain'}
+                  source={{
+                    uri: viewModel.selectedGame.whiteSign,
+                  }}
+                />
+                <Image
+                  style={styles.signature}
+                  source={{
+                    uri: viewModel.selectedGame.blackSign,
+                  }}
+                  resizeMode={'contain'}
+                />
+              </View>
+              <View>
+                <PrimaryButton
+                  label={emailButtonText}
+                  onPress={handleEmailGame}
+                  style={styles.emailButton}
+                  loading={emailSending}
+                />
+              </View>
+            </ScrollView>
           </Sheet>
         )}
         <View style={styles.headerRow}>

@@ -14,9 +14,12 @@ export const styles = StyleSheet.create({
     width: 300,
   },
   emailButton: {
-    width: 280,
+    width: 300,
     alignSelf: 'center',
     marginVertical: 30,
+  },
+  gameSheetContainer: {
+    maxHeight: 600,
   },
   signatureBox: {
     marginVertical: 50,
