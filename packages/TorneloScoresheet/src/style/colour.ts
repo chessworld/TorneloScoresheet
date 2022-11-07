@@ -23,6 +23,8 @@ export const colours = {
   darkGrey: '#323232' as const,
   // Chess Board Colours
   darkBlue: '#A2CEE3' as const,
+  darkChessboardGrey: '#ABABAB' as const,
+  lightChessboardGrey: '#DCDCDC' as const,
   lightBlue: '#E3ECF3' as const,
   lightGreen: 'rgba(5, 168, 111, 0.5)' as const,
   lightOrange: 'rgba(166, 101, 31, 0.5)' as const,
@@ -43,6 +45,7 @@ export const statusBarStyleForColor = (colour: ColourType): StatusBarStyle => {
     case colours.grey:
     case colours.grey10:
     case colours.darkGrey:
+    case colours.darkChessboardGrey:
       return 'light-content';
     case colours.primary20:
     case colours.secondary40:
@@ -54,6 +57,7 @@ export const statusBarStyleForColor = (colour: ColourType): StatusBarStyle => {
     case colours.lightGreen:
     case colours.lightYellow:
     case colours.darkBlue:
+    case colours.lightChessboardGrey:
       return 'dark-content';
   }
 };
@@ -80,6 +84,7 @@ export const textColour = (colour: ColourType): string => {
     case colours.lightOrange:
     case colours.grey10:
     case colours.darkGrey:
+    case colours.darkChessboardGrey:
       return 'white';
     case colours.secondary70:
     case colours.primary20:
@@ -88,6 +93,7 @@ export const textColour = (colour: ColourType): string => {
     case colours.white:
     case colours.primary20:
     case colours.lightYellow:
+    case colours.lightChessboardGrey:
       return 'black';
   }
 };
