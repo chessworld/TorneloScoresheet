@@ -17,7 +17,6 @@ export const TORNELO_QUEEN = TORNELO_QUEEN_ASSET;
 export const TORNELO_KING = TORNELO_KING_ASSET;
 
 import CLASSIC_KNIGHT_ASSET from '../../assets/images/chessPieces/black_knight.svg';
-
 import CLASSIC_BISHOP_ASSET from '../../assets/images/chessPieces/black_bishop.svg';
 import CLASSIC_PAWN_ASSET from '../../assets/images/chessPieces/black_pawn.svg';
 import CLASSIC_ROOK_ASSET from '../../assets/images/chessPieces/black_rook.svg';
@@ -43,6 +42,11 @@ import ICON_CLOCK_ASSET from '../../assets/images/buttonIcons/icon_clock.svg';
 import ICON_GEAR_ASSET from '../../assets/images/buttonIcons/icon_gear.svg';
 import ICON_QR_ASSET from '../../assets/images/buttonIcons/icon_qr.svg';
 import ICON_TEXT_ASSET from '../../assets/images/buttonIcons/icon_text.svg';
+import ICON_CHESS_ASSET from '../../assets/images/buttonIcons/icon_chess.svg';
+import ICON_CHESS_BOARD_ASSET from '../../assets/images/buttonIcons/icon_chess_board.svg';
+import ICON_CABINET_FILING_ASSET from '../../assets/images/buttonIcons/icon_cabinet_filing.svg';
+import ICON_CALENDAR_ASSET from '../../assets/images/buttonIcons/icon_calendar.svg';
+import ICON_LOCK_ASSET from '../../assets/images/buttonIcons/icon_lock.svg';
 
 export const ICON_FLIP = ICON_FLIP_ASSET;
 export const ICON_SKIP = ICON_SKIP_ASSET;
@@ -55,3 +59,8 @@ export const ICON_CLOCK = ICON_CLOCK_ASSET;
 export const ICON_GEAR = ICON_GEAR_ASSET;
 export const ICON_QR = ICON_QR_ASSET;
 export const ICON_TEXT = ICON_TEXT_ASSET;
+export const ICON_CHESS = ICON_CHESS_ASSET;
+export const ICON_CHESS_BOARD = ICON_CHESS_BOARD_ASSET;
+export const ICON_CALENDAR = ICON_CALENDAR_ASSET;
+export const ICON_CABINET_FILING = ICON_CABINET_FILING_ASSET;
+export const ICON_LOCK = ICON_LOCK_ASSET;
