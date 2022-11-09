@@ -8,9 +8,17 @@ import {
   useArbiterTablePairingState,
   useEnterPgnState,
   usePairingSelectionState,
+  useToolbar,
   useViewPastGames,
 } from '../../context/AppModeStateContext';
-import { ICON_CLOCK } from '../../style/images';
+import { colours } from '../../style/colour';
+import {
+  ICON_CABINET_FILING,
+  ICON_CALENDAR,
+  ICON_CHESS,
+  ICON_CHESS_BOARD,
+  ICON_CLOCK,
+} from '../../style/images';
 import { AppMode } from '../../types/AppModeState';
 import IconButton from '../IconButton/IconButton';
 import OptionSheet, { Option } from '../OptionSheet/OptionSheet';
@@ -18,6 +26,7 @@ import { styles } from './style';
 
 const ArbiterModeNavigation: React.FC = () => {
   const appModeState = useAppModeState();
+  const viewModel = useToolbar();
 
   // when navigating out of recording mode, data will be lost.
   // the arbiter must be made aware of this.
@@ -61,7 +70,7 @@ const ArbiterModeNavigation: React.FC = () => {
     },
   ];
 
-  // determines if the navigation button should be shown for this app mode
+  // determines if the navigation button should be enabled for this app mode
   const appModeArbiterNavigation: Record<AppMode, boolean> = {
     // show arbiter navigation button
     [AppMode.ArbiterRecording]: true,
@@ -129,15 +138,22 @@ const ArbiterModeNavigation: React.FC = () => {
     return [
       makeNavigationOption(
         'Select active event',
-        ICON_CLOCK,
+        ICON_CALENDAR,
         activeEventTransition,
       ),
-      makeNavigationOption('Assign new game', ICON_CLOCK, assignGameTransition),
-      // TODO: Clarify with david what 'go to active game' is supposed to do
-      makeNavigationOption('Go to active game', ICON_CLOCK, null),
+
+      makeNavigationOption(
+        'Assign new game',
+        ICON_CHESS_BOARD,
+        assignGameTransition,
+      ),
+
+      // TODO: For now, this option will always be disabled, will be implemented in the future
+      makeNavigationOption('Go to active game', ICON_CHESS, null),
+
       makeNavigationOption(
         'View game history',
-        ICON_CLOCK,
+        ICON_CABINET_FILING,
         viewHistoryTransition,
       ),
     ];
@@ -216,16 +232,15 @@ const ArbiterModeNavigation: React.FC = () => {
         onCancel={() => setShowNavigationSheet(false)}
       />
 
-      {appModeArbiterNavigation[appModeState.mode] && (
-        <View style={styles.backArrow}>
-          <IconButton
-            icon="menu"
-            label=""
-            onPress={() => setShowNavigationSheet(true)}
-            colour="black"
-          />
-        </View>
-      )}
+      <View style={styles.backArrow}>
+        <IconButton
+          icon="menu"
+          label=""
+          onPress={() => setShowNavigationSheet(true)}
+          colour={viewModel?.currentTextColour ?? 'black'}
+          disabled={!appModeArbiterNavigation[appModeState.mode]}
+        />
+      </View>
     </>
   );
 };

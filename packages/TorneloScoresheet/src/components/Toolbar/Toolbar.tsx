@@ -52,13 +52,13 @@ const Toolbar: React.FC = () => {
             backgroundColorStyle(viewModel.currentColour),
           ]}>
           <View style={styles.arbiterLock}>
-            <ArbiterModeNavigation />
-
+            <View style={styles.navMenu}>
+              <ArbiterModeNavigation />
+            </View>
             <ArbiterAndPlayerModeDisplay
               currentTextColour={viewModel.currentTextColour}
             />
           </View>
-
           <View style={styles.logo}>
             <Image
               style={styles.logoImage}
@@ -68,21 +68,6 @@ const Toolbar: React.FC = () => {
                   : WHITE_LOGO_IMAGE
               }
             />
-            <PrimaryText
-              colour={viewModel.currentTextColour}
-              size={34}
-              weight={FontWeight.Bold}
-              label="Tornelo"
-              style={styles.logoTitle}
-            />
-            <View style={styles.versionContainer}>
-              <PrimaryText
-                weight={FontWeight.Bold}
-                label={`(v${packageJson.version})`}
-                size={16}
-                colour={viewModel.currentTextColour}
-              />
-            </View>
           </View>
           <View style={styles.settingsHelpContainer}>
             {currentAppMode === AppMode.Recording && (

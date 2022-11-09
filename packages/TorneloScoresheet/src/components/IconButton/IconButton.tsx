@@ -17,6 +17,7 @@ type IconButtonProps = {
   style?: StyleProp<TextStyle>;
   size?: number;
   label?: string;
+  disabled?: boolean;
 };
 
 const IconButton: React.FC<IconButtonProps> = ({
@@ -26,11 +27,13 @@ const IconButton: React.FC<IconButtonProps> = ({
   style,
   size,
   label,
+  disabled,
 }) => {
   return (
     <TouchableOpacity
-      style={styles.container}
+      style={(styles.container, { opacity: !(disabled ?? false) ? 1 : 0.5 })}
       activeOpacity={0.8}
+      disabled={disabled}
       onPress={onPress}>
       <Icon style={style} size={size ?? 40} color={colour} name={icon} />
       {label ? (
