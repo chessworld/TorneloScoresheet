@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
     backgroundColor: colours.primary,
     marginVertical: 10,
     borderRadius: 16,
+    height: 60,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',

@@ -36,7 +36,7 @@ const OptionSheet: React.FC<OptionSheetProps> = ({
             <TextIconButton
               Icon={option.icon}
               text={option.text}
-              buttonHeight={option.iconHeight ?? 40}
+              buttonHeight={option.iconHeight ?? 60}
               onPress={option.onPress}
               key={'button-' + i.toString()}
               buttonTextStyle={[

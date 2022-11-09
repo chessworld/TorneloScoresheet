@@ -39,31 +39,30 @@ const TextIconButton: React.FC<TextIconButtonProps> = ({
           <TouchableOpacity onPress={onPress}>{children}</TouchableOpacity>
         );
       }}>
-      <RoundedView style={styles.button} {...touchableOpacityProps}>
-        <RoundedView
-          style={[
-            styles.buttonContainer,
-            { height: buttonHeight && buttonHeight + 30 },
-            { opacity: disabled ? 0.5 : 1 },
-          ]}>
-          <View style={styles.buttonInnerContainer}>
-            {Icon && (
-              <Icon
-                fill={colours.white}
-                stroke={colours.white}
-                height={buttonHeight}
-                width={buttonHeight}
-                style={styles.buttonIcon}
-              />
-            )}
+      <RoundedView
+        style={[
+          styles.button,
+          { height: buttonHeight && buttonHeight + 30 },
+          { opacity: disabled ? 0.5 : 1 },
+        ]}
+        {...touchableOpacityProps}>
+        <View style={styles.buttonInnerContainer}>
+          {Icon && (
+            <Icon
+              fill={colours.white}
+              stroke={colours.white}
+              height={buttonHeight}
+              width={buttonHeight}
+              style={styles.buttonIcon}
+            />
+          )}
 
-            {text && (
-              <PrimaryText style={[styles.buttonText, buttonTextStyle]}>
-                {text}
-              </PrimaryText>
-            )}
-          </View>
-        </RoundedView>
+          {text && (
+            <PrimaryText style={[styles.buttonText, buttonTextStyle]}>
+              {text}
+            </PrimaryText>
+          )}
+        </View>
       </RoundedView>
     </ConditionalWrapper>
   );
