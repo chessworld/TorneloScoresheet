@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { pageWidth } from '../../util/pageSize';
+import { FontWeight } from '../PrimaryText/PrimaryText';
 import {
   BOTTOM_PADDING,
   TOP_PADDING,
@@ -26,20 +27,27 @@ export const styles = StyleSheet.create({
   settingsButton: {
     marginRight: 20,
   },
+  navMenu: {
+    alignSelf: 'flex-end',
+  },
   logo: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
     position: 'absolute',
-    left: 0.5 * pageWidth - 100,
+    left: 0.5 * pageWidth,
     bottom: 18,
+  },
+  goToGameModeButton: {
+    fontSize: 18,
+    fontWeight: FontWeight.Bold,
   },
   logoImage: {
     width: 40,
     height: LOGO_HEIGHT,
-    marginRight: 24,
-    marginLeft: -24,
+    marginRight: 20,
+    marginLeft: -20,
   },
   placeHolderButton: {
     height: 40,
