@@ -10,11 +10,7 @@ import PrimaryText, {
 import { colours } from '../../style/colour';
 import { chessGameIdentifier } from '../../util/chessGameInfo';
 import OptionSheet from '../../components/OptionSheet/OptionSheet';
-import { fullName } from '../../util/player';
-
-const playerColourAsIndex = (player: PlayerColour) => {
-  return player === PlayerColour.White ? 0 : 1;
-};
+import { fullName, playerColourAsIndex } from '../../util/player';
 
 const TablePairing: React.FC = () => {
   const tablePairingState = useTablePairingState();
