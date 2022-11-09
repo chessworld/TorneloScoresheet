@@ -258,7 +258,8 @@ const GraphicalRecording: React.FC = () => {
           <ScrollView
             ref={scrollRef}
             horizontal
-            style={styles.moveCardContainer}>
+            style={styles.moveCardContainer}
+            contentContainerStyle={styles.moveCardContentContainer}>
             {plysToMoves(recordingMode.moveHistory).map((move, index) => (
               <MoveCard
                 key={index}

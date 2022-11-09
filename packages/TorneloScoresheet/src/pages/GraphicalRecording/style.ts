@@ -6,6 +6,9 @@ export const styles = StyleSheet.create({
     display: 'flex',
     height: pageHeight,
   },
+  moveCardContentContainer: {
+    flexGrow: 1,
+  },
   verticalSeparator: {
     borderLeftColor: 'black',
     borderLeftWidth: 1,
