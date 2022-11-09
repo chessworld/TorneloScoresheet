@@ -40,13 +40,13 @@ const TextIconButton: React.FC<TextIconButtonProps> = ({
         );
       }}>
       <RoundedView
-        style={[
-          styles.button,
-          { height: buttonHeight && buttonHeight + 30 },
-          { opacity: disabled ? 0.5 : 1 },
-        ]}
+        style={[styles.button, { height: buttonHeight && buttonHeight + 30 }]}
         {...touchableOpacityProps}>
-        <View style={styles.buttonInnerContainer}>
+        <View
+          style={[
+            styles.buttonInnerContainer,
+            { opacity: !(disabled ?? false) ? 1 : 0.5 },
+          ]}>
           {Icon && (
             <Icon
               fill={colours.white}
