@@ -114,9 +114,9 @@ const ArbiterAndPlayerModeDisplay: React.FC<
           Icon={ICON_LOCK}
           text="Game mode"
           onPress={handlePlayerPress}
-          style={{ width: 160, backgroundColor: colours.primary }}
+          style={styles.goToGameModeButton}
           buttonHeight={18}
-          buttonTextStyle={styles.goToGameModeButton}
+          buttonTextStyle={styles.goToGameModeButtonText}
         />
       )}
     </>

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { colours } from '../../style/colour';
 import { pageWidth } from '../../util/pageSize';
 import { FontWeight } from '../PrimaryText/PrimaryText';
 import {
@@ -39,9 +40,13 @@ export const styles = StyleSheet.create({
     left: 0.5 * pageWidth,
     bottom: 18,
   },
-  goToGameModeButton: {
+  goToGameModeButtonText: {
     fontSize: 18,
     fontWeight: FontWeight.Bold,
+  },
+  goToGameModeButton: {
+    width: 180,
+    backgroundColor: colours.primary,
   },
   logoImage: {
     width: 40,

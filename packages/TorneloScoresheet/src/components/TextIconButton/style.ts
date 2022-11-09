@@ -10,12 +10,15 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     textAlign: 'center',
   },
-  buttonContainer: {
+  button: {
     alignItems: 'center',
     alignContent: 'center',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
+    backgroundColor: colours.primary,
+    borderRadius: 16,
+    minHeight: 80,
   },
   buttonInnerContainer: {
     width: '90%',
@@ -23,15 +26,13 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
   },
   buttonIcon: {
     flex: 1,
     alignSelf: 'center',
     justifyContent: 'center',
-  },
-  button: {
-    backgroundColor: colours.primary,
-    borderRadius: 16,
+    marginRight: 10,
   },
 });
