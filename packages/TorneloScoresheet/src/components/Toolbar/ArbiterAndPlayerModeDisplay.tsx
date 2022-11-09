@@ -18,6 +18,9 @@ import PrimaryText, { FontWeight } from '../PrimaryText/PrimaryText';
 import Sheet from '../Sheet/Sheet';
 import { styles } from './style';
 import { AppMode } from '../../types/AppModeState';
+import { colours } from '../../style/colour';
+import { ICON_LOCK } from '../../style/images';
+import TextIconButton from '../TextIconButton/TextIconButton';
 
 export type ArbiterAndPlayerModeDisplayProps = {
   currentTextColour: string;
@@ -107,10 +110,13 @@ const ArbiterAndPlayerModeDisplay: React.FC<
         />
       )}
       {arbiterModeLockDisplay() === 'Arbiter' && (
-        <IconButton
-          icon="lock"
+        <TextIconButton
+          Icon={ICON_LOCK}
+          text="Game mode"
           onPress={handlePlayerPress}
-          colour={currentTextColour}
+          style={{ width: 160, backgroundColor: colours.primary }}
+          buttonHeight={18}
+          buttonTextStyle={styles.goToGameModeButton}
         />
       )}
     </>
