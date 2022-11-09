@@ -4,8 +4,11 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "android:stag": "env-cmd -f stag.env react-native run-android",
     "ios": "react-native run-ios --simulator=\"iPad mini (6th generation)\"",
+    "ios:stag": "env-cmd -f stag.env react-native run-ios --simulator=\"iPad mini (6th generation)\"",
     "start": "react-native start",
+    "start:stag": "env-cmd -f stag.env react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
@@ -14,6 +17,7 @@
     "axios": "^0.26.1",
     "chess.ts": "file:../chess.ts",
     "country-iso-3-to-2": "^1.1.1",
+    "env-cmd": "^10.1.0",
     "moment": "^2.29.4",
     "qs": "^6.11.0",
     "react": "17.0.2",
