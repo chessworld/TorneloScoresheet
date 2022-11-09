@@ -31,7 +31,7 @@ export const makeUsePairingSelectionState =
 
     const goToTablePairing = (pairing: ChessGameInfo): void => {
       setAppModeState({
-        mode: AppMode.TablePairing,
+        mode: AppMode.ArbiterTablePairing,
         pairing: pairing,
       });
     };
